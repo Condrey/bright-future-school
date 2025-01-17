@@ -14,9 +14,7 @@ export default function Page() {
         <div className="w-full space-y-10 overflow-y-auto p-10 md:w-1/2">
           <div className="space-y-1 text-center">
             <h1 className="text-3xl font-bold">{`Sign into ${webName}`}</h1>
-            <p className="text-muted-foreground">
-              Harness <span className="italic">the power</span> of spaced-repetition in your studies.
-            </p>
+            <p className="text-muted-foreground">school motto here </p>
           </div>
           <div className="space-y-5">
             <SignUpForm />
@@ -28,7 +26,7 @@ export default function Page() {
         <Image
           src={SignUpImage}
           alt=""
-          className="hidden w-1/2 object-cover md:block bg-foreground"
+          className="hidden w-1/2 bg-foreground object-cover md:block"
         />
       </div>
     </main>

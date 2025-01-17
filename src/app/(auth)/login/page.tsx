@@ -2,7 +2,6 @@ import LoginImage from "@/assets/login-image.jpg";
 import { webName } from "@/lib/utils";
 import { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import GoogleSignInButton from "./google/google-signin-button";
 import LoginForm from "./login-form";
 
@@ -23,19 +22,20 @@ export default function Page() {
               <div className="h-px flex-1 bg-muted" />
             </div>
             <LoginForm />
-            <Link
+            {/* TODO: I think we do not need sign up in this use-case  */}
+            {/* <Link
               href={`/signup`}
               className="block text-center hover:underline"
             >
               {`Don't have an account? SignUp`}
-            </Link>
+            </Link> */}
           </div>
         </div>
 
         <Image
           src={LoginImage}
           alt=""
-          className="hidden w-1/2 object-cover md:block bg-foreground"
+          className="hidden w-1/2 bg-foreground object-cover md:block"
         />
       </div>
     </main>
