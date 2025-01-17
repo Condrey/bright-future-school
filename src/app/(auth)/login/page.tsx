@@ -1,10 +1,10 @@
-import LoginImage from "@/assets/login-image.jpeg";
+import LoginImage from "@/assets/login-image.jpg";
 import { webName } from "@/lib/utils";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import LoginForm from "./login-form";
 import GoogleSignInButton from "./google/google-signin-button";
+import LoginForm from "./login-form";
 
 export const metadata: Metadata = {
   title: "Login",

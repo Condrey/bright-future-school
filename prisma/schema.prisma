@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,29 +7,163 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id                  String             @id @default(uuid())
-  name                String?
-  username            String?
-  email               String?            @unique
-  emailVerified       DateTime?
-  avatarUrl           String?
-  role                Role?              @default(USER)
-  createdAt           DateTime           @default(now())
-  telephone           String?
-  passwordHash        String?
-  googleId            String?            @unique
-  bio                 String?
-  classId             String?
-  levelId             String?
-  schoolId            String?
-  isWelcomed          Boolean            @default(false)
-  requestNewsLetterId String?
-  editorShortcutId    String?
-  sessions            Session[]
+  id            String    @id @default(uuid())
+  name          String?
+  username      String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  avatarUrl     String?
+  role          Role?     @default(USER)
+  createdAt     DateTime  @default(now())
+  telephone     String?
+  passwordHash  String?
+  googleId      String?   @unique
+  bio           String?
+  isWelcomed    Boolean   @default(false)
+  sessions      Session[]
+  pupils        Pupil[]
+  staffs        Staff[]
 
   @@map("users")
+}
+
+model Pupil {
+  id              String       @id @default(uuid())
+  user            User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String?
+  classStream     classStream? @relation(fields: [classStreamId], references: [id])
+  classStreamId   String?
+  fees            Fees[]
+  genericPassword String
+
+  @@map("pupils")
+}
+
+model Staff {
+  id              String        @id @default(uuid())
+  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  staffType       StaffType     @default(TEACHING_STAFF)
+  userId          String?
+  classStreams    classStream[]
+  genericPassword String
+
+  @@map("staffs")
+}
+
+enum StaffType {
+  TEACHING_STAFF
+  NON_TEACHING_STAFF
+}
+
+model Level {
+  id      String  @id @default(uuid())
+  name    String
+  slug    String
+  classes Class[]
+
+  @@map("levels")
+}
+
+model Stream {
+  id           String        @id @default(uuid())
+  name         String
+  classStreams classStream[]
+
+  @@map("streams")
+}
+
+model Class {
+  id                  String              @id @default(uuid())
+  name                String
+  level               Level?              @relation(fields: [levelId], references: [id])
+  levelId             String?
+  academicYearClasses AcademicYearClass[]
+  createdAt           DateTime            @default(now())
+
+  @@map("classes")
+}
+
+model AcademicYear {
+  id                  String              @id @default(uuid())
+  year                String
+  academicYearClasses AcademicYearClass[]
+  startAt             DateTime            @default(now())
+  endAt               DateTime
+
+  @@map("academic_years")
+}
+
+model AcademicYearClass {
+  id             String        @id @default(uuid())
+  class          Class?        @relation(fields: [classId], references: [id], onDelete: Cascade)
+  terms          ClassTerm[]
+  academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
+  academicYearId String?
+  streams        classStream[]
+  classId        String?
+
+  @@unique([classId, academicYearId])
+  @@map("academic_year_classes")
+}
+
+model classStream {
+  id           String             @id @default(uuid())
+  stream       Stream?            @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  classTeacher Staff?             @relation(fields: [staffId], references: [id], onDelete: SetNull)
+  pupils       Pupil[]
+  staffId      String?
+  class        AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId      String?
+  streamId     String?
+
+  @@unique([classId, streamId])
+  @@map("class_streams")
+}
+
+model Term {
+  id         String      @id @default(uuid())
+  term       String      @unique
+  classTerms ClassTerm[]
+
+  @@map("terms")
+}
+
+model ClassTerm {
+  id      String             @id @default(uuid())
+  class   AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId String?
+  term    Term?              @relation(fields: [termId], references: [id], onDelete: Cascade)
+  startAt DateTime           @default(now())
+  endAt   DateTime
+  fees    Fees[]
+  termId  String?
+
+  @@unique([classId, termId])
+  @@map("class_terms")
+}
+
+model Fees {
+  id           String        @id @default(uuid())
+  pupil        Pupil         @relation(fields: [pupilId], references: [id], onDelete: Cascade)
+  pupilId      String
+  balance      Int           @default(0)
+  feesPayments FeesPayment[]
+  term         ClassTerm     @relation(fields: [termId], references: [id], onDelete: Cascade)
+  termId       String
+
+  @@map("fees")
+}
+
+model FeesPayment {
+  id         String   @id @default(uuid())
+  amountPaid Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  Fees       Fees?    @relation(fields: [feesId], references: [id], onDelete: Cascade)
+  feesId     String?
+
+  @@map("fees_payments")
 }
 
 model Session {
@@ -44,7 +177,10 @@ model Session {
 }
 
 enum Role {
-  ADMIN
+  DIRECTOR
+  BURSAR
+  ASSET_CARETAKER
+  CLASS_TEACHER
   USER
   SUPER_ADMIN
 }

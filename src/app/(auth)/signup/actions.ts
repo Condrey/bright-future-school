@@ -5,9 +5,15 @@ import prisma from "@/lib/prisma";
 import { signUpSchema, SignUpValues } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
-import { isRedirectError } from "next/dist/client/components/redirect";
+import {
+  REDIRECT_ERROR_CODE,
+  RedirectType,
+} from "next/dist/client/components/redirect-error";
+import { RedirectStatusCode } from "next/dist/client/components/redirect-status-code";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+
+
 export async function signUp(
   credentials: SignUpValues,
 ): Promise<{ error: string }> {
@@ -73,7 +79,6 @@ export async function signUp(
     );
     return redirect("/dashboard");
   } catch (error) {
-    if (isRedirectError(error)) throw error;
     console.error(error);
     return {
       error: "Something went wrong, please try again.",
