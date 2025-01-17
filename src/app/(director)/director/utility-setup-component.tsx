@@ -24,17 +24,19 @@ export default function UtilitySetupComponent({
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <details className="mx-auto w-full max-w-prose">
-        <summary className="cursor-pointer text-center text-2xl font-bold tracking-tighter">
+      <div className="mx-auto w-full max-w-prose">
+        <header className="cursor-pointer text-center text-2xl font-bold tracking-tighter">
           Incomplete utility components setup.
-        </summary>
-        <p className="text-center">
-          We noticed that you have not completed the utility components set up
-          required for the smooth operation of <cite>{webName}</cite>. This
-          utility components include; level, class, stream, term, academic year,
-          among others.
-        </p>
-      </details>
+        </header>
+        <section>
+          <p className="text-center">
+            We noticed that you have not completed the utility components set up
+            required for the smooth operation of <cite>{webName}</cite>. This
+            utility components include; level, class, stream, term, academic
+            year, among others.
+          </p>
+        </section>
+      </div>
       {/* steps of completion */}
       <div className="mx-auto grid w-full max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {components.map((item, index, array) => (
