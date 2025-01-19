@@ -30,14 +30,15 @@ export function useFetchClassTeachers({ year }: { year: string }) {
 export function useFetchPupils({
   year,
   classId,
-  streamId,
+  classStreamId,streamId
 }: {
   year: string;
   classId: string;
+  classStreamId: string;
   streamId: string;
 }) {
   const query = useQuery({
-    queryKey: ["pupils", streamId],
+    queryKey: ["pupils", classStreamId],
     queryFn: async () => getClassPupils(year, classId, streamId),
     staleTime: Infinity,
   });

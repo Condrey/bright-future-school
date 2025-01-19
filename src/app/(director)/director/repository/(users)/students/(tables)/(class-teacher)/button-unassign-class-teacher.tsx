@@ -2,18 +2,20 @@ import LoadingButton from "@/components/loading-button";
 import { useUnassignClassTeacherMutation } from "./mutation";
 
 interface ButtonUnassignClassTeacherProps {
-  streamId: string;
-  year: string;
+  classTeacherId: string;
+  classStreamId: string;
+  year?: string;
 }
 
 export default function ButtonUnassignClassTeacher({
-  streamId,
+  classStreamId,
   year,
+  classTeacherId,
 }: ButtonUnassignClassTeacherProps) {
   const mutation = useUnassignClassTeacherMutation(year);
 
   function handleClassTeacherAssignment() {
-    mutation.mutate({ streamId });
+    mutation.mutate({ classStreamId, classTeacherId });
   }
 
   return (

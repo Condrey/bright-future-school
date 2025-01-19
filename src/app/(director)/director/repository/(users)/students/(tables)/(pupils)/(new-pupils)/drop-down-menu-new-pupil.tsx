@@ -17,9 +17,12 @@ import {
 import FormAddUnregisteredPupil from "./(un-registered-pupil)/form-add-unregistered-pupil";
 
 interface DropDownMenuNewPupilProps {
-  streamId: string;
+  classStreamId: string;
 }
-export default function DropDownMenuNewPupil({streamId}: DropDownMenuNewPupilProps) {
+//a4ad0704-49e9-4858-b2af-4d5bb0a659a5
+export default function DropDownMenuNewPupil({
+  classStreamId,
+}: DropDownMenuNewPupilProps) {
   const previousYearSameStreamMutation =
     useAddPupilsFromPreviousYearSameStream();
   const sameClassSameStreamMutation = useAddPupilsFromSameClassSameStream();
@@ -37,7 +40,7 @@ export default function DropDownMenuNewPupil({streamId}: DropDownMenuNewPupilPro
             variant="outline"
             className="flex w-full max-w-fit items-center justify-between"
           >
-            <span>+ New Pupil</span>
+            <span>+ New Pupil/ student</span>
             <CaretSortIcon />
           </LoadingButton>
         </DropdownMenuTrigger>
@@ -65,14 +68,14 @@ export default function DropDownMenuNewPupil({streamId}: DropDownMenuNewPupilPro
         </DropdownMenuContent>
       </DropdownMenu>
       <FormAddUnregisteredPupil
-      classStreamId={streamId}
+        classStreamId={classStreamId}
         open={showAddUnregisteredPupilDialog}
         setOpen={setShowAddUnregisteredPupilDialog}
         title="Add an unregistered pupil/ student"
         description="This could be the first time you are setting up the database. Probably you have not added this pupil/ student yet."
       />
       <FormAddUnregisteredPupil
-      classStreamId={streamId}
+        classStreamId={classStreamId}
         open={showAddNewComerPupilDialog}
         setOpen={setShowAddNewComerPupilDialog}
         title="Add pupil/ student from another school"

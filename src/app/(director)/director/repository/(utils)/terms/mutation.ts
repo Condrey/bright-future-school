@@ -6,13 +6,20 @@ import { DirectorDashboardParam } from "@/lib/types";
 import { Term } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addTermAction, deleteTermAction, editTermAction } from "./action";
+import { TermSchema } from "@/lib/validation";
+import kyInstance from "@/lib/ky";
 
 const queryKey: QueryKey = ["terms"];
 
 export function useAddTermMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: addTermAction,
+    mutationFn: (input: TermSchema) =>
+      kyInstance
+        .post("/api/terms", {
+          body: JSON.stringify(input),
+        })
+        .json<Term>(),
     async onSuccess(addedTerm) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -45,7 +52,12 @@ export function useAddTermMutation() {
 export function useUpdateTermMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: editTermAction,
+    mutationFn: (input: TermSchema) =>
+      kyInstance
+        .put("/api/terms", {
+          body: JSON.stringify(input),
+        })
+        .json<Term>(),
     async onSuccess(updatedTerm) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -72,7 +84,12 @@ export function useUpdateTermMutation() {
 export function useDeleteTermMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: deleteTermAction,
+    mutationFn: (id:string) =>
+      kyInstance
+        .delete("/api/terms", {
+          body: JSON.stringify({id}),
+        })
+        .json<string>(),
     async onSuccess(id) {
       await queryClient.cancelQueries({ queryKey });
 

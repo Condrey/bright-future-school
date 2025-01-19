@@ -3,8 +3,8 @@ import { ClassStreamData, ClassTeacherWithYearData } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { assignClassTeacher, unAssignClassTeacher } from "./action";
 
-export function useAssignClassTeacherMutation(year: string) {
-  const queryKey: QueryKey = ["year-class-streams", year];
+export function useAssignClassTeacherMutation(year?: string) {
+  const queryKey: QueryKey = ["year-class-streams", year || null];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -30,10 +30,6 @@ export function useAssignClassTeacherMutation(year: string) {
               ? {
                   ...d,
                   user: returnedClassTeacher.user,
-                  _count: {
-                    ...d._count,
-                    classStreams: d._count.classStreams + 1,
-                  },
                 }
               : d,
           ),
@@ -53,13 +49,13 @@ export function useAssignClassTeacherMutation(year: string) {
   return mutation;
 }
 
-export function useUnassignClassTeacherMutation(year: string) {
-  const queryKey: QueryKey = ["year-class-streams", year];
+export function useUnassignClassTeacherMutation(year?: string) {
+  const queryKey: QueryKey = ["year-class-streams", year || null];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: unAssignClassTeacher,
-    async onSuccess(modifiedClassStream) {
+    async onSuccess(modifiedClassStream, variables) {
       await queryClient.cancelQueries({ queryKey });
 
       queryClient.setQueryData<ClassStreamData[]>(queryKey, (oldData) => {
@@ -69,24 +65,16 @@ export function useUnassignClassTeacherMutation(year: string) {
         );
       });
       //For class teacher
-      const returnedClassTeacher = modifiedClassStream.classTeacher;
-      if (!returnedClassTeacher) return;
+
       queryClient.setQueryData<ClassTeacherWithYearData[]>(
         ["class-teachers"],
         (oldData) =>
           oldData &&
           oldData.map((d) =>
-            d.id === returnedClassTeacher.id
+            d.id === variables.classTeacherId
               ? {
                   ...d,
-                  user: returnedClassTeacher.user,
-                  _count: {
-                    ...d._count,
-                    classStreams: d._count.classStreams - 1,
-                  },
-                  classStreams: d.classStreams.filter(
-                    (s) => s.id !== modifiedClassStream.id,
-                  ),
+                  user: null,
                 }
               : d,
           ),

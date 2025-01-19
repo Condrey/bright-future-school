@@ -98,11 +98,12 @@ export const useClassStreamsColumns: ColumnDef<ClassStreamData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
     ),
-    cell: ({ row }) => (
-      <DropDownMenuClassStream
-        classStream={row.original!}
-        year={row.original.class?.academicYear?.year!}
-      />
-    ),
+    cell: ({ row }) => {
+      const year = row.original.class?.academicYear?.year!;
+
+      return (
+        <DropDownMenuClassStream classStream={row.original!} year={year} />
+      );
+    },
   },
 ];

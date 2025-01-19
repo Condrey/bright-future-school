@@ -20,13 +20,13 @@ export default function ListOfClassStreams({
 }: ListOfClassStreamsProps) {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
-  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)!;
+  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) || "";
 
   const { data, status, error, isFetching, refetch } = useQuery({
     queryKey: yearClassStreamsQueryKey(year),
     queryFn: async () => await fetchYearClassStreams(year),
     initialData: classStreams,
-    staleTime: Infinity,
+    // staleTime: Infinity,
   });
   if (status === "error") {
     console.error(error);

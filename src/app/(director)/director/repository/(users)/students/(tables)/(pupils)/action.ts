@@ -14,7 +14,7 @@ export async function addPupilsFromSameClassSameStream() {}
 
 //               . New pupil from another school or unregistered pupil
 export async function addUnregisteredPupil({input,classStreamId}:{input:PupilSchema,classStreamId:string}) {
-
+console.log("classStreamId:: ",classStreamId)
     const {user:{name}} = pupilSchema.parse(input);
       const currentTimeMillis = Date.now().toString();
   const password =

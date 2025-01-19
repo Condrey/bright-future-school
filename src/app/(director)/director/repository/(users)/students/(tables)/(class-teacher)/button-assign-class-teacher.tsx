@@ -4,19 +4,19 @@ import { useAssignClassTeacherMutation } from "./mutation";
 
 interface ButtonAssignClassTeacherProps {
   classTeacher: ClassTeacherData;
-  streamId: string;
+  classStreamId: string;
   year: string;
 }
 
 export default function ButtonAssignClassTeacher({
   classTeacher,
-  streamId,
+   classStreamId,
   year,
 }: ButtonAssignClassTeacherProps) {
   const mutation = useAssignClassTeacherMutation(year);
 
   function handleClassTeacherAssignment() {
-    mutation.mutate({ classTeacher, streamId });
+    mutation.mutate({ classTeacher, classStreamId });
   }
 
   return (

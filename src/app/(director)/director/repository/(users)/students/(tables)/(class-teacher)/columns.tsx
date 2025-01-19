@@ -75,7 +75,7 @@ export const useClassTeachersColumn = ({
       return (
         <ButtonAssignClassTeacher
           classTeacher={row.original!}
-          streamId={classStreamId}
+          classStreamId={classStreamId}
           year={year}
         />
       );

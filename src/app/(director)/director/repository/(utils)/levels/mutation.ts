@@ -2,7 +2,7 @@
 
 import { directorDashboardParamsQueryKey } from "@/app/(director)/hook";
 import { toast } from "@/hooks/use-toast";
-import { DirectorDashboardParam } from "@/lib/types";
+import { DirectorDashboardParam, LevelData } from "@/lib/types";
 import { Level } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addLevelAction, deleteLevelAction, editLevelAction } from "./action";
@@ -16,7 +16,7 @@ export function useAddLevelMutation() {
     async onSuccess(addedLevel) {
       await queryClient.cancelQueries({ queryKey });
 
-      queryClient.setQueryData<Level[]>(queryKey, (oldData) => {
+      queryClient.setQueryData<LevelData[]>(queryKey, (oldData) => {
         if (!oldData) return;
         return [...oldData, addedLevel];
       });
@@ -29,7 +29,7 @@ export function useAddLevelMutation() {
       // queryClient.invalidateQueries({ queryKey });
     },
 
-    onError(error, variables, context) {
+    onError(error, ) {
       console.error(error);
       toast({
         variant: "destructive",
@@ -48,10 +48,10 @@ export function useUpdateLevelMutation() {
     async onSuccess(updatedLevel) {
       await queryClient.cancelQueries({ queryKey });
 
-      queryClient.setQueryData<Level[]>(queryKey, (oldData) => {
+      queryClient.setQueryData<LevelData[]>(queryKey, (oldData) => {
         if (!oldData) return;
         return oldData.map((d) =>
-          d.id === updatedLevel.id ? updatedLevel : d,
+          d.id === updatedLevel.id ? {...d,...updatedLevel} : d,
         );
       });
 
@@ -77,7 +77,7 @@ export function useDeleteLevelMutation() {
     async onSuccess(id) {
       await queryClient.cancelQueries({ queryKey });
 
-      queryClient.setQueryData<Level[]>(queryKey, (oldData) => {
+      queryClient.setQueryData<LevelData[]>(queryKey, (oldData) => {
         if (!oldData) return;
         return oldData.filter((d) => d.id !== id);
       });

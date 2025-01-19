@@ -10,6 +10,7 @@ import { usePupilsColumn } from "./columns";
 
 interface ListOfPupilsProps {
   classStreamId: string;
+  streamId: string;
   year: string;
   classId: string;
 }
@@ -17,10 +18,15 @@ export default function ListOfPupils({
   classStreamId,
   year,
   classId,
+  streamId,
 }: ListOfPupilsProps) {
+  console.log("List of pupils classStreamId:: ", classStreamId);
+  console.log("List of pupils streamId:: ", streamId);
+
   const { data, status, error, refetch, isFetching } = useFetchPupils({
     year,
-    streamId: classStreamId,
+    streamId,
+    classStreamId,
     classId,
   });
 
@@ -31,7 +37,7 @@ export default function ListOfPupils({
   return (
     <>
       <div className="flex items-center justify-end">
-        <DropDownMenuNewPupil streamId={classStreamId} />
+        <DropDownMenuNewPupil classStreamId={classStreamId} />
       </div>
       <hr />
       {status === "pending" ? (
@@ -62,8 +68,8 @@ export default function ListOfPupils({
         <DataTable
           columns={usePupilsColumn}
           data={data}
-          filterColumn={{ id: "user_name", label: "teacher" }}
-          ROWS_PER_TABLE={10}
+          filterColumn={{ id: "user_name", label: "pupil/ student" }}
+          ROWS_PER_TABLE={5}
         />
       )}
     </>

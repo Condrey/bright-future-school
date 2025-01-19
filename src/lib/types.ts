@@ -10,6 +10,71 @@ export const userDataSelect = {
   telephone: true,
 } satisfies Prisma.UserSelect;
 
+//  Staff
+export const staffDataInclude = {
+  user: { select: userDataSelect },
+} satisfies Prisma.StaffInclude;
+
+export type StaffData = Prisma.StaffGetPayload<{
+  include: typeof staffDataInclude;
+}>;
+//  Class Teacher
+export const classTeacherDataInclude = {
+  user: { select: userDataSelect },
+  _count: { select: { classStreams: true } },
+  classStreams: {
+    select: {
+      id: true,
+      class: {
+        select: {
+          class: { select: { name: true, level: { select: { name: true } } } },
+        },
+      },
+    },
+  },
+} satisfies Prisma.StaffInclude;
+export type ClassTeacherData = Prisma.StaffGetPayload<{
+  include: typeof classTeacherDataInclude;
+}>;
+export const classTeacherDataSelect = {
+  id: true,
+  user: {
+    select: userDataSelect,
+  },
+} satisfies Prisma.StaffSelect;
+export type ClassTeacherDataSelect = Prisma.StaffGetPayload<{
+  include: typeof classTeacherDataSelect;
+}>;
+export const getClassTeacherWithYearDataInclude = (year: string) => {
+  const data = {
+    user: { select: userDataSelect },
+    _count: { select: { classStreams: true } },
+    classStreams: {
+      select: {
+        id: true,
+        class: {
+          select: {
+            // class: { select: { name: true, level: { select: { name: true } } } },
+            academicYear: {
+              where: { year },
+              select: {
+                academicYearClasses: {
+                  select: {
+                    class: {
+                      select: { name: true, level: { select: { name: true } } },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  } satisfies Prisma.StaffInclude;
+  return data;
+};
+
 // Dashboard params
 export type DirectorDashboardParam = {
   classStreams: number;
@@ -45,12 +110,7 @@ export type LevelData = Prisma.LevelGetPayload<{
 export const classStreamDataInclude = {
   _count: { select: { pupils: true } },
   classTeacher: {
-    select: {
-      id: true,
-      user: {
-        select: userDataSelect,
-      },
-    },
+    select: classTeacherDataSelect,
   },
   stream: true,
   class: {
@@ -97,62 +157,6 @@ export const getPupilsWithYearDataInclude = (
 export type PupilData = Prisma.PupilGetPayload<{
   include: typeof pupilDataInclude;
 }>;
-
-//  Staff
-export const staffDataInclude = {
-  user: { select: userDataSelect },
-} satisfies Prisma.StaffInclude;
-
-export type StaffData = Prisma.StaffGetPayload<{
-  include: typeof staffDataInclude;
-}>;
-//  Class Teacher
-export const classTeacherDataInclude = {
-  user: { select: userDataSelect },
-  _count: { select: { classStreams: true } },
-  classStreams: {
-    select: {
-      id: true,
-      class: {
-        select: {
-          class: { select: { name: true, level: { select: { name: true } } } },
-        },
-      },
-    },
-  },
-} satisfies Prisma.StaffInclude;
-export type ClassTeacherData = Prisma.StaffGetPayload<{
-  include: typeof classTeacherDataInclude;
-}>;
-export const getClassTeacherWithYearDataInclude = (year: string) => {
-  const data = {
-    user: { select: userDataSelect },
-    _count: { select: { classStreams: true } },
-    classStreams: {
-      select: {
-        id: true,
-        class: {
-          select: {
-            // class: { select: { name: true, level: { select: { name: true } } } },
-            academicYear: {
-              where: { year },
-              select: {
-                academicYearClasses: {
-                  select: {
-                    class: {
-                      select: { name: true, level: { select: { name: true } } },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  } satisfies Prisma.StaffInclude;
-  return data;
-};
 
 export type ClassTeacherWithYearData = Prisma.StaffGetPayload<{
   include: ReturnType<typeof getClassTeacherWithYearDataInclude>;

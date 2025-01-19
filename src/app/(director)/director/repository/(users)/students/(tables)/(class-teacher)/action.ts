@@ -1,23 +1,23 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { classStreamDataInclude } from "@/lib/types";
+import { ClassStreamData, classStreamDataInclude } from "@/lib/types";
 import { Staff } from "@prisma/client";
 
 export async function assignClassTeacher({
   classTeacher,
-  streamId,
+  classStreamId,
 }: {
   classTeacher: Staff;
-  streamId: string;
+  classStreamId: string;
 }) {
-  const stream = await prisma.classStream.findUnique({
-    where: { id: streamId },
+  const classStream = await prisma.classStream.findUnique({
+    where: { id: classStreamId },
   });
-  if (!stream) throw Error("This stream does not exist in the database.");
+  if (!classStream) throw Error("This stream does not exist in the database.");
 
-  const data = await prisma.classStream.update({
-    where: { id: stream.id },
+  const data: ClassStreamData = await prisma.classStream.update({
+    where: { id: classStream.id },
     data: {
       staffId: classTeacher.id,
     },
@@ -26,14 +26,20 @@ export async function assignClassTeacher({
   return data;
 }
 
-export async function unAssignClassTeacher({ streamId }: { streamId: string }) {
-  const stream = await prisma.classStream.findUnique({
-    where: { id: streamId },
+export async function unAssignClassTeacher({
+  classTeacherId,
+  classStreamId,
+}: {
+  classTeacherId: string;
+  classStreamId: string;
+}) {
+  const classStream = await prisma.classStream.findUnique({
+    where: { id: classStreamId },
   });
-  if (!stream) throw Error("This stream does not exist in the database.");
+  if (!classStream) throw Error("This stream does not exist in the database.");
 
-  const data = await prisma.classStream.update({
-    where: { id: stream.id },
+  const data: ClassStreamData = await prisma.classStream.update({
+    where: { id: classStream.id },
     data: {
       staffId: null,
     },

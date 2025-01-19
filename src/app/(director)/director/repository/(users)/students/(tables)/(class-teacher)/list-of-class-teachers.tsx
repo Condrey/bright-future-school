@@ -67,7 +67,7 @@ export default function ListOfClassTeachers({
           })}
           data={data}
           filterColumn={{ id: "user_name", label: "teacher" }}
-          ROWS_PER_TABLE={10}
+          ROWS_PER_TABLE={5}
         />
       )}
     </div>

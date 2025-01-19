@@ -110,7 +110,9 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
             Academic years
           </DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={async () => navigateOnclickWithoutUpdate(pathname)}
+            onClick={async () =>
+              navigateOnclick(PARAM_NAME_ACADEMIC_YEAR, "", pathname)
+            }
             className="gap-2 p-2"
           >
             <div className="flex size-6 items-center justify-center rounded-sm border">

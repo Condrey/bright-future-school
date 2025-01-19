@@ -2,21 +2,23 @@
 
 import { directorDashboardParamsQueryKey } from "@/app/(director)/hook";
 import { toast } from "@/hooks/use-toast";
+import kyInstance from "@/lib/ky";
 import { DirectorDashboardParam } from "@/lib/types";
+import { StreamSchema } from "@/lib/validation";
 import { Stream } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  addStreamAction,
-  deleteStreamAction,
-  editStreamAction,
-} from "./action";
 
 const queryKey: QueryKey = ["streams"];
 
 export function useAddStreamMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: addStreamAction,
+    mutationFn: (input: StreamSchema) =>
+      kyInstance
+        .post("/api/streams", {
+          body: JSON.stringify(input),
+        })
+        .json<Stream>(),
     async onSuccess(addedStream) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -49,7 +51,12 @@ export function useAddStreamMutation() {
 export function useUpdateStreamMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: editStreamAction,
+    mutationFn: (input: StreamSchema) =>
+      kyInstance
+        .put("/api/streams", {
+          body: JSON.stringify(input),
+        })
+        .json<Stream>(),
     async onSuccess(updatedStream) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -78,7 +85,12 @@ export function useUpdateStreamMutation() {
 export function useDeleteStreamMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: deleteStreamAction,
+    mutationFn: (id:string) =>
+      kyInstance
+        .delete("/api/streams", {
+          body: JSON.stringify({id}),
+        })
+        .json<string>(),
     async onSuccess(id) {
       await queryClient.cancelQueries({ queryKey });
 

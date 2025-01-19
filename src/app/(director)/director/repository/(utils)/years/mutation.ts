@@ -5,17 +5,23 @@ import {
   yearSwitcherQueryKey,
 } from "@/app/(director)/hook";
 import { toast } from "@/hooks/use-toast";
+import kyInstance from "@/lib/ky";
 import { DirectorDashboardParam } from "@/lib/types";
-import { AcademicYear, AcademicYear as Year } from "@prisma/client";
+import { YearSchema } from "@/lib/validation";
+import {  AcademicYear as Year } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addYearAction, deleteYearAction, editYearAction } from "./action";
 
 const queryKey: QueryKey = ["years"];
 
 export function useAddYearMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: addYearAction,
+    mutationFn: (input: YearSchema) =>
+      kyInstance
+        .post("/api/academic-years", {
+          body: JSON.stringify(input),
+        })
+        .json<Year>(),
     async onSuccess(addedYear) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -39,7 +45,7 @@ export function useAddYearMutation() {
           },
       );
       //For year switcher
-      queryClient.setQueryData<AcademicYear[]>(
+      queryClient.setQueryData<Year[]>(
         yearSwitcherQueryKey,
         (oldData) => oldData && [...oldData, addedYear],
       );
@@ -63,7 +69,12 @@ export function useAddYearMutation() {
 export function useUpdateYearMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: editYearAction,
+    mutationFn: (input: YearSchema) =>
+      kyInstance
+        .put("/api/academic-years", {
+          body: JSON.stringify(input),
+        })
+        .json<Year>(),
     async onSuccess(updatedYear) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -73,7 +84,7 @@ export function useUpdateYearMutation() {
       });
 
       //For year switcher
-      queryClient.setQueryData<AcademicYear[]>(
+      queryClient.setQueryData<Year[]>(
         yearSwitcherQueryKey,
         (oldData) =>
           oldData &&
@@ -98,7 +109,12 @@ export function useUpdateYearMutation() {
 export function useDeleteYearMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: deleteYearAction,
+    mutationFn: (id: string) =>
+      kyInstance
+        .delete("/api/academic-years", {
+          body: JSON.stringify({id}),
+        })
+        .json<string>(),
     async onSuccess(id) {
       await queryClient.cancelQueries({ queryKey });
 
@@ -114,7 +130,7 @@ export function useDeleteYearMutation() {
           oldData && { ...oldData, academicYears: oldData.academicYears - 1 },
       );
       //For year switcher
-      queryClient.setQueryData<AcademicYear[]>(
+      queryClient.setQueryData<Year[]>(
         yearSwitcherQueryKey,
         (oldData) => oldData && oldData.filter((d) => d.id !== id),
       );
