@@ -1,10 +1,17 @@
 import { toast } from "@/hooks/use-toast";
+import { PARAM_NAME_ACADEMIC_YEAR } from "@/lib/constants";
 import { ClassStreamData, ClassTeacherWithYearData } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { assignClassTeacher, unAssignClassTeacher } from "./action";
 
 export function useAssignClassTeacherMutation(year?: string) {
-  const queryKey: QueryKey = ["year-class-streams", year || null];
+  const searchParams = useSearchParams();
+  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const queryKey: QueryKey = [
+    "year-class-streams",
+    year !== searchParamYear ? "" : year,
+  ];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -50,7 +57,12 @@ export function useAssignClassTeacherMutation(year?: string) {
 }
 
 export function useUnassignClassTeacherMutation(year?: string) {
-  const queryKey: QueryKey = ["year-class-streams", year || null];
+  const searchParams = useSearchParams();
+  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const queryKey: QueryKey = [
+    "year-class-streams",
+    year !== searchParamYear ? "" : year,
+  ];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
