@@ -128,11 +128,16 @@ export type ClassStreamData = Prisma.classStreamGetPayload<{
 }>;
 
 //Pupil
-export const pupilDataInclude = {
-  user: { select: userDataSelect },
-  classStream: { include: classStreamDataInclude },
-  fees: true,
-} satisfies Prisma.PupilInclude;
+export const pupilDataInclude = (classTermId?: string) => {
+  return {
+    user: { select: userDataSelect },
+    classStream: { include: classStreamDataInclude },
+    fees: {
+      where: { termId: !classTermId ? {} : classTermId },
+      select: { feesPayments: true },
+    },
+  } satisfies Prisma.PupilInclude;
+};
 
 export const getPupilsWithYearDataInclude = (
   classId: string,
@@ -145,7 +150,7 @@ export const getPupilsWithYearDataInclude = (
         streams: {
           where: { streamId },
           select: {
-            pupils: { include: pupilDataInclude },
+            pupils: { include: pupilDataInclude() },
             _count: { select: { pupils: true } },
           },
         },
@@ -155,7 +160,7 @@ export const getPupilsWithYearDataInclude = (
 };
 
 export type PupilData = Prisma.PupilGetPayload<{
-  include: typeof pupilDataInclude;
+  include: ReturnType<typeof pupilDataInclude>;
 }>;
 
 export type ClassTeacherWithYearData = Prisma.StaffGetPayload<{
@@ -188,7 +193,7 @@ export const classTermDataSelect = {
         },
       },
       classTeacher: { select: classTeacherDataSelect },
-      pupils: { include: pupilDataInclude },
+      pupils: { include: pupilDataInclude() },
       _count: { select: { pupils: true } },
     },
   },

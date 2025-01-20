@@ -42,6 +42,7 @@ export default async function Page({ searchParams }: PageProps) {
           <ListOfPupils
             pupils={term.classStream?.pupils!}
             classStreamId={term.classStream?.id!}
+            classTermId={term.id}
           />
         </Suspense>
       </BodyContainer>

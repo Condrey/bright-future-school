@@ -8,22 +8,23 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String        @id @default(uuid())
   name          String?
-  username      String?   @unique
-  email         String?   @unique
+  username      String?       @unique
+  email         String?       @unique
   emailVerified DateTime?
   avatarUrl     String?
-  role          Role?     @default(USER)
-  createdAt     DateTime  @default(now())
+  role          Role?         @default(USER)
+  createdAt     DateTime      @default(now())
   telephone     String?
   passwordHash  String?
-  googleId      String?   @unique
+  googleId      String?       @unique
   bio           String?
-  isWelcomed    Boolean   @default(false)
+  isWelcomed    Boolean       @default(false)
   sessions      Session[]
   pupils        Pupil[]
   staffs        Staff[]
+  feesPayments   FeesPayment[]
 
   @@map("users")
 }
@@ -169,8 +170,10 @@ model FeesPayment {
   amountPaid Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  Fees       Fees?    @relation(fields: [feesId], references: [id], onDelete: Cascade)
+  fees       Fees?    @relation(fields: [feesId], references: [id], onDelete: Cascade)
   feesId     String?
+  paidBy     User     @relation(fields: [userId], references: [id])
+  userId     String
 
   @@map("fees_payments")
 }

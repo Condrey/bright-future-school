@@ -39,8 +39,10 @@ export async function getClassTerm({ classTermId }: { classTermId: string }) {
 
 export async function getStreamPupils({
   classStreamId,
+  classTermId,
 }: {
   classStreamId: string;
+  classTermId: string;
 }) {
   const classStream = await prisma.classStream.findUnique({
     where: { id: classStreamId },
@@ -48,7 +50,7 @@ export async function getStreamPupils({
   if (!classStream) throw Error(" The stream with this Id does not exist. ");
   const data: PupilData[] = await prisma.pupil.findMany({
     where: { classStreamId: classStreamId },
-    include: pupilDataInclude,
+    include: pupilDataInclude(classTermId),
   });
   return data;
 }

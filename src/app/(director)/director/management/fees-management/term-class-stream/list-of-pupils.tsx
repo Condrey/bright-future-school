@@ -10,15 +10,17 @@ import { usePupilColumns } from "./column";
 interface ListOfPupilsProps {
   pupils: PupilData[];
   classStreamId: string;
+  classTermId: string;
 }
 
 export default function ListOfPupils({
   pupils,
   classStreamId,
+  classTermId,
 }: ListOfPupilsProps) {
   const { data, status, isFetching, refetch } = useQuery({
     queryKey: ["pupils", "classStream", classStreamId],
-    queryFn: async () => getStreamPupils({ classStreamId }),
+    queryFn: async () => getStreamPupils({ classStreamId, classTermId }),
     initialData: pupils,
   });
   return (
@@ -41,7 +43,7 @@ export default function ListOfPupils({
         </div>
       ) : (
         <DataTable
-          columns={usePupilColumns}
+          columns={usePupilColumns(classTermId)}
           data={data}
           ROWS_PER_TABLE={5}
           filterColumn={{ id: "user_name", label: "pupil/ student" }}

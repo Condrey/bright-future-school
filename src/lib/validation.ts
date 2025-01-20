@@ -125,3 +125,18 @@ export const classTermSchema = z.object({
   endAt: z.date({ required_error: "Please select a ending date." }),
 });
 export type ClassTermSchema = z.infer<typeof classTermSchema>;
+
+// Fees Payment
+export const feesPaymentSchema = z.object({
+  amountPaid: z.number(),
+  id: z.string().optional(),
+});
+export type FeesPaymentSchema = z.infer<typeof feesPaymentSchema>;
+// Fees
+export const feesSchema = z.object({
+  pupilId: requiredString.min(1, "This fees needs to be assigned a user."),
+  id: z.string().optional(),
+  feesPayment:(feesPaymentSchema),
+  termId: requiredString.min(1, "Term is missing"),
+});
+export type FeesSchema = z.infer<typeof feesSchema>;

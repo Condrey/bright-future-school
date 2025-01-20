@@ -5,8 +5,11 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import UserAvatar from "@/components/user-avatar";
 import { PupilData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
+import ButtonAddFees from "./button-add-fees";
 
-export const usePupilColumns: ColumnDef<PupilData>[] = [
+export const usePupilColumns = (
+  classTermId: string,
+): ColumnDef<PupilData>[] => [
   {
     id: "index",
     header: ({ column }) => <DataTableColumnHeader column={column} title="#" />,
@@ -35,10 +38,22 @@ export const usePupilColumns: ColumnDef<PupilData>[] = [
     },
   },
   {
-    accessorKey: "id",
+    id: "fees.status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Fess Status" />
     ),
-    cell: ({ row }) => <Badge>{row.original.id}</Badge>,
+    cell: ({ row }) => {
+      const feesStatus = row.original.fees.length;
+      return <Badge>{`${feesStatus}`}</Badge>;
+    },
+  },
+  {
+    id: "action",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fess Status" />
+    ),
+    cell: ({ row }) => {
+      return <ButtonAddFees classTermId={classTermId} pupil={row.original} />;
+    },
   },
 ];
