@@ -3,7 +3,7 @@ import { AppSidebar } from "../app-side-bar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="w-full">
       <AppSidebar />
       <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>

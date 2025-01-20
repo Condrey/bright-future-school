@@ -66,7 +66,7 @@ export default function FormAddEditYear({
       open={open}
       setOpen={setOpen}
       title={`${yearToEdit ? "Update" : "Add"} academic year`}
-      className="max-w-3xl"
+      className="lg:max-w-3xl"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">

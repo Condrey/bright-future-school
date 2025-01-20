@@ -6,6 +6,9 @@ import { PARAM_NAME_CLASS_TERM } from "@/lib/constants";
 import { SearchParam } from "@/lib/types";
 import { Fragment, Suspense } from "react";
 import { getClassTerm } from "../action";
+import ClassDetails from "./header/class-details";
+import FeesDetails from "./header/fees-details";
+import TermDetails from "./header/term-details";
 import ListOfPupils from "./list-of-pupils";
 
 interface PageProps {
@@ -29,6 +32,12 @@ export default async function Page({ searchParams }: PageProps) {
       </Suspense>
 
       <BodyContainer>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ClassDetails classStream={term.classStream} />
+          <TermDetails oldTerm={term} />
+          <FeesDetails oldTerm={term} />
+        </div>
+        {/* <pre>{JSON.stringify(term, null, 2)}</pre> */}
         <Suspense>
           <ListOfPupils
             pupils={term.classStream?.pupils!}

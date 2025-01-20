@@ -22,7 +22,7 @@ export default function ListOfPupils({
     initialData: pupils,
   });
   return (
-    <div className="size-full space-y-12">
+    <div className="size-full space-y-4">
       <span>List of pupils/ students</span>
 
       {status === "error" ? (

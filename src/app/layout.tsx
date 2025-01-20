@@ -41,7 +41,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TooltipProvider>
-              <>{children}</>
+              <div className="size-full bg-sidebar/30">{children}</div>
             </TooltipProvider>
             <Toaster />
           </ThemeProvider>

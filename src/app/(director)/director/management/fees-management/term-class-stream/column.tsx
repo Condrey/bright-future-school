@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
 import { PupilData } from "@/lib/types";
@@ -32,5 +33,12 @@ export const usePupilColumns: ColumnDef<PupilData>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fess Status" />
+    ),
+    cell: ({ row }) => <Badge>{row.original.id}</Badge>,
   },
 ];

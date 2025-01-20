@@ -47,13 +47,12 @@ export const userSchema = z.object({
 });
 export type UserSchema = z.infer<typeof userSchema>;
 
-// Pupil 
+// Pupil
 export const pupilSchema = z.object({
   user: userSchema,
   id: z.string().optional(),
 });
 export type PupilSchema = z.infer<typeof pupilSchema>;
-
 
 // Teaching Staff
 export const teachingStaffSchema = z.object({
@@ -115,3 +114,14 @@ export const yearSchema = z.object({
   endAt: z.date({ required_error: "Please select a ending date." }),
 });
 export type YearSchema = z.infer<typeof yearSchema>;
+
+// Class Term
+export const classTermSchema = z.object({
+  feesAmount: z.number(),
+  id: z.string().optional(),
+  startAt: z.date({
+    required_error: "Please select term starting date.",
+  }),
+  endAt: z.date({ required_error: "Please select a ending date." }),
+});
+export type ClassTermSchema = z.infer<typeof classTermSchema>;

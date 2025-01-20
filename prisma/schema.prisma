@@ -139,6 +139,7 @@ model ClassTerm {
   endAt         DateTime
   fees          Fees[]
   termId        String?
+  feesAmount    Int?
 
   @@unique([classStreamId, termId])
   @@map("class_terms")

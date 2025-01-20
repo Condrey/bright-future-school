@@ -8,6 +8,19 @@ export function cn(...inputs: ClassValue[]) {
 
 export const webName = "Bright future school";
 
+export function formatCurrency(price: number | string = 0, currency?: string) {
+  const numericPrice = Number(price);
+
+  const formattedPrice = Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency || "UGX",
+    minimumFractionDigits: numericPrice % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(numericPrice);
+
+  return formattedPrice;
+}
+
 export function formatNumber(n: number): string {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
