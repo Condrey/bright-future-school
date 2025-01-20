@@ -25,7 +25,6 @@ export const useClassColumns: ColumnDef<ClassData>[] = [
     cell: ({ row }) => (
       <div className="5 space-y-0">
         <div>{row.original.level?.name ?? "N/A"}</div>
-        <div className="text-xs text-muted-foreground">Level</div>{" "}
       </div>
     ),
   },

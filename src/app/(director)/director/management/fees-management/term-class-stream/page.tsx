@@ -2,15 +2,11 @@ import BodyContainer from "@/app/(director)/body-container";
 import HeaderContainer, {
   HeaderContainerFallback,
 } from "@/app/(director)/header-container";
-import {
-  PARAM_NAME_ACADEMIC_YEAR,
-  PARAM_NAME_CLASS_TERM,
-} from "@/lib/constants";
+import { PARAM_NAME_CLASS_TERM } from "@/lib/constants";
 import { SearchParam } from "@/lib/types";
 import { Fragment, Suspense } from "react";
-import ManagementSwitches from "../mangement-switches";
-import { getYearTermFeesManagementSummary } from "./action";
-import ListOfTermClassStreams from "./list-of-term-class-streams";
+import { getClassTerm } from "../action";
+import ListOfPupils from "./list-of-pupils";
 
 interface PageProps {
   searchParams: Promise<SearchParam>;
@@ -19,26 +15,25 @@ interface PageProps {
 export const dynamic = "force-dynamic";
 
 export default async function Page({ searchParams }: PageProps) {
-  const year = (await searchParams)[PARAM_NAME_ACADEMIC_YEAR] as string;
   const classTermId = (await searchParams)[PARAM_NAME_CLASS_TERM] as string;
-  const terms = await getYearTermFeesManagementSummary({
-    year,
-    termId: classTermId,
-  });
+  const term = await getClassTerm({ classTermId });
   return (
     <Fragment>
       <Suspense fallback={<HeaderContainerFallback />}>
         <HeaderContainer
-          breadCrumbs={[{ label: "Fees management (streams)" }]}
+          breadCrumbs={[
+            { label: "Streams", url: "/director/management/fees-management" },
+            { label: "Fees management (term)" },
+          ]}
         />
       </Suspense>
+
       <BodyContainer>
-        <ManagementSwitches
-          yearPathnameEndPoint="fees-management"
-          termPathnameEndPoint="fees-management"
-        />
         <Suspense>
-          <ListOfTermClassStreams terms={terms} />
+          <ListOfPupils
+            pupils={term.classStream?.pupils!}
+            classStreamId={term.classStream?.id!}
+          />
         </Suspense>
       </BodyContainer>
     </Fragment>

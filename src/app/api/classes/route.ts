@@ -63,21 +63,27 @@ export async function POST(req: Request) {
             const streams = await tx.stream.findMany({ select: { id: true } });
 
             for (const a of academicYearClasses) {
-              if (!!terms.length) {
-                await tx.classTerm.createMany({
-                  data: terms.map((t) => ({
-                    classId: a.id,
-                    termId: t.id,
-                    endAt: new Date(),
-                  })),
-                  skipDuplicates: true,
-                });
-              }
               if (!!streams.length) {
                 await tx.classStream.createMany({
                   data: streams.map((s) => ({
                     classId: a.id,
                     streamId: s.id,
+                  })),
+                  skipDuplicates: true,
+                });
+              }
+            }
+
+            const classStreams = await tx.classStream.findMany({
+              select: { id: true },
+            });
+            for (const c of classStreams) {
+              if (!!terms.length) {
+                await tx.classTerm.createMany({
+                  data: terms.map((t) => ({
+                    classStreamId: c.id,
+                    termId: t.id,
+                    endAt: new Date(),
                   })),
                   skipDuplicates: true,
                 });

@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 import { termSchema, TermSchema } from "@/lib/validation";
 
 export async function getTermsAction() {
@@ -11,22 +12,47 @@ export async function getTermsAction() {
 }
 export async function addTermAction(input: TermSchema) {
   const { term } = termSchema.parse(input);
+  const timeMillis = Date.now().toString();
 
-  const data = await prisma.term.create({
-    data: {
-      term,
-    },
+  const data = await prisma.$transaction(async (tx) => {
+    let slug = slugify(term);
+
+    const hasSlug = await tx.term.findFirst({ where: { slug } });
+    if (hasSlug) {
+      slug = slug + timeMillis.substring(timeMillis.length - 3);
+    }
+    const data = await tx.term.create({
+      data: {
+        term,
+        slug,
+      },
+    });
+    return data;
   });
   return data;
 }
 
 export async function editTermAction(input: TermSchema) {
   const { term, id } = termSchema.parse(input);
-  const data = await prisma.term.update({
-    where: { id },
-    data: {
-      term,
-    },
+
+  const timeMillis = Date.now().toString();
+
+  const data = await prisma.$transaction(async (tx) => {
+    let slug = slugify(term);
+
+    const hasSlug = await tx.term.findFirst({ where: { slug } });
+    if (hasSlug) {
+      slug = slug + timeMillis.substring(timeMillis.length - 3);
+    }
+    const data = await tx.term.update({
+      where: { id },
+
+      data: {
+        term,
+        slug,
+      },
+    });
+    return data;
   });
   return data;
 }

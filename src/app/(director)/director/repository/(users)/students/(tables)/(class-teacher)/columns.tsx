@@ -27,7 +27,7 @@ export const useClassTeachersColumn = ({
       return (
         <>
           {!classTeacher ? (
-            <Badge variant={"destructive"}>Not Assigned</Badge>
+            <Badge variant={"destructive"}>Not assigned</Badge>
           ) : (
             <div className="flex gap-3">
               <UserAvatar avatarUrl={classTeacher.avatarUrl} />

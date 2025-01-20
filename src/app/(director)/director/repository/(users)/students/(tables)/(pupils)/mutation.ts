@@ -2,8 +2,10 @@
 
 import { directorDashboardParamsQueryKey } from "@/app/(director)/hook";
 import { toast } from "@/hooks/use-toast";
+import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
 import { DirectorDashboardParam, PupilData } from "@/lib/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import {
   addPupilsFromPreviousYearSameStream,
   addPupilsFromSameClassSameStream,
@@ -31,7 +33,11 @@ export function useAddPupilsFromSameClassSameStream() {
 
 //               . New pupil from another school or unregistered pupil
 export function useAddUnregisteredPupil() {
+  const searchParams = useSearchParams();
+  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const termId = searchParams.get(PARAM_NAME_TERM);
   const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: addUnregisteredPupil,
     onSuccess: async (registeredPupil, variables) => {
@@ -47,6 +53,14 @@ export function useAddUnregisteredPupil() {
         directorDashboardParamsQueryKey,
         (oldData) => oldData && { ...oldData, pupils: oldData.pupils + 1 },
       );
+      //For year term streams
+      queryClient.invalidateQueries({
+        queryKey: [
+          "year-term-streams",
+          !year || year.startsWith("<") ? "" : year,
+          !termId || termId.startsWith("<") ? "" : termId,
+        ],
+      });
       // For classStreams
       queryClient.invalidateQueries({ queryKey: ["year-class-streams"] });
     },

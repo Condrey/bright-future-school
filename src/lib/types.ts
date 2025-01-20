@@ -165,11 +165,19 @@ export type ClassTeacherWithYearData = Prisma.StaffGetPayload<{
 // Term
 export const classTermDataSelect = {
   id: true,
-  class: {
-    select: {
-      class: { include: classDataInclude },
-      academicYear: { select: { year: true } },
-      _count: { select: { streams: true } },
+  classStream: {
+    include: {
+      stream: { select: { name: true, id: true } },
+      class: {
+        select: {
+          class: { include: classDataInclude },
+          academicYear: { select: { year: true } },
+          _count: { select: { streams: true } },
+        },
+      },
+      classTeacher: { select: classTeacherDataSelect },
+      pupils: { include: pupilDataInclude },
+      _count: { select: { pupils: true } },
     },
   },
   term: { select: { term: true } },
@@ -184,13 +192,17 @@ export const classTermDataSelect = {
 } satisfies Prisma.ClassTermSelect;
 
 // Academic year
-export const getTermWithYearDataSelect = (classTermId?: string) => {
+export const getTermWithYearDataSelect = (termId?: string) => {
   return {
     academicYearClasses: {
       select: {
-        terms: {
-          where: !classTermId ? {} : { id: classTermId },
-          select: classTermDataSelect,
+        streams: {
+          select: {
+            terms: {
+              where: !termId ? {} : { termId },
+              select: classTermDataSelect,
+            },
+          },
         },
       },
     },

@@ -4,10 +4,7 @@ import { directorDashboardParamsQueryKey } from "@/app/(director)/hook";
 import LoadingButton from "@/components/loading-button";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import {
-  PARAM_NAME_ACADEMIC_YEAR,
-  PARAM_NAME_CLASS_TERM,
-} from "@/lib/constants";
+import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
 import { DirectorDashboardParam, TermWithYearData } from "@/lib/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
@@ -24,12 +21,12 @@ export default function ListOfTermClassStreams({
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)!;
-  const classTermId = searchParams.get(PARAM_NAME_CLASS_TERM)!;
+  const termId = searchParams.get(PARAM_NAME_TERM)!;
 
   const { data, status, error, isFetching, refetch } = useQuery({
-    queryKey: yearTermStreamsQueryKey(year, classTermId),
+    queryKey: yearTermStreamsQueryKey(year, termId),
     queryFn: async () =>
-      await getYearTermFeesManagementSummary({ year, classTermId }),
+      await getYearTermFeesManagementSummary({ year, termId }),
     initialData: terms,
     // staleTime: Infinity,
   });
@@ -71,7 +68,7 @@ export default function ListOfTermClassStreams({
         columns={useYearTermStreamColumns}
         data={data}
         ROWS_PER_TABLE={10}
-        filterColumn={{ id: "class_class_name", label: "Class" }}
+        filterColumn={{ id: "classStream_class_class_name", label: "Class" }}
       />
     </div>
   );

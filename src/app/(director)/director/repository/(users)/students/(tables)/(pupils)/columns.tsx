@@ -21,7 +21,7 @@ export const usePupilsColumn: ColumnDef<PupilData>[] = [
       return (
         <>
           {!pupil ? (
-            <Badge variant={"destructive"}>Not Assigned</Badge>
+            <Badge variant={"destructive"}>Not assigned</Badge>
           ) : (
             <div className="flex gap-3">
               <UserAvatar avatarUrl={pupil.avatarUrl} />

@@ -1,13 +1,15 @@
 "use client";
 
-import { directorDashboardParamsQueryKey } from "@/app/(director)/hook";
+import {
+  directorDashboardParamsQueryKey,
+  termSwitcherQueryKey,
+} from "@/app/(director)/hook";
 import { toast } from "@/hooks/use-toast";
+import kyInstance from "@/lib/ky";
 import { DirectorDashboardParam } from "@/lib/types";
+import { TermSchema } from "@/lib/validation";
 import { Term } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addTermAction, deleteTermAction, editTermAction } from "./action";
-import { TermSchema } from "@/lib/validation";
-import kyInstance from "@/lib/ky";
 
 const queryKey: QueryKey = ["terms"];
 
@@ -32,6 +34,11 @@ export function useAddTermMutation() {
       queryClient.setQueryData<DirectorDashboardParam>(
         directorDashboardParamsQueryKey,
         (oldData) => oldData && { ...oldData, terms: oldData.terms + 1 },
+      );
+      //For year switcher
+      queryClient.setQueryData<Term[]>(
+        termSwitcherQueryKey,
+        (oldData) => oldData && [...oldData, addedTerm],
       );
 
       // queryClient.invalidateQueries({ queryKey });
@@ -66,6 +73,14 @@ export function useUpdateTermMutation() {
         return oldData.map((d) => (d.id === updatedTerm.id ? updatedTerm : d));
       });
 
+      //For year switcher
+      queryClient.setQueryData<Term[]>(
+        termSwitcherQueryKey,
+        (oldData) =>
+          oldData &&
+          oldData.map((d) => (d.id === updatedTerm.id ? updatedTerm : d)),
+      );
+
       // queryClient.invalidateQueries({ queryKey });
     },
 
@@ -84,10 +99,10 @@ export function useUpdateTermMutation() {
 export function useDeleteTermMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (id:string) =>
+    mutationFn: (id: string) =>
       kyInstance
         .delete("/api/terms", {
-          body: JSON.stringify({id}),
+          body: JSON.stringify({ id }),
         })
         .json<string>(),
     async onSuccess(id) {
@@ -102,6 +117,12 @@ export function useDeleteTermMutation() {
       queryClient.setQueryData<DirectorDashboardParam>(
         directorDashboardParamsQueryKey,
         (oldData) => oldData && { ...oldData, terms: oldData.terms - 1 },
+      );
+
+      //For year switcher
+      queryClient.setQueryData<Term[]>(
+        termSwitcherQueryKey,
+        (oldData) => oldData && oldData.filter((d) => d.id !== id),
       );
 
       // queryClient.invalidateQueries({ queryKey });

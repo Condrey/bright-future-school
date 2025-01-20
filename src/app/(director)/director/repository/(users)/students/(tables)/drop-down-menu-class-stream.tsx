@@ -31,7 +31,6 @@ export default function DropDownMenuClassStream({
   classStream,
   year,
 }: DropDownMenuClassStreamProps) {
-  const [showDialog, setShowDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showAssignClassTeacherSheet, setShowAssignClassTeacherSheet] =
     useState(false);

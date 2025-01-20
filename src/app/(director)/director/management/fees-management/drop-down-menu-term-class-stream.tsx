@@ -5,11 +5,24 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
+import { PARAM_NAME_CLASS_TERM } from "@/lib/constants";
 import { TermWithYearData } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { Role } from "@prisma/client";
-import { CopyIcon, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpRightIcon,
+  CopyIcon,
+  MoreHorizontal,
+  UserIcon,
+  UsersIcon,
+} from "lucide-react";
+import { useState } from "react";
+import AssignClassTeacher from "../../repository/(users)/students/(tables)/(class-teacher)/assign-class-teacher";
+import AssignPupils from "../../repository/(users)/students/(tables)/(pupils)/assign-pupils";
 
 interface DropDownMenuTermClassStreamProps {
   termClassStream: TermWithYearData;
@@ -19,20 +32,49 @@ export default function DropDownMenuTermClassStream({
   termClassStream,
 }: DropDownMenuTermClassStreamProps) {
   const { user } = useSession();
+  const { navigateOnclick } = useCustomSearchParams();
+
+  const [showAssignClassTeacherSheet, setShowAssignClassTeacherSheet] =
+    useState(false);
+  const [showAssignPupilsSheet, setShowAssignPupilsSheet] = useState(false);
+  const hasClassTeacher = termClassStream.classStream?.classTeacher;
+  const classStream = termClassStream.classStream!;
+  const year = termClassStream.classStream?.class?.academicYear?.year!;
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="size-8 p-0">
+        <DropdownMenuTrigger
+          asChild
+          className={cn(
+            "group-hover/row:z-50 group-hover/row:scale-110 group-hover/row:shadow-md group-hover/row:transition-all",
+          )}
+        >
+          <Button
+            variant="ghost"
+            className="size-8 p-0 group-hover/row:size-fit"
+          >
             <span className="sr-only">Open menu</span>
             <MoreHorizontal />
+            <span className="hidden group-hover/row:flex">Open Action</span>
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
+          <DropdownMenuItem
+            onClick={() =>
+              navigateOnclick(
+                PARAM_NAME_CLASS_TERM,
+                termClassStream.id,
+                "/director/management/fees-management/term-class-stream",
+              )
+            }
+          >
+            <ArrowUpRightIcon className="mr-2 size-4" />
+            <span>Open</span>
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => navigator.clipboard.writeText(termClassStream.id)}
           >
@@ -50,8 +92,35 @@ export default function DropDownMenuTermClassStream({
               <span>Copy class</span>
             </DropdownMenuItem>
           )}
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem onClick={() => setShowAssignPupilsSheet(true)}>
+            <UsersIcon className="mr-2 size-4" />
+            <span>Add pupils</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => setShowAssignClassTeacherSheet(true)}
+          >
+            <UserIcon className="mr-2 size-4" />
+            <span>
+              {!hasClassTeacher ? "Assign" : "Unassign"} class teacher
+            </span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <AssignClassTeacher
+        classStream={classStream}
+        year={year}
+        open={showAssignClassTeacherSheet}
+        setOpen={setShowAssignClassTeacherSheet}
+      />
+      <AssignPupils
+        classStream={classStream}
+        year={year}
+        open={showAssignPupilsSheet}
+        setOpen={setShowAssignPupilsSheet}
+      />
     </>
   );
 }

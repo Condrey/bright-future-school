@@ -65,3 +65,8 @@ export async function getPlainYears() {
   const data = prisma.academicYear.findMany();
   return data;
 }
+
+export async function getPlainTerms() {
+  const data = prisma.term.findMany();
+  return data;
+}

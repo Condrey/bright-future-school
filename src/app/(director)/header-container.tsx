@@ -11,6 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -39,14 +40,14 @@ export default function HeaderContainer({
         <Breadcrumb>
           <BreadcrumbList>
             {breadCrumbItems.length === 1 ? (
-              <BreadcrumbItem className="hidden sm:block">
+              <BreadcrumbItem className="block">
                 <BreadcrumbPage>{breadCrumbItems[0].label}</BreadcrumbPage>
               </BreadcrumbItem>
             ) : (
               <>
                 {breadCrumbItems.map((item, index, array) => (
                   <div key={item.label} className="flex items-center gap-2">
-                    <BreadcrumbItem className="hidden sm:block">
+                    <BreadcrumbItem className="block">
                       {index === array.length - 1 ? (
                         <BreadcrumbPage>{item.label}</BreadcrumbPage>
                       ) : (
@@ -58,6 +59,11 @@ export default function HeaderContainer({
                               "?" +
                               searchParams.toString()
                             }
+                            className={cn(
+                             ( index !== array.length - 1 ||
+                                index === 0 )&&
+                                  "line-clamp-1 max-w-24 text-ellipsis",
+                            )}
                           >
                             {item.label}
                           </Link>
@@ -65,7 +71,7 @@ export default function HeaderContainer({
                       )}
                     </BreadcrumbItem>
                     {index !== array.length - 1 && (
-                      <BreadcrumbSeparator className="hidden md:block" />
+                      <BreadcrumbSeparator className="block" />
                     )}
                   </div>
                 ))}

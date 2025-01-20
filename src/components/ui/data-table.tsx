@@ -126,11 +126,13 @@ export function DataTable<TData, TValue>({
                       handleClick ? handleClick(rowItem.id) : undefined
                     }
                     className={cn(
-                      "cursor-pointer",
+                      !handleClick
+                        ? "cursor-default hover:bg-inherit"
+                        : "group/row cursor-pointer hover:bg-secondary",
                       rowItem.id === selectedItemId && "bg-muted",
                     )}
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map((cell, index, array) => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,

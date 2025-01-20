@@ -97,7 +97,6 @@ model AcademicYear {
 model AcademicYearClass {
   id             String        @id @default(uuid())
   class          Class?        @relation(fields: [classId], references: [id], onDelete: Cascade)
-  terms          ClassTerm[]
   academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
   academicYearId String?
   streams        classStream[]
@@ -112,6 +111,7 @@ model classStream {
   stream       Stream?            @relation(fields: [streamId], references: [id], onDelete: Cascade)
   classTeacher Staff?             @relation(fields: [staffId], references: [id], onDelete: SetNull)
   pupils       Pupil[]
+  terms        ClassTerm[]
   staffId      String?
   class        AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId      String?
@@ -124,22 +124,23 @@ model classStream {
 model Term {
   id         String      @id @default(uuid())
   term       String      @unique
+  slug       String      @unique
   classTerms ClassTerm[]
 
   @@map("terms")
 }
 
 model ClassTerm {
-  id      String             @id @default(uuid())
-  class   AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
-  classId String?
-  term    Term?              @relation(fields: [termId], references: [id], onDelete: Cascade)
-  startAt DateTime           @default(now())
-  endAt   DateTime
-  fees    Fees[]
-  termId  String?
+  id            String       @id @default(uuid())
+  classStream   classStream? @relation(fields: [classStreamId], references: [id], onDelete: Cascade)
+  classStreamId String?
+  term          Term?        @relation(fields: [termId], references: [id], onDelete: Cascade)
+  startAt       DateTime     @default(now())
+  endAt         DateTime
+  fees          Fees[]
+  termId        String?
 
-  @@unique([classId, termId])
+  @@unique([classStreamId, termId])
   @@map("class_terms")
 }
 
@@ -148,11 +149,18 @@ model Fees {
   pupil        Pupil         @relation(fields: [pupilId], references: [id], onDelete: Cascade)
   pupilId      String
   balance      Int           @default(0)
+  status       FeesStatus    @default(NILL)
   feesPayments FeesPayment[]
   term         ClassTerm     @relation(fields: [termId], references: [id], onDelete: Cascade)
   termId       String
 
   @@map("fees")
+}
+
+enum FeesStatus {
+  COMPLETED
+  PENDING
+  NILL
 }
 
 model FeesPayment {

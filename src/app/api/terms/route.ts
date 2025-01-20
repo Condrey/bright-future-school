@@ -16,82 +16,86 @@ export async function POST(req: Request) {
         { status: 404, statusText: "Unauthorized." },
       );
     }
-     const { term } = termSchema.parse(body);
+    const { term } = termSchema.parse(body);
 
-
-      const data = await prisma.$transaction(
-        async (tx) => {
-            const data = await tx
-            .term.create({
-              data: {
-                term,
-              },
-            });
-          //  get all the academic years
-          const academicYears = await tx.academicYear.findMany({
+    const data = await prisma.$transaction(
+      async (tx) => {
+        const data = await tx.term.create({
+          data: {
+            term,
+          },
+        });
+        //  get all the academic years
+        const academicYears = await tx.academicYear.findMany({
+          select: { id: true },
+        });
+        //if we have years, do the following else just return data
+        if (!!academicYears.length) {
+          // get all classes
+          const classes = await tx.class.findMany({
             select: { id: true },
           });
-          //if we have years, do the following else just return data
-          if (!!academicYears.length) {
-            // get all classes
-            const classes = await tx.class.findMany({
+          // if we have classes, do the following
+          // .create Academic year classes
+          // .Create class terms if term exists
+          // .create class streams if streams exist
+          //  else return
+          if (!!classes.length) {
+            for (const year of academicYears) {
+              await tx.academicYearClass.createMany({
+                data: classes.map((c) => ({
+                  classId: c.id,
+                  academicYearId: year.id,
+                })),
+                skipDuplicates: true,
+              });
+            }
+            // Get all
+            // .academic year classes
+            // .terms
+            // .streams
+            const academicYearClasses = await tx.academicYearClass.findMany({
               select: { id: true },
             });
-            // if we have classes, do the following
-            // .create Academic year classes
-            // .Create class terms if term exists
-            // .create class streams if streams exist
-            //  else return
-            if (!!classes.length) {
-              for (const year of academicYears) {
-                await tx.academicYearClass.createMany({
-                  data: classes.map((c) => ({
-                    classId: c.id,
-                    academicYearId: year.id,
+            const terms = await tx.term.findMany({ select: { id: true } });
+            const streams = await tx.stream.findMany({
+              select: { id: true },
+            });
+
+            for (const a of academicYearClasses) {
+              if (!!streams.length) {
+                await tx.classStream.createMany({
+                  data: streams.map((s) => ({
+                    classId: a.id,
+                    streamId: s.id,
                   })),
                   skipDuplicates: true,
                 });
               }
-              // Get all
-              // .academic year classes
-              // .terms
-              // .streams
-              const academicYearClasses = await tx.academicYearClass.findMany({
-                select: { id: true },
-              });
-              const terms = await tx.term.findMany({ select: { id: true } });
-              const streams = await tx.stream.findMany({
-                select: { id: true },
-              });
+            }
 
-              for (const a of academicYearClasses) {
-                if (!!terms.length) {
-                  await tx.classTerm.createMany({
-                    data: terms.map((t) => ({
-                      classId: a.id,
-                      termId: t.id,
-                      endAt: new Date(),
-                    })),
-                    skipDuplicates: true,
-                  });
-                }
-                if (!!streams.length) {
-                  await tx.classStream.createMany({
-                    data: streams.map((s) => ({
-                      classId: a.id,
-                      streamId: s.id,
-                    })),
-                    skipDuplicates: true,
-                  });
-                }
+            const classStreams = await tx.classStream.findMany({
+              select: { id: true },
+            });
+            for (const c of classStreams) {
+              if (!!terms.length) {
+                await tx.classTerm.createMany({
+                  data: terms.map((t) => ({
+                    classStreamId: c.id,
+                    termId: t.id,
+                    endAt: new Date(),
+                  })),
+                  skipDuplicates: true,
+                });
               }
             }
           }
-          return data;
-        },
-        { maxWait: 60000, timeout: 60000 },
-      );
-     return Response.json(data);
+        }
+        return data;
+      },
+      { maxWait: 60000, timeout: 60000 },
+    );
+    return Response.json(data);
   } catch (error) {
     console.error(error);
     return Response.json(
@@ -139,12 +143,12 @@ export async function DELETE(req: Request) {
         { status: 404, statusText: "Unauthorized." },
       );
     }
-        const schema = z.object({
+    const schema = z.object({
       id: z.string(),
     });
     const { id } = schema.parse(body);
-     const data = await prisma.term.delete({ where: { id } });
-     return Response.json(data.id);
+    const data = await prisma.term.delete({ where: { id } });
+    return Response.json(data.id);
   } catch (error) {
     console.error(error);
     return Response.json(

@@ -1,6 +1,6 @@
 import { toast } from "@/hooks/use-toast";
-import { PARAM_NAME_ACADEMIC_YEAR } from "@/lib/constants";
-import { ClassStreamData, ClassTeacherWithYearData } from "@/lib/types";
+import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
+import { ClassStreamData } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { assignClassTeacher, unAssignClassTeacher } from "./action";
@@ -8,6 +8,7 @@ import { assignClassTeacher, unAssignClassTeacher } from "./action";
 export function useAssignClassTeacherMutation(year?: string) {
   const searchParams = useSearchParams();
   const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const termId = searchParams.get(PARAM_NAME_TERM);
   const queryKey: QueryKey = [
     "year-class-streams",
     year !== searchParamYear ? "" : year,
@@ -26,22 +27,15 @@ export function useAssignClassTeacherMutation(year?: string) {
         );
       });
       //For class teacher
-      const returnedClassTeacher = modifiedClassStream.classTeacher;
-      if (!returnedClassTeacher) return;
-      queryClient.setQueryData<ClassTeacherWithYearData[]>(
-        ["class-teachers"],
-        (oldData) =>
-          oldData &&
-          oldData.map((d) =>
-            d.id === returnedClassTeacher.id
-              ? {
-                  ...d,
-                  user: returnedClassTeacher.user,
-                }
-              : d,
-          ),
-      );
       queryClient.invalidateQueries({ queryKey: ["class-teachers"] });
+      //For year term streams
+      queryClient.invalidateQueries({
+        queryKey: [
+          "year-term-streams",
+          year !== searchParamYear ? "" : year,
+          !termId || termId.startsWith("<") ? "" : termId,
+        ],
+      });
     },
 
     onError(error) {
@@ -59,6 +53,8 @@ export function useAssignClassTeacherMutation(year?: string) {
 export function useUnassignClassTeacherMutation(year?: string) {
   const searchParams = useSearchParams();
   const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const termId = searchParams.get(PARAM_NAME_TERM);
+
   const queryKey: QueryKey = [
     "year-class-streams",
     year !== searchParamYear ? "" : year,
@@ -77,22 +73,15 @@ export function useUnassignClassTeacherMutation(year?: string) {
         );
       });
       //For class teacher
-
-      queryClient.setQueryData<ClassTeacherWithYearData[]>(
-        ["class-teachers"],
-        (oldData) =>
-          oldData &&
-          oldData.map((d) =>
-            d.id === variables.classTeacherId
-              ? {
-                  ...d,
-                  user: null,
-                }
-              : d,
-          ),
-      );
-
       queryClient.invalidateQueries({ queryKey: ["class-teachers"] });
+      //For year term streams
+      queryClient.invalidateQueries({
+        queryKey: [
+          "year-term-streams",
+          year !== searchParamYear ? "" : year,
+          !termId || termId.startsWith("<") ? "" : termId,
+        ],
+      });
     },
 
     onError(error) {

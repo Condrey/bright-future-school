@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import UserAvatar from "@/components/user-avatar";
 import { TermWithYearData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
@@ -15,20 +16,34 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
     cell: ({ row }) => <span>{row.index + 1}</span>,
   },
   {
-    accessorKey: "class.class.name",
+    accessorKey: "classStream.class.class.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Class" />
     ),
     cell: ({ row }) => {
-      const classValue = row.original.class?.class?.name;
-      const levelName = row.original.class?.class?.level?.name;
-      const year = row.original.class?.academicYear?.year;
+      const classValue = row.original.classStream?.class?.class?.name;
+      const levelName = row.original.classStream?.class?.class?.level?.name;
+      const stream = row.original.classStream?.stream?.name;
+      const year = row.original.classStream?.class?.academicYear?.year;
+      const currentYear = new Date().getFullYear();
+
       return (
         <div className="space-y-0.5">
-          <div>{classValue}</div>
-          <Badge className="text-xs" variant={"secondary"}>
-            year {year}
-          </Badge>
+          <div className="font-bold">
+            <Badge
+              variant={
+                Number(year || 0) === currentYear
+                  ? "go"
+                  : Number(year || 0) < currentYear
+                    ? "destructive"
+                    : "warn"
+              }
+            >
+              {year}
+            </Badge>{" "}
+            • {classValue}
+          </div>
+          <div className="">{stream} stream</div>
           <div className="text-xs text-muted-foreground">{levelName} level</div>
         </div>
       );
@@ -37,27 +52,81 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
   {
     accessorKey: "term.term",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Stream" />
+      <DataTableColumnHeader column={column} title="Term" />
     ),
     cell: ({ row }) => {
       const term = row.original.term?.term;
       const termStart = row.original.startAt;
       const termEnd = row.original.endAt;
-      const streams = row.original.class?._count.streams;
+
       return (
         <div className="space-y-0.5">
           <div>{term}</div>
           {termStart.toString() !== termEnd.toString() && (
             <div className="text-xs">{`${format(termStart, "MMMM")}-${format(termEnd, "MMMM")}`}</div>
           )}
-          <div className="text-xs text-muted-foreground">
-            {streams === 0
-              ? "No streams"
-              : streams === 1
-                ? "1 stream"
-                : `${formatNumber(streams || 0)} streams`}
-          </div>
         </div>
+      );
+    },
+  },
+  {
+    accessorKey: "classStream.classTeacher.user",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Class teacher" />
+    ),
+    cell: ({ row }) => {
+      const classTeacher = row.original.classStream?.classTeacher?.user;
+      const name = classTeacher?.name;
+      const avatarUrl = classTeacher?.avatarUrl;
+      const description =
+        classTeacher?.telephone ||
+        classTeacher?.email ||
+        `@${classTeacher?.username}`;
+      return (
+        <>
+          {!classTeacher ? (
+            <Badge variant={"destructive"}>Not assigned</Badge>
+          ) : (
+            <div className="flex gap-3">
+              <UserAvatar avatarUrl={avatarUrl} />
+              <div className="5 flex flex-col gap-0">
+                <div>{name}</div>
+                <div className="text-xs text-muted-foreground">
+                  {description}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      );
+    },
+  },
+  {
+    id: "Paid",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fess payment" />
+    ),
+    cell: ({ row }) => {
+      return <Badge variant="warn">Collected 100%</Badge>;
+    },
+  },
+  {
+    accessorKey: "classStream._count.pupils",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Pupils/ students" />
+    ),
+    cell: ({ row }) => {
+      const pupilNumber = row.original.classStream?._count.pupils || 0;
+      return (
+        <>
+          {pupilNumber === 0 ? (
+            <Badge variant={"destructive"}>Not assigned</Badge>
+          ) : pupilNumber === 1 ? (
+            "1 pupil/ students"
+          ) : (
+            `${formatNumber(pupilNumber)} pupils/ students`
+          )}
+        </>
       );
     },
   },
@@ -72,26 +141,3 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
     ),
   },
 ];
-
-const ggg = {
-  id: "b99b2015-dc6b-4aff-80cd-c02f6ab3287d",
-  class: {
-    class: {
-      id: "933d0915-eba2-482c-b009-c6b6080fd250",
-      name: "Primary one",
-      levelId: "d844e8e8-5a1f-4b74-b56a-f2a4d0bd1ead",
-      createdAt: "2025-01-13T23:52:42.043Z",
-      level: {
-        id: "d844e8e8-5a1f-4b74-b56a-f2a4d0bd1ead",
-        name: "Primary",
-        slug: "primary",
-      },
-    },
-    academicYear: { year: "2024" },
-    _count: { streams: 4 },
-  },
-  term: { term: "First Term" },
-  startAt: "2025-01-14T00:11:57.772Z",
-  endAt: "2025-01-14T00:11:57.771Z",
-  fees: [],
-};
