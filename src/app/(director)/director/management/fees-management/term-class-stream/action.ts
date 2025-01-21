@@ -24,6 +24,7 @@ export async function addFees(input: FeesSchema) {
       });
       if (!classTerm) throw Error("There is no term with this id.");
       const schoolFeesAmount = classTerm.feesAmount || 0;
+      console.log("schoolFeesAmount", schoolFeesAmount);
 
       const schoolFeesPayments = await tx.fees.findMany({
         where: {
@@ -33,11 +34,11 @@ export async function addFees(input: FeesSchema) {
         select: { feesPayments: { select: { amountPaid: true } } },
       });
       const totalAmountPaid =
-        schoolFeesPayments
+        (schoolFeesPayments
           .flatMap((s) => s.feesPayments.flatMap((p) => p.amountPaid))
-          .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
-        0 + feesPayment.amountPaid;
-
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0) +
+        feesPayment.amountPaid;
+      console.log("totalAmountPaid", totalAmountPaid);
       const newFeesPayment = await tx.feesPayment.create({
         data: {
           amountPaid: feesPayment.amountPaid,

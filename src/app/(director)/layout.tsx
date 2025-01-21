@@ -18,7 +18,7 @@ export default async function Layout({
   if (!isAuthorized) return <UnauthorizedUser />;
   return (
     <SessionProvider value={{ session, user }}>
-      <div className="mx-auto flex size-full max-w-[100rem] grow flex-col gap-5 bg-sidebar/30 px-4">
+      <div className="mx-auto flex size-full max-w-[100rem] grow flex-col gap-5 px-4">
         {children}
       </div>
     </SessionProvider>

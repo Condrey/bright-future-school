@@ -67,7 +67,7 @@ export default function ListOfTermClassStreams({
       <DataTable
         columns={useYearTermStreamColumns}
         data={data}
-        ROWS_PER_TABLE={10}
+        ROWS_PER_TABLE={5}
         filterColumn={{ id: "classStream_class_class_name", label: "Class" }}
       />
     </div>

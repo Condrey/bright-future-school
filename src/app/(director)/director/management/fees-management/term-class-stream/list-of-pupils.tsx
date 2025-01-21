@@ -11,12 +11,14 @@ interface ListOfPupilsProps {
   pupils: PupilData[];
   classStreamId: string;
   classTermId: string;
+  feesAmount: number;
 }
 
 export default function ListOfPupils({
   pupils,
   classStreamId,
   classTermId,
+  feesAmount,
 }: ListOfPupilsProps) {
   const { data, status, isFetching, refetch } = useQuery({
     queryKey: ["pupils", "classStream", classStreamId],
@@ -43,7 +45,7 @@ export default function ListOfPupils({
         </div>
       ) : (
         <DataTable
-          columns={usePupilColumns(classTermId)}
+          columns={usePupilColumns({ classTermId, feesAmount })}
           data={data}
           ROWS_PER_TABLE={5}
           filterColumn={{ id: "user_name", label: "pupil/ student" }}

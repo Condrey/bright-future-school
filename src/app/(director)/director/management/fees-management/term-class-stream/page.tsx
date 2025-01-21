@@ -25,7 +25,7 @@ export default async function Page({ searchParams }: PageProps) {
       <Suspense fallback={<HeaderContainerFallback />}>
         <HeaderContainer
           breadCrumbs={[
-            { label: "Streams", url: "/director/management/fees-management" },
+            { label: "Streams", url: "/management/fees-management" },
             { label: "Fees management (term)" },
           ]}
         />
@@ -43,6 +43,7 @@ export default async function Page({ searchParams }: PageProps) {
             pupils={term.classStream?.pupils!}
             classStreamId={term.classStream?.id!}
             classTermId={term.id}
+            feesAmount={term.feesAmount ?? 0}
           />
         </Suspense>
       </BodyContainer>

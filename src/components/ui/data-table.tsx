@@ -127,8 +127,8 @@ export function DataTable<TData, TValue>({
                     }
                     className={cn(
                       !handleClick
-                        ? "cursor-default hover:bg-inherit"
-                        : "group/row cursor-pointer hover:bg-secondary",
+                        ? "cursor-default"
+                        : "group/row cursor-pointer",
                       rowItem.id === selectedItemId && "bg-muted",
                     )}
                   >

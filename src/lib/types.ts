@@ -134,7 +134,7 @@ export const pupilDataInclude = (classTermId?: string) => {
     classStream: { include: classStreamDataInclude },
     fees: {
       where: { termId: !classTermId ? {} : classTermId },
-      select: { feesPayments: true },
+      select: feesDataSelect,
     },
   } satisfies Prisma.PupilInclude;
 };
@@ -178,33 +178,35 @@ export type FeesDataSelect = Prisma.FeesGetPayload<{
 }>;
 
 // Term
-export const classTermDataSelect = {
-  id: true,
-  classStreamId: true,
-  termId: true,
-  classStream: {
-    include: {
-      stream: { select: { name: true, id: true } },
-      class: {
-        select: {
-          class: { include: classDataInclude },
-          academicYear: { select: { year: true } },
-          _count: { select: { streams: true } },
+export const classTermDataSelect = (classTermId?: string) => {
+  return {
+    id: true,
+    classStreamId: true,
+    termId: true,
+    classStream: {
+      include: {
+        stream: { select: { name: true, id: true } },
+        class: {
+          select: {
+            class: { include: classDataInclude },
+            academicYear: { select: { year: true } },
+            _count: { select: { streams: true } },
+          },
         },
+        classTeacher: { select: classTeacherDataSelect },
+        pupils: { include: pupilDataInclude(classTermId) },
+        _count: { select: { pupils: true } },
       },
-      classTeacher: { select: classTeacherDataSelect },
-      pupils: { include: pupilDataInclude() },
-      _count: { select: { pupils: true } },
     },
-  },
-  term: { select: { term: true } },
-  startAt: true,
-  endAt: true,
-  feesAmount: true,
-  fees: {
-    select: feesDataSelect,
-  },
-} satisfies Prisma.ClassTermSelect;
+    term: { select: { term: true } },
+    startAt: true,
+    endAt: true,
+    feesAmount: true,
+    fees: {
+      select: feesDataSelect,
+    },
+  } satisfies Prisma.ClassTermSelect;
+};
 
 // Academic year
 export const getTermWithYearDataSelect = (termId?: string) => {
@@ -215,7 +217,7 @@ export const getTermWithYearDataSelect = (termId?: string) => {
           select: {
             terms: {
               where: !termId ? {} : { termId },
-              select: classTermDataSelect,
+              select: classTermDataSelect(termId),
             },
           },
         },
@@ -224,7 +226,7 @@ export const getTermWithYearDataSelect = (termId?: string) => {
   } satisfies Prisma.AcademicYearSelect;
 };
 export type TermWithYearData = Prisma.ClassTermGetPayload<{
-  select: typeof classTermDataSelect;
+  select: ReturnType<typeof classTermDataSelect>;
 }>;
 
 // Miscellaneous

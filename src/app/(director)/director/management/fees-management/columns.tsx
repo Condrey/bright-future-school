@@ -1,10 +1,12 @@
 "use client";
 
+import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
 import { TermWithYearData } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
+import { FeesStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import DropDownMenuTermClassStream from "./drop-down-menu-term-class-stream";
@@ -49,26 +51,7 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
       );
     },
   },
-  {
-    accessorKey: "term.term",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Term" />
-    ),
-    cell: ({ row }) => {
-      const term = row.original.term?.term;
-      const termStart = row.original.startAt;
-      const termEnd = row.original.endAt;
 
-      return (
-        <div className="space-y-0.5">
-          <div>{term}</div>
-          {termStart.toString() !== termEnd.toString() && (
-            <div className="text-xs">{`${format(termStart, "MMMM")}-${format(termEnd, "MMMM")}`}</div>
-          )}
-        </div>
-      );
-    },
-  },
   {
     accessorKey: "classStream.classTeacher.user",
     header: ({ column }) => (
@@ -102,12 +85,23 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
     },
   },
   {
-    id: "Paid",
+    accessorKey: "term.term",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Fess payment" />
+      <DataTableColumnHeader column={column} title="Term" />
     ),
     cell: ({ row }) => {
-      return <Badge variant="warn">Collected 100%</Badge>;
+      const term = row.original.term?.term;
+      const termStart = row.original.startAt;
+      const termEnd = row.original.endAt;
+
+      return (
+        <div className="space-y-0.5">
+          <div>{term}</div>
+          {termStart.toString() !== termEnd.toString() && (
+            <div className="text-xs">{`${format(termStart, "MMMM")}-${format(termEnd, "MMMM")}`}</div>
+          )}
+        </div>
+      );
     },
   },
   {
@@ -127,6 +121,95 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
             `${formatNumber(pupilNumber)} pupils/ students`
           )}
         </>
+      );
+    },
+  },
+  {
+    accessorKey: "feesAmount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fees Amount" />
+    ),
+    cell: ({ row }) => {
+      const schoolFeesAmount = row.original.feesAmount || 0;
+
+      return (
+        <div>
+          {schoolFeesAmount === 0 ? (
+            <TooltipContainer label={formatCurrency(schoolFeesAmount)}>
+              Please,{" "}
+              <strong className="font-bold">
+                allocate the school fees amount
+              </strong>{" "}
+              for this particular year and term
+            </TooltipContainer>
+          ) : (
+            <span>{formatCurrency(schoolFeesAmount)}</span>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    id: "fees.paid",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Paid" />
+    ),
+    cell: ({ row }) => {
+      const feesCollected =
+        row.original.fees
+          .flatMap((f) => f.feesPayments.flatMap((p) => p.amountPaid))
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const pupilNumber = row.original.classStream?._count.pupils || 0;
+      const feesAmount = row.original.feesAmount || 0;
+      const totalFeesAmount = pupilNumber * feesAmount;
+      return (
+        <div className="space-y-0.5">
+          <span>{formatCurrency(feesCollected)}</span>
+          <div>
+            <span className="italic text-muted-foreground">of</span>{" "}
+            {formatCurrency(totalFeesAmount)}
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    id: "fees.payment",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Payment status" />
+    ),
+    cell: ({ row }) => {
+      const feesCollected =
+        row.original.fees
+          .flatMap((f) => f.feesPayments.flatMap((p) => p.amountPaid))
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const pupilNumber = row.original.classStream?._count.pupils || 0;
+      const feesAmount = row.original.feesAmount || 0;
+      const totalFeesAmount = pupilNumber * feesAmount;
+      const feesStatus =
+        feesCollected <= 0
+          ? FeesStatus.NILL
+          : feesCollected >= totalFeesAmount
+            ? FeesStatus.COMPLETED
+            : FeesStatus.PENDING;
+      return (
+        <div className="space-y-0.5">
+          <Badge
+            variant={
+              feesStatus === FeesStatus.NILL
+                ? "destructive"
+                : feesStatus === FeesStatus.PENDING
+                  ? "warn"
+                  : "go"
+            }
+          >
+            {feesStatus}
+          </Badge>
+          <div>
+            <span className="italic text-muted-foreground">Bal</span>{" "}
+            {formatCurrency(totalFeesAmount - feesCollected)}
+          </div>
+        </div>
       );
     },
   },

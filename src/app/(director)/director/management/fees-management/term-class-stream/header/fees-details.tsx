@@ -60,8 +60,8 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
 
   const totalFeesBalance = (feesTotalPayment || 0) - (totalFeesPaid || 0);
 
-  const rationOfPayment = (totalFeesPaid || 0) / (feesTotalPayment || 0);
-
+  const ratioOfPayment = (totalFeesPaid || 0) / (feesTotalPayment || 0);
+const percentage = isNaN(ratioOfPayment)?0:ratioOfPayment*100
   return (
     <div className="flex flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md md:flex-col md:divide-x-0">
       <div className="w-full max-w-fit space-y-0.5 font-bold">
@@ -75,10 +75,10 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
         {/* progress bar  */}
         <div className="flex items-center gap-2">
           <div className="flex-1">
-            <Progress value={rationOfPayment} className="h-4"/>
+            <Progress value={percentage} className="h-4"/>
           </div>
           <span>
-            {isNaN(rationOfPayment) ? 0 : (rationOfPayment * 100).toFixed(1)}%
+            {percentage.toFixed(1)}%
           </span>
         </div>
 

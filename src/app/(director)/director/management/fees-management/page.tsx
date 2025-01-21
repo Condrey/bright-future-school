@@ -2,13 +2,10 @@ import BodyContainer from "@/app/(director)/body-container";
 import HeaderContainer, {
   HeaderContainerFallback,
 } from "@/app/(director)/header-container";
-import {
-  PARAM_NAME_ACADEMIC_YEAR,
-  PARAM_NAME_CLASS_TERM,
-} from "@/lib/constants";
+import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
 import { SearchParam } from "@/lib/types";
 import { Fragment, Suspense } from "react";
-import ManagementSwitches from "../mangement-switches";
+import ManagementSwitches from "../management-switches";
 import { getYearTermFeesManagementSummary } from "./action";
 import ListOfTermClassStreams from "./list-of-term-class-streams";
 
@@ -20,10 +17,10 @@ export const dynamic = "force-dynamic";
 
 export default async function Page({ searchParams }: PageProps) {
   const year = (await searchParams)[PARAM_NAME_ACADEMIC_YEAR] as string;
-  const classTermId = (await searchParams)[PARAM_NAME_CLASS_TERM] as string;
+  const termId = (await searchParams)[PARAM_NAME_TERM] as string;
   const terms = await getYearTermFeesManagementSummary({
     year,
-    termId: classTermId,
+    termId,
   });
   return (
     <Fragment>

@@ -9,7 +9,7 @@ export default async function updateClassTerm(input: ClassTermSchema) {
   const data: TermWithYearData = await prisma.classTerm.update({
     where: { id },
     data: { endAt, feesAmount, startAt },
-    select: classTermDataSelect,
+    select: classTermDataSelect(id),
   });
   return data;
 }

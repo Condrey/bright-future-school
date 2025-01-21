@@ -31,7 +31,7 @@ export async function getClassTerm({ classTermId }: { classTermId: string }) {
   const data: TermWithYearData | null =
     await prisma.classTerm.findUniqueOrThrow({
       where: { id: classTermId },
-      select: classTermDataSelect,
+      select: classTermDataSelect(classTermId),
     });
   if (!data) throw Error("This term with id does not exist.");
   return data;
