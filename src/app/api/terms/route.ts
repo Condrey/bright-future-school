@@ -1,5 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 import { termSchema } from "@/lib/validation";
 import z from "zod";
 
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
         const data = await tx.term.create({
           data: {
             term,
+            slug: slugify(term),
           },
         });
         //  get all the academic years
