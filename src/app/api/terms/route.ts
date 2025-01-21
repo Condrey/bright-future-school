@@ -123,6 +123,7 @@ export async function PUT(req: Request) {
       where: { id },
       data: {
         term,
+        slug: slugify(term),
       },
     });
     return Response.json(data);

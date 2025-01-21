@@ -167,17 +167,25 @@ export type ClassTeacherWithYearData = Prisma.StaffGetPayload<{
   include: ReturnType<typeof getClassTeacherWithYearDataInclude>;
 }>;
 
+// Fees payment
+export const feesPaymentDataInclude = {
+  paidBy: { select: userDataSelect },
+} satisfies Prisma.FeesPaymentInclude;
+export type FeesPaymentDataInclude = Prisma.FeesPaymentGetPayload<{
+  include: typeof feesPaymentDataInclude;
+}>;
+
 //Fees
 export const feesDataSelect = {
   term: true,
-  feesPayments: true,
+  feesPayments: { include: feesPaymentDataInclude },
   balance: true,
 } satisfies Prisma.FeesSelect;
 export type FeesDataSelect = Prisma.FeesGetPayload<{
   select: typeof feesDataSelect;
 }>;
 
-// Term
+// Class term
 export const classTermDataSelect = (classTermId?: string) => {
   return {
     id: true,
@@ -188,6 +196,7 @@ export const classTermDataSelect = (classTermId?: string) => {
         stream: { select: { name: true, id: true } },
         class: {
           select: {
+            id: true,
             class: { include: classDataInclude },
             academicYear: { select: { year: true } },
             _count: { select: { streams: true } },

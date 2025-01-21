@@ -4,9 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
 import { PupilData } from "@/lib/types";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { FeesStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import ButtonAddFees from "./button-add-fees";
 
 export const usePupilColumns = ({
@@ -44,24 +45,108 @@ export const usePupilColumns = ({
     },
   },
   {
+    id: "fees.amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fees amount" />
+    ),
+    cell() {
+      return <div>{formatCurrency(feesAmount)}</div>;
+    },
+  },
+  {
     id: "fees.paid",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Paid" />
+    ),
+    cell: ({ row }) => {
+      const payments = row.original.fees.flatMap((f) =>
+        f.feesPayments.flatMap((p) => p.amountPaid),
+      );
+      const paid =
+        payments.reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+        0;
+
+      return (
+        <div>
+          <div>{formatCurrency(paid)}</div>
+          {!!payments.length && (
+            <div className="text-xs text-muted-foreground">
+              {payments.length === 1
+                ? "single-payment"
+                : `${formatNumber(payments.length)} payments`}
+            </div>
+          )}
+        </div>
+      );
+    },
+  },
+
+  {
+    id: "fees.balance",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Balance" />
     ),
     cell: ({ row }) => {
       const paid =
         row.original.fees
           .flatMap((f) => f.feesPayments.flatMap((p) => p.amountPaid))
           .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const balance = feesAmount - paid;
 
-      return <span>{formatCurrency(paid)}</span>;
+      return (
+        <div>
+          <div className="font-bold">{formatCurrency(balance)}</div>
+          {balance < 0 && (
+            <div>
+              <Badge variant={"destructive"} className="animate-pulse">
+                Extra Payment
+              </Badge>
+            </div>
+          )}
+        </div>
+      );
     },
   },
+  {
+    id: "fees.last-payment",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Last payment" />
+    ),
+    cell: ({ row }) => {
+      const payments = row.original.fees.flatMap((f) =>
+        f.feesPayments.flatMap((p) => p),
+      );
+      const lastPayment = !payments.length
+        ? null
+        : payments[payments.length - 1];
 
+      return (
+        <>
+          {!lastPayment ? (
+            <span className="italic text-muted-foreground">
+              --No transactions--
+            </span>
+          ) : (
+            <div>
+              <div>
+                {lastPayment.updatedAt > lastPayment.createdAt
+                  ? `(Updated) ${format(lastPayment.updatedAt, "PPPP")}`
+                  : format(lastPayment.createdAt, "PPPP")}
+              </div>
+              <div>
+                <span className="italic text-muted-foreground">paid</span>{" "}
+                <span>{formatCurrency(lastPayment.amountPaid)}</span>
+              </div>
+            </div>
+          )}
+        </>
+      );
+    },
+  },
   {
     id: "fees.status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Fess Status" />
+      <DataTableColumnHeader column={column} title="Fess status" />
     ),
     cell: ({ row }) => {
       const paid =
@@ -87,20 +172,6 @@ export const usePupilColumns = ({
           {feesStatus}
         </Badge>
       );
-    },
-  },
-  {
-    id: "fees.balance",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Balance" />
-    ),
-    cell: ({ row }) => {
-      const paid =
-        row.original.fees
-          .flatMap((f) => f.feesPayments.flatMap((p) => p.amountPaid))
-          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-
-      return <span>{formatCurrency(feesAmount - paid)}</span>;
     },
   },
   {

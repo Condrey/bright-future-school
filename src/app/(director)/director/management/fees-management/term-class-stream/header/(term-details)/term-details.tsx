@@ -6,8 +6,8 @@ import { formatCurrency } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { AlertTriangle, CalendarIcon } from "lucide-react";
-import { getClassTerm } from "../../action";
-import EditTermForm from "./edit-term-form";
+import { getClassTerm } from "../../../action";
+import ButtonUpdateClassTerm from "./button-update-class-term";
 
 interface TermDetailsProps {
   oldTerm: TermWithYearData;
@@ -48,7 +48,13 @@ export default function TermDetails({ oldTerm }: TermDetailsProps) {
     <div className="hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md sm:flex md:flex-col md:divide-x-0">
       <div className="flex items-center justify-between gap-2">
         <h1 className="text-xl font-bold">Term Details</h1>
-        <EditTermForm termToEdit={term} />
+        <ButtonUpdateClassTerm
+          termToEdit={term}
+          academicYear={term.classStream?.class?.academicYear?.year!}
+          academicYearClassId={term.classStream?.class?.id!}
+          levelId={term.classStream?.class?.class?.levelId!}
+          termId={term.termId!}
+        />
       </div>
       <div className="flex flex-col gap-1 ps-2">
         <span>{term.term?.term}</span>

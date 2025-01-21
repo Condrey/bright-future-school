@@ -2,6 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
+import { feesPaymentDataInclude } from "@/lib/types";
 import { feesSchema, FeesSchema } from "@/lib/validation";
 import { Role } from "@prisma/client";
 import cuid from "cuid";
@@ -17,7 +18,7 @@ export async function addFees(input: FeesSchema) {
   const { pupilId, feesPayment, termId } = feesSchema.parse(input);
   const id = cuid();
 
-  const data = await prisma.$transaction(
+  await prisma.$transaction(
     async (tx) => {
       const classTerm = await tx.classTerm.findUnique({
         where: { id: termId },
@@ -54,9 +55,8 @@ export async function addFees(input: FeesSchema) {
           },
           paidBy: { connect: { id: user.id } },
         },
+        include: feesPaymentDataInclude,
       });
-
-      return null;
     },
     { maxWait: 60000, timeout: 60000 },
   );

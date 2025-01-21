@@ -16,7 +16,7 @@ import { PupilData } from "@/lib/types";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 import { feesSchema, FeesSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -42,10 +42,16 @@ export default function ButtonAddFees({
   });
 
   const previousPayments = pupil.fees.flatMap((f) => f.feesPayments);
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addFees,
-    onSuccess() {
-      // TODO: implement
+    async onSuccess() {
+      // For list of pupils belonging to a class term
+      const queryKey: QueryKey = ["pupils", "classStream", pupil.classStreamId];
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
+      // for class term
+      queryClient.invalidateQueries({ queryKey: ["class-term", classTermId] });
     },
     onError(error) {
       console.error(error);
