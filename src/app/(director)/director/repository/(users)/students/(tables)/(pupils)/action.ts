@@ -13,10 +13,18 @@ export async function addPupilsFromPreviousYearSameStream() {}
 export async function addPupilsFromSameClassSameStream() {}
 
 //               . New pupil from another school or unregistered pupil
-export async function addUnregisteredPupil({input,classStreamId}:{input:PupilSchema,classStreamId:string}) {
-console.log("classStreamId:: ",classStreamId)
-    const {user:{name}} = pupilSchema.parse(input);
-      const currentTimeMillis = Date.now().toString();
+export async function addUnregisteredPupil({
+  input,
+  classStreamId,
+}: {
+  input: PupilSchema;
+  classStreamId: string;
+}) {
+  console.log("classStreamId:: ", classStreamId);
+  const {
+    user: { name },
+  } = pupilSchema.parse(input);
+  const currentTimeMillis = Date.now().toString();
   const password =
     name.split(" ").pop() +
     "_learner@" +
@@ -29,8 +37,9 @@ console.log("classStreamId:: ",classStreamId)
     parallelism: 1,
   });
 
-    const data:PupilData = await prisma.$transaction(async (tx)=>{
-         let username = slugify(name);
+  const data: PupilData = await prisma.$transaction(
+    async (tx) => {
+      let username = slugify(name);
       const userWithUsername = await tx.user.findUnique({
         where: { username },
       });
@@ -38,37 +47,39 @@ console.log("classStreamId:: ",classStreamId)
         username =
           username + currentTimeMillis.substring(currentTimeMillis.length - 3);
       }
-  const { id } = await tx.user.create({
-    data: {
-      name,
-      username,
-      passwordHash,
+      const { id } = await tx.user.create({
+        data: {
+          name,
+          username,
+          passwordHash,
+        },
+      });
+      const pupil = await tx.pupil.create({
+        data: {
+          classStream: {
+            connect: { id: classStreamId },
+          },
+          genericPassword: password,
+          user: {
+            connectOrCreate: {
+              where: { id },
+              create: {
+                name,
+                username,
+                passwordHash,
+              },
+            },
+          },
+        },
+        include: pupilDataInclude(),
+      });
+      return pupil;
     },
-  });
-       const pupil = await tx.pupil.create({
-         data: {
-           classStream: {
-             connect: { id: classStreamId },
-           },
-           genericPassword: password,
-           user: {
-             connectOrCreate: {
-               where: { id },
-               create: {
-                 name,
-                 username,
-                 passwordHash,
-               },
-             },
-           },
-         },
-         include: pupilDataInclude,
-       });
-        return pupil;
-    },{
+    {
       maxWait: 60000,
       timeout: 60000,
-    },);
-    
-    return data;
+    },
+  );
+
+  return data;
 }
