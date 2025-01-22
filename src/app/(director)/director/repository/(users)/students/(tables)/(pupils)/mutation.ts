@@ -34,8 +34,8 @@ export function useAddPupilsFromSameClassSameStream() {
 //               . New pupil from another school or unregistered pupil
 export function useAddUnregisteredPupil() {
   const searchParams = useSearchParams();
-  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)||'';
-  const termId = searchParams.get(PARAM_NAME_TERM)||'';
+  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) || "";
+  const termId = searchParams.get(PARAM_NAME_TERM) || "";
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -48,6 +48,13 @@ export function useAddUnregisteredPupil() {
         ["pupils", variables.classStreamId],
         (oldData) => oldData && [...oldData, registeredPupil],
       );
+      // For pupils classStream
+      queryClient.setQueryData<PupilData[]>(
+        ["pupils", "classStream", variables.classStreamId],
+        (oldData) => oldData && [...oldData, registeredPupil],
+      );
+      // For class term
+      queryClient.invalidateQueries({ queryKey: ["class-term"] });
       // For the dashboard
       queryClient.setQueryData<DirectorDashboardParam>(
         directorDashboardParamsQueryKey,

@@ -33,7 +33,7 @@ export default async function Page({ searchParams }: PageProps) {
 
       <BodyContainer>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <ClassDetails classStream={term.classStream} />
+          <ClassDetails oldTerm={term} />
           <TermDetails oldTerm={term} />
           <FeesDetails oldTerm={term} />
         </div>
@@ -41,9 +41,8 @@ export default async function Page({ searchParams }: PageProps) {
         <Suspense>
           <ListOfPupils
             pupils={term.classStream?.pupils!}
-            classStreamId={term.classStream?.id!}
+            classStream={term.classStream!}
             classTermId={term.id}
-            feesAmount={term.feesAmount ?? 0}
           />
         </Suspense>
       </BodyContainer>
