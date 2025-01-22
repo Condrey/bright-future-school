@@ -44,7 +44,7 @@ export default async function Page({ searchParams }: PageProps) {
         <Suspense>
           <ListOfTermClassStreams
             terms={terms}
-            termName={!term ? "All terms" : `${term.term} term`}
+            termName={!term ? "All terms" : `${term.term}`}
           />
         </Suspense>
       </BodyContainer>
