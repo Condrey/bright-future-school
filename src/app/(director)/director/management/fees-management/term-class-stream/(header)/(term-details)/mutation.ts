@@ -1,8 +1,10 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
+import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
 import { TermWithYearData } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import {
   updateAnnualClassTerms,
   updateMultipleClassTerms,
@@ -11,6 +13,9 @@ import {
 
 export function useUpdateSingleTermMutation() {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const termId = searchParams.get(PARAM_NAME_TERM);
 
   const mutation = useMutation({
     mutationFn: updateSingleClassTerm,
@@ -33,14 +38,25 @@ export function useUpdateSingleTermMutation() {
         (_) => updatedClassTerm,
       );
       //Pupils class stream
-      console.log("updating pupils");
       await queryClient.cancelQueries({
         queryKey: ["pupils", "classStream", updatedClassTerm.classStreamId],
       });
       queryClient.invalidateQueries({
         queryKey: ["pupils", "classStream", updatedClassTerm.classStreamId],
       });
-      console.log("Updated pupils....)");
+      // For year term streams
+      queryClient.setQueryData<TermWithYearData[]>(
+        [
+          "year-term-streams",
+          !academicYear || academicYear.startsWith("<") ? "" : academicYear,
+          !termId || termId.startsWith("<") ? "" : termId,
+        ],
+        (oldData) =>
+          oldData &&
+          oldData.map((d) =>
+            d.id === updatedClassTerm.id ? updatedClassTerm : d,
+          ),
+      );
     },
     onError(error) {
       console.error(error);

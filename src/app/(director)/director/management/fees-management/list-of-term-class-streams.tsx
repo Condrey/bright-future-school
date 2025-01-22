@@ -22,9 +22,11 @@ import { useYearTermStreamColumns } from "./columns";
 
 interface ListOfTermClassStreamsProps {
   terms: TermWithYearData[];
+  termName: string;
 }
 export default function ListOfTermClassStreams({
   terms,
+  termName,
 }: ListOfTermClassStreamsProps) {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
@@ -77,7 +79,9 @@ export default function ListOfTermClassStreams({
         data={data}
         ROWS_PER_TABLE={5}
         filterColumn={{ id: "classStream_class_class_name", label: "Class" }}
-        tableHeaderSection={<TableHeaderSection terms={data} />}
+        tableHeaderSection={
+          <TableHeaderSection terms={data} termName={termName} />
+        }
       />
     </div>
   );
@@ -88,10 +92,10 @@ export function ListOfTermClassStreamsFallback() {
   return <div>Loading</div>;
 }
 
-function TableHeaderSection({ terms }: ListOfTermClassStreamsProps) {
+function TableHeaderSection({ terms, termName }: ListOfTermClassStreamsProps) {
   const searchParam = useSearchParams();
   const academicYear = searchParam.get(PARAM_NAME_ACADEMIC_YEAR);
-  const academicTerm = searchParam.get(PARAM_NAME_TERM);
+  // const academicTerm = searchParam.get(PARAM_NAME_TERM);
 
   const feesTotalPayment = terms
     .map((term) => {
@@ -157,7 +161,7 @@ function TableHeaderSection({ terms }: ListOfTermClassStreamsProps) {
       <div className="flex flex-wrap justify-center gap-4">
         <Card className="bg-blue-500 text-white dark:text-background">
           <CardHeader>
-            <CardTitle className="font-mono text-xl font-bold">
+            <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
               {formatCurrency(feesTotalPayment || 0)}
             </CardTitle>
           </CardHeader>
@@ -167,14 +171,14 @@ function TableHeaderSection({ terms }: ListOfTermClassStreamsProps) {
             </CardTitle>
             <CardDescription className="w-full text-center text-white dark:text-background">
               <span className="italic">from</span>{" "}
-              <span>{`${academicYear || "All years"} - ${academicTerm || "All terms"}`}</span>
+              <span>{`${academicYear || "All years"}, ${termName}`}</span>
             </CardDescription>
           </CardContent>
         </Card>
         {extraPayment > 0 && (
           <Card className="bg-destructive text-destructive-foreground">
             <CardHeader>
-              <CardTitle className="font-mono text-xl font-bold">
+              <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
                 {formatCurrency(extraPayment)}
               </CardTitle>
             </CardHeader>
@@ -184,14 +188,14 @@ function TableHeaderSection({ terms }: ListOfTermClassStreamsProps) {
               </CardTitle>
               <CardDescription className="w-full text-center text-destructive-foreground">
                 <span className="italic">from</span>{" "}
-                <span>{`${academicYear || "All years"} - ${academicTerm || "All terms"}`}</span>
+                <span>{`${academicYear || "All years"}, ${termName}`}</span>
               </CardDescription>
             </CardContent>
           </Card>
         )}
         <Card className="bg-green-500 text-white dark:text-background">
           <CardHeader>
-            <CardTitle className="font-mono text-xl font-bold">
+            <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
               {formatCurrency(totalFeesPaid)}
             </CardTitle>
           </CardHeader>
@@ -201,13 +205,13 @@ function TableHeaderSection({ terms }: ListOfTermClassStreamsProps) {
             </CardTitle>
             <CardDescription className="w-full text-center text-white dark:text-background">
               <span className="italic">from</span>{" "}
-              <span>{`${academicYear || "All years"} - ${academicTerm || "All terms"}`}</span>
+              <span>{`${academicYear || "All years"}, ${termName}`}</span>
             </CardDescription>
           </CardContent>
         </Card>
         <Card className="bg-amber-500 text-white dark:text-background">
           <CardHeader>
-            <CardTitle className="font-mono text-xl font-bold">
+            <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
               {formatCurrency(totalFessBalance + extraPayment)}
             </CardTitle>
           </CardHeader>
@@ -217,7 +221,7 @@ function TableHeaderSection({ terms }: ListOfTermClassStreamsProps) {
             </CardTitle>
             <CardDescription className="w-full text-center text-white dark:text-background">
               <span className="italic">from</span>{" "}
-              <span>{`${academicYear || "All years"} - ${academicTerm || "All terms"}`}</span>
+              <span>{`${academicYear || "All years"}, ${termName}`}</span>
             </CardDescription>
           </CardContent>
         </Card>

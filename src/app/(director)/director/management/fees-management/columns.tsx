@@ -152,9 +152,9 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
     },
   },
   {
-    id: "fees.paid",
+    id: "fees.collected",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Paid" />
+      <DataTableColumnHeader column={column} title="Collected" />
     ),
     cell: ({ row }) => {
       const feesCollected =
@@ -232,6 +232,35 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
           : feesCollected >= totalFeesAmount
             ? FeesStatus.COMPLETED
             : FeesStatus.PENDING;
+
+      const classTermId = row.original.id;
+
+      const extraPayment =
+        row.original.classStream?.pupils
+          .map((p) => {
+            const _totalAmountPaid =
+              p.fees
+                .flatMap((f) => {
+                  let _feesPayments = 0;
+                  if (f.term.id === classTermId) {
+                    _feesPayments =
+                      f.feesPayments.reduce(
+                        (total, amount) =>
+                          (total || 0) + (amount.amountPaid || 0),
+                        0,
+                      ) || 0;
+                  }
+                  return _feesPayments;
+                })
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0;
+            if (!feesAmount) return 0;
+            if (feesAmount === 0) return 0;
+            const _balance = feesAmount - _totalAmountPaid;
+            if (_totalAmountPaid <= 0) return 0;
+            return _balance < 0 ? -_balance : 0;
+          })
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
       return (
         <div className="space-y-0.5">
           <Badge
@@ -247,7 +276,7 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
           </Badge>
           <div>
             <span className="italic text-muted-foreground">Bal</span>{" "}
-            {formatCurrency(totalFeesAmount - feesCollected)}
+            {formatCurrency(totalFeesAmount - feesCollected + extraPayment)}
           </div>
         </div>
       );

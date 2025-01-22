@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { Role } from "@prisma/client";
 import {
   ArrowUpRightIcon,
+  CalculatorIcon,
   CopyIcon,
   MoreHorizontal,
   UserIcon,
@@ -23,6 +25,7 @@ import {
 import { useState } from "react";
 import AssignClassTeacher from "../../repository/(users)/students/(tables)/(class-teacher)/assign-class-teacher";
 import AssignPupils from "../../repository/(users)/students/(tables)/(pupils)/assign-pupils";
+import EditTermForm from "./term-class-stream/(header)/(term-details)/edit-term-form";
 
 interface DropDownMenuTermClassStreamProps {
   termClassStream: TermWithYearData;
@@ -37,6 +40,7 @@ export default function DropDownMenuTermClassStream({
   const [showAssignClassTeacherSheet, setShowAssignClassTeacherSheet] =
     useState(false);
   const [showAssignPupilsSheet, setShowAssignPupilsSheet] = useState(false);
+  const [showEditTermDetails, setShowEditTermDetails] = useState(false);
   const hasClassTeacher = termClassStream.classStream?.classTeacher;
   const classStream = termClassStream.classStream!;
   const year = termClassStream.classStream?.class?.academicYear?.year!;
@@ -61,52 +65,63 @@ export default function DropDownMenuTermClassStream({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-          <DropdownMenuItem
-            onClick={() =>
-              navigateOnclick(
-                PARAM_NAME_CLASS_TERM,
-                termClassStream.id,
-                "/director/management/fees-management/term-class-stream",
-              )
-            }
-          >
-            <ArrowUpRightIcon className="mr-2 size-4" />
-            <span>Open</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(termClassStream.id)}
-          >
-            <CopyIcon className="mr-2 size-4" />
-            <span>Copy class Id</span>
-          </DropdownMenuItem>
-
-          {user.role === Role.SUPER_ADMIN && (
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() =>
-                navigator.clipboard.writeText(JSON.stringify(termClassStream))
+                navigateOnclick(
+                  PARAM_NAME_CLASS_TERM,
+                  termClassStream.id,
+                  "/director/management/fees-management/term-class-stream",
+                )
               }
             >
-              <CopyIcon className="mr-2 size-4" />
-              <span>Copy class</span>
+              <ArrowUpRightIcon className="mr-2 size-4" />
+              <span>Open</span>
             </DropdownMenuItem>
-          )}
-          <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setShowEditTermDetails(true)}>
+              <CalculatorIcon className="mr-2 size-4" />
+              <span>Update fees amount</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </DropdownMenuGroup>
 
-          <DropdownMenuItem onClick={() => setShowAssignPupilsSheet(true)}>
-            <UsersIcon className="mr-2 size-4" />
-            <span>Add pupils</span>
-          </DropdownMenuItem>
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(termClassStream.id)}
+            >
+              <CopyIcon className="mr-2 size-4" />
+              <span>Copy class Id</span>
+            </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => setShowAssignClassTeacherSheet(true)}
-          >
-            <UserIcon className="mr-2 size-4" />
-            <span>
-              {!hasClassTeacher ? "Assign" : "Unassign"} class teacher
-            </span>
-          </DropdownMenuItem>
+            {user.role === Role.SUPER_ADMIN && (
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(JSON.stringify(termClassStream))
+                }
+              >
+                <CopyIcon className="mr-2 size-4" />
+                <span>Copy class</span>
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+          </DropdownMenuGroup>
+
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => setShowAssignPupilsSheet(true)}>
+              <UsersIcon className="mr-2 size-4" />
+              <span>Add pupils</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => setShowAssignClassTeacherSheet(true)}
+            >
+              <UserIcon className="mr-2 size-4" />
+              <span>
+                {!hasClassTeacher ? "Assign" : "Unassign"} class teacher
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
       <AssignClassTeacher
@@ -120,6 +135,15 @@ export default function DropDownMenuTermClassStream({
         year={year}
         open={showAssignPupilsSheet}
         setOpen={setShowAssignPupilsSheet}
+      />
+      <EditTermForm
+        open={showEditTermDetails}
+        setOpen={setShowEditTermDetails}
+        termToEdit={termClassStream}
+        academicYear={termClassStream.classStream?.class?.academicYear?.year!}
+        academicYearClassId={termClassStream.classStream?.class?.id!}
+        levelId={termClassStream.classStream?.class?.class?.levelId!}
+        termId={termClassStream.termId!}
       />
     </>
   );
