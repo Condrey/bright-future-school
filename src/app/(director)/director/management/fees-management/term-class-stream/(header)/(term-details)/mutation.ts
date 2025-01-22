@@ -20,7 +20,8 @@ export function useUpdateSingleTermMutation() {
   const mutation = useMutation({
     mutationFn: updateSingleClassTerm,
     async onSuccess(updatedClassTerm) {
-      console.log(updatedClassTerm.classStream);
+      console.log("academicYear", academicYear);
+      console.log("termId", termId);
       // term year streams
       const queryKey: QueryKey = ["year-term-streams"];
       await queryClient.cancelQueries({ queryKey });

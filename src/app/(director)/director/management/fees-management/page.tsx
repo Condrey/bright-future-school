@@ -18,15 +18,18 @@ export const dynamic = "force-dynamic";
 
 export default async function Page({ searchParams }: PageProps) {
   const [year, termId] = await Promise.all([
-    (await searchParams)[PARAM_NAME_ACADEMIC_YEAR] as string,
-    (await searchParams)[PARAM_NAME_TERM] as string,
+    (await searchParams)[PARAM_NAME_ACADEMIC_YEAR],
+    (await searchParams)[PARAM_NAME_TERM],
   ]);
+  console.log("year", year, "termId", termId);
   const [terms, term] = await Promise.all([
     await getYearTermFeesManagementSummary({
-      year,
-      termId,
+      year: !year ? undefined : (year as string),
+      termId: !termId ? undefined : (termId as string),
     }),
-    await prisma.term.findFirst({ where: { id: termId } }),
+    !termId?undefined: await prisma.term.findFirstOrThrow({
+      where: { id:  (termId as string) },
+    }),
   ]);
 
   return (
