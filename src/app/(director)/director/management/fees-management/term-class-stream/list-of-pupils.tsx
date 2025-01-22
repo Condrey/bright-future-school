@@ -45,7 +45,13 @@ export default function ListOfPupils({
         </div>
       ) : (
         <DataTable
-          columns={usePupilColumns({ classTermId, feesAmount })}
+          columns={usePupilColumns({
+            classTermId,
+            feesAmount:
+              data.flatMap((d) =>
+                d.fees.flatMap((f) => f.term.feesAmount),
+              )[0] || 0,
+          })}
           data={data}
           ROWS_PER_TABLE={5}
           filterColumn={{ id: "user_name", label: "pupil/ student" }}

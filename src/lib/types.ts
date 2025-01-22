@@ -150,7 +150,10 @@ export const getPupilsWithYearDataInclude = (
         streams: {
           where: { streamId },
           select: {
-            pupils: { include: pupilDataInclude() },
+            pupils: {
+              include: pupilDataInclude(),
+              orderBy: { user: { name: "asc" } },
+            },
             _count: { select: { pupils: true } },
           },
         },
@@ -178,7 +181,10 @@ export type FeesPaymentDataInclude = Prisma.FeesPaymentGetPayload<{
 //Fees
 export const feesDataSelect = {
   term: true,
-  feesPayments: { include: feesPaymentDataInclude },
+  feesPayments: {
+    include: feesPaymentDataInclude,
+    orderBy: { updatedAt: "desc" },
+  },
   balance: true,
 } satisfies Prisma.FeesSelect;
 export type FeesDataSelect = Prisma.FeesGetPayload<{
@@ -203,7 +209,10 @@ export const classTermDataSelect = (classTermId?: string) => {
           },
         },
         classTeacher: { select: classTeacherDataSelect },
-        pupils: { include: pupilDataInclude(classTermId) },
+        pupils: {
+          include: pupilDataInclude(classTermId),
+          orderBy: { user: { name: "asc" } },
+        },
         _count: { select: { pupils: true } },
       },
     },

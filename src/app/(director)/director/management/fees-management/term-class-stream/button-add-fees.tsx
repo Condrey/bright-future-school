@@ -74,7 +74,7 @@ export default function ButtonAddFees({
     <>
       <LoadingButton
         loading={false}
-        title="Add a new pupil from options"
+        title="Add a fees payment"
         variant="outline"
         className="flex w-full max-w-fit items-center justify-between"
         onClick={() => setOpen(true)}
@@ -118,30 +118,32 @@ export default function ButtonAddFees({
             </div>
             {!!previousPayments.length ? (
               <div className="space-y-1">
-                <h1 className="text-xl font-bold">
+                <h1 className="font-bold">
                   Previous payments{" "}
                   <span className="text-muted-foreground">
                     ({formatNumber(previousPayments.length)})
                   </span>
                 </h1>
                 <div className="space-y-0.5">
-                  {previousPayments.map((payment, index, array) => (
-                    <div key={payment.id} className="grid grid-cols-2 gap-4">
-                      <div className="flex flex-none items-center gap-3">
-                        {index + 1}
-                        <span className="font-mono font-bold">
-                          {formatCurrency(payment.amountPaid)}
-                        </span>
+                  <div>
+                    {previousPayments.map((payment, index) => (
+                      <div key={payment.id} className="flex w-full">
+                        <div className="flex w-full items-center gap-3">
+                          <span className="font-mono">
+                            {formatCurrency(payment.amountPaid)}
+                          </span>
+                          <hr className="flex flex-1" />
+                          <span>
+                            {payment.updatedAt > payment.createdAt
+                              ? `(Updated) ${format(payment.createdAt, "PPPP")}`
+                              : format(payment.createdAt, "PPPP")}
+                          </span>
+                        </div>
                       </div>
-                      <span>
-                        {payment.updatedAt > payment.createdAt
-                          ? `(Updated) ${format(payment.createdAt, "PPPP")}`
-                          : format(payment.createdAt, "PPPP")}
-                      </span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                   <hr className="my-2" />
-                  <span className="font-mono text-xl">
+                  <span className="font-mono">
                     Total Amount{" "}
                     {formatCurrency(
                       previousPayments.reduce(

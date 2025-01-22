@@ -15,6 +15,7 @@ export function useUpdateSingleTermMutation() {
   const mutation = useMutation({
     mutationFn: updateSingleClassTerm,
     async onSuccess(updatedClassTerm) {
+      console.log(updatedClassTerm.classStream);
       // term year streams
       const queryKey: QueryKey = ["year-term-streams"];
       await queryClient.cancelQueries({ queryKey });
@@ -32,7 +33,14 @@ export function useUpdateSingleTermMutation() {
         (_) => updatedClassTerm,
       );
       //Pupils class stream
-      queryClient.invalidateQueries({ queryKey: ["pupils", "classStream"] });
+      console.log("updating pupils");
+      await queryClient.cancelQueries({
+        queryKey: ["pupils", "classStream", updatedClassTerm.classStreamId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["pupils", "classStream", updatedClassTerm.classStreamId],
+      });
+      console.log("Updated pupils....)");
     },
     onError(error) {
       console.error(error);
@@ -50,7 +58,7 @@ export function useUpdateMultipleClassTerms() {
 
   const mutation = useMutation({
     mutationFn: updateMultipleClassTerms,
-    async onSuccess() {
+    async onSuccess(_, { input }) {
       // term year streams
       const queryKey: QueryKey = ["year-term-streams"];
       queryClient.invalidateQueries({ queryKey });

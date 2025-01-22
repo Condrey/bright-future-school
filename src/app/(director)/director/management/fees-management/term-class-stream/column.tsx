@@ -49,7 +49,9 @@ export const usePupilColumns = ({
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Fees amount" />
     ),
-    cell() {
+    cell({ row }) {
+      // const rows = row.original.fees.flatMap(f=>f.term.feesAmount||0)
+      // const feesAmount= !rows.length?0:rows[0];
       return <div>{formatCurrency(feesAmount)}</div>;
     },
   },
