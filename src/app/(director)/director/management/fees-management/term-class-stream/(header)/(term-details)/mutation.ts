@@ -71,6 +71,9 @@ export function useUpdateSingleTermMutation() {
 
 export function useUpdateMultipleClassTerms() {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const termId = searchParams.get(PARAM_NAME_TERM);
 
   const mutation = useMutation({
     mutationFn: updateMultipleClassTerms,
@@ -84,6 +87,14 @@ export function useUpdateMultipleClassTerms() {
       });
       //Pupils class stream
       queryClient.invalidateQueries({ queryKey: ["pupils", "classStream"] });
+      // For year term streams
+      queryClient.invalidateQueries({
+        queryKey: [
+          "year-term-streams",
+          !academicYear || academicYear.startsWith("<") ? "" : academicYear,
+          !termId || termId.startsWith("<") ? "" : termId,
+        ],
+      });
     },
     onError(error) {
       console.error(error);
@@ -98,6 +109,9 @@ export function useUpdateMultipleClassTerms() {
 }
 export function useUpdateAnnualClassTerms() {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
+  const termId = searchParams.get(PARAM_NAME_TERM);
 
   const mutation = useMutation({
     mutationFn: updateAnnualClassTerms,
@@ -111,6 +125,14 @@ export function useUpdateAnnualClassTerms() {
       });
       //Pupils class stream
       queryClient.invalidateQueries({ queryKey: ["pupils", "classStream"] });
+      // For year term streams
+      queryClient.invalidateQueries({
+        queryKey: [
+          "year-term-streams",
+          !academicYear || academicYear.startsWith("<") ? "" : academicYear,
+          !termId || termId.startsWith("<") ? "" : termId,
+        ],
+      });
     },
     onError(error) {
       console.error(error);
