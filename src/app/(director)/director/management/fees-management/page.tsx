@@ -27,9 +27,11 @@ export default async function Page({ searchParams }: PageProps) {
       year: !year ? undefined : (year as string),
       termId: !termId ? undefined : (termId as string),
     }),
-    !termId?undefined: await prisma.term.findFirstOrThrow({
-      where: { id:  (termId as string) },
-    }),
+    !termId
+      ? undefined
+      : await prisma.term.findFirstOrThrow({
+          where: { id: termId as string },
+        }),
   ]);
 
   return (

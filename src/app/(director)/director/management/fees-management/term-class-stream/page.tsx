@@ -31,7 +31,7 @@ export default async function Page({ searchParams }: PageProps) {
         />
       </Suspense>
 
-      <BodyContainer>
+      <BodyContainer className="gap-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <ClassDetails oldTerm={term} />
           <TermDetails oldTerm={term} />
