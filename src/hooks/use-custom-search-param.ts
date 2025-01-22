@@ -1,11 +1,12 @@
 "use client ";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
 export const useCustomSearchParams = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const currentPathname = usePathname();
 
   const updateSearchParams = useCallback(
     (name: string, value: string) => {
@@ -20,18 +21,23 @@ export const useCustomSearchParams = () => {
     (name: string, value: string, pathname?: string) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set(name, value);
-      router.push(!pathname ? "" : pathname + "?" + params.toString());
+      router.push((!pathname ? "" : pathname) + "?" + params.toString());
     },
     [searchParams, router],
   );
 
   const navigateOnclickWithoutUpdate = useCallback(
-    (pathname?: string) => {
+    (pathnameEndPoint?: string) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      router.push(!pathname ? "" : pathname + "?" + params.toString());
+      router.push(
+        currentPathname +
+          (!pathnameEndPoint ? "" : pathnameEndPoint) +
+          "?" +
+          params.toString(),
+      );
     },
-    [searchParams, router],
+    [searchParams, router, currentPathname],
   );
 
   return { updateSearchParams, navigateOnclick, navigateOnclickWithoutUpdate };

@@ -60,9 +60,8 @@ export default function HeaderContainer({
                               searchParams.toString()
                             }
                             className={cn(
-                             ( index !== array.length - 1 ||
-                                index === 0 )&&
-                                  "line-clamp-1 max-w-24 text-ellipsis",
+                              (index !== array.length - 1 || index === 0) &&
+                                "line-clamp-1 max-w-24 overflow-ellipsis lg:max-w-48",
                             )}
                           >
                             {item.label}

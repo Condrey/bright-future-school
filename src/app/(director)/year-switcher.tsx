@@ -35,8 +35,7 @@ interface YearSwitcherProps {
 export default function YearSwitcher({ pathname }: YearSwitcherProps) {
   const [openAddItemDialog, setOpenAddItemDialog] = useState(false);
 
-  const { navigateOnclick, navigateOnclickWithoutUpdate } =
-    useCustomSearchParams();
+  const { navigateOnclick } = useCustomSearchParams();
 
   const { data, status, isFetching, refetch, error } = useYearSwitcherQuery();
 
