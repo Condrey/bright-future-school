@@ -44,7 +44,7 @@ export default function ClassDetails({ classStream }: ClassDetailsProps) {
         <div>
           {" "}
           {pupilNumber === 0 ? (
-            <Badge variant={"destructive"}>Not assigned</Badge>
+            <Badge variant={"destructive"}>No pupils/students assigned</Badge>
           ) : pupilNumber === 1 ? (
             "1 pupil/ students"
           ) : (

@@ -136,11 +136,13 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
         <div>
           {schoolFeesAmount === 0 ? (
             <TooltipContainer label={formatCurrency(schoolFeesAmount)}>
-              Please,{" "}
-              <strong className="font-bold">
-                allocate the school fees amount
-              </strong>{" "}
-              for this particular year and term
+              <p>
+                Please,{" "}
+                <strong className="font-bold">
+                  allocate the school fees amount
+                </strong>{" "}
+                for this particular year and term
+              </p>
             </TooltipContainer>
           ) : (
             <span>{formatCurrency(schoolFeesAmount)}</span>
@@ -160,11 +162,47 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
           .flatMap((f) => f.feesPayments.flatMap((p) => p.amountPaid))
           .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
       const pupilNumber = row.original.classStream?._count.pupils || 0;
-      const feesAmount = row.original.feesAmount || 0;
-      const totalFeesAmount = pupilNumber * feesAmount;
+      const feesAmount = row.original.feesAmount;
+      const totalFeesAmount = pupilNumber * (feesAmount || 0);
+      const classTermId = row.original.id;
+
+      const extraPayment =
+        row.original.classStream?.pupils
+          .map((p) => {
+            const _totalAmountPaid =
+              p.fees
+                .flatMap((f) => {
+                  let _feesPayments = 0;
+                  if (f.term.id === classTermId) {
+                    _feesPayments =
+                      f.feesPayments.reduce(
+                        (total, amount) =>
+                          (total || 0) + (amount.amountPaid || 0),
+                        0,
+                      ) || 0;
+                  }
+                  return _feesPayments;
+                })
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0;
+            if (!feesAmount) return 0;
+            if (feesAmount === 0) return 0;
+            const _balance = feesAmount - _totalAmountPaid;
+            if (_totalAmountPaid <= 0) return 0;
+            return _balance < 0 ? -_balance : 0;
+          })
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
       return (
         <div className="space-y-0.5">
           <span>{formatCurrency(feesCollected)}</span>
+          {extraPayment > 0 && (
+            <div>
+              <span className="flex-none px-1 py-0.5 text-xs font-extrabold text-destructive animate-in">
+                + Extra {formatCurrency(extraPayment)}
+              </span>
+            </div>
+          )}
           <div>
             <span className="italic text-muted-foreground">of</span>{" "}
             {formatCurrency(totalFeesAmount)}
@@ -179,13 +217,15 @@ export const useYearTermStreamColumns: ColumnDef<TermWithYearData>[] = [
       <DataTableColumnHeader column={column} title="Payment status" />
     ),
     cell: ({ row }) => {
+      const feesAmount = row.original.feesAmount || 0;
+      const pupilNumber = row.original.classStream?._count.pupils || 0;
+      const totalFeesAmount = pupilNumber * feesAmount;
+
       const feesCollected =
         row.original.fees
           .flatMap((f) => f.feesPayments.flatMap((p) => p.amountPaid))
           .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-      const pupilNumber = row.original.classStream?._count.pupils || 0;
-      const feesAmount = row.original.feesAmount || 0;
-      const totalFeesAmount = pupilNumber * feesAmount;
+
       const feesStatus =
         feesCollected <= 0
           ? FeesStatus.NILL

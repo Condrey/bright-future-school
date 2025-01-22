@@ -52,21 +52,31 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
     .reduce((total, amount) => (total || 0) + (amount || 0), 0);
 
   const schoolFeesAmount = term.feesAmount;
+  const classTermId = term.id;
+
   const extraPayment =
     term.classStream?.pupils
       .map((p) => {
         const totalAmountPaid =
           p.fees
-            .flatMap(
-              (f) =>
-                f.feesPayments.reduce(
-                  (total, amount) => (total || 0) + (amount.amountPaid || 0),
-                  0,
-                ) || 0,
-            )
+            .flatMap((f) => {
+              let _feesPayments = 0;
+
+              if (f.term.id === classTermId) {
+                _feesPayments =
+                  f.feesPayments.reduce(
+                    (total, amount) => (total || 0) + (amount.amountPaid || 0),
+                    0,
+                  ) || 0;
+              }
+              return _feesPayments;
+            })
             .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-        const balance = (schoolFeesAmount || 0) - totalAmountPaid;
-        return totalAmountPaid <= 0 || balance > 0 ? 0 : -balance;
+        if (!schoolFeesAmount) return 0;
+        if (schoolFeesAmount === 0) return 0;
+        const balance = schoolFeesAmount - totalAmountPaid;
+        if (totalAmountPaid <= 0) return 0;
+        return balance < 0 ? -balance : 0;
       })
       .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
 
