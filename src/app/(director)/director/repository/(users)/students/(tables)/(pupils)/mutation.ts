@@ -34,8 +34,8 @@ export function useAddPupilsFromSameClassSameStream() {
 //               . New pupil from another school or unregistered pupil
 export function useAddUnregisteredPupil() {
   const searchParams = useSearchParams();
-  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
-  const termId = searchParams.get(PARAM_NAME_TERM);
+  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)||'';
+  const termId = searchParams.get(PARAM_NAME_TERM)||'';
   const queryClient = useQueryClient();
 
   const mutation = useMutation({

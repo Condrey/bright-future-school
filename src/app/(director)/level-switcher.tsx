@@ -23,7 +23,7 @@ export function LevelSwitcher() {
   const { isMobile } = useSidebar();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const searchParamLevel = searchParams.get("level");
+  const searchParamLevel = searchParams.get("level")??undefined;
   const levels = [
     {
       name: "All",

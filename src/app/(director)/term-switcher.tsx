@@ -38,7 +38,7 @@ export default function TermSwitcher({ pathname }: TermSwitcherProps) {
 
   const searchParams = useSearchParams();
 
-  const searchParamTerm = searchParams.get(PARAM_NAME_TERM);
+  const searchParamTerm = searchParams.get(PARAM_NAME_TERM)??undefined;
 
   if (status === "pending") {
     return <TermSwitcherFallback />;

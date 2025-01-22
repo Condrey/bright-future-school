@@ -7,8 +7,8 @@ import { assignClassTeacher, unAssignClassTeacher } from "./action";
 
 export function useAssignClassTeacherMutation(year?: string) {
   const searchParams = useSearchParams();
-  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
-  const termId = searchParams.get(PARAM_NAME_TERM);
+  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)||'';
+  const termId = searchParams.get(PARAM_NAME_TERM)||'';
   const queryKey: QueryKey = [
     "year-class-streams",
     year !== searchParamYear ? "" : year,
@@ -52,8 +52,8 @@ export function useAssignClassTeacherMutation(year?: string) {
 
 export function useUnassignClassTeacherMutation(year?: string) {
   const searchParams = useSearchParams();
-  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR);
-  const termId = searchParams.get(PARAM_NAME_TERM);
+  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)||"";
+  const termId = searchParams.get(PARAM_NAME_TERM)||'';
 
   const queryKey: QueryKey = [
     "year-class-streams",
