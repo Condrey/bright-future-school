@@ -263,5 +263,38 @@ export type AssetData = Prisma.AssetGetPayload<{
   include: typeof assetDataInclude;
 }>;
 
+// Library
+export const libraryBookDataInclude = {} satisfies Prisma.LibraryBookInclude;
+export type LibraryBookData = Prisma.LibraryBookGetPayload<{
+  include: typeof libraryBookDataInclude;
+}>;
+
+// Computer lab item
+export const computerLabItemDataInclude =
+  {} satisfies Prisma.ComputerLabItemInclude;
+export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
+  include: typeof computerLabItemDataInclude;
+}>;
+
+// Lab item
+export const labItemDataInclude = {} satisfies Prisma.LabItemInclude;
+export type LabItemData = Prisma.LabItemGetPayload<{
+  include: typeof labItemDataInclude;
+}>;
+
+//General store
+export const generalStoreItemDataInclude =
+  {} satisfies Prisma.GeneralStoreItemInclude;
+export type GeneralStoreItemData = Prisma.GeneralStoreItemGetPayload<{
+  include: typeof generalStoreItemDataInclude;
+}>;
+
+// Food store
+export const foodStoreItemDataInclude =
+  {} satisfies Prisma.FoodStoreItemInclude;
+export type FoodStoreItemData = Prisma.FoodStoreItemGetPayload<{
+  include: typeof foodStoreItemDataInclude;
+}>;
+
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };

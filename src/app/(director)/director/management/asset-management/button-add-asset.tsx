@@ -52,7 +52,7 @@ export default function ButtonAddAsset() {
                 key={value}
                 onClick={() =>
                   navigateOnclickWithoutUpdate(
-                    `/store/${value.toLocaleLowerCase()}`,
+                    `/add-asset/${value.toLocaleLowerCase()}`,
                   )
                 }
               >
