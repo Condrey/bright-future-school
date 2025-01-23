@@ -247,5 +247,21 @@ export type TermWithYearData = Prisma.ClassTermGetPayload<{
   select: ReturnType<typeof classTermDataSelect>;
 }>;
 
+//////////////////////////// Asst Management '/////////////
+export const assetDataInclude = {
+  _count: {
+    select: {
+      computerLabItems: true,
+      foodStoreItems: true,
+      generalStoreItems: true,
+      labItems: true,
+      libraryBooks: true,
+    },
+  },
+} satisfies Prisma.AssetInclude;
+export type AssetData = Prisma.AssetGetPayload<{
+  include: typeof assetDataInclude;
+}>;
+
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };

@@ -41,7 +41,7 @@ export default async function Page({ searchParams }: PageProps) {
           breadCrumbs={[{ label: "Fees management (streams)" }]}
         />
       </Suspense>
-      <BodyContainer className="gap-6 py-12">
+      <BodyContainer className="gap-6">
         <ManagementSwitches
           yearPathnameEndPoint="fees-management"
           termPathnameEndPoint="fees-management"

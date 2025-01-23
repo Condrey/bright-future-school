@@ -24,7 +24,8 @@ model User {
   sessions      Session[]
   pupils        Pupil[]
   staffs        Staff[]
-  feesPayments   FeesPayment[]
+  feesPayments  FeesPayment[]
+  borrowers     Borrower[]
 
   @@map("users")
 }
@@ -195,4 +196,194 @@ enum Role {
   CLASS_TEACHER
   USER
   SUPER_ADMIN
+}
+
+model Asset {
+  id                String             @id @default(uuid())
+  name              String
+  description       String?
+  category          AssetCategory
+  purchasedAt       DateTime?
+  condition         AssetCondition     @default(NEW)
+  status            AssetCategory
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  foodStoreItems    FoodStoreItem[]
+  libraryBooks      LibraryBook[]
+  labItems          LabItem[]
+  computerLabItems  ComputerLabItem[]
+  generalStoreItems GeneralStoreItem[]
+
+  @@map("assets")
+}
+
+enum AssetCategory {
+  LIBRARY
+  COMPUTER_LAB
+  LABORATORY
+  GENERAL_STORE
+  FOOD_STORE
+}
+
+enum AssetCondition {
+  NEW
+  GOOD
+  FAIR
+  POOR
+  DAMAGED
+}
+
+model FoodStoreItem {
+  id           String            @id @default(uuid())
+  asset        Asset             @relation(fields: [assetId], references: [id])
+  assetId      String
+  foodName     String
+  unit         AssetUnit
+  quantity     Float
+  consumptions FoodConsumption[]
+  supplier     Supplier?         @relation(fields: [supplierId], references: [id])
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  supplierId   String?
+
+  @@map("food_store_items")
+}
+
+enum AssetUnit {
+  KILOGRAM
+  SAC
+  LITERS
+  PIECES
+}
+
+model FoodConsumption {
+  id              String        @id @default(uuid())
+  foodItem        FoodStoreItem @relation(fields: [foodStoreItemId], references: [id])
+  quantityUsed    Float //Quantity consumed
+  dateUsedAt      DateTime      @default(now())
+  usageDetails    String? //Details (e.g., "Cooked for lunch")
+  foodStoreItemId String
+
+  @@map("food_consumptions")
+}
+
+model Supplier {
+  id             String          @id @default(uuid())
+  name           String
+  contactInfo    Json?
+  address        String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  foodStoreItems FoodStoreItem[]
+
+  @@map("suppliers")
+}
+
+model LibraryBook {
+  id                    String              @id @default(uuid())
+  asset                 Asset               @relation(fields: [assetId], references: [id])
+  title                 String
+  author                String
+  category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id])
+  isbn                  String? // Optional ISBN
+  borrowers             Borrower[]
+  status                BookStatus          @default(AVAILABLE)
+  bookDamages           LibraryBookDamage[]
+  assetId               String
+  libraryBookCategoryId String
+
+  @@map("library_books")
+}
+
+model LibraryBookCategory {
+  id           String        @id @default(uuid())
+  category     String // e.g., "Science", "History"
+  description  String?
+  libraryBooks LibraryBook[]
+
+  @@map("library_book_category")
+}
+
+model Borrower {
+  id                 String              @id @default(uuid())
+  user               User                @relation(fields: [userId], references: [id])
+  borrowedAt         DateTime            @default(now())
+  returnAt           DateTime?
+  status             BorrowStatus        @default(ONGOING)
+  libraryBook        LibraryBook?        @relation(fields: [libraryBookId], references: [id])
+  libraryBookId      String?
+  userId             String
+  libraryBookDamages LibraryBookDamage[]
+
+  @@map("borrowers")
+}
+
+enum BorrowStatus {
+  ONGOING
+  RETURNED
+}
+
+enum BookStatus {
+  AVAILABLE
+  BORROWED
+  DAMAGED
+}
+
+model LibraryBookDamage {
+  id            String       @id @default(uuid())
+  damagedBy     Borrower     @relation(fields: [borrowerId], references: [id])
+  damageDetails String
+  libraryBook   LibraryBook? @relation(fields: [libraryBookId], references: [id])
+  libraryBookId String?
+  borrowerId    String
+
+  @@map("library_book_damages")
+}
+
+model LabItem {
+  id        String        @id @default(uuid())
+  asset     Asset         @relation(fields: [assetId], references: [id])
+  name      String // e.g., Test tubes, Chemicals
+  quantity  Float // Quantity in stock
+  unit      AssetUnit
+  status    LabItemStatus @default(AVAILABLE)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  assetId   String
+
+  @@map("lab_items")
+}
+
+enum LabItemStatus {
+  AVAILABLE
+  IN_USE
+  EXPIRED
+}
+
+model ComputerLabItem {
+  id            String         @id @default(uuid())
+  asset         Asset          @relation(fields: [assetId], references: [id])
+  name          String // e.g., Keyboard, Mouse, AC
+  model         String?
+  specification String?
+  quantity      Int
+  condition     AssetCondition @default(NEW)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  assetId       String
+
+  @@map("computer_lab_items")
+}
+
+model GeneralStoreItem {
+  id        String         @id @default(uuid())
+  asset     Asset          @relation(fields: [assetId], references: [id])
+  name      String // e.g., Chairs, Desks
+  quantity  Int
+  condition AssetCondition @default(NEW)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  assetId   String
+
+  @@map("general_store_items")
 }
