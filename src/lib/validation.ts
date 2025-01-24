@@ -168,7 +168,7 @@ export type LaboratoryAssetSchema = z.infer<typeof laboratoryAssetSchema>;
 export const supplierSchema = z.object({
   id: z.string().optional(),
   name: requiredString.min(1, "Give the supplier a name."),
-  contactInfo: z.any(),
+  contactInfo: z.string().optional(),
   address: z.string().optional(),
 });
 export type SupplierSchema = z.infer<typeof supplierSchema>;

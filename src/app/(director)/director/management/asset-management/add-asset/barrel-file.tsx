@@ -8,8 +8,16 @@ import {
   TestTubeIcon,
 } from "lucide-react";
 export { NumberInput } from "@/components/number-input/number-input";
+export { Button } from "@/components/ui/button";
 export { Checkbox } from "@/components/ui/checkbox";
-export { SelectGroup, SelectLabel } from "@/components/ui/select";
+export {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
 export {
   Card,
@@ -30,12 +38,20 @@ export {
 } from "@/components/ui/form";
 export { Input } from "@/components/ui/input";
 export {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+export {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+export { Textarea } from "@/components/ui/textarea";
 export const assetCategories: Record<
   AssetCategory,
   { label: string; icon: LucideIcon }

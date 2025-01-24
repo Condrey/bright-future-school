@@ -10,7 +10,6 @@ import {
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
-import { SelectLabel } from "@radix-ui/react-select";
 import { useForm } from "react-hook-form";
 import {
   assetItemStatuses,
@@ -33,6 +32,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../../barrel-file";

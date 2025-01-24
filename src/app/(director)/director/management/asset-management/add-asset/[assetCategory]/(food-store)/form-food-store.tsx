@@ -10,7 +10,6 @@ import {
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
-import { SelectLabel } from "@radix-ui/react-select";
 import { useForm } from "react-hook-form";
 import {
   assetItemStatuses,
@@ -33,12 +32,14 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../../barrel-file";
 import AssetSection from "../asset-section";
 import ListOfFoodStoreItems from "./list-of-food-store-items";
 import { useFoodStoreMutation } from "./mutation";
+import Supplier from "./supplier";
 
 interface FormFoodStoreProps {
   foodStoreItemToEdit?: FoodStoreItemData;
@@ -98,7 +99,7 @@ export default function FormFoodStore({
                       <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., School bus" {...field} />
+                          <Input placeholder="e.g., rice" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -228,6 +229,17 @@ export default function FormFoodStore({
                       </div>
                     )}
                   </div>
+                  <FormField
+                    control={form.control}
+                    name="supplier"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Supplier</FormLabel>
+                        <Supplier form={form} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
                   <div className="flex w-full items-center justify-end">
                     <LoadingButton

@@ -302,6 +302,12 @@ export const foodStoreItemDataInclude = {
 export type FoodStoreItemData = Prisma.FoodStoreItemGetPayload<{
   include: typeof foodStoreItemDataInclude;
 }>;
+export const supplierDataInclude = {
+  foodStoreItems: true,
+} satisfies Prisma.SupplierInclude;
+export type SupplierData = Prisma.SupplierGetPayload<{
+  include: typeof supplierDataInclude;
+}>;
 
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };

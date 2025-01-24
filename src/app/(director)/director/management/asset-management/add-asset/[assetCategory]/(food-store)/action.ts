@@ -2,7 +2,26 @@
 
 import prisma from "@/lib/prisma";
 import { foodStoreItemDataInclude } from "@/lib/types";
-import { foodStoreAssetSchema, FoodStoreAssetSchema } from "@/lib/validation";
+import {
+  foodStoreAssetSchema,
+  FoodStoreAssetSchema,
+  supplierSchema,
+  SupplierSchema,
+} from "@/lib/validation";
+
+export async function getAllFoodStoreAssetSuppliers() {
+  const data = await prisma.supplier.findMany({
+    orderBy: { name: "asc" },
+  });
+  return data;
+}
+export async function createFoodStoreAssetSupplier(input: SupplierSchema) {
+  const parsedInput = supplierSchema.parse(input);
+  const data = await prisma.supplier.create({
+    data: parsedInput,
+  });
+  return data;
+}
 
 export async function getAllFoodStoreAssetItems() {
   const data = await prisma.foodStoreItem.findMany({

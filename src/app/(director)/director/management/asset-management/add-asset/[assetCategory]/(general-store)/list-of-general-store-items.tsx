@@ -33,7 +33,7 @@ export default function ListOfGeneralStoreItems() {
         <span className="max-w-sm text-center text-muted-foreground">
           Loading....
         </span>
-        <Loader2 />
+        <Loader2 className="animate-spin" />
       </div>
     );
   }
