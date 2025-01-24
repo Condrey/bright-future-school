@@ -152,7 +152,7 @@ export default function Supplier({ form }: SupplierProps) {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-fit max-w-sm p-0">
+                <PopoverContent className="w-[24rem] max-w-md p-0">
                   <Command>
                     <CommandInput
                       placeholder="Search suppliers..."
@@ -173,7 +173,12 @@ export default function Supplier({ form }: SupplierProps) {
                               );
                             }}
                           >
-                            {supplier.name}
+                            <div className="flex flex-col">
+                              <span>{supplier.name}</span>
+                              <p className="text-xs text-muted-foreground">
+                                {supplier.address}, {supplier.contactInfo}
+                              </p>
+                            </div>
                             <Check
                               className={cn(
                                 "ml-auto",
