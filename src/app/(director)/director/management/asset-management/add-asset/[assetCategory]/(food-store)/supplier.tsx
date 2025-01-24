@@ -166,6 +166,7 @@ export default function Supplier({ form }: SupplierProps) {
                             value={supplier.id}
                             key={supplier.id}
                             onSelect={() => {
+                              field.onChange(supplier.id);
                               form.setValue(
                                 "supplier",
                                 supplier as SupplierSchema,
