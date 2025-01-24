@@ -16,9 +16,9 @@ export async function getAllFoodStoreAssetSuppliers() {
   return data;
 }
 export async function createFoodStoreAssetSupplier(input: SupplierSchema) {
-  const parsedInput = supplierSchema.parse(input);
+  const { name, address, contactInfo } = supplierSchema.parse(input);
   const data = await prisma.supplier.create({
-    data: parsedInput,
+    data: { name, address, contactInfo },
   });
   return data;
 }

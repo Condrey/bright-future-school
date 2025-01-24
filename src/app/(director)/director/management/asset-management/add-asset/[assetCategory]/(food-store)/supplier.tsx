@@ -15,11 +15,12 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Check, ChevronsUpDown, Command, Loader2 } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import {
   Button,
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -27,7 +28,6 @@ import {
   CommandList,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -141,7 +141,7 @@ export default function Supplier({ form }: SupplierProps) {
                       type="button"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-full justify-between",
                         !field.value && "text-muted-foreground",
                       )}
                     >
@@ -152,7 +152,7 @@ export default function Supplier({ form }: SupplierProps) {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="w-fit max-w-sm p-0">
                   <Command>
                     <CommandInput
                       placeholder="Search suppliers..."
@@ -188,9 +188,7 @@ export default function Supplier({ form }: SupplierProps) {
                   </Command>
                 </PopoverContent>
               </Popover>
-              <FormDescription>
-                This is the supplier of this item.
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
