@@ -238,17 +238,18 @@ enum AssetStatus {
 }
 
 model FoodStoreItem {
-  id           String            @id @default(uuid())
-  asset        Asset             @relation(fields: [assetId], references: [id])
-  assetId      String
-  foodName     String
-  unit         AssetUnit
-  quantity     Float
-  consumptions FoodConsumption[]
-  supplier     Supplier?         @relation(fields: [supplierId], references: [id])
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-  supplierId   String?
+  id            String            @id @default(uuid())
+  asset         Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  assetId       String
+  foodName      String
+  unit          AssetUnit
+  quantity      Float?
+  trackQuantity Boolean           @default(false)
+  consumptions  FoodConsumption[]
+  supplier      Supplier?         @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  supplierId    String?
 
   @@map("food_store_items")
 }
@@ -262,8 +263,8 @@ enum AssetUnit {
 
 model FoodConsumption {
   id              String        @id @default(uuid())
-  foodItem        FoodStoreItem @relation(fields: [foodStoreItemId], references: [id])
-  quantityUsed    Float //Quantity consumed
+  foodItem        FoodStoreItem @relation(fields: [foodStoreItemId], references: [id], onDelete: Cascade)
+  quantityUsed    Float? //Quantity consumed
   dateUsedAt      DateTime      @default(now())
   usageDetails    String? //Details (e.g., "Cooked for lunch")
   foodStoreItemId String
@@ -285,10 +286,10 @@ model Supplier {
 
 model LibraryBook {
   id                    String              @id @default(uuid())
-  asset                 Asset               @relation(fields: [assetId], references: [id])
+  asset                 Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
   title                 String
   author                String
-  category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id])
+  category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id], onDelete: Cascade)
   isbn                  String? // Optional ISBN
   borrowers             Borrower[]
   status                BookStatus          @default(AVAILABLE)
@@ -310,11 +311,11 @@ model LibraryBookCategory {
 
 model Borrower {
   id                 String              @id @default(uuid())
-  user               User                @relation(fields: [userId], references: [id])
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   borrowedAt         DateTime            @default(now())
   returnAt           DateTime?
   status             BorrowStatus        @default(ONGOING)
-  libraryBook        LibraryBook?        @relation(fields: [libraryBookId], references: [id])
+  libraryBook        LibraryBook?        @relation(fields: [libraryBookId], references: [id], onDelete: SetNull)
   libraryBookId      String?
   userId             String
   libraryBookDamages LibraryBookDamage[]
@@ -335,9 +336,9 @@ enum BookStatus {
 
 model LibraryBookDamage {
   id            String       @id @default(uuid())
-  damagedBy     Borrower     @relation(fields: [borrowerId], references: [id])
+  damagedBy     Borrower     @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
   damageDetails String
-  libraryBook   LibraryBook? @relation(fields: [libraryBookId], references: [id])
+  libraryBook   LibraryBook? @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
   libraryBookId String?
   borrowerId    String
 
@@ -345,10 +346,12 @@ model LibraryBookDamage {
 }
 
 model LabItem {
-  id        String        @id @default(uuid())
-  asset     Asset         @relation(fields: [assetId], references: [id])
-  name      String // e.g., Test tubes, Chemicals
-  quantity  Float // Quantity in stock
+  id            String  @id @default(uuid())
+  asset         Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  name          String // e.g., Test tubes, Chemicals
+  quantity      Float? // Quantity in stock
+  trackQuantity Boolean @default(false)
+
   unit      AssetUnit
   status    LabItemStatus @default(AVAILABLE)
   createdAt DateTime      @default(now())
@@ -366,11 +369,11 @@ enum LabItemStatus {
 
 model ComputerLabItem {
   id            String         @id @default(uuid())
-  asset         Asset          @relation(fields: [assetId], references: [id])
+  asset         Asset          @relation(fields: [assetId], references: [id], onDelete: Cascade)
   name          String // e.g., Keyboard, Mouse, AC
   model         String?
   specification String?
-  quantity      Int
+  quantity      Float?
   condition     AssetCondition @default(NEW)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -380,10 +383,12 @@ model ComputerLabItem {
 }
 
 model GeneralStoreItem {
-  id        String         @id @default(uuid())
-  asset     Asset          @relation(fields: [assetId], references: [id])
-  name      String // e.g., Chairs, Desks
-  quantity  Int
+  id            String  @id @default(uuid())
+  asset         Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  name          String // e.g., Chairs, Desks
+  quantity      Float?
+  trackQuantity Boolean @default(false)
+
   condition AssetCondition @default(NEW)
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt

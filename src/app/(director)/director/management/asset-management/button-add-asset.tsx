@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
+import { cn } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
@@ -21,7 +22,7 @@ import {
   TestTubeIcon,
 } from "lucide-react";
 
-export default function ButtonAddAsset() {
+export default function ButtonAddAsset({ className }: { className?: string }) {
   const { navigateOnclickWithoutUpdate } = useCustomSearchParams();
   const assetCategories: Record<
     AssetCategory,
@@ -36,7 +37,7 @@ export default function ButtonAddAsset() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="w-fit">
+        <Button className={cn("w-fit", className)}>
           <span>New asset</span>
           <CaretSortIcon className="ml-2 size-4" />
         </Button>

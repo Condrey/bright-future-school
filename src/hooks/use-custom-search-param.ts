@@ -40,5 +40,19 @@ export const useCustomSearchParams = () => {
     [searchParams, router, currentPathname],
   );
 
-  return { updateSearchParams, navigateOnclick, navigateOnclickWithoutUpdate };
+  const navigateOnclickWithPathnameWithoutUpdate = useCallback(
+    (pathname: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      router.push(pathname + "?" + params.toString());
+    },
+    [searchParams, router],
+  );
+
+  return {
+    updateSearchParams,
+    navigateOnclick,
+    navigateOnclickWithoutUpdate,
+    navigateOnclickWithPathnameWithoutUpdate,
+  };
 };

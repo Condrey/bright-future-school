@@ -21,25 +21,28 @@ export default function ListOfAssets({ assets }: ListOfAssetsProps) {
 
   if (status === "error") {
     console.error(error);
-    return (
-      <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-muted-foreground">
-          An error occurred while fetching assets.
-        </span>
-        <LoadingButton
-          variant={"destructive"}
-          className="max-w-fit"
-          onClick={() => refetch()}
-          loading={isFetching}
-        >
-          Refresh
-        </LoadingButton>
-      </div>
-    );
   }
   return (
-    <div>
-      {status === "success" && !data.length ? (
+    <div className="w-full">
+      <div className="flex w-full items-center">
+        <h1>List of assets</h1>
+        <ButtonAddAsset className="ms-auto" />
+      </div>
+      {status === "error" ? (
+        <div className="flex size-full flex-col items-center justify-center gap-4">
+          <span className="max-w-sm text-muted-foreground">
+            An error occurred while fetching assets.
+          </span>
+          <LoadingButton
+            variant={"destructive"}
+            className="max-w-fit"
+            onClick={() => refetch()}
+            loading={isFetching}
+          >
+            Refresh
+          </LoadingButton>
+        </div>
+      ) : status === "success" && !data.length ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
           <span className="max-w-sm text-center text-muted-foreground">
             You do not have any assets in the database yet. Use this button to

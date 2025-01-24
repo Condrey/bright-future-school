@@ -9,8 +9,13 @@ export default function BodyContainer({
   className,
 }: BodyContainerProps) {
   return (
-    <div className={cn("flex flex-1 flex-col gap-4 p-4 pt-0", className)}>
-      {children}{" "}
+    <div
+      className={cn(
+        "mx-auto flex size-full max-w-[80rem] flex-1 grow flex-col gap-5 p-4 px-4 py-6 pt-0",
+        className,
+      )}
+    >
+      {children}
     </div>
   );
 }

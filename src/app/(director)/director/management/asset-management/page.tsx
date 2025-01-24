@@ -15,7 +15,7 @@ export default async function Page() {
       </Suspense>
       <BodyContainer className="gap-6">
         {/* header containers  */}
-        <div className="flex flex-wrap justify-center gap-4">d</div>
+        <div className="flex flex-wrap justify-center gap-4"></div>
         {/* list of assets */}
         <ListOfAssets assets={assets} />
       </BodyContainer>

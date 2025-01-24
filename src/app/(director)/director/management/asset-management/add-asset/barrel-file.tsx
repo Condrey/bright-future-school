@@ -7,6 +7,9 @@ import {
   StoreIcon,
   TestTubeIcon,
 } from "lucide-react";
+export { NumberInput } from "@/components/number-input/number-input";
+export { Checkbox } from "@/components/ui/checkbox";
+export { SelectGroup, SelectLabel } from "@/components/ui/select";
 
 export {
   Card,
@@ -46,10 +49,11 @@ export const assetCategories: Record<
 
 export const assetUnits: Record<AssetUnit, string> = {
   KILOGRAM: "Kilogram",
-  SAC: "sac",
+  SAC: "Sac",
   LITERS: "Liter",
   PIECES: "Piece",
 };
+//pairs,packets
 
 export const labItemStatuses: Record<LabItemStatus, string> = {
   AVAILABLE: "Available",

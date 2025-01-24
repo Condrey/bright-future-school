@@ -21,10 +21,12 @@ export interface HeaderContainerBreadCrumb {
 }
 interface HeaderContainerProps {
   breadCrumbs?: HeaderContainerBreadCrumb[];
+  className?: string;
 }
 
 export default function HeaderContainer({
   breadCrumbs = [],
+  className,
 }: HeaderContainerProps) {
   const searchParams = useSearchParams();
   const basePathName = "/director";
@@ -33,53 +35,59 @@ export default function HeaderContainer({
     ...breadCrumbs,
   ];
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            {breadCrumbItems.length === 1 ? (
-              <BreadcrumbItem className="block">
-                <BreadcrumbPage>{breadCrumbItems[0].label}</BreadcrumbPage>
-              </BreadcrumbItem>
-            ) : (
-              <>
-                {breadCrumbItems.map((item, index, array) => (
-                  <div key={item.label} className="flex items-center gap-2">
-                    <BreadcrumbItem className="block">
-                      {index === array.length - 1 ? (
-                        <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                      ) : (
-                        <BreadcrumbLink asChild>
-                          <Link
-                            href={
-                              basePathName +
-                              item.url +
-                              "?" +
-                              searchParams.toString()
-                            }
-                            className={cn(
-                              (index !== array.length - 1 || index === 0) &&
-                                "line-clamp-1 max-w-24 overflow-ellipsis lg:max-w-48",
-                            )}
-                          >
-                            {item.label}
-                          </Link>
-                        </BreadcrumbLink>
+    <div className={cn("mx-auto w-full max-w-[80rem]", className)}>
+      <header
+        className={cn(
+          "flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12",
+        )}
+      >
+        <div className="flex items-center gap-2 px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              {breadCrumbItems.length === 1 ? (
+                <BreadcrumbItem className="block">
+                  <BreadcrumbPage>{breadCrumbItems[0].label}</BreadcrumbPage>
+                </BreadcrumbItem>
+              ) : (
+                <>
+                  {breadCrumbItems.map((item, index, array) => (
+                    <div key={item.label} className="flex items-center gap-2">
+                      <BreadcrumbItem className="block">
+                        {index === array.length - 1 ? (
+                          <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink asChild>
+                            <Link
+                              href={
+                                basePathName +
+                                item.url +
+                                "?" +
+                                searchParams.toString()
+                              }
+                              className={cn(
+                                (index !== array.length - 1 || index === 0) &&
+                                  "line-clamp-1 max-w-24 overflow-ellipsis lg:max-w-48",
+                              )}
+                            >
+                              {item.label}
+                            </Link>
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                      {index !== array.length - 1 && (
+                        <BreadcrumbSeparator className="block" />
                       )}
-                    </BreadcrumbItem>
-                    {index !== array.length - 1 && (
-                      <BreadcrumbSeparator className="block" />
-                    )}
-                  </div>
-                ))}
-              </>
-            )}
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-    </header>
+                    </div>
+                  ))}
+                </>
+              )}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </header>
+    </div>
   );
 }
 

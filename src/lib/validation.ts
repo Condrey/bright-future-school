@@ -156,7 +156,8 @@ export const laboratoryAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
   name: requiredString.min(1, "Provide lab item name"),
-  quantity: z.number(),
+  quantity: z.number().optional(),
+  trackQuantity: z.boolean().default(false),
   unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECES),
   status: z.nativeEnum(LabItemStatus).default(LabItemStatus.AVAILABLE),
 });
@@ -167,7 +168,7 @@ export const foodStoreAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
   foodName: requiredString.min(1, "Provide a food store item name"),
-  quantity: z.number(),
+  quantity: z.number().optional(),
   unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECES),
   supplierId: z.string().optional(),
 });
@@ -180,7 +181,7 @@ export const foodConsumptionSchema = z.object({
     "Food consumption must belong to  a store",
   ),
   quantityUsed: z.number(),
-  usageDetails:z.string(),
+  usageDetails: z.string(),
 });
 export type FoodConsumptionSchema = z.infer<typeof foodConsumptionSchema>;
 // supplier management
@@ -188,6 +189,6 @@ export const supplierSchema = z.object({
   id: z.string().optional(),
   name: requiredString.min(1, "Give the supplier a name."),
   contactInfo: z.any(),
-  address:z.string().optional(),
+  address: z.string().optional(),
 });
 export type SupplierSchema = z.infer<typeof supplierSchema>;
