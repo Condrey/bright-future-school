@@ -264,34 +264,41 @@ export type AssetData = Prisma.AssetGetPayload<{
 }>;
 
 // Library
-export const libraryBookDataInclude = {} satisfies Prisma.LibraryBookInclude;
+export const libraryBookDataInclude = {
+  asset: true,
+} satisfies Prisma.LibraryBookInclude;
 export type LibraryBookData = Prisma.LibraryBookGetPayload<{
   include: typeof libraryBookDataInclude;
 }>;
 
 // Computer lab item
-export const computerLabItemDataInclude =
-  {} satisfies Prisma.ComputerLabItemInclude;
+export const computerLabItemDataInclude = {
+  asset: true,
+} satisfies Prisma.ComputerLabItemInclude;
 export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
   include: typeof computerLabItemDataInclude;
 }>;
 
 // Lab item
-export const labItemDataInclude = {} satisfies Prisma.LabItemInclude;
+export const labItemDataInclude = {
+  asset: true,
+} satisfies Prisma.LabItemInclude;
 export type LabItemData = Prisma.LabItemGetPayload<{
   include: typeof labItemDataInclude;
 }>;
 
 //General store
-export const generalStoreItemDataInclude =
-  {} satisfies Prisma.GeneralStoreItemInclude;
+export const generalStoreItemDataInclude = {
+  asset: true,
+} satisfies Prisma.GeneralStoreItemInclude;
 export type GeneralStoreItemData = Prisma.GeneralStoreItemGetPayload<{
   include: typeof generalStoreItemDataInclude;
 }>;
 
 // Food store
-export const foodStoreItemDataInclude =
-  {} satisfies Prisma.FoodStoreItemInclude;
+export const foodStoreItemDataInclude = {
+  asset: true,
+} satisfies Prisma.FoodStoreItemInclude;
 export type FoodStoreItemData = Prisma.FoodStoreItemGetPayload<{
   include: typeof foodStoreItemDataInclude;
 }>;

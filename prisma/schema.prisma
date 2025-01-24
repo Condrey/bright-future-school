@@ -203,9 +203,6 @@ model Asset {
   name              String
   description       String?
   category          AssetCategory
-  purchasedAt       DateTime?
-  condition         AssetCondition     @default(NEW)
-  status            AssetCategory
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   foodStoreItems    FoodStoreItem[]
@@ -231,6 +228,13 @@ enum AssetCondition {
   FAIR
   POOR
   DAMAGED
+}
+
+enum AssetStatus {
+  AVAILABLE
+  ASSIGNED
+  UNDER_MAINTENANCE
+  DISPOSED
 }
 
 model FoodStoreItem {

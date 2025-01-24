@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/input"; // Adjust the path as needed
 import { cn } from "@/lib/utils";
+import * as React from "react";
 import {
   FieldValues,
   UseControllerProps,
@@ -8,72 +8,58 @@ import {
 import "./style.css";
 
 interface NumberInputProps<T extends FieldValues>
-  extends UseControllerProps<T> {
-  min?: number;
-  max?: number;
-  step?: number;
-  className?: string;
-  placeholder?: string;
+  extends Omit<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      "defaultValue" | "name"
+    >,
+    UseControllerProps<T> {
   prefix?: string;
   suffix?: string;
-  disabled?: boolean;
   postChange?: (value: number) => void;
 }
 
-export function NumberInput<T extends FieldValues>({
-  min,
-  max,
-  step = 1,
-  className = "",
-  placeholder = "0",
-  prefix,
-  suffix,
-  disabled = false,
-  postChange,
-  ...props
-}: NumberInputProps<T>) {
-  const { field } = useController(props);
+const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps<any>>(
+  ({ prefix, suffix, postChange, className, type, ...props }, ref) => {
+    const { field } = useController(props);
 
-  return (
-    <div className="relative">
-      {prefix && (
-        <span className="absolute text-muted-foreground left-2 top-1/2 -translate-y-1/2">
-          {prefix}
-        </span>
-      )}
-      <Input
-        type="number"
-        disabled={disabled}
-        min={min}
-        max={max}
-        step={step}
-        className={cn(
-          `ps-${prefix ? 12 : 4}`,
-          `pe-${suffix ? 12 : 4}`,
-          "no-caret",
-          className
+    return (
+      <div className="relative">
+        {prefix && (
+          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground">
+            {prefix}
+          </span>
         )}
-        placeholder={placeholder}
-        value={field.value ?? undefined}
-        onChange={(e) => {
-          const value = e.target.value;
-          const parsedValue = value === "" ? "" : Number(value);
+        <input
+          type="number"
+          className={cn(
+            `ps-${prefix ? 12 : 4}`,
+            `pe-${suffix ? 12 : 4}`,
+            "no-caret",
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
 
-          field.onChange(parsedValue);
-          if (postChange) {
-            postChange(value === "" ? 0 : Number(value));
-          }
-        }}
-        onBlur={field.onBlur}
-        name={field.name}
-        ref={field.ref}
-      />
+            className,
+          )}
+          {...field}
+          {...props}
+          value={field.value ?? ""}
+          onChange={(e) => {
+            const value = e.target.value;
+            const parsedValue = value === "" ? "" : Number(value);
 
-      {suffix && (
-        <span className="absolute text-muted-foreground right-2 top-1/2 -translate-y-1/2">
-          {suffix}
-        </span>
-      )}
-    </div>
-  );
-}
+            field.onChange(parsedValue);
+            if (postChange) {
+              postChange(value === "" ? 0 : Number(value));
+            }
+          }}
+        />
+
+        {suffix && (
+          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">
+            {suffix}
+          </span>
+        )}
+      </div>
+    );
+  },
+);
+export { NumberInput };

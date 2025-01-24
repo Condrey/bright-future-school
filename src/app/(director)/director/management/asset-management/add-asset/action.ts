@@ -1,0 +1,32 @@
+"use server";
+
+import prisma from "@/lib/prisma";
+import { assetDataInclude } from "@/lib/types";
+import { assetSchema, AssetSchema } from "@/lib/validation";
+
+export async function addAsset(input: AssetSchema) {
+  const { category, name, description } = assetSchema.parse(input);
+  const data = await prisma.asset.create({
+    data: {
+      category,
+      name,
+      description,
+    },
+    include: assetDataInclude,
+  });
+  return data;
+}
+
+export async function updateAsset(input: AssetSchema) {
+  const { category, name, description, id } = assetSchema.parse(input);
+  const data = await prisma.asset.update({
+    where: { id },
+    data: {
+      category,
+      name,
+      description,
+    },
+    include: assetDataInclude,
+  });
+  return data;
+}
