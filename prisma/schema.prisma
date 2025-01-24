@@ -26,6 +26,7 @@ model User {
   staffs        Staff[]
   feesPayments  FeesPayment[]
   borrowers     Borrower[]
+  assetDamages  AssetDamage[]
 
   @@map("users")
 }
@@ -242,9 +243,10 @@ model FoodStoreItem {
   asset         Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
   assetId       String
   foodName      String
-  unit          AssetUnit
   quantity      Float?
   trackQuantity Boolean           @default(false)
+  unit          AssetUnit
+  status        AssetItemStatus   @default(AVAILABLE)
   consumptions  FoodConsumption[]
   supplier      Supplier?         @relation(fields: [supplierId], references: [id], onDelete: SetNull)
   createdAt     DateTime          @default(now())
@@ -256,9 +258,15 @@ model FoodStoreItem {
 
 enum AssetUnit {
   KILOGRAM
+  GRAMS
+  PACKETS
   SAC
-  LITERS
-  PIECES
+  LITER
+  PIECE
+  PAIR
+  JERRICAN
+  CONTAINER
+  OTHERS
 }
 
 model FoodConsumption {
@@ -346,22 +354,22 @@ model LibraryBookDamage {
 }
 
 model LabItem {
-  id            String  @id @default(uuid())
-  asset         Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id            String          @id @default(uuid())
+  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
   name          String // e.g., Test tubes, Chemicals
   quantity      Float? // Quantity in stock
-  trackQuantity Boolean @default(false)
-
-  unit      AssetUnit
-  status    LabItemStatus @default(AVAILABLE)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  assetId   String
+  trackQuantity Boolean         @default(false)
+  damages       AssetDamage[]
+  unit          AssetUnit
+  status        AssetItemStatus @default(AVAILABLE)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  assetId       String
 
   @@map("lab_items")
 }
 
-enum LabItemStatus {
+enum AssetItemStatus {
   AVAILABLE
   IN_USE
   EXPIRED
@@ -383,16 +391,32 @@ model ComputerLabItem {
 }
 
 model GeneralStoreItem {
-  id            String  @id @default(uuid())
-  asset         Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id            String          @id @default(uuid())
+  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
   name          String // e.g., Chairs, Desks
   quantity      Float?
-  trackQuantity Boolean @default(false)
-
-  condition AssetCondition @default(NEW)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  assetId   String
+  unit          AssetUnit
+  trackQuantity Boolean         @default(false)
+  status        AssetItemStatus @default(AVAILABLE)
+  damages       AssetDamage[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  assetId       String
 
   @@map("general_store_items")
+}
+
+model AssetDamage {
+  id                 String            @id @default(uuid())
+  damagedBy          User              @relation(fields: [userId], references: [id])
+  damageDetails      String
+  condition          AssetCondition
+  quantity           Int
+  userId             String
+  generalStoreItem   GeneralStoreItem? @relation(fields: [generalStoreItemId], references: [id])
+  generalStoreItemId String?
+  labItem            LabItem?          @relation(fields: [labItemId], references: [id])
+  labItemId          String?
+
+  @@map("asset_damages")
 }

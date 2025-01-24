@@ -1,4 +1,4 @@
-import { AssetCategory, AssetUnit, LabItemStatus } from "@prisma/client";
+import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
 import z from "zod";
 
 const requiredString = z
@@ -158,19 +158,29 @@ export const laboratoryAssetSchema = z.object({
   name: requiredString.min(1, "Provide lab item name"),
   quantity: z.number().optional(),
   trackQuantity: z.boolean().default(false),
-  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECES),
-  status: z.nativeEnum(LabItemStatus).default(LabItemStatus.AVAILABLE),
+  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
+  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
 });
 export type LaboratoryAssetSchema = z.infer<typeof laboratoryAssetSchema>;
 
 // Food store asset
+// supplier management
+export const supplierSchema = z.object({
+  id: z.string().optional(),
+  name: requiredString.min(1, "Give the supplier a name."),
+  contactInfo: z.any(),
+  address: z.string().optional(),
+});
+export type SupplierSchema = z.infer<typeof supplierSchema>;
 export const foodStoreAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
   foodName: requiredString.min(1, "Provide a food store item name"),
   quantity: z.number().optional(),
-  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECES),
-  supplierId: z.string().optional(),
+  trackQuantity: z.boolean().default(false),
+  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
+  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
+  supplier: supplierSchema.optional(),
 });
 export type FoodStoreAssetSchema = z.infer<typeof foodStoreAssetSchema>;
 // Food consumption
@@ -184,11 +194,15 @@ export const foodConsumptionSchema = z.object({
   usageDetails: z.string(),
 });
 export type FoodConsumptionSchema = z.infer<typeof foodConsumptionSchema>;
-// supplier management
-export const supplierSchema = z.object({
+
+// General store
+export const generalStoreAssetSchema = z.object({
   id: z.string().optional(),
-  name: requiredString.min(1, "Give the supplier a name."),
-  contactInfo: z.any(),
-  address: z.string().optional(),
+  asset: assetSchema,
+  name: requiredString.min(1, "Provide a general store item name"),
+  quantity: z.number().optional(),
+  trackQuantity: z.boolean().default(false),
+  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
+  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
 });
-export type SupplierSchema = z.infer<typeof supplierSchema>;
+export type GeneralStoreAssetSchema = z.infer<typeof generalStoreAssetSchema>;

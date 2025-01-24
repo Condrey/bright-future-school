@@ -2,11 +2,11 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
-import { LabItemData } from "@/lib/types";
+import { FoodStoreItemData } from "@/lib/types";
 import {
   AssetSchema,
-  laboratoryAssetSchema,
-  LaboratoryAssetSchema,
+  foodStoreAssetSchema,
+  FoodStoreAssetSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
@@ -37,36 +37,36 @@ import {
   SelectValue,
 } from "../../barrel-file";
 import AssetSection from "../asset-section";
-import ListOfLabItems from "./list-of-lab-items";
-import { useLaboratoryMutation } from "./mutation";
+import ListOfFoodStoreItems from "./list-of-food-store-items";
+import { useFoodStoreMutation } from "./mutation";
 
-interface FormLaboratoryProps {
-  laboratoryItemToEdit?: LabItemData;
+interface FormFoodStoreProps {
+  foodStoreItemToEdit?: FoodStoreItemData;
 }
 
-export default function FormLaboratory({
-  laboratoryItemToEdit,
-}: FormLaboratoryProps) {
-  const form = useForm<LaboratoryAssetSchema>({
-    resolver: zodResolver(laboratoryAssetSchema),
+export default function FormFoodStore({
+  foodStoreItemToEdit,
+}: FormFoodStoreProps) {
+  const form = useForm<FoodStoreAssetSchema>({
+    resolver: zodResolver(foodStoreAssetSchema),
     defaultValues: {
-      asset: (laboratoryItemToEdit?.asset as AssetSchema) || {
-        id: "laboratory",
-        category: AssetCategory.LABORATORY,
+      asset: (foodStoreItemToEdit?.asset as AssetSchema) || {
+        id: "food-Store",
+        category: AssetCategory.FOOD_STORE,
         description:
-          "Equipments for performing laboratory experiments. For example, in the Chemistry department, Physics department, Biology department, and many more others.",
-        name: "Science lab equipments",
+          "Food items like maize flour, beans, cooking oil, onions, and many others.",
+        name: "Food store items",
       },
-      id: laboratoryItemToEdit?.id || "",
-      name: laboratoryItemToEdit?.name || "",
-      quantity: laboratoryItemToEdit?.quantity!,
-      trackQuantity: laboratoryItemToEdit?.trackQuantity || false,
-      unit: laboratoryItemToEdit?.unit || AssetUnit.PIECE,
-      status: laboratoryItemToEdit?.status || AssetItemStatus.AVAILABLE,
+      id: foodStoreItemToEdit?.id || "",
+      foodName: foodStoreItemToEdit?.foodName || "",
+      quantity: foodStoreItemToEdit?.quantity!,
+      trackQuantity: foodStoreItemToEdit?.trackQuantity || false,
+      unit: foodStoreItemToEdit?.unit || AssetUnit.PIECE,
+      status: foodStoreItemToEdit?.status || AssetItemStatus.AVAILABLE,
     },
   });
-  const mutation = useLaboratoryMutation();
-  const handleSubmit = (input: LaboratoryAssetSchema) => {
+  const mutation = useFoodStoreMutation();
+  const handleSubmit = (input: FoodStoreAssetSchema) => {
     mutation.mutate(input, {
       onSuccess() {
         form.reset();
@@ -88,20 +88,17 @@ export default function FormLaboratory({
               <Card className="space-y-4">
                 <CardHeader className="bg-muted/30">
                   <CardTitle>Item information</CardTitle>
-                  <CardDescription>Laboratory asset item</CardDescription>
+                  <CardDescription>Food store asset item</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="name"
+                    name="foodName"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="e.g., Blue litmus paper"
-                            {...field}
-                          />
+                          <Input placeholder="e.g., School bus" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -161,13 +158,12 @@ export default function FormLaboratory({
                               <TooltipContainer label="">
                                 <span>
                                   Whether or not{" "}
-                                  {!form.getValues("name")
+                                  {!form.getValues("foodName")
                                     ? "this item"
-                                    : form.getValues("name")}
+                                    : form.getValues("foodName")}
                                   's quantity should be tracked.{" "}
                                   <strong className="font-bold">
-                                    Some items do not need tracking, e.g.,
-                                    litmus paper, chalk, e.t.c
+                                    Some items do not need tracking.
                                   </strong>
                                 </span>
                               </TooltipContainer>
@@ -238,7 +234,7 @@ export default function FormLaboratory({
                       loading={mutation.isPending}
                       className="ms-auto w-fit"
                     >
-                      Submit item
+                      {`${!foodStoreItemToEdit ? "Submit" : "Update"}`} item
                     </LoadingButton>
                   </div>
                 </CardContent>
@@ -248,7 +244,7 @@ export default function FormLaboratory({
         </Form>
       </div>
       <div className="ms-auto hidden w-full max-w-md xl:flex">
-        <ListOfLabItems />
+        <ListOfFoodStoreItems />
       </div>
     </div>
   );

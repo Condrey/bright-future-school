@@ -1,4 +1,4 @@
-import { AssetCategory, AssetUnit, LabItemStatus } from "@prisma/client";
+import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
 import {
   ComputerIcon,
   ForkKnifeIcon,
@@ -50,12 +50,18 @@ export const assetCategories: Record<
 export const assetUnits: Record<AssetUnit, string> = {
   KILOGRAM: "Kilogram",
   SAC: "Sac",
-  LITERS: "Liter",
-  PIECES: "Piece",
+  LITER: "Liter",
+  PIECE: "Piece",
+  GRAMS: "Gram",
+  PACKETS: "Packet",
+  PAIR: "Pair",
+  JERRICAN: "Jerrican",
+  CONTAINER: "Container",
+  OTHERS: "Other",
 };
 //pairs,packets
 
-export const labItemStatuses: Record<LabItemStatus, string> = {
+export const assetItemStatuses: Record<AssetItemStatus, string> = {
   AVAILABLE: "Available",
   IN_USE: "In use",
   EXPIRED: "Expired ",
