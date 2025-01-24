@@ -32,10 +32,10 @@ export default function AssetSection<T extends { asset: AssetSchema }>({
 
   return (
     <div>
-      <Card>
+      <Card className="bg-muted/30">
         <CardHeader className="flex-row items-center justify-center">
           <Icon
-            className="size-44 rounded-full border border-foreground p-2"
+            className="size-44 rounded-full border bg-border p-2"
             strokeWidth={0.5}
           />
         </CardHeader>

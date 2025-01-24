@@ -46,8 +46,9 @@ export default function FormLaboratory({
     defaultValues: {
       asset: (laboratoryItemToEdit?.asset as AssetSchema) || {
         category: AssetCategory.LABORATORY,
-        description: "",
-        name: "",
+        description:
+          "Equipments for performing laboratory experiments. For example, in the Chemistry department, Physics department, Biology department, and many more others.",
+        name: "Science lab equipments",
       },
       id: laboratoryItemToEdit?.id || "",
       name: laboratoryItemToEdit?.name || "",
@@ -64,35 +65,25 @@ export default function FormLaboratory({
           onSubmit={form.handleSubmit(handleSubmit)}
           className="flex flex-col gap-4 md:flex-row"
         >
-          <Card className="flex-1 space-y-4 md:w-2/3">
-            <CardHeader>
-              <CardTitle>Item information</CardTitle>
-              <CardDescription>Laboratory asset item</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Blue litmus paper" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex gap-3">
+          <div className="flex flex-col gap-4 md:w-1/3">
+            <AssetSection form={form} />
+          </div>
+          <div className="flex-1 space-y-4 md:w-2/3">
+            <Card className="space-y-4">
+              <CardHeader className="bg-muted/30">
+                <CardTitle>Item information</CardTitle>
+                <CardDescription>Laboratory asset item</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <FormField
                   control={form.control}
-                  name="quantity"
+                  name="name"
                   render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>Quantity</FormLabel>
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <NumberInput
-                          placeholder="quantity of item ..."
+                        <Input
+                          placeholder="e.g. Blue litmus paper"
                           {...field}
                         />
                       </FormControl>
@@ -100,24 +91,72 @@ export default function FormLaboratory({
                     </FormItem>
                   )}
                 />
+                <div className="flex gap-3">
+                  <FormField
+                    control={form.control}
+                    name="quantity"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>Quantity</FormLabel>
+                        <FormControl>
+                          <NumberInput
+                            placeholder="quantity of item ..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="unit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Unit</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Unit" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Object.values(AssetUnit).map((value) => {
+                              const label = assetUnits[value];
+                              return (
+                                <SelectItem key={value} value={value}>
+                                  <span>{label}</span>
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={form.control}
-                  name="unit"
+                  name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Unit</FormLabel>
+                      <FormLabel>Status</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Unit" />
+                            <SelectValue placeholder="Select status type" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Object.values(AssetUnit).map((value) => {
-                            const label = assetUnits[value];
+                          {Object.values(LabItemStatus).map((value) => {
+                            const label = labItemStatuses[value];
                             return (
                               <SelectItem key={value} value={value}>
                                 <span>{label}</span>
@@ -130,49 +169,13 @@ export default function FormLaboratory({
                     </FormItem>
                   )}
                 />
-              </div>
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select status type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.values(LabItemStatus).map((value) => {
-                          const label = labItemStatuses[value];
-                          return (
-                            <SelectItem key={value} value={value}>
-                              <span>{label}</span>
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          <div className="flex flex-col gap-4 md:w-1/3">
-            <Card className="hidden md:flex">
-              <CardHeader className="flex w-full items-center justify-end">
-                <LoadingButton loading={false} className="ms-auto w-fit">
-                  Submit item
-                </LoadingButton>
-              </CardHeader>
+                <div className="flex w-full items-center justify-end">
+                  <LoadingButton loading={false} className="ms-auto w-fit">
+                    Submit item
+                  </LoadingButton>
+                </div>
+              </CardContent>
             </Card>
-            <AssetSection form={form} />
           </div>
         </form>
       </Form>
