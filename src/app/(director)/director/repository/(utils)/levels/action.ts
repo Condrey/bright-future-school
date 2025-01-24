@@ -21,7 +21,7 @@ export async function addLevelAction(input: LevelSchema) {
       name,
       slug: slugify(name),
     },
-    include:levelDataInclude,
+    include: levelDataInclude,
   });
   return data;
 }
@@ -34,7 +34,7 @@ export async function editLevelAction(input: LevelSchema) {
       name,
       slug: slugify(name),
     },
-    include:levelDataInclude,
+    include: levelDataInclude,
   });
   return data;
 }

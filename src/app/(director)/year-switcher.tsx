@@ -43,7 +43,8 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
 
   const searchParams = useSearchParams();
 
-  const searchParamYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)??undefined;
+  const searchParamYear =
+    searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
 
   if (status === "pending") {
     return <YearSwitcherFallback />;

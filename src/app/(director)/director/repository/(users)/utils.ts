@@ -8,4 +8,4 @@ export const yearClassStreamsQueryKey = (year: string): QueryKey => [
 export const yearTermStreamsQueryKey = (
   year?: string,
   termId?: string,
-): QueryKey => ["year-term-streams", year||'', termId||''];
+): QueryKey => ["year-term-streams", year || "", termId || ""];

@@ -2,7 +2,7 @@
 import { Session, User } from "lucia";
 import { createContext, useContext } from "react";
 interface SessionContext {
-  user: User ;
+  user: User;
   session: Session | null;
 }
 

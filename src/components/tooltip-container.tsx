@@ -33,7 +33,10 @@ export default function TooltipContainer({
       </TooltipTrigger>
       <TooltipContent
         align="start"
-        className={cn("flex h-fit min-h-fit max-w-sm flex-col text-sm", className)}
+        className={cn(
+          "flex h-fit min-h-fit max-w-sm flex-col text-sm",
+          className,
+        )}
       >
         {children}
       </TooltipContent>

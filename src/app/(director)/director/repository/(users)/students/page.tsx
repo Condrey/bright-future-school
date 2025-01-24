@@ -24,10 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
     <Fragment>
       <Suspense fallback={<HeaderContainerFallback />}>
         <HeaderContainer
-          breadCrumbs={[
-           
-            { label: "Pupils and Students (streams)" },
-          ]}
+          breadCrumbs={[{ label: "Pupils and Students (streams)" }]}
         />
       </Suspense>
       <BodyContainer>

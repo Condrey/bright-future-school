@@ -85,10 +85,10 @@ export function useUpdateStreamMutation() {
 export function useDeleteStreamMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (id:string) =>
+    mutationFn: (id: string) =>
       kyInstance
         .delete("/api/streams", {
-          body: JSON.stringify({id}),
+          body: JSON.stringify({ id }),
         })
         .json<string>(),
     async onSuccess(id) {

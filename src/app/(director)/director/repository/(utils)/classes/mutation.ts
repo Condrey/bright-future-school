@@ -62,7 +62,7 @@ export function useUpdateClassMutation() {
       queryClient.setQueryData<ClassData[]>(queryKey, (oldData) => {
         if (!oldData) return;
         return oldData.map((d) =>
-          d.id === updatedClass.id ? {...d,...updatedClass} : d,
+          d.id === updatedClass.id ? { ...d, ...updatedClass } : d,
         );
       });
 
@@ -87,7 +87,7 @@ export function useDeleteClassMutation() {
     mutationFn: (id: string) =>
       kyInstance
         .delete("/api/classes", {
-          body: JSON.stringify({id}),
+          body: JSON.stringify({ id }),
         })
         .json<string>(),
     async onSuccess(id) {

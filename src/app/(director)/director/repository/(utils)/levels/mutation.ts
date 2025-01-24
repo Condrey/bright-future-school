@@ -29,7 +29,7 @@ export function useAddLevelMutation() {
       // queryClient.invalidateQueries({ queryKey });
     },
 
-    onError(error, ) {
+    onError(error) {
       console.error(error);
       toast({
         variant: "destructive",
@@ -51,7 +51,7 @@ export function useUpdateLevelMutation() {
       queryClient.setQueryData<LevelData[]>(queryKey, (oldData) => {
         if (!oldData) return;
         return oldData.map((d) =>
-          d.id === updatedLevel.id ? {...d,...updatedLevel} : d,
+          d.id === updatedLevel.id ? { ...d, ...updatedLevel } : d,
         );
       });
 

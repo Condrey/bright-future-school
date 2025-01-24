@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import kyInstance from "@/lib/ky";
 import { DirectorDashboardParam } from "@/lib/types";
 import { YearSchema } from "@/lib/validation";
-import {  AcademicYear as Year } from "@prisma/client";
+import { AcademicYear as Year } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const queryKey: QueryKey = ["years"];
@@ -112,7 +112,7 @@ export function useDeleteYearMutation() {
     mutationFn: (id: string) =>
       kyInstance
         .delete("/api/academic-years", {
-          body: JSON.stringify({id}),
+          body: JSON.stringify({ id }),
         })
         .json<string>(),
     async onSuccess(id) {

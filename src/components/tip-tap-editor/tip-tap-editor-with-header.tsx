@@ -70,11 +70,11 @@ export default function TipTapEditorWithHeader({
     <div
       className={cn(
         "flex size-full max-h-[20rem] flex-col gap-y-3 overflow-y-auto rounded-md border border-input bg-background pb-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        className
+        className,
       )}
     >
       <TipTapEditorHeader editor={editor} />
-      <EditorContent editor={editor} className="min-h-[100px] px-5 " />
+      <EditorContent editor={editor} className="min-h-[100px] px-5" />
     </div>
   );
 }
@@ -87,7 +87,7 @@ function TipTapEditorHeader({ editor }: TipTapEditorHeaderProps) {
   if (!editor) return null;
 
   return (
-    <div className="border-b sticky top-0 z-10 control-group flex flex-row flex-wrap items-center gap-4 rounded-md bg-card px-3 py-2">
+    <div className="control-group sticky top-0 z-10 flex flex-row flex-wrap items-center gap-4 rounded-md border-b bg-card px-3 py-2">
       <ToggleGroup type="multiple" className="button-group" size="sm">
         {/* Headings  */}
         <DropdownMenu>

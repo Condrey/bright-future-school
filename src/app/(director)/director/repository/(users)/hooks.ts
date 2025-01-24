@@ -30,7 +30,8 @@ export function useFetchClassTeachers({ year }: { year: string }) {
 export function useFetchPupils({
   year,
   classId,
-  classStreamId,streamId
+  classStreamId,
+  streamId,
 }: {
   year: string;
   classId: string;

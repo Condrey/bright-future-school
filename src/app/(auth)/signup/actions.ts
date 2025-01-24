@@ -13,7 +13,6 @@ import { RedirectStatusCode } from "next/dist/client/components/redirect-status-
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-
 export async function signUp(
   credentials: SignUpValues,
 ): Promise<{ error: string }> {

@@ -30,8 +30,8 @@ export default function ListOfTermClassStreams({
 }: ListOfTermClassStreamsProps) {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
-  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)??undefined;
-  const termId = searchParams.get(PARAM_NAME_TERM)??undefined;
+  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
+  const termId = searchParams.get(PARAM_NAME_TERM) ?? undefined;
 
   const { data, status, error, isFetching, refetch } = useQuery({
     queryKey: yearTermStreamsQueryKey(year, termId),
@@ -94,7 +94,7 @@ export function ListOfTermClassStreamsFallback() {
 
 function TableHeaderSection({ terms, termName }: ListOfTermClassStreamsProps) {
   const searchParam = useSearchParams();
-  const academicYear = searchParam.get(PARAM_NAME_ACADEMIC_YEAR)??undefined;
+  const academicYear = searchParam.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
   // const academicTerm = searchParam.get(PARAM_NAME_TERM);
 
   const feesTotalPayment = terms

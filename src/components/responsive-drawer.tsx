@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import {useIsMobile}  from "@/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResponsiveDrawerProps {
   open: boolean;
@@ -36,8 +36,8 @@ export default function ResponsiveDrawer({
   description,
   className,
 }: ResponsiveDrawerProps) {
-      const isMobile = useIsMobile()
-  
+  const isMobile = useIsMobile();
+
   return (
     <>
       {!isMobile ? (

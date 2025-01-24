@@ -4,12 +4,13 @@ import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
 import { loginSchema, LoginValues } from "@/lib/validation";
 import { verify } from "@node-rs/argon2";
-import { REDIRECT_ERROR_CODE, RedirectType } from "next/dist/client/components/redirect-error";
+import {
+  REDIRECT_ERROR_CODE,
+  RedirectType,
+} from "next/dist/client/components/redirect-error";
 import { RedirectStatusCode } from "next/dist/client/components/redirect-status-code";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-
 
 export async function login(
   credentials: LoginValues,
@@ -55,7 +56,6 @@ export async function login(
     );
     return redirect("/");
   } catch (error) {
-
     console.error(error);
     return {
       error: "Something went wrong, Please try again.!",

@@ -20,7 +20,6 @@ export default function ListOfPupils({
   classId,
   streamId,
 }: ListOfPupilsProps) {
- 
   const { data, status, error, refetch, isFetching } = useFetchPupils({
     year,
     streamId,

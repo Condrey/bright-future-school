@@ -14,8 +14,8 @@ import {
 export function useUpdateSingleTermMutation() {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR)??undefined;
-  const termId = searchParams.get(PARAM_NAME_TERM)??undefined;
+  const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
+  const termId = searchParams.get(PARAM_NAME_TERM) ?? undefined;
 
   const mutation = useMutation({
     mutationFn: updateSingleClassTerm,
@@ -76,7 +76,6 @@ export function useUpdateMultipleClassTerms() {
   const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
   const termId = searchParams.get(PARAM_NAME_TERM) ?? undefined;
 
-
   const mutation = useMutation({
     mutationFn: updateMultipleClassTerms,
     async onSuccess(_, { input }) {
@@ -114,7 +113,6 @@ export function useUpdateAnnualClassTerms() {
   const searchParams = useSearchParams();
   const academicYear = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
   const termId = searchParams.get(PARAM_NAME_TERM) ?? undefined;
-
 
   const mutation = useMutation({
     mutationFn: updateAnnualClassTerms,

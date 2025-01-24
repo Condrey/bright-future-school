@@ -25,14 +25,14 @@ export function NavUser() {
   const { isMobile } = useSidebar();
   const { user } = useSession();
 
-    async function handleLogout() {
-      try {
-        await logoutUser();
-        toast({ description: `Successfully logged out ${user.name}` });
-      } catch (error) {
-        console.error(error);
-      }
+  async function handleLogout() {
+    try {
+      await logoutUser();
+      toast({ description: `Successfully logged out ${user.name}` });
+    } catch (error) {
+      console.error(error);
     }
+  }
 
   return (
     <SidebarMenu>

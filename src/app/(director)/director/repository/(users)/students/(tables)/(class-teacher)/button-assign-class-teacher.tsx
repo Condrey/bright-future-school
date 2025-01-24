@@ -10,7 +10,7 @@ interface ButtonAssignClassTeacherProps {
 
 export default function ButtonAssignClassTeacher({
   classTeacher,
-   classStreamId,
+  classStreamId,
   year,
 }: ButtonAssignClassTeacherProps) {
   const mutation = useAssignClassTeacherMutation(year);
