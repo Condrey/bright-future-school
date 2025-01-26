@@ -3,6 +3,7 @@ import {
   AssetCondition,
   AssetItemStatus,
   AssetUnit,
+  BookStatus,
 } from "@prisma/client";
 import {
   ComputerIcon,
@@ -94,4 +95,10 @@ export const assetConditions: Record<AssetCondition, string> = {
   FAIR: "Fairly good",
   POOR: "Poor quality",
   DAMAGED: "Damaged item",
+};
+
+export const bookStatuses: Record<BookStatus, string> = {
+  AVAILABLE: "Is available",
+  DAMAGED: "Is damaged",
+  BORROWED: "Is borrowed",
 };

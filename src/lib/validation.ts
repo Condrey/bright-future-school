@@ -3,6 +3,7 @@ import {
   AssetCondition,
   AssetItemStatus,
   AssetUnit,
+  BookStatus,
 } from "@prisma/client";
 import z from "zod";
 
@@ -226,3 +227,30 @@ export const computerLabAssetSchema = z.object({
   status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
 });
 export type ComputerLabAssetSchema = z.infer<typeof computerLabAssetSchema>;
+
+// Library lab
+export const libraryAssetCategorySchema = z.object({
+  id: z.string().optional(),
+  category: requiredString.min(1, "Provide a category name"),
+  description: z.string().optional(),
+});
+export type LibraryAssetCategorySchema = z.infer<
+  typeof libraryAssetCategorySchema
+>;
+export const libraryAssetSchema = z.object({
+  id: z.string().optional(),
+  asset: assetSchema,
+  title: requiredString
+    .min(1, "Provide a library item name")
+    .transform((val) =>
+      val.trim().replace(/\b\w/g, (char) => char.toUpperCase()),
+    ),
+  author: requiredString.min(1, "Author is required"),
+  category: libraryAssetCategorySchema,
+  isbn: z.string().optional(),
+  status: z.nativeEnum(BookStatus).default(BookStatus.AVAILABLE),
+  quantity: z.number().optional(),
+  trackQuantity: z.boolean().default(false),
+  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
+});
+export type LibraryAssetSchema = z.infer<typeof libraryAssetSchema>;

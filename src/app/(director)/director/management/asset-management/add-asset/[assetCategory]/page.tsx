@@ -6,7 +6,7 @@ import FormComputerLab from "./(computer-lab)/form-computer-lab";
 import FormFoodStore from "./(food-store)/form-food-store";
 import FormGeneralStore from "./(general-store)/form-general-store";
 import FormLaboratory from "./(lab)/form-laboratory";
-import FormLibrary from "./form-library";
+import FormLibrary from "./(library)/form-library";
 
 interface PageProps {
   params: Promise<{ assetCategory: string }>;

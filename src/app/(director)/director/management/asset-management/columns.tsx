@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { AssetData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
@@ -16,22 +17,27 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
       <DataTableColumnHeader column={column} title="Asset" />
     ),
   },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
-  },
+
   {
     accessorKey: "category",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category" />
     ),
+    cell:({row})=>{
+      const assetCategories:Record<AssetCategory,string> = {
+        LIBRARY: "Library asset",
+        COMPUTER_LAB: "Computer lab asset",
+        LABORATORY: "Laboratory asset",
+        GENERAL_STORE: "General store asset",
+        FOOD_STORE: "Food store asset"
+      }
+   
+   return <Badge variant={'secondary'}>{assetCategories[row.original.category]}</Badge>;}
   },
   {
     id: "asset.quantity",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Quantity" />
+      <DataTableColumnHeader column={column} title="Item quantity" />
     ),
     cell: ({ row }) => {
       const category = row.original.category;

@@ -121,7 +121,7 @@ export default function FormGeneralStore({
                           </FormControl>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectLabel>Lab item status </SelectLabel>
+                              <SelectLabel>Store item status </SelectLabel>
                               {Object.values(AssetItemStatus).map((value) => {
                                 const label = assetItemStatuses[value];
                                 return (

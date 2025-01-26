@@ -2,18 +2,19 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
-import { FoodStoreItemData } from "@/lib/types";
+import { LibraryBookData } from "@/lib/types";
 import {
   AssetSchema,
-  foodStoreAssetSchema,
-  FoodStoreAssetSchema,
+  LibraryAssetCategorySchema,
+  libraryAssetSchema,
+  LibraryAssetSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
+import { AssetCategory, AssetUnit, BookStatus } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetItemStatuses,
   assetUnits,
+  bookStatuses,
   Card,
   CardContent,
   CardDescription,
@@ -37,37 +38,38 @@ import {
   SelectValue,
 } from "../../barrel-file";
 import AssetSection from "../asset-section";
-import ListOfFoodStoreItems from "./list-of-food-store-items";
-import { useFoodStoreMutation } from "./mutation";
-import Supplier from "./supplier";
+import Category from "./category";
+import ListOfLibraryItems from "./list-of-library-items";
+import { useLibraryMutation } from "./mutation";
 
-interface FormFoodStoreProps {
-  foodStoreItemToEdit?: FoodStoreItemData;
+interface FormLibraryProps {
+  libraryItemToEdit?: LibraryBookData;
 }
 
-export default function FormFoodStore({
-  foodStoreItemToEdit,
-}: FormFoodStoreProps) {
-  const form = useForm<FoodStoreAssetSchema>({
-    resolver: zodResolver(foodStoreAssetSchema),
+export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
+  const form = useForm<LibraryAssetSchema>({
+    resolver: zodResolver(libraryAssetSchema),
     defaultValues: {
-      asset: (foodStoreItemToEdit?.asset as AssetSchema) || {
-        id: "food-Store",
-        category: AssetCategory.FOOD_STORE,
+      asset: (libraryItemToEdit?.asset as AssetSchema) || {
+        id: "library",
+        category: AssetCategory.LIBRARY,
         description:
-          "Food items like maize flour, beans, cooking oil, onions, and many others.",
-        name: "Food store items",
+          "Library asset items like books, novels, text books, encyclopedia, newspapers, journals. e.t.c.",
+        name: "Library items",
       },
-      id: foodStoreItemToEdit?.id || "",
-      foodName: foodStoreItemToEdit?.foodName || "",
-      quantity: foodStoreItemToEdit?.quantity!,
-      trackQuantity: foodStoreItemToEdit?.trackQuantity || false,
-      unit: foodStoreItemToEdit?.unit || AssetUnit.PIECE,
-      status: foodStoreItemToEdit?.status || AssetItemStatus.AVAILABLE,
+      category: libraryItemToEdit?.category! as LibraryAssetCategorySchema,
+      id: libraryItemToEdit?.id || "",
+      title: libraryItemToEdit?.title || "",
+      author: libraryItemToEdit?.author || "",
+      isbn: libraryItemToEdit?.isbn || "",
+      quantity: libraryItemToEdit?.quantity!,
+      trackQuantity: libraryItemToEdit?.trackQuantity || false,
+      unit: libraryItemToEdit?.unit || AssetUnit.PIECE,
+      status: libraryItemToEdit?.status || BookStatus.AVAILABLE,
     },
   });
-  const mutation = useFoodStoreMutation();
-  const handleSubmit = (input: FoodStoreAssetSchema) => {
+  const mutation = useLibraryMutation();
+  const handleSubmit = (input: LibraryAssetSchema) => {
     mutation.mutate(input, {
       onSuccess() {
         form.reset();
@@ -89,18 +91,64 @@ export default function FormFoodStore({
               <Card className="space-y-4">
                 <CardHeader className="bg-muted/30">
                   <CardTitle>Item information</CardTitle>
-                  <CardDescription>Food store asset item</CardDescription>
+                  <CardDescription>Library asset item</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="foodName"
+                    name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., rice" {...field} />
+                          <Input
+                            placeholder="e.g., Things Fall Apart"
+                            {...field}
+                          />
                         </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="author"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Author</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="the author of the book..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="isbn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ISBN</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="book ISBN, optional "
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <Category form={form} />
                         <FormMessage />
                       </FormItem>
                     )}
@@ -122,9 +170,9 @@ export default function FormFoodStore({
                           </FormControl>
                           <SelectContent>
                             <SelectGroup>
-                              <SelectLabel>Food store item status </SelectLabel>
-                              {Object.values(AssetItemStatus).map((value) => {
-                                const label = assetItemStatuses[value];
+                              <SelectLabel>Library status </SelectLabel>
+                              {Object.values(BookStatus).map((value) => {
+                                const label = bookStatuses[value];
                                 return (
                                   <SelectItem key={value} value={value}>
                                     <span>{label}</span>
@@ -159,12 +207,13 @@ export default function FormFoodStore({
                               <TooltipContainer label="">
                                 <span>
                                   Whether or not{" "}
-                                  {!form.getValues("foodName")
+                                  {!form.getValues("title")
                                     ? "this item"
-                                    : form.getValues("foodName")}
+                                    : form.getValues("title")}
                                   's quantity should be tracked.{" "}
                                   <strong className="font-bold">
-                                    Some items do not need tracking.
+                                    Some items do not need tracking, e.g.,
+                                    school keys, School sign post, e.t.c
                                   </strong>
                                 </span>
                               </TooltipContainer>
@@ -229,24 +278,13 @@ export default function FormFoodStore({
                       </div>
                     )}
                   </div>
-                  <FormField
-                    control={form.control}
-                    name="supplier"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Supplier</FormLabel>
-                        <Supplier form={form} />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
                   <div className="flex w-full items-center justify-end">
                     <LoadingButton
                       loading={mutation.isPending}
                       className="ms-auto w-fit"
                     >
-                      {`${!foodStoreItemToEdit ? "Submit" : "Update"}`} item
+                      {`${!libraryItemToEdit ? "Submit" : "Update"}`} item
                     </LoadingButton>
                   </div>
                 </CardContent>
@@ -256,7 +294,7 @@ export default function FormFoodStore({
         </Form>
       </div>
       <div className="ms-auto hidden w-full max-w-md xl:flex">
-        <ListOfFoodStoreItems />
+        <ListOfLibraryItems />
       </div>
     </div>
   );

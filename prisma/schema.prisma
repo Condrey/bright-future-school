@@ -307,6 +307,8 @@ model LibraryBook {
   unit                  AssetUnit
   trackQuantity         Boolean             @default(false)
   quantity              Float? // Quantity in stock
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
 
   @@map("library_books")
 }

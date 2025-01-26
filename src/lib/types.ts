@@ -266,6 +266,7 @@ export type AssetData = Prisma.AssetGetPayload<{
 // Library
 export const libraryBookDataInclude = {
   asset: true,
+  category: true,
 } satisfies Prisma.LibraryBookInclude;
 export type LibraryBookData = Prisma.LibraryBookGetPayload<{
   include: typeof libraryBookDataInclude;
