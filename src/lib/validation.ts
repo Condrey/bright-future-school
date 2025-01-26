@@ -1,4 +1,9 @@
-import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
+import {
+  AssetCategory,
+  AssetCondition,
+  AssetItemStatus,
+  AssetUnit,
+} from "@prisma/client";
 import z from "zod";
 
 const requiredString = z
@@ -206,3 +211,18 @@ export const generalStoreAssetSchema = z.object({
   status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
 });
 export type GeneralStoreAssetSchema = z.infer<typeof generalStoreAssetSchema>;
+
+// Computer lab
+export const computerLabAssetSchema = z.object({
+  id: z.string().optional(),
+  asset: assetSchema,
+  name: requiredString.min(1, "Provide a computer lab item name"),
+  model: z.string().optional(),
+  specification: z.string().optional(),
+  quantity: z.number().optional(),
+  trackQuantity: z.boolean().default(false),
+  unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
+});
+export type ComputerLabAssetSchema = z.infer<typeof computerLabAssetSchema>;

@@ -1,4 +1,9 @@
-import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
+import {
+  AssetCategory,
+  AssetCondition,
+  AssetItemStatus,
+  AssetUnit,
+} from "@prisma/client";
 import {
   ComputerIcon,
   ForkKnifeIcon,
@@ -81,4 +86,12 @@ export const assetItemStatuses: Record<AssetItemStatus, string> = {
   AVAILABLE: "Available",
   IN_USE: "In use",
   EXPIRED: "Expired ",
+};
+
+export const assetConditions: Record<AssetCondition, string> = {
+  NEW: "Brand new",
+  GOOD: "Good quality",
+  FAIR: "Fairly good",
+  POOR: "Poor quality",
+  DAMAGED: "Damaged item",
 };

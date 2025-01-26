@@ -34,10 +34,9 @@ export default function AssetSection<T extends { asset: AssetSchema }>({
     <div>
       <Card className="bg-muted/30">
         <CardHeader className="flex-row items-center justify-center">
-          <Icon
-            className="size-44 rounded-full border bg-border p-2"
-            strokeWidth={0.5}
-          />
+          <div className="flex size-44 items-center justify-center rounded-full border bg-border p-2">
+            <Icon className="size-36" strokeWidth={0.5} />
+          </div>
         </CardHeader>
         <CardContent>
           <CardTitle>{formValues.asset.name}</CardTitle>

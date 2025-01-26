@@ -2,10 +2,10 @@ import BodyContainer from "@/app/(director)/body-container";
 import HeaderContainer from "@/app/(director)/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
+import FormComputerLab from "./(computer-lab)/form-computer-lab";
 import FormFoodStore from "./(food-store)/form-food-store";
 import FormGeneralStore from "./(general-store)/form-general-store";
 import FormLaboratory from "./(lab)/form-laboratory";
-import FormComputerLab from "./form-computer-lab";
 import FormLibrary from "./form-library";
 
 interface PageProps {

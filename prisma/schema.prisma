@@ -304,6 +304,9 @@ model LibraryBook {
   bookDamages           LibraryBookDamage[]
   assetId               String
   libraryBookCategoryId String
+  unit                  AssetUnit
+  trackQuantity         Boolean             @default(false)
+  quantity              Float? // Quantity in stock
 
   @@map("library_books")
 }
@@ -376,15 +379,18 @@ enum AssetItemStatus {
 }
 
 model ComputerLabItem {
-  id            String         @id @default(uuid())
-  asset         Asset          @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id            String          @id @default(uuid())
+  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
   name          String // e.g., Keyboard, Mouse, AC
   model         String?
   specification String?
   quantity      Float?
-  condition     AssetCondition @default(NEW)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  unit          AssetUnit
+  trackQuantity Boolean         @default(false)
+  status        AssetItemStatus @default(AVAILABLE)
+  condition     AssetCondition  @default(NEW)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   assetId       String
 
   @@map("computer_lab_items")
