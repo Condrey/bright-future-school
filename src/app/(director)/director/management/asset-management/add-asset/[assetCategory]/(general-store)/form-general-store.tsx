@@ -37,6 +37,7 @@ import {
   SelectValue,
 } from "../../barrel-file";
 import AssetSection from "../asset-section";
+import Asset from "./asset";
 import ListOfGeneralStoreItems from "./list-of-general-store-items";
 import { useGeneralStoreMutation } from "./mutation";
 
@@ -85,6 +86,27 @@ export default function FormGeneralStore({
               <AssetSection form={form} />
             </div>
             <div className="flex-1 space-y-4 md:w-2/3">
+              <Card className="space-y-4">
+                <CardHeader className="bg-muted/30">
+                  <CardTitle>Asset information</CardTitle>
+                  <CardDescription>
+                    General store items may fall under different assets. Specify
+                    it here.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="asset"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Asset</FormLabel>
+                        <Asset form={form} />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
               <Card className="space-y-4">
                 <CardHeader className="bg-muted/30">
                   <CardTitle>Item information</CardTitle>

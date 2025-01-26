@@ -4,6 +4,7 @@ import { AssetData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import { ComputerIcon, ForkKnifeIcon, LibraryIcon, LucideIcon, StoreIcon, TestTubeIcon } from "lucide-react";
 
 export const useAssetColumns: ColumnDef<AssetData>[] = [
   {
@@ -16,6 +17,19 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Asset" />
     ),
+    cell:({row})=>{
+       const assetCategories: Record<AssetCategory, LucideIcon> = {
+         LIBRARY: LibraryIcon,
+         COMPUTER_LAB:ComputerIcon,
+         LABORATORY: TestTubeIcon,
+         GENERAL_STORE: StoreIcon,
+         FOOD_STORE: ForkKnifeIcon,
+       };
+       const Icon = assetCategories[row.original.category]
+   return <div className="flex">
+<Icon className="size-4 mr-2"/> <span>{row.original.name}</span>
+   </div>
+    }
   },
 
   {
