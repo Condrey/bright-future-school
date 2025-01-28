@@ -3,6 +3,7 @@ import HeaderContainer, {
   HeaderContainerFallback,
 } from "@/app/(director)/header-container";
 import { Fragment, Suspense } from "react";
+import HeaderDetails from "./(header)/header";
 import { getAllAssets } from "./action";
 import ListOfAssets from "./list-of-assets";
 
@@ -15,7 +16,7 @@ export default async function Page() {
       </Suspense>
       <BodyContainer className="gap-6">
         {/* header containers  */}
-        <div className="flex flex-wrap justify-center gap-4"></div>
+        <HeaderDetails />
         {/* list of assets */}
         <ListOfAssets assets={assets} />
       </BodyContainer>

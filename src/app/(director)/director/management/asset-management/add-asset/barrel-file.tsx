@@ -102,3 +102,11 @@ export const bookStatuses: Record<BookStatus, string> = {
   DAMAGED: "Is damaged",
   BORROWED: "Is borrowed",
 };
+
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";

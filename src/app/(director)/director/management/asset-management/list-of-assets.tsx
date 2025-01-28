@@ -25,7 +25,7 @@ export default function ListOfAssets({ assets }: ListOfAssetsProps) {
   return (
     <div className="w-full">
       <div className="flex w-full items-center">
-        <h1>List of assets</h1>
+        <h1 className="text-xl tracking-tight">List of assets <span className="text-muted-foreground">({data.length})</span></h1>
         <ButtonAddAsset className="ms-auto" />
       </div>
       {status === "error" ? (
