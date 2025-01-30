@@ -81,7 +81,7 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={summary.length} label="Assets" />
+          <NumericHolder count={summary.length} label="Sub assets" />
           <NumericHolder count={itemsAvailable} label="Available" />
           <NumericHolder count={itemsExpired} label="Expired" />
         </div>
