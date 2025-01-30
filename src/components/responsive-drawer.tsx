@@ -14,10 +14,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResponsiveDrawerProps {
   open: boolean;

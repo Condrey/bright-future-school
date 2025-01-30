@@ -17,6 +17,7 @@ export async function login(
 ): Promise<{ error: string }> {
   try {
     const cookieStore = await cookies();
+    console.log(credentials)
     const { username, password } = loginSchema.parse(credentials);
 
     const existingUser = await prisma.user.findFirst({
@@ -26,7 +27,7 @@ export async function login(
           mode: "insensitive",
         },
       },
-    });
+    });console.log(existingUser)
     if (!existingUser || !existingUser.passwordHash) {
       return {
         error: "Incorrect username or password.",
@@ -56,7 +57,7 @@ export async function login(
     );
     return redirect("/");
   } catch (error) {
-    console.error(error);
+    console.error(`Login error: ${error}`,);
     return {
       error: "Something went wrong, Please try again.!",
     };
