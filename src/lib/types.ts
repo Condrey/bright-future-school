@@ -279,6 +279,12 @@ export const computerLabItemDataInclude = {
 export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
   include: typeof computerLabItemDataInclude;
 }>;
+export const individualComputerLabItemDataInclude =
+  {} satisfies Prisma.IndividualComputerLabItemInclude;
+export type IndividualComputerLabItemData =
+  Prisma.IndividualComputerLabItemGetPayload<{
+    include: typeof individualComputerLabItemDataInclude;
+  }>;
 
 // Lab item
 export const labItemDataInclude = {

@@ -220,13 +220,21 @@ export const computerLabAssetSchema = z.object({
   name: requiredString.min(1, "Provide a computer lab item name"),
   model: z.string().optional(),
   specification: z.string().optional(),
-  quantity: z.number().optional(),
-  trackQuantity: z.boolean().default(false),
+  quantity: z.number(),
+  trackQuantity: z.boolean().default(true),
   unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
-  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
-  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
 });
 export type ComputerLabAssetSchema = z.infer<typeof computerLabAssetSchema>;
+export const individualComputerLabItemSchema = z.object({
+  id: z.string().optional(),
+  uniqueIdentifier: z.string().optional(),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
+  computerLabItemId: requiredString.min(1, "Computer Lab Item is missing"),
+});
+export type IndividualComputerLabItemSchema = z.infer<
+  typeof individualComputerLabItemSchema
+>;
 
 // Library lab
 export const libraryAssetCategorySchema = z.object({
@@ -247,10 +255,15 @@ export const libraryAssetSchema = z.object({
     ),
   author: requiredString.min(1, "Author is required"),
   category: libraryAssetCategorySchema,
-  isbn: z.string().optional(),
-  status: z.nativeEnum(BookStatus).default(BookStatus.AVAILABLE),
-  quantity: z.number().optional(),
-  trackQuantity: z.boolean().default(false),
+  quantity: z.number(),
+  trackQuantity: z.boolean().default(true),
   unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
 });
 export type LibraryAssetSchema = z.infer<typeof libraryAssetSchema>;
+export const individualBookSchema = z.object({
+  id: z.string().optional(),
+  isbn: z.string().optional(),
+  status: z.nativeEnum(BookStatus).default(BookStatus.AVAILABLE),
+  libraryBookId: requiredString.min(1, "Library book is missing"),
+});
+export type IndividualBookSchema = z.infer<typeof individualBookSchema>;

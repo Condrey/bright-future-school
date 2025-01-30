@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession } from "@/app/session-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
-import { AssetData } from "@/lib/types";
+import { ComputerLabItemData } from "@/lib/types";
 import { Role } from "@prisma/client";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
@@ -21,14 +22,16 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
-import AddEditAsset from "./add-edit-asset";
-import DialogDeleteAsset from "./dialog-delete-asset";
+import AddEditComputerLabItem from "./add-edit-computerLabItem";
+import DialogDeleteComputerLabItem from "./dialog-delete-computerLabItem";
 
-interface DropDownMenuAssetProps {
-  asset: AssetData;
+interface DropDownMenuComputerLabItemProps {
+  computerLabItem: ComputerLabItemData;
 }
 
-export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
+export default function DropDownMenuComputerLabItem({
+  computerLabItem,
+}: DropDownMenuComputerLabItemProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [showDialog, setShowDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -48,30 +51,30 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(asset.id)}
+              onClick={() => navigator.clipboard.writeText(computerLabItem.id)}
             >
               <CopyIcon className="mr-2 size-4" />
-              <span>Copy Asset Id</span>
+              <span>Copy Computer Lab Item Id</span>
             </DropdownMenuItem>
             {user.role === Role.SUPER_ADMIN && (
               <DropdownMenuItem
                 onClick={() =>
-                  navigator.clipboard.writeText(JSON.stringify(asset))
+                  navigator.clipboard.writeText(JSON.stringify(computerLabItem))
                 }
               >
                 <CopyIcon className="mr-2 size-4" />
-                <span>Copy Asset</span>
+                <span>Copy Computer Lab Item</span>
               </DropdownMenuItem>
             )}
             <DropdownMenuItem
               onClick={() =>
                 navigateOnclickWithPathnameWithoutUpdate(
-                  `/director/management/asset-management/store/${asset.category.toLocaleLowerCase()}`,
+                  `/director/management/computerLabItem-management/store/${computerLabItem.category.toLocaleLowerCase()}`,
                 )
               }
             >
               <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View asset</span>
+              <span>View computer Lab Item</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
@@ -81,7 +84,7 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
               className="font-semibold text-foreground"
             >
               <Edit2Icon className="mr-2 size-4 fill-foreground text-foreground" />
-              <span>Edit Asset</span>
+              <span>Edit ComputerLabItem</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -89,19 +92,19 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
               className="font-semibold text-destructive"
             >
               <Trash2Icon className="mr-2 size-4 fill-destructive" />
-              <span>Delete Asset</span>
+              <span>Delete ComputerLabItem</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AddEditAsset
-        assetToEdit={asset}
+      <AddEditComputerLabItem
+        computerLabItemToEdit={computerLabItem}
         open={showDialog}
         setOpen={setShowDialog}
       />
-      <DialogDeleteAsset
-        asset={asset}
+      <DialogDeleteComputerLabItem
+        computerLabItem={computerLabItem}
         open={showDeleteDialog}
         openChange={setShowDeleteDialog}
       />

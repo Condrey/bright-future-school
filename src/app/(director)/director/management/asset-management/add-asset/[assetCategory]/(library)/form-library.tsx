@@ -10,11 +10,10 @@ import {
   LibraryAssetSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AssetCategory, AssetUnit, BookStatus } from "@prisma/client";
+import { AssetCategory, AssetUnit } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
   assetUnits,
-  bookStatuses,
   Card,
   CardContent,
   CardDescription,
@@ -61,11 +60,9 @@ export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
       id: libraryItemToEdit?.id || "",
       title: libraryItemToEdit?.title || "",
       author: libraryItemToEdit?.author || "",
-      isbn: libraryItemToEdit?.isbn || "",
       quantity: libraryItemToEdit?.quantity!,
-      trackQuantity: libraryItemToEdit?.trackQuantity || false,
+      trackQuantity: libraryItemToEdit?.trackQuantity || true,
       unit: libraryItemToEdit?.unit || AssetUnit.PIECE,
-      status: libraryItemToEdit?.status || BookStatus.AVAILABLE,
     },
   });
   const mutation = useLibraryMutation();
@@ -126,7 +123,7 @@ export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
                       </FormItem>
                     )}
                   />
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="isbn"
                     render={({ field }) => (
@@ -141,7 +138,7 @@ export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                   <FormField
                     control={form.control}
                     name="category"
@@ -153,7 +150,7 @@ export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
                       </FormItem>
                     )}
                   />
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="status"
                     render={({ field }) => (
@@ -185,7 +182,7 @@ export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                   <div className="flex flex-col items-start space-y-4 rounded-md border p-4 shadow">
                     <FormField
                       control={form.control}

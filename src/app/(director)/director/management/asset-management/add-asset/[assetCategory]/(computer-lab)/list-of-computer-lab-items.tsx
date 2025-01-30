@@ -1,7 +1,6 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { formatNumber } from "@/lib/utils";
@@ -82,7 +81,7 @@ export default function ListOfComputerLabItems() {
           variant={"secondary"}
           onClick={() =>
             navigateOnclickWithPathnameWithoutUpdate(
-              "/director/management/asset-management/lab/computer_lab",
+              "/director/management/asset-management/store/computer_lab",
             )
           }
           className="ms-auto"
@@ -97,14 +96,10 @@ export default function ListOfComputerLabItems() {
               <span>{index + 1}</span>
               <span>{item.name}</span>
               <div className="ms-auto">
-                {item.trackQuantity ? (
-                  <div className="flex items-center gap-1">
-                    <span>{formatNumber(item.quantity || 0)}</span>
-                    <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"} left`}</span>
-                  </div>
-                ) : (
-                  <Badge variant={"outline"}>{item.status}</Badge>
-                )}
+                <div className="flex items-center gap-1">
+                  <span>{formatNumber(item.quantity || 0)}</span>
+                  <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"}`}</span>
+                </div>
               </div>
             </li>
           ))}

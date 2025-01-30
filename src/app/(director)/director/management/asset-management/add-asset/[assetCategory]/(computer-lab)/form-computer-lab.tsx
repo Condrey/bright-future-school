@@ -10,16 +10,9 @@ import {
   ComputerLabAssetSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  AssetCategory,
-  AssetCondition,
-  AssetItemStatus,
-  AssetUnit,
-} from "@prisma/client";
+import { AssetCategory, AssetUnit } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetConditions,
-  assetItemStatuses,
   assetUnits,
   Card,
   CardContent,
@@ -69,10 +62,8 @@ export default function FormComputerLab({
       model: computerLabItemToEdit?.model || "",
       specification: computerLabItemToEdit?.specification || "",
       quantity: computerLabItemToEdit?.quantity!,
-      trackQuantity: computerLabItemToEdit?.trackQuantity || false,
+      trackQuantity: computerLabItemToEdit?.trackQuantity || true,
       unit: computerLabItemToEdit?.unit || AssetUnit.PIECE,
-      condition: computerLabItemToEdit?.condition || AssetCondition.NEW,
-      status: computerLabItemToEdit?.status || AssetItemStatus.AVAILABLE,
     },
   });
   const mutation = useComputerLabMutation();
@@ -149,7 +140,7 @@ export default function FormComputerLab({
                       </FormItem>
                     )}
                   />
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="condition"
                     render={({ field }) => (
@@ -214,7 +205,7 @@ export default function FormComputerLab({
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                   <div className="flex flex-col items-start space-y-4 rounded-md border p-4 shadow">
                     <FormField
                       control={form.control}

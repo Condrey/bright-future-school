@@ -9,7 +9,6 @@ export async function getComputerLabSummary() {
     select: {
       id: true,
       name: true,
-      status: true,
     },
   });
   return summary;
@@ -70,7 +69,6 @@ export async function getAllLibraryItems() {
     select: {
       id: true,
       title: true,
-      status: true,
     },
   });
   return summary;

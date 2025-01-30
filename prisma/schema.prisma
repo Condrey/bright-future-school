@@ -298,10 +298,6 @@ model LibraryBook {
   title                 String
   author                String
   category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id], onDelete: Cascade)
-  isbn                  String? // Optional ISBN
-  borrowers             Borrower[]
-  status                BookStatus          @default(AVAILABLE)
-  bookDamages           LibraryBookDamage[]
   assetId               String
   libraryBookCategoryId String
   unit                  AssetUnit
@@ -309,8 +305,24 @@ model LibraryBook {
   quantity              Float? // Quantity in stock
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
+  individualBooks       IndividualBook[]
 
+  @@unique([title, author])
   @@map("library_books")
+}
+
+model IndividualBook {
+  id            String              @id @default(uuid())
+  isbn          String? // Optional ISBN
+  borrowers     Borrower[]
+  status        BookStatus          @default(AVAILABLE)
+  bookDamages   LibraryBookDamage[]
+  libraryBook   LibraryBook         @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
+  libraryBookId String
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@map("individual_books")
 }
 
 model LibraryBookCategory {
@@ -328,8 +340,8 @@ model Borrower {
   borrowedAt         DateTime            @default(now())
   returnAt           DateTime?
   status             BorrowStatus        @default(ONGOING)
-  libraryBook        LibraryBook?        @relation(fields: [libraryBookId], references: [id], onDelete: SetNull)
-  libraryBookId      String?
+  libraryBook        IndividualBook?     @relation(fields: [individualBookId], references: [id], onDelete: SetNull)
+  individualBookId   String?
   userId             String
   libraryBookDamages LibraryBookDamage[]
 
@@ -348,12 +360,12 @@ enum BookStatus {
 }
 
 model LibraryBookDamage {
-  id            String       @id @default(uuid())
-  damagedBy     Borrower     @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
-  damageDetails String
-  libraryBook   LibraryBook? @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
-  libraryBookId String?
-  borrowerId    String
+  id               String          @id @default(uuid())
+  damagedBy        Borrower        @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
+  damageDetails    String
+  libraryBook      IndividualBook? @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
+  individualBookId String?
+  borrowerId       String
 
   @@map("library_book_damages")
 }
@@ -381,21 +393,32 @@ enum AssetItemStatus {
 }
 
 model ComputerLabItem {
-  id            String          @id @default(uuid())
-  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id            String    @id @default(uuid())
+  asset         Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
   name          String // e.g., Keyboard, Mouse, AC
   model         String?
   specification String?
   quantity      Float?
   unit          AssetUnit
-  trackQuantity Boolean         @default(false)
-  status        AssetItemStatus @default(AVAILABLE)
-  condition     AssetCondition  @default(NEW)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  assetId       String
+  trackQuantity Boolean   @default(false)
+
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  assetId                    String
+  individualComputerLabItems IndividualComputerLabItem[]
 
   @@map("computer_lab_items")
+}
+
+model IndividualComputerLabItem {
+  id                String          @id @default(uuid())
+  computerLabItem   ComputerLabItem @relation(fields: [computerLabItemId], references: [id], onDelete: Cascade)
+  computerLabItemId String
+  uniqueIdentifier  String?         @unique
+  status            AssetItemStatus @default(AVAILABLE)
+  condition         AssetCondition  @default(NEW)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }
 
 model GeneralStoreItem {

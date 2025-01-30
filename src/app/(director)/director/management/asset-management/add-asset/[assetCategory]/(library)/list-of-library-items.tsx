@@ -1,7 +1,6 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { formatNumber } from "@/lib/utils";
@@ -103,14 +102,10 @@ export default function ListOfLibraryItems() {
               </div>
 
               <div className="ms-auto">
-                {item.trackQuantity ? (
-                  <div className="flex items-center gap-1">
-                    <span>{formatNumber(item.quantity || 0)}</span>
-                    <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"} left`}</span>
-                  </div>
-                ) : (
-                  <Badge variant={"outline"}>{item.status}</Badge>
-                )}
+                <div className="flex items-center gap-1">
+                  <span>{formatNumber(item.quantity || 0)}</span>
+                  <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"} `}</span>
+                </div>
               </div>
             </li>
           ))}

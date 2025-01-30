@@ -8,6 +8,8 @@ import {
   libraryAssetSchema,
   LibraryAssetSchema,
 } from "@/lib/validation";
+import { BookStatus } from "@prisma/client";
+import cuid from "cuid";
 
 export async function getAllLibraryAssetCategory() {
   const data = await prisma.libraryBookCategory.findMany({
@@ -34,26 +36,16 @@ export async function getAllLibraryAssetItems() {
 }
 
 export async function createLibraryAssetItem(input: LibraryAssetSchema) {
-  const {
-    asset,
-    title,
-    quantity,
-    status,
-    trackQuantity,
-    unit,
-    author,
-    category,
-    isbn,
-  } = libraryAssetSchema.parse(input);
+  const { asset, title, quantity, trackQuantity, unit, author, category } =
+    libraryAssetSchema.parse(input);
+  const uniqueId = cuid();
   const data = await prisma.libraryBook.create({
     data: {
       title,
       quantity: quantity || 0,
-      status,
       trackQuantity,
       unit,
       author,
-      isbn,
       category: {
         connectOrCreate: {
           where: { id: category.id },
@@ -73,6 +65,18 @@ export async function createLibraryAssetItem(input: LibraryAssetSchema) {
             name: asset.name,
             description: asset.description,
           },
+        },
+      },
+      individualBooks: {
+        createMany: {
+          data:
+            !!quantity && quantity > 0
+              ? Array.from({ length: quantity || 0 }, (_, index) => ({
+                  id: `${uniqueId}=${index}`,
+                  isbn: null,
+                  status: BookStatus.AVAILABLE,
+                }))
+              : [],
         },
       },
     },
