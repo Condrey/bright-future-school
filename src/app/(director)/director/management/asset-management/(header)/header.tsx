@@ -23,6 +23,7 @@ export default function HeaderDetails() {
       plugins={[
         Autoplay({
           delay: 4000,
+          
         }),
       ]}
     >
