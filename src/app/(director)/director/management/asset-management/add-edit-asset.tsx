@@ -21,7 +21,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./barrel-file";
+} from "./add-asset/barrel-file";
 import { useAddAssetMutation, useUpdateAssetMutation } from "./mutation";
 
 interface AddEditAssetProps {
@@ -51,7 +51,7 @@ export default function AddEditAsset({
     setOpen(false);
   }
   function handleFormSubmit(input: AssetSchema) {
-    !assetToEdit
+    assetToEdit
       ? updateAssetMutation.mutate(input, { onSuccess })
       : addAssetMutation.mutate(input, { onSuccess });
   }
@@ -62,7 +62,10 @@ export default function AddEditAsset({
       title={`${assetToEdit ? "Add" : "Update"} asset.`}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(handleFormSubmit)}
+          className="space-y-4"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -103,8 +106,10 @@ export default function AddEditAsset({
                       const label = assetCategories[value].label;
                       return (
                         <SelectItem key={value} value={value}>
-                          <Icon className="size-4" />
-                          <span>{label}</span>
+                          <div className="flex flex-row">
+                            <Icon className="size-4" />
+                            <span>{label}</span>
+                          </div>
                         </SelectItem>
                       );
                     })}

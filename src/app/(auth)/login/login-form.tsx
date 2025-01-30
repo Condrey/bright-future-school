@@ -13,13 +13,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginSchema, LoginValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useState, useTransition } from "react";
+import {  useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { login } from "./actions";
 
 export default function LoginForm() {
   const [error, setError] = useState<string>();
-  const [isPending] = useTransition();
+  const [isPending,startTransition] = useTransition();
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
