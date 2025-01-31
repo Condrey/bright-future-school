@@ -32,6 +32,7 @@ import {
   useAddMultipleItemMutation,
   useAddSingleItemMutation,
 } from "./mutation";
+export { NumberInput } from "@/components/number-input/number-input";
 
 interface ButtonAddTemProps {
   lastIndex: number;
@@ -106,13 +107,12 @@ export default function ButtonAddItem({
             <FormField
               control={form.control}
               name="quantity"
-              render={(field) => (
-                <FormItem>
+              render={({ field }) => (
+                <FormItem className="flex-1">
                   <FormLabel>Quantity</FormLabel>
                   <FormControl>
                     <NumberInput
-                      name={"quantity"}
-                      placeholder="enter quantity here..."
+                      placeholder="quantity of item ..."
                       {...field}
                     />
                   </FormControl>
