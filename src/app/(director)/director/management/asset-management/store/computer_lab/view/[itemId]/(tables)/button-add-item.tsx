@@ -55,7 +55,11 @@ export default function ButtonAddItem({
     },
   });
   function handleFormSubmit(input: ItemSchema) {
-    multipleItemMutation.mutate(input);
+    multipleItemMutation.mutate(input, {
+      onSettled() {
+        setOpen(false);
+      },
+    });
   }
   return (
     <>
@@ -120,9 +124,11 @@ export default function ButtonAddItem({
                 </FormItem>
               )}
             />
-            <LoadingButton loading={multipleItemMutation.isPending}>
-              Add items
-            </LoadingButton>
+            <div className="flex items-center justify-end">
+              <LoadingButton loading={multipleItemMutation.isPending}>
+                Add items
+              </LoadingButton>
+            </div>
           </form>
         </Form>
       </ResponsiveDrawer>

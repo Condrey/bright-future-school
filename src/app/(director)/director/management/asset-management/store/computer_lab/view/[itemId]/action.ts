@@ -59,7 +59,6 @@ export async function addMultipleItem(input: ItemSchema) {
         createMany: {
           data: Array.from({ length: quantity }, (_, index) => ({
             id: `${parentId}==${index}`,
-            computerLabItemId: parentId,
             condition: AssetCondition.NEW,
             status: AssetItemStatus.AVAILABLE,
             uniqueIdentifier: null,
