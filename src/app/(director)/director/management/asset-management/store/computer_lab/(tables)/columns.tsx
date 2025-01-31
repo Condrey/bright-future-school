@@ -8,6 +8,7 @@ import { ComputerLabItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { assetUnits } from "../../../add-asset/barrel-file";
+import DropDownMenuComputerLabItem from "./drop-down-menu-computer-lab-item";
 
 export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
   {
@@ -56,6 +57,16 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
           )}
         </div>
       );
+    },
+  },
+  {
+    id: "action",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Action" />
+    ),
+    cell({row}) {
+      return <DropDownMenuComputerLabItem computerLabItem={row.original}/>
+      
     },
   },
 ];

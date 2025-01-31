@@ -38,7 +38,10 @@ import {
 } from "../../barrel-file";
 import AssetSection from "../asset-section";
 import ListOfComputerLabItems from "./list-of-computer-lab-items";
-import { useComputerLabMutation } from "./mutation";
+import {
+  useAddComputerLabMutation,
+  useUpdateComputerLabMutation,
+} from "./mutation";
 
 interface FormComputerLabProps {
   computerLabItemToEdit?: ComputerLabItemData;
@@ -66,13 +69,17 @@ export default function FormComputerLab({
       unit: computerLabItemToEdit?.unit || AssetUnit.PIECE,
     },
   });
-  const mutation = useComputerLabMutation();
+  const mutation = useAddComputerLabMutation();
+  const updateMutation = useUpdateComputerLabMutation();
+  function onSuccess() {
+    form.reset();
+  }
   const handleSubmit = (input: ComputerLabAssetSchema) => {
-    mutation.mutate(input, {
-      onSuccess() {
-        form.reset();
-      },
-    });
+    !computerLabItemToEdit
+      ? mutation.mutate(input, {
+          onSuccess,
+        })
+      : updateMutation.mutate(input, { onSuccess });
   };
   return (
     <div className="flex max-w-[95rem] gap-4">
@@ -128,11 +135,7 @@ export default function FormComputerLab({
                           <TipTapEditorWithHeader
                             onTextChanged={field.onChange}
                             initialContent={field.value}
-                            placeholder={`e.g.,
-                              - 24" Monitor
-                              - P2419H
-                              - Full HD 1080p,
-                              - Black Color
+                            placeholder={`e.g.,- 24" Monitor, P2419H, Full HD 1080p, Black Color
                           `}
                           />
                         </FormControl>

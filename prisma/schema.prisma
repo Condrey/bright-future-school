@@ -21,42 +21,37 @@ model User {
   googleId      String?       @unique
   bio           String?
   isWelcomed    Boolean       @default(false)
-  sessions      Session[]
-  pupils        Pupil[]
-  staffs        Staff[]
-  feesPayments  FeesPayment[]
-  borrowers     Borrower[]
   assetDamages  AssetDamage[]
+  borrowers     Borrower[]
+  feesPayments  FeesPayment[]
+  pupils        Pupil[]
+  sessions      Session[]
+  staffs        Staff[]
 
   @@map("users")
 }
 
 model Pupil {
   id              String       @id @default(uuid())
-  user            User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String?
-  classStream     classStream? @relation(fields: [classStreamId], references: [id])
   classStreamId   String?
-  fees            Fees[]
   genericPassword String
+  fees            Fees[]
+  classStream     classStream? @relation(fields: [classStreamId], references: [id])
+  user            User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("pupils")
 }
 
 model Staff {
   id              String        @id @default(uuid())
-  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
   staffType       StaffType     @default(TEACHING_STAFF)
   userId          String?
-  classStreams    classStream[]
   genericPassword String
+  classStreams    classStream[]
+  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("staffs")
-}
-
-enum StaffType {
-  TEACHING_STAFF
-  NON_TEACHING_STAFF
 }
 
 model Level {
@@ -79,10 +74,10 @@ model Stream {
 model Class {
   id                  String              @id @default(uuid())
   name                String
-  level               Level?              @relation(fields: [levelId], references: [id])
   levelId             String?
-  academicYearClasses AcademicYearClass[]
   createdAt           DateTime            @default(now())
+  academicYearClasses AcademicYearClass[]
+  level               Level?              @relation(fields: [levelId], references: [id])
 
   @@map("classes")
 }
@@ -90,20 +85,20 @@ model Class {
 model AcademicYear {
   id                  String              @id @default(uuid())
   year                String
-  academicYearClasses AcademicYearClass[]
   startAt             DateTime            @default(now())
   endAt               DateTime
+  academicYearClasses AcademicYearClass[]
 
   @@map("academic_years")
 }
 
 model AcademicYearClass {
   id             String        @id @default(uuid())
-  class          Class?        @relation(fields: [classId], references: [id], onDelete: Cascade)
-  academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
   academicYearId String?
-  streams        classStream[]
   classId        String?
+  academicYear   AcademicYear? @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
+  class          Class?        @relation(fields: [classId], references: [id], onDelete: Cascade)
+  streams        classStream[]
 
   @@unique([classId, academicYearId])
   @@map("academic_year_classes")
@@ -111,14 +106,14 @@ model AcademicYearClass {
 
 model classStream {
   id           String             @id @default(uuid())
-  stream       Stream?            @relation(fields: [streamId], references: [id], onDelete: Cascade)
-  classTeacher Staff?             @relation(fields: [staffId], references: [id], onDelete: SetNull)
-  pupils       Pupil[]
-  terms        ClassTerm[]
   staffId      String?
-  class        AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId      String?
   streamId     String?
+  class        AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classTeacher Staff?             @relation(fields: [staffId], references: [id])
+  stream       Stream?            @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  terms        ClassTerm[]
+  pupils       Pupil[]
 
   @@unique([classId, streamId])
   @@map("class_streams")
@@ -135,14 +130,14 @@ model Term {
 
 model ClassTerm {
   id            String       @id @default(uuid())
-  classStream   classStream? @relation(fields: [classStreamId], references: [id], onDelete: Cascade)
-  classStreamId String?
-  term          Term?        @relation(fields: [termId], references: [id], onDelete: Cascade)
   startAt       DateTime     @default(now())
   endAt         DateTime
-  fees          Fees[]
   termId        String?
+  classStreamId String?
   feesAmount    Int?
+  classStream   classStream? @relation(fields: [classStreamId], references: [id], onDelete: Cascade)
+  term          Term?        @relation(fields: [termId], references: [id], onDelete: Cascade)
+  fees          Fees[]
 
   @@unique([classStreamId, termId])
   @@map("class_terms")
@@ -150,21 +145,15 @@ model ClassTerm {
 
 model Fees {
   id           String        @id @default(uuid())
-  pupil        Pupil         @relation(fields: [pupilId], references: [id], onDelete: Cascade)
   pupilId      String
   balance      Int           @default(0)
-  status       FeesStatus    @default(NILL)
-  feesPayments FeesPayment[]
-  term         ClassTerm     @relation(fields: [termId], references: [id], onDelete: Cascade)
   termId       String
+  status       FeesStatus    @default(NILL)
+  pupil        Pupil         @relation(fields: [pupilId], references: [id], onDelete: Cascade)
+  term         ClassTerm     @relation(fields: [termId], references: [id], onDelete: Cascade)
+  feesPayments FeesPayment[]
 
   @@map("fees")
-}
-
-enum FeesStatus {
-  COMPLETED
-  PENDING
-  NILL
 }
 
 model FeesPayment {
@@ -172,10 +161,10 @@ model FeesPayment {
   amountPaid Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  fees       Fees?    @relation(fields: [feesId], references: [id], onDelete: Cascade)
   feesId     String?
-  paidBy     User     @relation(fields: [userId], references: [id])
   userId     String
+  fees       Fees?    @relation(fields: [feesId], references: [id], onDelete: Cascade)
+  paidBy     User     @relation(fields: [userId], references: [id])
 
   @@map("fees_payments")
 }
@@ -190,15 +179,6 @@ model Session {
   @@map("sessions")
 }
 
-enum Role {
-  DIRECTOR
-  BURSAR
-  ASSET_CARETAKER
-  CLASS_TEACHER
-  USER
-  SUPER_ADMIN
-}
-
 model Asset {
   id                String             @id @default(uuid())
   name              String
@@ -206,13 +186,216 @@ model Asset {
   category          AssetCategory
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  foodStoreItems    FoodStoreItem[]
-  libraryBooks      LibraryBook[]
-  labItems          LabItem[]
   computerLabItems  ComputerLabItem[]
+  foodStoreItems    FoodStoreItem[]
   generalStoreItems GeneralStoreItem[]
+  labItems          LabItem[]
+  libraryBooks      LibraryBook[]
 
   @@map("assets")
+}
+
+model FoodStoreItem {
+  id            String            @id @default(uuid())
+  assetId       String
+  foodName      String
+  unit          AssetUnit
+  quantity      Float?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  supplierId    String?
+  trackQuantity Boolean           @default(false)
+  status        AssetItemStatus   @default(AVAILABLE)
+  consumptions  FoodConsumption[]
+  asset         Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  supplier      Supplier?         @relation(fields: [supplierId], references: [id])
+
+  @@map("food_store_items")
+}
+
+model FoodConsumption {
+  id              String        @id @default(uuid())
+  quantityUsed    Float?
+  dateUsedAt      DateTime      @default(now())
+  usageDetails    String?
+  foodStoreItemId String
+  foodItem        FoodStoreItem @relation(fields: [foodStoreItemId], references: [id], onDelete: Cascade)
+
+  @@map("food_consumptions")
+}
+
+model Supplier {
+  id             String          @id @default(uuid())
+  name           String
+  contactInfo    String?
+  address        String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  foodStoreItems FoodStoreItem[]
+
+  @@map("suppliers")
+}
+
+model LibraryBook {
+  id                    String              @id @default(uuid())
+  title                 String
+  author                String
+  assetId               String
+  libraryBookCategoryId String
+  quantity              Float?
+  trackQuantity         Boolean             @default(false)
+  unit                  AssetUnit
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  individualBooks       IndividualBook[]
+  asset                 Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id], onDelete: Cascade)
+
+  @@unique([title, author])
+  @@map("library_books")
+}
+
+model IndividualBook {
+  id            String              @id @default(uuid())
+  isbn          String?
+  status        BookStatus          @default(AVAILABLE)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  libraryBookId String
+  borrowers     Borrower[]
+  libraryBook   LibraryBook         @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
+  bookDamages   LibraryBookDamage[]
+
+  @@map("individual_books")
+}
+
+model LibraryBookCategory {
+  id           String        @id @default(uuid())
+  category     String
+  description  String?
+  libraryBooks LibraryBook[]
+
+  @@map("library_book_category")
+}
+
+model Borrower {
+  id                 String              @id @default(uuid())
+  borrowedAt         DateTime            @default(now())
+  returnAt           DateTime?
+  status             BorrowStatus        @default(ONGOING)
+  userId             String
+  individualBookId   String?
+  libraryBook        IndividualBook?     @relation(fields: [individualBookId], references: [id])
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  libraryBookDamages LibraryBookDamage[]
+
+  @@map("borrowers")
+}
+
+model LibraryBookDamage {
+  id               String          @id @default(uuid())
+  damageDetails    String
+  borrowerId       String
+  individualBookId String?
+  damagedBy        Borrower        @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
+  libraryBook      IndividualBook? @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
+
+  @@map("library_book_damages")
+}
+
+model LabItem {
+  id            String          @id @default(uuid())
+  name          String
+  quantity      Float?
+  unit          AssetUnit
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  assetId       String
+  trackQuantity Boolean         @default(false)
+  status        AssetItemStatus @default(AVAILABLE)
+  damages       AssetDamage[]
+  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@map("lab_items")
+}
+
+model ComputerLabItem {
+  id                         String                      @id @default(uuid())
+  name                       String
+  model                      String?
+  specification              String?
+  quantity                   Float?
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  assetId                    String
+  trackQuantity              Boolean                     @default(false)
+  unit                       AssetUnit
+  individualComputerLabItems IndividualComputerLabItem[]
+  asset                      Asset                       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@map("computer_lab_items")
+}
+
+model IndividualComputerLabItem {
+  id                String          @id @default(uuid())
+  computerLabItemId String
+  uniqueIdentifier  String?         @unique
+  status            AssetItemStatus @default(AVAILABLE)
+  condition         AssetCondition  @default(NEW)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  computerLabItem   ComputerLabItem @relation(fields: [computerLabItemId], references: [id], onDelete: Cascade)
+}
+
+model GeneralStoreItem {
+  id            String          @id @default(uuid())
+  name          String
+  quantity      Float?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  assetId       String
+  status        AssetItemStatus @default(AVAILABLE)
+  trackQuantity Boolean         @default(false)
+  unit          AssetUnit
+  damages       AssetDamage[]
+  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@map("general_store_items")
+}
+
+model AssetDamage {
+  id                 String            @id @default(uuid())
+  damageDetails      String
+  condition          AssetCondition
+  quantity           Int
+  userId             String
+  generalStoreItemId String?
+  labItemId          String?
+  generalStoreItem   GeneralStoreItem? @relation(fields: [generalStoreItemId], references: [id])
+  labItem            LabItem?          @relation(fields: [labItemId], references: [id])
+  damagedBy          User              @relation(fields: [userId], references: [id])
+
+  @@map("asset_damages")
+}
+
+enum StaffType {
+  TEACHING_STAFF
+  NON_TEACHING_STAFF
+}
+
+enum FeesStatus {
+  COMPLETED
+  PENDING
+  NILL
+}
+
+enum Role {
+  DIRECTOR
+  BURSAR
+  ASSET_CARETAKER
+  CLASS_TEACHER
+  USER
+  SUPER_ADMIN
 }
 
 enum AssetCategory {
@@ -238,24 +421,6 @@ enum AssetStatus {
   DISPOSED
 }
 
-model FoodStoreItem {
-  id            String            @id @default(uuid())
-  asset         Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  assetId       String
-  foodName      String
-  quantity      Float?
-  trackQuantity Boolean           @default(false)
-  unit          AssetUnit
-  status        AssetItemStatus   @default(AVAILABLE)
-  consumptions  FoodConsumption[]
-  supplier      Supplier?         @relation(fields: [supplierId], references: [id], onDelete: SetNull)
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  supplierId    String?
-
-  @@map("food_store_items")
-}
-
 enum AssetUnit {
   KILOGRAM
   GRAMS
@@ -269,85 +434,6 @@ enum AssetUnit {
   OTHERS
 }
 
-model FoodConsumption {
-  id              String        @id @default(uuid())
-  foodItem        FoodStoreItem @relation(fields: [foodStoreItemId], references: [id], onDelete: Cascade)
-  quantityUsed    Float? //Quantity consumed
-  dateUsedAt      DateTime      @default(now())
-  usageDetails    String? //Details (e.g., "Cooked for lunch")
-  foodStoreItemId String
-
-  @@map("food_consumptions")
-}
-
-model Supplier {
-  id             String          @id @default(uuid())
-  name           String
-  contactInfo    String?
-  address        String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  foodStoreItems FoodStoreItem[]
-
-  @@map("suppliers")
-}
-
-model LibraryBook {
-  id                    String              @id @default(uuid())
-  asset                 Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  title                 String
-  author                String
-  category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id], onDelete: Cascade)
-  assetId               String
-  libraryBookCategoryId String
-  unit                  AssetUnit
-  trackQuantity         Boolean             @default(false)
-  quantity              Float? // Quantity in stock
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
-  individualBooks       IndividualBook[]
-
-  @@unique([title, author])
-  @@map("library_books")
-}
-
-model IndividualBook {
-  id            String              @id @default(uuid())
-  isbn          String? // Optional ISBN
-  borrowers     Borrower[]
-  status        BookStatus          @default(AVAILABLE)
-  bookDamages   LibraryBookDamage[]
-  libraryBook   LibraryBook         @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
-  libraryBookId String
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-
-  @@map("individual_books")
-}
-
-model LibraryBookCategory {
-  id           String        @id @default(uuid())
-  category     String // e.g., "Science", "History"
-  description  String?
-  libraryBooks LibraryBook[]
-
-  @@map("library_book_category")
-}
-
-model Borrower {
-  id                 String              @id @default(uuid())
-  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  borrowedAt         DateTime            @default(now())
-  returnAt           DateTime?
-  status             BorrowStatus        @default(ONGOING)
-  libraryBook        IndividualBook?     @relation(fields: [individualBookId], references: [id], onDelete: SetNull)
-  individualBookId   String?
-  userId             String
-  libraryBookDamages LibraryBookDamage[]
-
-  @@map("borrowers")
-}
-
 enum BorrowStatus {
   ONGOING
   RETURNED
@@ -359,95 +445,8 @@ enum BookStatus {
   DAMAGED
 }
 
-model LibraryBookDamage {
-  id               String          @id @default(uuid())
-  damagedBy        Borrower        @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
-  damageDetails    String
-  libraryBook      IndividualBook? @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
-  individualBookId String?
-  borrowerId       String
-
-  @@map("library_book_damages")
-}
-
-model LabItem {
-  id            String          @id @default(uuid())
-  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  name          String // e.g., Test tubes, Chemicals
-  quantity      Float? // Quantity in stock
-  trackQuantity Boolean         @default(false)
-  damages       AssetDamage[]
-  unit          AssetUnit
-  status        AssetItemStatus @default(AVAILABLE)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  assetId       String
-
-  @@map("lab_items")
-}
-
 enum AssetItemStatus {
   AVAILABLE
   IN_USE
   EXPIRED
-}
-
-model ComputerLabItem {
-  id            String    @id @default(uuid())
-  asset         Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  name          String // e.g., Keyboard, Mouse, AC
-  model         String?
-  specification String?
-  quantity      Float?
-  unit          AssetUnit
-  trackQuantity Boolean   @default(false)
-
-  createdAt                  DateTime                    @default(now())
-  updatedAt                  DateTime                    @updatedAt
-  assetId                    String
-  individualComputerLabItems IndividualComputerLabItem[]
-
-  @@map("computer_lab_items")
-}
-
-model IndividualComputerLabItem {
-  id                String          @id @default(uuid())
-  computerLabItem   ComputerLabItem @relation(fields: [computerLabItemId], references: [id], onDelete: Cascade)
-  computerLabItemId String
-  uniqueIdentifier  String?         @unique
-  status            AssetItemStatus @default(AVAILABLE)
-  condition         AssetCondition  @default(NEW)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-}
-
-model GeneralStoreItem {
-  id            String          @id @default(uuid())
-  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  name          String // e.g., Chairs, Desks
-  quantity      Float?
-  unit          AssetUnit
-  trackQuantity Boolean         @default(false)
-  status        AssetItemStatus @default(AVAILABLE)
-  damages       AssetDamage[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  assetId       String
-
-  @@map("general_store_items")
-}
-
-model AssetDamage {
-  id                 String            @id @default(uuid())
-  damagedBy          User              @relation(fields: [userId], references: [id])
-  damageDetails      String
-  condition          AssetCondition
-  quantity           Int
-  userId             String
-  generalStoreItem   GeneralStoreItem? @relation(fields: [generalStoreItemId], references: [id])
-  generalStoreItemId String?
-  labItem            LabItem?          @relation(fields: [labItemId], references: [id])
-  labItemId          String?
-
-  @@map("asset_damages")
 }

@@ -273,18 +273,22 @@ export type LibraryBookData = Prisma.LibraryBookGetPayload<{
 }>;
 
 // Computer lab item
-export const computerLabItemDataInclude = {
-  asset: true,
-} satisfies Prisma.ComputerLabItemInclude;
-export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
-  include: typeof computerLabItemDataInclude;
-}>;
-export const individualComputerLabItemDataInclude =
-  {} satisfies Prisma.IndividualComputerLabItemInclude;
+export const individualComputerLabItemDataInclude = {
+  computerLabItem: true,
+} satisfies Prisma.IndividualComputerLabItemInclude;
 export type IndividualComputerLabItemData =
   Prisma.IndividualComputerLabItemGetPayload<{
     include: typeof individualComputerLabItemDataInclude;
   }>;
+export const computerLabItemDataInclude = {
+  asset: true,
+  individualComputerLabItems:{include:individualComputerLabItemDataInclude}
+
+} satisfies Prisma.ComputerLabItemInclude;
+export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
+  include: typeof computerLabItemDataInclude;
+}>;
+
 
 // Lab item
 export const labItemDataInclude = {

@@ -22,8 +22,7 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
-import AddEditComputerLabItem from "./add-edit-computerLabItem";
-import DialogDeleteComputerLabItem from "./dialog-delete-computerLabItem";
+import DialogDeleteComputerLabItem from "./dialog-delete-computer-lab-item";
 
 interface DropDownMenuComputerLabItemProps {
   computerLabItem: ComputerLabItemData;
@@ -33,7 +32,6 @@ export default function DropDownMenuComputerLabItem({
   computerLabItem,
 }: DropDownMenuComputerLabItemProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
-  const [showDialog, setShowDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
 
@@ -69,7 +67,7 @@ export default function DropDownMenuComputerLabItem({
             <DropdownMenuItem
               onClick={() =>
                 navigateOnclickWithPathnameWithoutUpdate(
-                  `/director/management/computerLabItem-management/store/${computerLabItem.category.toLocaleLowerCase()}`,
+                  `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`,
                 )
               }
             >
@@ -80,11 +78,15 @@ export default function DropDownMenuComputerLabItem({
           </DropdownMenuGroup>
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() => setShowDialog(true)}
+              onClick={() =>
+                navigateOnclickWithPathnameWithoutUpdate(
+                  `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/edit/${computerLabItem.id}`,
+                )
+              }
               className="font-semibold text-foreground"
             >
               <Edit2Icon className="mr-2 size-4 fill-foreground text-foreground" />
-              <span>Edit ComputerLabItem</span>
+              <span>Edit Computer Lab Item</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -92,17 +94,12 @@ export default function DropDownMenuComputerLabItem({
               className="font-semibold text-destructive"
             >
               <Trash2Icon className="mr-2 size-4 fill-destructive" />
-              <span>Delete ComputerLabItem</span>
+              <span>Delete Computer Lab Item</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AddEditComputerLabItem
-        computerLabItemToEdit={computerLabItem}
-        open={showDialog}
-        setOpen={setShowDialog}
-      />
       <DialogDeleteComputerLabItem
         computerLabItem={computerLabItem}
         open={showDeleteDialog}

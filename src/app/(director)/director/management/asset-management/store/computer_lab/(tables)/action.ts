@@ -9,3 +9,9 @@ export async function getAllComputerAssetItems() {
   });
   return data;
 }
+
+
+export async function deleteComputerLabItem(id:string){
+  const data = await prisma.computerLabItem.delete({where:{id}})
+  return data.id;
+}
