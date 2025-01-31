@@ -1,5 +1,17 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { IndividualComputerLabItemData } from "@/lib/types";
+import { AssetCondition, AssetItemStatus } from "@prisma/client";
+import { NumericHolder } from "../../../../../(header)/numeric-holder";
+import {
+  assetConditions,
+  assetItemStatuses,
+} from "../../../../../add-asset/barrel-file";
 
 interface TableSummaryProps {
   items: IndividualComputerLabItemData[];
@@ -7,16 +19,34 @@ interface TableSummaryProps {
 
 export default function TableSummary({ items }: TableSummaryProps) {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-wrap gap-4 *:flex-1">
-      <Card className="bg-secondary">
+    <div className="mx-auto flex w-full max-w-7xl flex-wrap gap-4 *:flex-1">
+      <Card>
         <CardHeader>
-          <CardTitle>Condition</CardTitle>
+          <CardTitle>Conditions</CardTitle>
+          <CardDescription>Summary showing item conditions</CardDescription>
         </CardHeader>
+        <CardContent className="flex flex-row flex-wrap gap-2">
+          {Object.values(AssetCondition).map((condition) => {
+            const count = items.filter((i) => i.condition === condition).length;
+            const label = assetConditions[condition];
+            return (
+              <NumericHolder key={condition} count={count} label={label} />
+            );
+          })}
+        </CardContent>
       </Card>
-      <Card className="bg-secondary">
+      <Card>
         <CardHeader>
-          <CardTitle>Status</CardTitle>
+          <CardTitle>Statuses</CardTitle>
+          <CardDescription>Summary showing item statuses</CardDescription>
         </CardHeader>
+        <CardContent className="flex flex-row flex-wrap gap-2">
+          {Object.values(AssetItemStatus).map((status) => {
+            const count = items.filter((i) => i.status === status).length;
+            const label = assetItemStatuses[status];
+            return <NumericHolder key={status} count={count} label={label} />;
+          })}
+        </CardContent>
       </Card>
     </div>
   );

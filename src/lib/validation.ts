@@ -267,3 +267,10 @@ export const individualBookSchema = z.object({
   libraryBookId: requiredString.min(1, "Library book is missing"),
 });
 export type IndividualBookSchema = z.infer<typeof individualBookSchema>;
+
+//miscellaneous
+export const itemSchema = z.object({
+  quantity: z.number(),
+  parentId: z.string(),
+});
+export type ItemSchema = z.infer<typeof itemSchema>;

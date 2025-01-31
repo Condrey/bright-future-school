@@ -15,7 +15,7 @@ export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
     header({ column }) {
       return <DataTableColumnHeader column={column} title="#" />;
     },
-    cell: ({ row }) => <span>{row.index + 1}</span>,
+    cell: ({ row }) => <span className="tabular-nums">{row.index + 1}</span>,
   },
   {
     accessorKey: "computerLabItem",
