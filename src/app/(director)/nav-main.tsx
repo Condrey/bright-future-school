@@ -2,7 +2,6 @@
 
 import { ChevronRight, LifeBuoy, LucideIcon, User } from "lucide-react";
 
-import LoadingButton from "@/components/loading-button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -21,16 +20,21 @@ import {
 import { DirectorDashboardParam } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 
 interface NavMainProps {
   dashboardParams: DirectorDashboardParam;
 }
 
+type SubItem = {
+  title: string;
+  url: string;
+  showIndicator: boolean;
+  isVisible: boolean;
+};
 export function NavMain({ dashboardParams }: NavMainProps) {
-  const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const pathname = usePathname();
   const basePathname = "/director/repository";
   const {
     academicYears,
@@ -44,12 +48,6 @@ export function NavMain({ dashboardParams }: NavMainProps) {
     nonTeachingStaffs,
   } = dashboardParams;
 
-  type SubItem = {
-    title: string;
-    url: string;
-    showIndicator: boolean;
-    isVisible: boolean;
-  };
   const items: {
     title: string;
     url: string;
@@ -135,6 +133,9 @@ export function NavMain({ dashboardParams }: NavMainProps) {
       <SidebarMenu>
         {items.map((item) => {
           const ItemIcon = item.icon;
+          const isActive = item.items.some((i) =>
+            pathname.startsWith(basePathname + "/" + i.url),
+          );
           return (
             <Collapsible
               key={item.title}
@@ -147,11 +148,14 @@ export function NavMain({ dashboardParams }: NavMainProps) {
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
                     tooltip={item.title}
+                    isActive={isActive}
                     //  asChild
                   >
                     {/* <Link href={basePathname+'/'+item.url+'?'+searchParams.toString()}> */}
                     <ItemIcon />
-                    <span>{item.title}</span>
+                    <span className={cn(isActive && "font-extrabold")}>
+                      {item.title}
+                    </span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                     {/* </Link> */}
                   </SidebarMenuButton>
@@ -159,38 +163,7 @@ export function NavMain({ dashboardParams }: NavMainProps) {
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
-                      <SidebarMenuSubItem
-                        key={subItem.title}
-                        className={cn(!subItem.isVisible && "hidden")}
-                      >
-                        <SidebarMenuSubButton asChild>
-                          <LoadingButton
-                            asChild
-                            loading={isPending}
-                            variant={"link"}
-                            onClick={() => startTransition(() => {})}
-                          >
-                            <Link
-                              href={
-                                basePathname +
-                                "/" +
-                                subItem.url +
-                                "?" +
-                                searchParams.toString()
-                              }
-                              className="flex w-full"
-                            >
-                              <span>{subItem.title}</span>
-                              <span
-                                className={cn(
-                                  "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
-                                  !subItem.showIndicator && "hidden",
-                                )}
-                              />
-                            </Link>
-                          </LoadingButton>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
+                      <SubmenuItem subItem={subItem} key={subItem.url} />
                     ))}
                   </SidebarMenuSub>
                 </CollapsibleContent>
@@ -200,5 +173,50 @@ export function NavMain({ dashboardParams }: NavMainProps) {
         })}
       </SidebarMenu>
     </SidebarGroup>
+  );
+}
+
+interface SubmenuItemProps {
+  subItem: SubItem;
+}
+
+function SubmenuItem({ subItem }: SubmenuItemProps) {
+  const [isPending, startTransition] = useTransition();
+  const basePathname = "/director/repository";
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const isActive = pathname.startsWith(basePathname + "/" + subItem.url);
+
+  return (
+    <SidebarMenuSubItem
+      key={subItem.title}
+      className={cn(!subItem.isVisible && "hidden")}
+    >
+      <SidebarMenuSubButton
+        asChild
+        isActive={isActive}
+        onClick={() => startTransition(() => {})}
+        className={cn(
+          isPending && "animate-pulse bg-card text-card-foreground",
+        )}
+      >
+        <Link
+          href={
+            basePathname + "/" + subItem.url + "?" + searchParams.toString()
+          }
+          className="flex w-full"
+        >
+          <span className={cn(isActive && "font-extrabold")}>
+            {subItem.title}
+          </span>
+          <span
+            className={cn(
+              "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
+              !subItem.showIndicator && "hidden",
+            )}
+          />
+        </Link>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
   );
 }

@@ -51,7 +51,7 @@ export const useTeachingStaffColumns: ColumnDef<TeachingStaff>[] = [
       return (
         <Badge
           variant={
-            staffType === StaffType.TEACHING_STAFF ? "default" : "secondary"
+            staffType === StaffType.TEACHING_STAFF ? "secondary" : "outline"
           }
           className="text-xs"
         >

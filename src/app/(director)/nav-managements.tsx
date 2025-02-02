@@ -176,16 +176,14 @@ function MenuItemLink({ item }: MenuItemLinkProps) {
       asChild
       disabled={item.disabled}
       onClick={() => startTransition(() => {})}
-      className={cn(
-        isPending && "animate-pulse bg-card text-card-foreground",
-        isActive && "font-bold",
-      )}
+      isActive={isActive}
+      className={cn(isPending && "animate-pulse bg-card text-card-foreground")}
     >
       <Link
         href={basePathname + "/" + item.url + "?" + searchParams.toString()}
       >
         <Icon />
-        <span>{item.name}</span>
+        <span className={cn(isActive && "font-extrabold")}>{item.name}</span>
       </Link>
     </SidebarMenuButton>
   );
