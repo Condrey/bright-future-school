@@ -36,6 +36,9 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
   }
 
   const items = summary.flatMap((s) => s.name).filter(Boolean);
+  const numberOfItems = summary
+    .map((s) => s.individualComputerLabItems.length)
+    .reduce((value, total) => value + total, 0);
   return (
     <Card className="flex flex-col lg:flex-row">
       <CardHeader>
@@ -48,7 +51,7 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
             <CardTitle className="uppercase tracking-wider">
               ComputerLab
             </CardTitle>
-            <CardTitle>{`${formatNumber(summary.length)} item${summary.length === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(summary.length)} asset${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (
@@ -65,7 +68,7 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
               .flatMap((s) =>
                 s.individualComputerLabItems.flatMap((i) => i.status),
               )
-              .filter((f) => f !== value).length;
+              .filter((f) => f === value).length;
             return <NumericHolder key={value} count={_count} label={_label} />;
           })}
         </div>

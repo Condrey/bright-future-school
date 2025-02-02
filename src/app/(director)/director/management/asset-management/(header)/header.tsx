@@ -5,6 +5,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "../add-asset/barrel-file";
 import ComputerLabItemsDetails from "./computer-lab-items-details";
 import FoodStoreItemsDetails from "./food-store-items-details";
@@ -23,7 +25,6 @@ export default function HeaderDetails() {
       plugins={[
         Autoplay({
           delay: 4000,
-          
         }),
       ]}
     >
@@ -54,8 +55,8 @@ export default function HeaderDetails() {
           </div>
         </CarouselItem>
       </CarouselContent>
-      {/* <CarouselPrevious />
-      <CarouselNext /> */}
+      <CarouselPrevious className="left-4" />
+      <CarouselNext className="right-4" />
     </Carousel>
   );
 }

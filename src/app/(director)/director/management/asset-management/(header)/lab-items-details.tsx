@@ -27,7 +27,7 @@ export default function LaboratoryItemsDetails({}: LaboratoryItemsDetailsProps) 
   });
 
   if (status === "pending") {
-    return <Skeleton className="h-56  lg:h-36 w-80" />;
+    return <Skeleton className="h-56 w-80 lg:h-36" />;
   }
   if (status === "error") {
     console.error(error);
@@ -41,7 +41,11 @@ export default function LaboratoryItemsDetails({}: LaboratoryItemsDetailsProps) 
     .flatMap((s) => s.status)
     .filter((f) => f === AssetItemStatus.EXPIRED).length;
   const items = summary.flatMap((s) => s.name).filter(Boolean);
-
+  const numberOfItems = items.length;
+  // TODO: change
+  // summary
+  //   .map((s) => s.individualComputerLabItems.length)
+  //   .reduce((value, total) => value + total, 0);
   return (
     <Card className="flex flex-col lg:flex-row">
       <CardHeader>
@@ -54,7 +58,7 @@ export default function LaboratoryItemsDetails({}: LaboratoryItemsDetailsProps) 
             <CardTitle className="uppercase tracking-wider">
               Laboratory
             </CardTitle>
-            <CardTitle>{`${formatNumber(summary.length)} item${summary.length === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(summary.length)} asset${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (

@@ -70,7 +70,7 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
             <CardTitle className="uppercase tracking-wider">
               GeneralStore
             </CardTitle>
-            <CardTitle>{`${formatNumber(numberOfItems)} item${summary.length === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(summary.length)} sub asset${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} total item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (
@@ -81,7 +81,6 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={summary.length} label="Sub assets" />
           <NumericHolder count={itemsAvailable} label="Available" />
           <NumericHolder count={itemsExpired} label="Expired" />
         </div>

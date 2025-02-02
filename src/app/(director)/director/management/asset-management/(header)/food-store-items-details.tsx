@@ -47,6 +47,11 @@ export default function FoodStoreItemsDetails({}: FoodStoreItemsDetailsProps) {
     .flatMap((s) => s._count.consumptions)
     .reduce((amount, total) => amount + total, 0);
 
+  const numberOfItems = items.length;
+  // TODO: change
+  // summary
+  //   .map((s) => s.individualComputerLabItems.length)
+  //   .reduce((value, total) => value + total, 0);
   return (
     <Card className="flex flex-col lg:flex-row">
       <CardHeader>
@@ -59,7 +64,7 @@ export default function FoodStoreItemsDetails({}: FoodStoreItemsDetailsProps) {
             <CardTitle className="uppercase tracking-wider">
               FoodStore
             </CardTitle>
-            <CardTitle>{`${formatNumber(summary.length)} food item${summary.length === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(summary.length)} food item${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} total item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (

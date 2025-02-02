@@ -36,6 +36,9 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
   }
 
   const items = summary.flatMap((s) => s.title).filter(Boolean);
+  const numberOfItems = summary
+    .map((s) => s.individualBooks.length)
+    .reduce((value, total) => value + total, 0);
   return (
     <Card className="flex flex-col lg:flex-row">
       <CardHeader>
@@ -46,7 +49,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
           />
           <div>
             <CardTitle className="uppercase tracking-wider">Library</CardTitle>
-            <CardTitle>{`${formatNumber(summary.length)} book${summary.length === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(summary.length)} book${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (
@@ -62,7 +65,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
               .flatMap((s) => s.individualBooks.flatMap((i) => i.status))
               .filter((f) => f === value).length;
             const _label = assetItemStatuses[value];
-            return <NumericHolder count={_count} label={_label} />;
+            return <NumericHolder key={value} count={_count} label={_label} />;
           })}
         </div>
       </CardHeader>

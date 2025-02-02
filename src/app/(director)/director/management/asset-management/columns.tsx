@@ -1,9 +1,12 @@
+import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
+import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { AssetData } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import {
   ComputerIcon,
   ForkKnifeIcon,
@@ -12,6 +15,7 @@ import {
   StoreIcon,
   TestTubeIcon,
 } from "lucide-react";
+import { assetCategories } from "./add-asset/barrel-file";
 import DropDownMenuAsset from "./drop-down-menu-asset";
 
 export const useAssetColumns: ColumnDef<AssetData>[] = [
@@ -41,24 +45,28 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
       );
     },
   },
-
+  {
+    accessorKey: "description",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Description" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <TooltipContainer label="Read description">
+          <TipTapViewer content={row.original.description} />
+        </TooltipContainer>
+      );
+    },
+  },
   {
     accessorKey: "category",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category" />
     ),
     cell: ({ row }) => {
-      const assetCategories: Record<AssetCategory, string> = {
-        LIBRARY: "Library asset",
-        COMPUTER_LAB: "Computer lab asset",
-        LABORATORY: "Laboratory asset",
-        GENERAL_STORE: "General store asset",
-        FOOD_STORE: "Food store asset",
-      };
-
       return (
         <Badge variant={"secondary"}>
-          {assetCategories[row.original.category]}
+          {assetCategories[row.original.category].label}
         </Badge>
       );
     },
@@ -66,7 +74,7 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
   {
     id: "asset.quantity",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Item quantity" />
+      <DataTableColumnHeader column={column} title="Sub assets" />
     ),
     cell: ({ row }) => {
       const category = row.original.category;
@@ -74,33 +82,61 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
       const { name, quantity }: { quantity: number; name: string } =
         category === AssetCategory.COMPUTER_LAB
           ? {
-              name: "Computer lab item",
+              name: "Computer lab sub-asset",
               quantity: assetCounts.computerLabItems,
             }
           : category === AssetCategory.FOOD_STORE
             ? {
-                name: "Food store item",
+                name: "Food store sub-asset",
                 quantity: assetCounts.foodStoreItems,
               }
             : category === AssetCategory.GENERAL_STORE
               ? {
-                  name: "General store item",
+                  name: "General store sub-asset",
                   quantity: assetCounts.generalStoreItems,
                 }
               : category === AssetCategory.LABORATORY
-                ? { name: "Lab item", quantity: assetCounts.labItems }
-                : { name: "Library item", quantity: assetCounts.libraryBooks };
+                ? {
+                    name: "Laboratory sub-asset",
+                    quantity: assetCounts.labItems,
+                  }
+                : {
+                    name: "Library sub-asset",
+                    quantity: assetCounts.libraryBooks,
+                  };
       return (
         <div>
-          <span>
-            {formatNumber(quantity)} {`${name}${quantity === 1 ? "" : "s"}`}
+          <span className={cn(quantity === 0 && "text-destructive")}>
+            {quantity === 0
+              ? "Not available"
+              : `${formatNumber(quantity)}
+            ${name}${quantity === 1 ? "" : "s"}`}
           </span>
         </div>
       );
     },
   },
+
   {
-    id: "acttion",
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div>
+          <div>{format(row.original.createdAt, "PPpp")}</div>
+          {row.original.updatedAt > row.original.createdAt && (
+            <div className="text-xs text-muted-foreground">
+              (Updated {format(row.original.updatedAt, "PPpp")})
+            </div>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    id: "action",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
     ),

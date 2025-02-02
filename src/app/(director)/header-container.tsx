@@ -68,7 +68,7 @@ export default function HeaderContainer({
                               }
                               className={cn(
                                 (index !== array.length - 1 || index === 0) &&
-                                  "line-clamp-1 max-w-24 overflow-ellipsis lg:max-w-48",
+                                  "line-clamp-1 max-w-24 text-ellipsis break-words lg:max-w-48",
                               )}
                             >
                               {item.label}
