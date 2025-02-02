@@ -1,9 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/utils";
-import { BookStatus } from "@prisma/client";
+import { AssetItemStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { LibraryIcon } from "lucide-react";
 import {
+  assetItemStatuses,
   Card,
   CardDescription,
   CardHeader,
@@ -34,15 +35,6 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
     return null;
   }
 
-  const booksBorrowed = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f === BookStatus.BORROWED).length;
-  const booksAvailable = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f === BookStatus.AVAILABLE).length;
-  const booksDamaged = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f === BookStatus.DAMAGED).length;
   const items = summary.flatMap((s) => s.title).filter(Boolean);
   return (
     <Card className="flex flex-col lg:flex-row">
@@ -65,9 +57,13 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={booksAvailable} label="Available" />
-          <NumericHolder count={booksBorrowed} label="Borrowed" />
-          <NumericHolder count={booksDamaged} label="Damaged" />
+          {Object.values(AssetItemStatus).map((value) => {
+            const _count = summary
+              .flatMap((s) => s.individualBooks.flatMap((i) => i.status))
+              .filter((f) => f === value).length;
+            const _label = assetItemStatuses[value];
+            return <NumericHolder count={_count} label={_label} />;
+          })}
         </div>
       </CardHeader>
     </Card>

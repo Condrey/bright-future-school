@@ -9,6 +9,7 @@ export async function getComputerLabSummary() {
     select: {
       id: true,
       name: true,
+      individualComputerLabItems: true,
     },
   });
   return summary;
@@ -69,6 +70,7 @@ export async function getAllLibraryItems() {
     select: {
       id: true,
       title: true,
+      individualBooks: true,
     },
   });
   return summary;

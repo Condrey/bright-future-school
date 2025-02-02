@@ -1,9 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/utils";
-import { AssetItemStatus } from "@prisma/client";
+import { AssetStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { ComputerIcon } from "lucide-react";
 import {
+  assetStatuses,
   Card,
   CardDescription,
   CardHeader,
@@ -34,12 +35,6 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
     return null;
   }
 
-  const itemsAvailable = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f !== AssetItemStatus.EXPIRED).length;
-  const itemsExpired = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f === AssetItemStatus.EXPIRED).length;
   const items = summary.flatMap((s) => s.name).filter(Boolean);
   return (
     <Card className="flex flex-col lg:flex-row">
@@ -64,8 +59,15 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={itemsAvailable} label="Available" />
-          <NumericHolder count={itemsExpired} label="Expired" />
+          {Object.values(AssetStatus).map((value) => {
+            const _label = assetStatuses[value];
+            const _count = summary
+              .flatMap((s) =>
+                s.individualComputerLabItems.flatMap((i) => i.status),
+              )
+              .filter((f) => f !== value).length;
+            return <NumericHolder key={value} count={_count} label={_label} />;
+          })}
         </div>
       </CardHeader>
     </Card>
