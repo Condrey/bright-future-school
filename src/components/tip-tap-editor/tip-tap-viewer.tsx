@@ -15,6 +15,7 @@ const TipTapViewer = ({ content }: { content: any }) => {
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
+    immediatelyRender: false,
     content: content,
     editable: false, // Make it non-editable if you only want to display the content
   });

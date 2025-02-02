@@ -43,7 +43,10 @@ export default function AssetSection<T extends { asset: AssetSchema }>({
           <CardDescription>{label}</CardDescription>
         </CardContent>
         <CardFooter>
-          <TipTapViewer content={formValues.asset.description} />
+          <div>
+            <TipTapViewer content={formValues.asset.description} />
+            {formValues.asset.description}
+          </div>
         </CardFooter>
       </Card>
     </div>
