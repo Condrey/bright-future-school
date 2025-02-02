@@ -2,6 +2,7 @@ import {
   AssetCategory,
   AssetCondition,
   AssetItemStatus,
+  AssetStatus,
   AssetUnit,
   BookStatus,
 } from "@prisma/client";
@@ -229,7 +230,7 @@ export const individualComputerLabItemSchema = z.object({
   id: z.string().optional(),
   uniqueIdentifier: z.string().optional(),
   condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
-  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
+  status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
   computerLabItemId: requiredString.min(1, "Computer Lab Item is missing"),
 });
 export type IndividualComputerLabItemSchema = z.infer<
@@ -267,6 +268,21 @@ export const individualBookSchema = z.object({
   libraryBookId: requiredString.min(1, "Library book is missing"),
 });
 export type IndividualBookSchema = z.infer<typeof individualBookSchema>;
+
+// Asset damages
+export const assetDamageSchema = z.object({
+  quantity: z.number().optional().default(1),
+  isRepaired: z.boolean(),
+  userId: requiredString.min(
+    1,
+    "Please include the person that damaged the item",
+  ),
+  damageDetails: requiredString.min(1, "Please describe the damage."),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+  id: z.string(),
+  parentId: z.string(),
+});
+export type AssetDamageSchema = z.infer<typeof assetDamageSchema>;
 
 //miscellaneous
 export const itemSchema = z.object({

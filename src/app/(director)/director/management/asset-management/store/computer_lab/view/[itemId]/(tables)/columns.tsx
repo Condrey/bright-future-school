@@ -1,13 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { IndividualComputerLabItemData } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { AssetCondition, AssetItemStatus } from "@prisma/client";
+import { cn, formatNumber } from "@/lib/utils";
+import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   assetConditions,
-  assetItemStatuses,
+  assetStatuses,
 } from "../../../../../add-asset/barrel-file";
+import DropDownMenuIndividualItem from "./drop-down-menu-individual-item";
 
 export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
   {
@@ -42,7 +43,13 @@ export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
       );
     },
     cell: ({ row }) => (
-      <Badge className={cn(!row.original.uniqueIdentifier && "animate-pulse")}>
+      <Badge
+        className={cn(
+          "font-mono tracking-wide",
+          !row.original.uniqueIdentifier && "animate-pulse",
+        )}
+        variant={!row.original.uniqueIdentifier ? "destructive" : "outline"}
+      >
         {row.original.uniqueIdentifier || "Not set"}
       </Badge>
     ),
@@ -80,16 +87,67 @@ export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
       return (
         <Badge
           variant={
-            status === AssetItemStatus.AVAILABLE
+            status === AssetStatus.AVAILABLE
               ? "go"
-              : status === AssetItemStatus.IN_USE
+              : status === AssetStatus.UNDER_MAINTENANCE
                 ? "warn"
                 : "destructive"
           }
         >
-          {assetItemStatuses[status]}
+          {assetStatuses[status]}
         </Badge>
       );
     },
+  },
+  {
+    accessorKey: "_count.assetDamages",
+    header({ column }) {
+      return (
+        <DataTableColumnHeader column={column} title="Registered damages" />
+      );
+    },
+    cell: ({ row }) => {
+      const damages = row.original._count.assetDamages;
+      return (
+        <div>
+          {damages === 0 ? (
+            <Badge variant={"outline"}>{"Not registered"}</Badge>
+          ) : (
+            <Badge
+              variant={"secondary"}
+            >{`${formatNumber(damages)} record${damages === 1 ? "" : "s"}`}</Badge>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "_count.assetDamages.repairs",
+    header({ column }) {
+      return (
+        <DataTableColumnHeader column={column} title="Performed repairs" />
+      );
+    },
+    cell: ({ row }) => {
+      const repairs = row.original.assetDamages.filter(
+        (a) => a.isRepaired,
+      ).length;
+      return (
+        <div>
+          {repairs === 0 ? (
+            <div>{"No repairs"}</div>
+          ) : (
+            <div>{`${formatNumber(repairs)} repair${repairs === 1 ? "" : "s"}`}</div>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    id: "action",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Action" />;
+    },
+    cell: ({ row }) => <DropDownMenuIndividualItem item={row.original} />,
   },
 ];

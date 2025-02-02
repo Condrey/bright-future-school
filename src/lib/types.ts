@@ -274,7 +274,12 @@ export type LibraryBookData = Prisma.LibraryBookGetPayload<{
 
 // Computer lab item
 export const individualComputerLabItemDataInclude = {
-  computerLabItem: true,
+  computerLabItem: { include: { asset: true } },
+  assetDamages: {
+    orderBy: { createdAt: "desc" },
+    include: { damagedBy: { select: userDataSelect } },
+  },
+  _count: { select: { assetDamages: true } },
 } satisfies Prisma.IndividualComputerLabItemInclude;
 export type IndividualComputerLabItemData =
   Prisma.IndividualComputerLabItemGetPayload<{
@@ -282,13 +287,14 @@ export type IndividualComputerLabItemData =
   }>;
 export const computerLabItemDataInclude = {
   asset: true,
-  individualComputerLabItems:{include:individualComputerLabItemDataInclude}
-
+  individualComputerLabItems: {
+    orderBy: [{ uniqueIdentifier: "asc" }, { createdAt: "desc" }],
+    include: individualComputerLabItemDataInclude,
+  },
 } satisfies Prisma.ComputerLabItemInclude;
 export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
   include: typeof computerLabItemDataInclude;
 }>;
-
 
 // Lab item
 export const labItemDataInclude = {
@@ -320,5 +326,12 @@ export type SupplierData = Prisma.SupplierGetPayload<{
   include: typeof supplierDataInclude;
 }>;
 
+//Asset damages
+export const assetDamageDataInclude = {
+  damagedBy: { select: userDataSelect },
+} satisfies Prisma.AssetDamageInclude;
+export type AssetDamageData = Prisma.AssetDamageGetPayload<{
+  include: typeof assetDamageDataInclude;
+}>;
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };

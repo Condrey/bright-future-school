@@ -18,13 +18,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ComputerLabItemData } from "@/lib/types";
 import { ItemSchema, itemSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  AssetCondition,
-  AssetItemStatus,
-  ComputerLabItem,
-} from "@prisma/client";
+import { AssetCondition, AssetItemStatus } from "@prisma/client";
 import cuid from "cuid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -36,7 +33,7 @@ export { NumberInput } from "@/components/number-input/number-input";
 
 interface ButtonAddTemProps {
   lastIndex: number;
-  computerLabItem: ComputerLabItem;
+  computerLabItem: ComputerLabItemData;
 }
 
 export default function ButtonAddItem({
@@ -87,7 +84,13 @@ export default function ButtonAddItem({
         </LoadingButton>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="rounded-l-none" size={"icon"}>
+            <Button
+              className="rounded-l-none"
+              size={"icon"}
+              disabled={
+                singleItemMutation.isPending || multipleItemMutation.isPending
+              }
+            >
               <ChevronDown className="size-4" />
             </Button>
           </DropdownMenuTrigger>

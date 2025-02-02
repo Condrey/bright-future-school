@@ -5,12 +5,18 @@ import {
   computerLabItemDataInclude,
   individualComputerLabItemDataInclude,
 } from "@/lib/types";
-import { itemSchema, ItemSchema } from "@/lib/validation";
+import {
+  individualComputerLabItemSchema,
+  IndividualComputerLabItemSchema,
+  itemSchema,
+  ItemSchema,
+} from "@/lib/validation";
 import {
   AssetCondition,
   AssetItemStatus,
   IndividualComputerLabItem,
 } from "@prisma/client";
+import cuid from "cuid";
 
 export async function getIndividualComputerLabItem(id: string) {
   const data = await prisma.individualComputerLabItem.findUnique({
@@ -39,6 +45,23 @@ export async function getComputerLabItem(id: string) {
   return data;
 }
 
+export async function updateIndividualItem(
+  input: IndividualComputerLabItemSchema,
+) {
+  const { computerLabItemId, condition, status, id, uniqueIdentifier } =
+    individualComputerLabItemSchema.parse(input);
+  const data = await prisma.individualComputerLabItem.update({
+    where: { id },
+    data: {
+      condition,
+      status,
+      uniqueIdentifier,
+    },
+    include: individualComputerLabItemDataInclude,
+  });
+  return data;
+}
+
 export async function addSingleItem({
   input,
 }: {
@@ -58,7 +81,7 @@ export async function addMultipleItem(input: ItemSchema) {
       individualComputerLabItems: {
         createMany: {
           data: Array.from({ length: quantity }, (_, index) => ({
-            id: `${parentId}==${index}`,
+            id: `${cuid()}==${index}`,
             condition: AssetCondition.NEW,
             status: AssetItemStatus.AVAILABLE,
             uniqueIdentifier: null,
@@ -70,4 +93,11 @@ export async function addMultipleItem(input: ItemSchema) {
     },
   });
   return data;
+}
+
+export async function deleteIem(id: string) {
+  const data = await prisma.individualComputerLabItem.delete({
+    where: { id },
+  });
+  return data.id;
 }

@@ -1,23 +1,22 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
-import { IndividualComputerLabItemData } from "@/lib/types";
 import {
-  AssetCondition,
-  AssetItemStatus,
-  ComputerLabItem,
-} from "@prisma/client";
+  ComputerLabItemData,
+  IndividualComputerLabItemData,
+} from "@/lib/types";
+import { AssetCondition, AssetItemStatus } from "@prisma/client";
 import {
   MutationKey,
   QueryKey,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { addMultipleItem, addSingleItem } from "../action";
+import { addMultipleItem, addSingleItem, deleteIem } from "../action";
 
 const mutationKey: MutationKey = ["addedComputerLabItem"];
 
-export function useAddSingleItemMutation(computerLabItem: ComputerLabItem) {
+export function useAddSingleItemMutation(computerLabItem: ComputerLabItemData) {
   const queryClient = useQueryClient();
   const queryKey: QueryKey = [
     "assets",
@@ -41,6 +40,8 @@ export function useAddSingleItemMutation(computerLabItem: ComputerLabItem) {
             {
               computerLabItem,
               ...addedItem,
+              assetDamages: [],
+              _count: { assetDamages: 0 },
             } as IndividualComputerLabItemData,
             ...oldData,
           ],
@@ -64,7 +65,9 @@ export function useAddSingleItemMutation(computerLabItem: ComputerLabItem) {
   return mutation;
 }
 
-export function useAddMultipleItemMutation(computerLabItem: ComputerLabItem) {
+export function useAddMultipleItemMutation(
+  computerLabItem: ComputerLabItemData,
+) {
   const queryClient = useQueryClient();
   const queryKey: QueryKey = [
     "assets",
@@ -81,6 +84,8 @@ export function useAddMultipleItemMutation(computerLabItem: ComputerLabItem) {
         (_, index) =>
           ({
             computerLabItem,
+            assetDamages: [],
+            _count: { assetDamages: 0 },
             id: `${parentId}==${index}`,
             computerLabItemId: parentId,
             condition: AssetCondition.NEW,
@@ -105,6 +110,45 @@ export function useAddMultipleItemMutation(computerLabItem: ComputerLabItem) {
       console.error(error);
       toast({
         description: `Failed to add item to list of ${computerLabItem.model} ${computerLabItem.name}s `,
+        variant: "destructive",
+      });
+    },
+    onSettled() {
+      if (queryClient.isMutating({ mutationKey }) === 1) {
+        queryClient.invalidateQueries({ queryKey });
+      }
+    },
+  });
+  return mutation;
+}
+
+export function useDeleteItemMutation(computerLabItemId: string) {
+  const queryClient = useQueryClient();
+  const queryKey: QueryKey = [
+    "assets",
+    "computer-lab-asset",
+    "item",
+    computerLabItemId,
+    "list",
+  ];
+  const mutation = useMutation({
+    mutationFn: deleteIem,
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey });
+      const previousState =
+        queryClient.getQueryData<IndividualComputerLabItemData>(queryKey);
+
+      queryClient.setQueryData<IndividualComputerLabItemData[]>(
+        queryKey,
+        (oldData) => oldData && oldData.filter((d) => d.id !== id),
+      );
+      return { previousState };
+    },
+    onError: (error, variables, context) => {
+      queryClient.setQueryData(queryKey, context?.previousState);
+      console.error(error);
+      toast({
+        description: `Failed to delete this item. `,
         variant: "destructive",
       });
     },

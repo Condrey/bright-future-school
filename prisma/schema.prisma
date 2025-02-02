@@ -340,10 +340,11 @@ model IndividualComputerLabItem {
   id                String          @id @default(uuid())
   computerLabItemId String
   uniqueIdentifier  String?         @unique
-  status            AssetItemStatus @default(AVAILABLE)
+  status            AssetStatus     @default(AVAILABLE)
   condition         AssetCondition  @default(NEW)
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  assetDamages      AssetDamage[]
   computerLabItem   ComputerLabItem @relation(fields: [computerLabItemId], references: [id], onDelete: Cascade)
 }
 
@@ -364,16 +365,21 @@ model GeneralStoreItem {
 }
 
 model AssetDamage {
-  id                 String            @id @default(uuid())
-  damageDetails      String
-  condition          AssetCondition
-  quantity           Int
-  userId             String
-  generalStoreItemId String?
-  labItemId          String?
-  generalStoreItem   GeneralStoreItem? @relation(fields: [generalStoreItemId], references: [id])
-  labItem            LabItem?          @relation(fields: [labItemId], references: [id])
-  damagedBy          User              @relation(fields: [userId], references: [id])
+  id                          String                     @id @default(uuid())
+  damageDetails               String
+  condition                   AssetCondition
+  quantity                    Int
+  isRepaired                  Boolean                    @default(false)
+  repairedAt                  DateTime?
+  userId                      String
+  generalStoreItemId          String?
+  labItemId                   String?
+  generalStoreItem            GeneralStoreItem?          @relation(fields: [generalStoreItemId], references: [id])
+  labItem                     LabItem?                   @relation(fields: [labItemId], references: [id])
+  damagedBy                   User                       @relation(fields: [userId], references: [id])
+  individualComputerLabItem   IndividualComputerLabItem? @relation(fields: [individualComputerLabItemId], references: [id])
+  individualComputerLabItemId String?
+  createdAt                   DateTime                   @default(now())
 
   @@map("asset_damages")
 }

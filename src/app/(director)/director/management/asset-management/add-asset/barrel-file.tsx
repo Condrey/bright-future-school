@@ -2,6 +2,7 @@ import {
   AssetCategory,
   AssetCondition,
   AssetItemStatus,
+  AssetStatus,
   AssetUnit,
   BookStatus,
 } from "@prisma/client";
@@ -82,6 +83,13 @@ export const assetUnits: Record<AssetUnit, string> = {
   OTHERS: "Other",
 };
 //pairs,packets
+
+export const assetStatuses: Record<AssetStatus, string> = {
+  AVAILABLE: "Is available",
+  ASSIGNED: "Is assigned",
+  UNDER_MAINTENANCE: "Under maintenance",
+  DISPOSED: "Is disposed",
+};
 
 export const assetItemStatuses: Record<AssetItemStatus, string> = {
   AVAILABLE: "Available",
