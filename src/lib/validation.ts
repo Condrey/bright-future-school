@@ -265,6 +265,8 @@ export const individualBookSchema = z.object({
   id: z.string().optional(),
   isbn: z.string().optional(),
   status: z.nativeEnum(BookStatus).default(BookStatus.AVAILABLE),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+
   libraryBookId: requiredString.min(1, "Library book is missing"),
 });
 export type IndividualBookSchema = z.infer<typeof individualBookSchema>;

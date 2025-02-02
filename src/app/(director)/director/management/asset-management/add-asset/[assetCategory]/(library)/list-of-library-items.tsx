@@ -84,7 +84,7 @@ export default function ListOfLibraryItems() {
           onClick={() =>
             startTransition(() =>
               navigateOnclickWithPathnameWithoutUpdate(
-                "/director/management/asset-management/library",
+                "/director/management/asset-management/store/library",
               ),
             )
           }

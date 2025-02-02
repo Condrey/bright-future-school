@@ -256,15 +256,17 @@ model LibraryBook {
 }
 
 model IndividualBook {
-  id            String              @id @default(uuid())
-  isbn          String?
-  status        BookStatus          @default(AVAILABLE)
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
+  id        String         @id @default(uuid())
+  isbn      String?
+  status    BookStatus     @default(AVAILABLE)
+  condition AssetCondition @default(NEW)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   libraryBookId String
   borrowers     Borrower[]
-  libraryBook   LibraryBook         @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
-  bookDamages   LibraryBookDamage[]
+  libraryBook   LibraryBook   @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
+  bookDamages   AssetDamage[]
 
   @@map("individual_books")
 }
@@ -279,28 +281,16 @@ model LibraryBookCategory {
 }
 
 model Borrower {
-  id                 String              @id @default(uuid())
-  borrowedAt         DateTime            @default(now())
-  returnAt           DateTime?
-  status             BorrowStatus        @default(ONGOING)
-  userId             String
-  individualBookId   String?
-  libraryBook        IndividualBook?     @relation(fields: [individualBookId], references: [id])
-  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  libraryBookDamages LibraryBookDamage[]
+  id               String          @id @default(uuid())
+  borrowedAt       DateTime        @default(now())
+  returnAt         DateTime?
+  status           BorrowStatus    @default(ONGOING)
+  userId           String
+  individualBookId String?
+  libraryBook      IndividualBook? @relation(fields: [individualBookId], references: [id])
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("borrowers")
-}
-
-model LibraryBookDamage {
-  id               String          @id @default(uuid())
-  damageDetails    String
-  borrowerId       String
-  individualBookId String?
-  damagedBy        Borrower        @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
-  libraryBook      IndividualBook? @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
-
-  @@map("library_book_damages")
 }
 
 model LabItem {
@@ -380,6 +370,8 @@ model AssetDamage {
   individualComputerLabItem   IndividualComputerLabItem? @relation(fields: [individualComputerLabItemId], references: [id])
   individualComputerLabItemId String?
   createdAt                   DateTime                   @default(now())
+  individualBook              IndividualBook?            @relation(fields: [individualBookId], references: [id])
+  individualBookId            String?
 
   @@map("asset_damages")
 }

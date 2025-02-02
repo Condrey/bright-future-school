@@ -1,0 +1,152 @@
+import { Badge } from "@/components/ui/badge";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { IndividualLibraryBookData } from "@/lib/types";
+import { cn, formatNumber } from "@/lib/utils";
+import { AssetCondition, BookStatus } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
+import {
+  assetConditions,
+  bookStatuses,
+} from "../../../../../add-asset/barrel-file";
+import DropDownMenuIndividualItem from "./drop-down-menu-individual-item";
+
+export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
+  {
+    id: "index",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="#" />;
+    },
+    cell: ({ row }) => <span className="tabular-nums">{row.index + 1}</span>,
+  },
+  {
+    accessorKey: "libraryBook.title",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Items" />;
+    },
+    cell: ({ row }) => {
+      const libraryBook = row.original.libraryBook;
+      return (
+        <div>
+          <div>{libraryBook.title}</div>
+          <div className="text-xs text-muted-foreground">
+            {libraryBook.author}
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "isbn",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="ISBN" />;
+    },
+    cell: ({ row }) => (
+      <Badge
+        className={cn(
+          "font-mono tracking-wide",
+          !row.original.isbn && "animate-pulse",
+        )}
+        variant={!row.original.isbn ? "destructive" : "outline"}
+      >
+        {row.original.isbn || "Not set"}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "condition",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Condition" />;
+    },
+    cell: ({ row }) => {
+      const condition = row.original.condition;
+      return (
+        <Badge
+          variant={
+            condition === AssetCondition.DAMAGED ||
+            condition === AssetCondition.POOR
+              ? "destructive"
+              : condition === AssetCondition.FAIR
+                ? "warn"
+                : "go"
+          }
+        >
+          {assetConditions[condition]}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Status" />;
+    },
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <Badge
+          variant={
+            status === BookStatus.AVAILABLE
+              ? "go"
+              : status === BookStatus.BORROWED
+                ? "warn"
+                : "destructive"
+          }
+        >
+          {bookStatuses[status]}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "_count.assetDamages",
+    header({ column }) {
+      return (
+        <DataTableColumnHeader column={column} title="Registered damages" />
+      );
+    },
+    cell: ({ row }) => {
+      const damages = row.original._count.bookDamages;
+      return (
+        <div>
+          {damages === 0 ? (
+            <Badge variant={"outline"}>{"Not registered"}</Badge>
+          ) : (
+            <Badge
+              variant={"secondary"}
+            >{`${formatNumber(damages)} record${damages === 1 ? "" : "s"}`}</Badge>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "_count.assetDamages.repairs",
+    header({ column }) {
+      return (
+        <DataTableColumnHeader column={column} title="Performed repairs" />
+      );
+    },
+    cell: ({ row }) => {
+      const repairs = row.original.bookDamages.filter(
+        (a) => a.isRepaired,
+      ).length;
+      return (
+        <div>
+          {repairs === 0 ? (
+            <div>{"No repairs"}</div>
+          ) : (
+            <div>{`${formatNumber(repairs)} repair${repairs === 1 ? "" : "s"}`}</div>
+          )}
+        </div>
+      );
+    },
+  },
+
+  {
+    id: "action",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Action" />;
+    },
+    cell: ({ row }) => <DropDownMenuIndividualItem item={row.original} />,
+  },
+];

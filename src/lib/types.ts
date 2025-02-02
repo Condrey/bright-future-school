@@ -264,9 +264,21 @@ export type AssetData = Prisma.AssetGetPayload<{
 }>;
 
 // Library
+export const individualLibraryBookDataInclude = {
+  libraryBook: { include: { asset: true } },
+  bookDamages: {
+    orderBy: { createdAt: "desc" },
+    include: { damagedBy: { select: userDataSelect } },
+  },
+  _count: { select: { bookDamages: true } },
+} satisfies Prisma.IndividualBookInclude;
+export type IndividualLibraryBookData = Prisma.IndividualBookGetPayload<{
+  include: typeof individualLibraryBookDataInclude;
+}>;
 export const libraryBookDataInclude = {
   asset: true,
   category: true,
+  individualBooks: { include: individualLibraryBookDataInclude },
 } satisfies Prisma.LibraryBookInclude;
 export type LibraryBookData = Prisma.LibraryBookGetPayload<{
   include: typeof libraryBookDataInclude;
