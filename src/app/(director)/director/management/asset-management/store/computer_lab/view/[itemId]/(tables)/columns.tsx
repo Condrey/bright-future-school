@@ -143,6 +143,7 @@ export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
       );
     },
   },
+
   {
     id: "action",
     header({ column }) {

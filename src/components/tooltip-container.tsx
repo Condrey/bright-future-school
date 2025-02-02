@@ -26,7 +26,9 @@ export default function TooltipContainer({
         type="button"
         className="flex h-fit items-center justify-start gap-2"
       >
-        <Label className="line-clamp-1 pb-1">{label}</Label>
+        <Label className="line-clamp-1 text-ellipsis break-words pb-1">
+          {label}
+        </Label>
         <InfoIcon
           className={cn("mb-1 size-5 fill-primary text-primary-foreground")}
         />

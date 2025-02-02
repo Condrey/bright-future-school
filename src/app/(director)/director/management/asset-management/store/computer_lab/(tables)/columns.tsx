@@ -6,7 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { ComputerLabItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
+import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuComputerLabItem from "./drop-down-menu-computer-lab-item";
 
@@ -44,7 +46,7 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
   {
     accessorKey: "quantity",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Quantity" />
+      <DataTableColumnHeader column={column} title="Total quantity" />
     ),
     cell({ row }) {
       const itemNumber = row.original.quantity || 0;
@@ -60,13 +62,62 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
     },
   },
   {
+    id: "status.available",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Available" />
+    ),
+    cell({ row }) {
+      const available = row.original.individualComputerLabItems.filter(
+        (i) => i.status === AssetStatus.AVAILABLE,
+      ).length;
+      return (
+        <Badge variant={available === 0 ? "destructive" : "go"}>
+          {available === 0 ? "None " : `${formatNumber(available)} available`}
+        </Badge>
+      );
+    },
+  },
+  {
+    id: "condition.damaged",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Damaged" />
+    ),
+    cell({ row }) {
+      const damaged = row.original.individualComputerLabItems.filter(
+        (i) => i.condition === AssetCondition.DAMAGED,
+      ).length;
+      return (
+        <Badge variant={damaged === 0 ? "secondary" : "destructive"}>
+          {damaged === 0 ? "None " : `${formatNumber(damaged)} damaged`}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created at" />
+    ),
+    cell({ row }) {
+      return (
+        <div>
+          <div>{format(row.original.createdAt, "PP")}</div>
+          {row.original.updatedAt > row.original.createdAt && (
+            <div className="text-xs text-muted-foreground">
+              (Updated {format(row.original.updatedAt, "PP")})
+            </div>
+          )}{" "}
+        </div>
+      );
+    },
+  },
+  {
     id: "action",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
     ),
-    cell({row}) {
-      return <DropDownMenuComputerLabItem computerLabItem={row.original}/>
-      
+    cell({ row }) {
+      return <DropDownMenuComputerLabItem computerLabItem={row.original} />;
     },
   },
 ];

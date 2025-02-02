@@ -9,8 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { getAllComputerAssetItems } from "./action";
 import { useComputerLabColumns } from "./columns";
+import TableSummary from "./table-summary";
 
-export function ListOfComputerLabItems() {
+export function ListOfIndividualComputerLabItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const { data, status, isFetching, refetch } = useQuery({
     queryKey: ["assets", "computer-lab-asset", "list"],
@@ -20,8 +21,10 @@ export function ListOfComputerLabItems() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
-          List of Computer Lab Items{" "}
-          <span>({formatNumber(data?.length || 0)})</span>
+          Individual Computer Lab Items{" "}
+          <span className="text-muted-foreground">
+            ({formatNumber(data?.length || 0)})
+          </span>
         </h1>
         <Button
           className="w-fit"
@@ -34,6 +37,8 @@ export function ListOfComputerLabItems() {
           + Entry
         </Button>
       </div>
+      {!!data && !!data.length && <TableSummary items={data} />}
+
       {status === "pending" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
           <span className="text-muted-foreground">Loading...</span>

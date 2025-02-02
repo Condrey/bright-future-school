@@ -15,6 +15,7 @@ import {
 import { addMultipleItem, addSingleItem, deleteIem } from "../action";
 
 const mutationKey: MutationKey = ["addedComputerLabItem"];
+const _key: QueryKey = ["assets", "computer-lab-asset", "list"];
 
 export function useAddSingleItemMutation(computerLabItem: ComputerLabItemData) {
   const queryClient = useQueryClient();
@@ -46,7 +47,25 @@ export function useAddSingleItemMutation(computerLabItem: ComputerLabItemData) {
             ...oldData,
           ],
       );
+
       return { previousState };
+    },
+    async onSuccess(_, variables) {
+      const _key: QueryKey = ["assets", "computer-lab-asset", "list"];
+      await queryClient.cancelQueries({
+        queryKey: _key,
+      });
+      queryClient.setQueryData<ComputerLabItemData[]>(
+        _key,
+        (oldData) =>
+          oldData &&
+          oldData.map((d) =>
+            d.id === variables.input.computerLabItemId
+              ? { ...d, quantity: d.quantity || 0 + 1 }
+              : d,
+          ),
+      );
+      queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
       queryClient.setQueryData(queryKey, context?.previousState);
@@ -105,6 +124,22 @@ export function useAddMultipleItemMutation(
       );
       return { previousState };
     },
+    async onSuccess(_, variables) {
+      await queryClient.cancelQueries({
+        queryKey: _key,
+      });
+      queryClient.setQueryData<ComputerLabItemData[]>(
+        _key,
+        (oldData) =>
+          oldData &&
+          oldData.map((d) =>
+            d.id === variables.parentId
+              ? { ...d, quantity: d.quantity || 0 + variables.quantity }
+              : d,
+          ),
+      );
+      queryClient.invalidateQueries({ queryKey: _key });
+    },
     onError: (error, variables, context) => {
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
@@ -133,7 +168,7 @@ export function useDeleteItemMutation(computerLabItemId: string) {
   ];
   const mutation = useMutation({
     mutationFn: deleteIem,
-    onMutate: async (id) => {
+    onMutate: async ({ id }) => {
       await queryClient.cancelQueries({ queryKey });
       const previousState =
         queryClient.getQueryData<IndividualComputerLabItemData>(queryKey);
@@ -143,6 +178,22 @@ export function useDeleteItemMutation(computerLabItemId: string) {
         (oldData) => oldData && oldData.filter((d) => d.id !== id),
       );
       return { previousState };
+    },
+    async onSuccess(_, variables) {
+      await queryClient.cancelQueries({
+        queryKey: _key,
+      });
+      queryClient.setQueryData<ComputerLabItemData[]>(
+        _key,
+        (oldData) =>
+          oldData &&
+          oldData.map((d) =>
+            d.id === variables.computerLabItemId
+              ? { ...d, quantity: d.quantity || 0 - 1 }
+              : d,
+          ),
+      );
+      queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
       queryClient.setQueryData(queryKey, context?.previousState);

@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import FormUpdateIndividualItem from "../item/[individualItemId]/form-update-individual-item";
-import DialogDeleteItem from "./dialog-delete-item";
+import DialogDeleteIndividualItem from "./dialog-delete-individual-item";
 
 interface DropDownMenuIndividualItemProps {
   item: IndividualComputerLabItemData;
@@ -104,7 +104,7 @@ export default function DropDownMenuIndividualItem({
         individualItemToEdit={item}
       />
 
-      <DialogDeleteItem
+      <DialogDeleteIndividualItem
         item={item}
         open={showDeleteDialog}
         openChange={setShowDeleteDialog}

@@ -52,7 +52,7 @@ export default function DropDownMenuComputerLabItem({
               onClick={() => navigator.clipboard.writeText(computerLabItem.id)}
             >
               <CopyIcon className="mr-2 size-4" />
-              <span>Copy Computer Lab Item Id</span>
+              <span>Copy Individual item Id</span>
             </DropdownMenuItem>
             {user.role === Role.SUPER_ADMIN && (
               <DropdownMenuItem
@@ -61,7 +61,7 @@ export default function DropDownMenuComputerLabItem({
                 }
               >
                 <CopyIcon className="mr-2 size-4" />
-                <span>Copy Computer Lab Item</span>
+                <span>Copy Individual item</span>
               </DropdownMenuItem>
             )}
             <DropdownMenuItem
@@ -72,7 +72,7 @@ export default function DropDownMenuComputerLabItem({
               }
             >
               <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View computer Lab Item</span>
+              <span>View individual item</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
@@ -86,7 +86,7 @@ export default function DropDownMenuComputerLabItem({
               className="font-semibold text-foreground"
             >
               <Edit2Icon className="mr-2 size-4 fill-foreground text-foreground" />
-              <span>Edit Computer Lab Item</span>
+              <span>Edit Individual item</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -94,7 +94,7 @@ export default function DropDownMenuComputerLabItem({
               className="font-semibold text-destructive"
             >
               <Trash2Icon className="mr-2 size-4 fill-destructive" />
-              <span>Delete Computer Lab Item</span>
+              <span>Delete Individual item</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

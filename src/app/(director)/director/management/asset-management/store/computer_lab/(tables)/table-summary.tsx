@@ -5,16 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IndividualComputerLabItemData } from "@/lib/types";
+import { ComputerLabItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
-import { NumericHolder } from "../../../../../(header)/numeric-holder";
-import {
-  assetConditions,
-  assetStatuses,
-} from "../../../../../add-asset/barrel-file";
+import { NumericHolder } from "../../../(header)/numeric-holder";
+import { assetConditions, assetStatuses } from "../../../add-asset/barrel-file";
 
 interface TableSummaryProps {
-  items: IndividualComputerLabItemData[];
+  items: ComputerLabItemData[];
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
@@ -27,7 +24,11 @@ export default function TableSummary({ items }: TableSummaryProps) {
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetCondition).map((condition) => {
-            const count = items.filter((i) => i.condition === condition).length;
+            const count = items.flatMap((i) =>
+              i.individualComputerLabItems.filter(
+                (d) => d.condition === condition,
+              ),
+            ).length;
             const label = assetConditions[condition];
             return (
               <NumericHolder key={condition} count={count} label={label} />
@@ -42,7 +43,9 @@ export default function TableSummary({ items }: TableSummaryProps) {
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetStatus).map((status) => {
-            const count = items.filter((i) => i.status === status).length;
+            const count = items.flatMap((i) =>
+              i.individualComputerLabItems.filter((d) => d.status === status),
+            ).length;
             const label = assetStatuses[status];
             return <NumericHolder key={status} count={count} label={label} />;
           })}

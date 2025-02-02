@@ -4,26 +4,29 @@ import { Button } from "@/components/ui/button";
 import { IndividualComputerLabItemData } from "@/lib/types";
 import { useDeleteItemMutation } from "./mutation";
 
-interface DeleteItemDialogProps {
+interface DeleteIndividualItemDialogProps {
   item: IndividualComputerLabItemData;
   open: boolean;
   openChange: (open: boolean) => void;
 }
 
-export default function DialogDeleteItem({
+export default function DialogDeleteIndividualItem({
   item,
   open,
   openChange,
-}: DeleteItemDialogProps) {
+}: DeleteIndividualItemDialogProps) {
   const mutation = useDeleteItemMutation(item.computerLabItemId);
 
   async function handleDeletion() {
     try {
-      mutation.mutate(item.id, {
-        onSuccess() {
-          openChange(false);
+      mutation.mutate(
+        { id: item.id, computerLabItemId: item.computerLabItemId },
+        {
+          onSuccess() {
+            openChange(false);
+          },
         },
-      });
+      );
     } catch (error) {
       console.error(error);
     }

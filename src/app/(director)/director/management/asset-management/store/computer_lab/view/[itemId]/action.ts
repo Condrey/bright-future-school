@@ -67,10 +67,20 @@ export async function addSingleItem({
 }: {
   input: IndividualComputerLabItem;
 }) {
-  const data = await prisma.individualComputerLabItem.create({
-    data: input,
-    include: individualComputerLabItemDataInclude,
-  });
+  const data = await prisma.$transaction(
+    async (tx) => {
+      await tx.computerLabItem.update({
+        where: { id: input.computerLabItemId },
+        data: { quantity: { increment: 1 } },
+      });
+      const data = await tx.individualComputerLabItem.create({
+        data: { ...input },
+        include: individualComputerLabItemDataInclude,
+      });
+      return data;
+    },
+    { maxWait: 60000, timeout: 60000 },
+  );
 }
 
 export async function addMultipleItem(input: ItemSchema) {
@@ -78,6 +88,7 @@ export async function addMultipleItem(input: ItemSchema) {
   const data = await prisma.computerLabItem.update({
     where: { id: parentId },
     data: {
+      quantity: { increment: quantity },
       individualComputerLabItems: {
         createMany: {
           data: Array.from({ length: quantity }, (_, index) => ({
@@ -95,9 +106,23 @@ export async function addMultipleItem(input: ItemSchema) {
   return data;
 }
 
-export async function deleteIem(id: string) {
-  const data = await prisma.individualComputerLabItem.delete({
-    where: { id },
+export async function deleteIem({
+  id,
+  computerLabItemId,
+}: {
+  id: string;
+  computerLabItemId: string;
+}) {
+  console.log("computerLabItemId: ", computerLabItemId, "id: ", id);
+  const data = await prisma.$transaction(async (tx) => {
+    await tx.computerLabItem.update({
+      where: { id: computerLabItemId },
+      data: { quantity: { decrement: 1 } },
+    });
+    const data = await tx.individualComputerLabItem.delete({
+      where: { id },
+    });
+    return data;
   });
   return data.id;
 }

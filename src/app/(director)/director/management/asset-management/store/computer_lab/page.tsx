@@ -1,7 +1,7 @@
 import BodyContainer from "@/app/(director)/body-container";
 import HeaderContainer from "@/app/(director)/header-container";
 import { Fragment } from "react";
-import { ListOfComputerLabItems } from "./(tables)/list-of-computer-lab-items";
+import { ListOfIndividualComputerLabItems } from "./(tables)/list-of-individual-computer-lab-items";
 
 export default function Page() {
   return (
@@ -17,7 +17,7 @@ export default function Page() {
       />
       <BodyContainer>
         {/* Lits of assets in computer lab  */}
-        <ListOfComputerLabItems />
+        <ListOfIndividualComputerLabItems />
       </BodyContainer>
     </Fragment>
   );
