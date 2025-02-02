@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingButton from "@/components/loading-button";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
@@ -7,12 +8,14 @@ import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { useTransition } from "react";
 import { getAllComputerAssetItems } from "./action";
 import { useComputerLabColumns } from "./columns";
 import TableSummary from "./table-summary";
 
 export function ListOfIndividualComputerLabItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
   const { data, status, isFetching, refetch } = useQuery({
     queryKey: ["assets", "computer-lab-asset", "list"],
     queryFn: getAllComputerAssetItems,
@@ -26,16 +29,19 @@ export function ListOfIndividualComputerLabItems() {
             ({formatNumber(data?.length || 0)})
           </span>
         </h1>
-        <Button
+        <LoadingButton
+          loading={isPending}
           className="w-fit"
           onClick={() =>
-            navigateOnclickWithPathnameWithoutUpdate(
-              `/director/management/asset-management/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`,
+            startTransition(() =>
+              navigateOnclickWithPathnameWithoutUpdate(
+                `/director/management/asset-management/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`,
+              ),
             )
           }
         >
           + Entry
-        </Button>
+        </LoadingButton>
       </div>
       {!!data && !!data.length && <TableSummary items={data} />}
 

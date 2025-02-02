@@ -18,7 +18,7 @@ import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { toast } from "@/hooks/use-toast";
 import { PARAM_NAME_TERM } from "@/lib/constants";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import FormAddEditTerm from "./director/repository/(utils)/terms/form-add-edit-term";
 import { useTermSwitcherQuery } from "./hook";
 
@@ -29,8 +29,8 @@ interface TermSwitcherProps {
 export default function TermSwitcher({ pathname }: TermSwitcherProps) {
   const [openAddItemDialog, setOpenAddItemDialog] = useState(false);
 
-  const { navigateOnclick, navigateOnclickWithoutUpdate } =
-    useCustomSearchParams();
+  const { navigateOnclick } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const { data, status, isFetching, refetch, error } = useTermSwitcherQuery();
 
@@ -70,7 +70,8 @@ export default function TermSwitcher({ pathname }: TermSwitcherProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
+          <LoadingButton
+            loading={isPending}
             size="lg"
             variant={"outline"}
             className="flex h-fit w-full max-w-sm justify-between px-4 py-2"
@@ -84,7 +85,7 @@ export default function TermSwitcher({ pathname }: TermSwitcherProps) {
               </span>
             </div>
             <ChevronsUpDown className="ml-auto" />
-          </Button>
+          </LoadingButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-fit min-w-56 rounded-lg"
@@ -96,7 +97,11 @@ export default function TermSwitcher({ pathname }: TermSwitcherProps) {
             Academic year terms
           </DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={async () => navigateOnclick(PARAM_NAME_TERM, "", pathname)}
+            onClick={() => {
+              startTransition(() => {
+                navigateOnclick(PARAM_NAME_TERM, "", pathname);
+              });
+            }}
             className="gap-2 p-2"
           >
             <div className="flex size-6 items-center justify-center rounded-sm border">
@@ -108,8 +113,10 @@ export default function TermSwitcher({ pathname }: TermSwitcherProps) {
             return (
               <DropdownMenuItem
                 key={item.id}
-                onClick={async () =>
-                  navigateOnclick(PARAM_NAME_TERM, item.id, pathname)
+                onClick={() =>
+                  startTransition(() => {
+                    navigateOnclick(PARAM_NAME_TERM, item.id, pathname);
+                  })
                 }
                 className="gap-2 p-2"
               >

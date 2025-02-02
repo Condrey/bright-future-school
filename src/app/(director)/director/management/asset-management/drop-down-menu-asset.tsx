@@ -17,10 +17,11 @@ import {
   ArrowUpRightIcon,
   CopyIcon,
   Edit2Icon,
+  Loader2,
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import AddEditAsset from "./add-edit-asset";
 import DialogDeleteAsset from "./dialog-delete-asset";
 
@@ -30,6 +31,7 @@ interface DropDownMenuAssetProps {
 
 export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
   const [showDialog, setShowDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
@@ -40,7 +42,11 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="size-8 p-0">
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
+            {isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <MoreHorizontal />
+            )}
           </Button>
         </DropdownMenuTrigger>
 
@@ -65,8 +71,10 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
             )}
             <DropdownMenuItem
               onClick={() =>
-                navigateOnclickWithPathnameWithoutUpdate(
-                  `/director/management/asset-management/store/${asset.category.toLocaleLowerCase()}`,
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${asset.category.toLocaleLowerCase()}`,
+                  ),
                 )
               }
             >

@@ -33,7 +33,7 @@ export default function DialogDeleteComputerLabItem({
     <ResponsiveDrawer
       open={open}
       setOpen={openChange}
-      title={`Delete ${computerLabItem.name}`}
+      title={`Delete all ${computerLabItem.model} ${computerLabItem.name}s`}
       description="Please note that this change is irreversible. This will delete this computer Lab Item and all the associated data attached to it."
       className="max-w-md"
     >

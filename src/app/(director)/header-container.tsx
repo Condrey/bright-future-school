@@ -8,12 +8,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 
 export interface HeaderContainerBreadCrumb {
   label: string;
@@ -28,6 +30,7 @@ export default function HeaderContainer({
   breadCrumbs = [],
   className,
 }: HeaderContainerProps) {
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const basePathName = "/director";
   const breadCrumbItems: HeaderContainerBreadCrumb[] = [
@@ -59,20 +62,30 @@ export default function HeaderContainer({
                           <BreadcrumbPage>{item.label}</BreadcrumbPage>
                         ) : (
                           <BreadcrumbLink asChild>
-                            <Link
-                              href={
-                                basePathName +
-                                item.url +
-                                "?" +
-                                searchParams.toString()
-                              }
+                            <Button
+                              asChild
+                              variant={"link"}
+                              onClick={() => startTransition(() => {})}
                               className={cn(
-                                (index !== array.length - 1 || index === 0) &&
-                                  "line-clamp-1 max-w-24 text-ellipsis break-words lg:max-w-48",
+                                isPending &&
+                                  "animate-pulse rounded-md bg-card px-2 py-1 text-card-foreground",
                               )}
                             >
-                              {item.label}
-                            </Link>
+                              <Link
+                                href={
+                                  basePathName +
+                                  item.url +
+                                  "?" +
+                                  searchParams.toString()
+                                }
+                                className={cn(
+                                  (index !== array.length - 1 || index === 0) &&
+                                    "line-clamp-1 max-w-24 text-ellipsis break-words lg:max-w-48",
+                                )}
+                              >
+                                {item.label}
+                              </Link>
+                            </Button>
                           </BreadcrumbLink>
                         )}
                       </BreadcrumbItem>

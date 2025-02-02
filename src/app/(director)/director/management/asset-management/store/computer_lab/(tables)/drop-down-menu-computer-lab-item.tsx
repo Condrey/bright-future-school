@@ -18,10 +18,11 @@ import {
   ArrowUpRightIcon,
   CopyIcon,
   Edit2Icon,
+  Loader2,
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import DialogDeleteComputerLabItem from "./dialog-delete-computer-lab-item";
 
 interface DropDownMenuComputerLabItemProps {
@@ -32,6 +33,7 @@ export default function DropDownMenuComputerLabItem({
   computerLabItem,
 }: DropDownMenuComputerLabItemProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
 
@@ -41,7 +43,11 @@ export default function DropDownMenuComputerLabItem({
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="size-8 p-0">
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
+            {isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <MoreHorizontal />
+            )}
           </Button>
         </DropdownMenuTrigger>
 
@@ -66,8 +72,10 @@ export default function DropDownMenuComputerLabItem({
             )}
             <DropdownMenuItem
               onClick={() =>
-                navigateOnclickWithPathnameWithoutUpdate(
-                  `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`,
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`,
+                  ),
                 )
               }
             >
@@ -79,8 +87,10 @@ export default function DropDownMenuComputerLabItem({
           <DropdownMenuGroup>
             <DropdownMenuItem
               onClick={() =>
-                navigateOnclickWithPathnameWithoutUpdate(
-                  `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/edit/${computerLabItem.id}`,
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/edit/${computerLabItem.id}`,
+                  ),
                 )
               }
               className="font-semibold text-foreground"

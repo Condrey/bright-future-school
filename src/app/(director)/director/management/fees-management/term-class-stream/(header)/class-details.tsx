@@ -65,7 +65,6 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
 
   return (
     <>
-      {" "}
       <div className="hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md md:flex-col md:divide-x-0 lg:flex">
         <div className="flex flex-col gap-1">
           <div className="font-bold">

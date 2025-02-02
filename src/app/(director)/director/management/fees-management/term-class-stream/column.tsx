@@ -20,6 +20,7 @@ import { FeesStatus, Role } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ArrowUpRightIcon, CopyIcon, MoreHorizontal } from "lucide-react";
+import { useTransition } from "react";
 import ButtonAddFees from "./button-add-fees";
 
 export const usePupilColumns = ({
@@ -31,6 +32,7 @@ export const usePupilColumns = ({
 }): ColumnDef<PupilData>[] => {
   const { user } = useSession();
   const { navigateOnclickWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
   return [
     {
       id: "index",
@@ -214,7 +216,9 @@ export const usePupilColumns = ({
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem
                   onClick={() =>
-                    navigateOnclickWithoutUpdate(`/${pupil.user?.username}`)
+                    startTransition(() =>
+                      navigateOnclickWithoutUpdate(`/${pupil.user?.username}`),
+                    )
                   }
                 >
                   <ArrowUpRightIcon className="mr-2 size-4" />

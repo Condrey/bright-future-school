@@ -106,7 +106,7 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
             <div className="text-xs text-muted-foreground">
               (Updated {format(row.original.updatedAt, "PP")})
             </div>
-          )}{" "}
+          )}
         </div>
       );
     },

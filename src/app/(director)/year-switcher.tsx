@@ -24,7 +24,7 @@ import { toast } from "@/hooks/use-toast";
 import { PARAM_NAME_ACADEMIC_YEAR } from "@/lib/constants";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import FormAddEditYear from "./director/repository/(utils)/years/form-add-edit-year";
 import { useYearSwitcherQuery } from "./hook";
 
@@ -36,6 +36,7 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
   const [openAddItemDialog, setOpenAddItemDialog] = useState(false);
 
   const { navigateOnclick } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const { data, status, isFetching, refetch, error } = useYearSwitcherQuery();
 
@@ -76,7 +77,8 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
+          <LoadingButton
+            loading={isPending}
             size="lg"
             variant={"outline"}
             className="flex h-fit w-full max-w-sm justify-between px-4 py-2"
@@ -98,7 +100,7 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
               </span>
             </div>
             <ChevronsUpDown className="ml-auto" />
-          </Button>
+          </LoadingButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-fit min-w-56 rounded-lg"
@@ -111,7 +113,9 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
           </DropdownMenuLabel>
           <DropdownMenuItem
             onClick={async () =>
-              navigateOnclick(PARAM_NAME_ACADEMIC_YEAR, "", pathname)
+              startTransition(() =>
+                navigateOnclick(PARAM_NAME_ACADEMIC_YEAR, "", pathname),
+              )
             }
             className="gap-2 p-2"
           >
@@ -125,7 +129,13 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
               <DropdownMenuItem
                 key={item.id}
                 onClick={async () =>
-                  navigateOnclick(PARAM_NAME_ACADEMIC_YEAR, item.year, pathname)
+                  startTransition(() =>
+                    navigateOnclick(
+                      PARAM_NAME_ACADEMIC_YEAR,
+                      item.year,
+                      pathname,
+                    ),
+                  )
                 }
                 className="gap-2 p-2"
               >

@@ -1,11 +1,11 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
-import { Button } from "@/components/ui/button";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { formatNumber } from "@/lib/utils";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { HistoryIcon, Loader2 } from "lucide-react";
+import { useTransition } from "react";
 import {
   assetUnits,
   Card,
@@ -25,6 +25,7 @@ export default function ListOfComputerLabItems() {
   });
 
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   if (status === "pending") {
     return (
@@ -76,18 +77,21 @@ export default function ListOfComputerLabItems() {
             {formatNumber(data.length)} items in the database.
           </CardDescription>
         </div>
-        <Button
+        <LoadingButton
+          loading={isPending}
           size={"sm"}
           variant={"secondary"}
           onClick={() =>
-            navigateOnclickWithPathnameWithoutUpdate(
-              "/director/management/asset-management/store/computer_lab",
+            startTransition(() =>
+              navigateOnclickWithPathnameWithoutUpdate(
+                "/director/management/asset-management/store/computer_lab",
+              ),
             )
           }
           className="ms-auto"
         >
           View all
-        </Button>
+        </LoadingButton>
       </CardHeader>
       <CardContent>
         <ul className="w-full list-inside list-decimal divide-y">

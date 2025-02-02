@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import TooltipContainer from "@/components/tooltip-container";
+import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -18,25 +19,28 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { DirectorDashboardParam } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 
 interface NavManagementsProps {
   dashboardParams: DirectorDashboardParam;
 }
+type ItemType = {
+  name: string;
+  url: string;
+  icon: LucideIcon;
+  disabled: boolean;
+  toolTipMessage: React.ReactNode;
+};
 export function NavManagements({ dashboardParams }: NavManagementsProps) {
   const { isMobile } = useSidebar();
   const { pupils } = dashboardParams;
   const searchParams = useSearchParams();
-  const basePathname = "/director/management";
 
-  const managements: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-    disabled: boolean;
-    toolTipMessage: React.ReactNode;
-  }[] = [
+  const [isPending, startTransition] = useTransition();
+  const managements: ItemType[] = [
     {
       name: "Fees management",
       url: "fees-management",
@@ -46,12 +50,18 @@ export function NavManagements({ dashboardParams }: NavManagementsProps) {
         <p>
           Before Managing fees, you need to have{" "}
           <cite>students and or pupils</cite> in the database first.{" "}
-          <Link
-            href={`/director/repository/students?${searchParams.toString()}`}
-            className="underline"
+          <Button
+            asChild
+            variant={"link"}
+            onClick={() => startTransition(() => {})}
           >
-            Click here to add
-          </Link>
+            <Link
+              href={`/director/repository/students?${searchParams.toString()}`}
+              className="underline"
+            >
+              Click here to add
+            </Link>
+          </Button>
         </p>
       ),
     },
@@ -71,12 +81,18 @@ export function NavManagements({ dashboardParams }: NavManagementsProps) {
         <p>
           Before Managing report cards, you need to have{" "}
           <cite>students and or pupils</cite> in the database first.{" "}
-          <Link
-            href={`/director/repository/students?${searchParams.toString()}`}
-            className="underline"
+          <Button
+            asChild
+            variant={"link"}
+            onClick={() => startTransition(() => {})}
           >
-            Click here to add
-          </Link>
+            <Link
+              href={`/director/repository/students?${searchParams.toString()}`}
+              className="underline"
+            >
+              Click here to add
+            </Link>
+          </Button>
         </p>
       ),
     },
@@ -98,20 +114,7 @@ export function NavManagements({ dashboardParams }: NavManagementsProps) {
                   </TooltipContainer>
                 </div>
               ) : (
-                <SidebarMenuButton asChild disabled={item.disabled}>
-                  <Link
-                    href={
-                      basePathname +
-                      "/" +
-                      item.url +
-                      "?" +
-                      searchParams.toString()
-                    }
-                  >
-                    <Icon />
-                    <span>{item.name}</span>
-                  </Link>
-                </SidebarMenuButton>
+                <MenuItemLink key={item.url} item={item} />
               )}
               {/* TODO: think about this amazing ui coundrey */}
               {/* <DropdownMenu>
@@ -154,5 +157,36 @@ export function NavManagements({ dashboardParams }: NavManagementsProps) {
         )}
       </SidebarMenu>
     </SidebarGroup>
+  );
+}
+
+interface MenuItemLinkProps {
+  item: ItemType;
+}
+function MenuItemLink({ item }: MenuItemLinkProps) {
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+  const basePathname = "/director/management";
+  const searchParams = useSearchParams();
+  const Icon = item.icon;
+  const isActive = pathname.startsWith(`${basePathname}/${item.url}`);
+
+  return (
+    <SidebarMenuButton
+      asChild
+      disabled={item.disabled}
+      onClick={() => startTransition(() => {})}
+      className={cn(
+        isPending && "animate-pulse bg-card text-card-foreground",
+        isActive && "font-bold",
+      )}
+    >
+      <Link
+        href={basePathname + "/" + item.url + "?" + searchParams.toString()}
+      >
+        <Icon />
+        <span>{item.name}</span>
+      </Link>
+    </SidebarMenuButton>
   );
 }

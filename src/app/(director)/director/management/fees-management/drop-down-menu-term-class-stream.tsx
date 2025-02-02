@@ -18,11 +18,12 @@ import {
   ArrowUpRightIcon,
   CalculatorIcon,
   CopyIcon,
+  Loader2,
   MoreHorizontal,
   UserIcon,
   UsersIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import AssignClassTeacher from "../../repository/(users)/students/(tables)/(class-teacher)/assign-class-teacher";
 import AssignPupils from "../../repository/(users)/students/(tables)/(pupils)/assign-pupils";
 import EditTermForm from "./term-class-stream/(header)/(term-details)/edit-term-form";
@@ -36,7 +37,7 @@ export default function DropDownMenuTermClassStream({
 }: DropDownMenuTermClassStreamProps) {
   const { user } = useSession();
   const { navigateOnclick } = useCustomSearchParams();
-
+  const [isPending, startTransition] = useTransition();
   const [showAssignClassTeacherSheet, setShowAssignClassTeacherSheet] =
     useState(false);
   const [showAssignPupilsSheet, setShowAssignPupilsSheet] = useState(false);
@@ -59,7 +60,11 @@ export default function DropDownMenuTermClassStream({
             className="size-8 p-0 group-hover/row:size-fit"
           >
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
+            {isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <MoreHorizontal />
+            )}
             <span className="hidden group-hover/row:flex">Open Action</span>
           </Button>
         </DropdownMenuTrigger>
@@ -69,10 +74,12 @@ export default function DropDownMenuTermClassStream({
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() =>
-                navigateOnclick(
-                  PARAM_NAME_CLASS_TERM,
-                  termClassStream.id,
-                  "/director/management/fees-management/term-class-stream",
+                startTransition(() =>
+                  navigateOnclick(
+                    PARAM_NAME_CLASS_TERM,
+                    termClassStream.id,
+                    "/director/management/fees-management/term-class-stream",
+                  ),
                 )
               }
             >

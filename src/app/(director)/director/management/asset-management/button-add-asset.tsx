@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/loading-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,9 +21,11 @@ import {
   StoreIcon,
   TestTubeIcon,
 } from "lucide-react";
+import { useTransition } from "react";
 
 export default function ButtonAddAsset({ className }: { className?: string }) {
   const { navigateOnclickWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
   const assetCategories: Record<
     AssetCategory,
     { label: string; icon: LucideIcon }
@@ -37,10 +39,10 @@ export default function ButtonAddAsset({ className }: { className?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className={cn("w-fit", className)}>
+        <LoadingButton loading={isPending} className={cn("w-fit", className)}>
           <span>New asset</span>
           <CaretSortIcon className="ml-2 size-4" />
-        </Button>
+        </LoadingButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
@@ -52,8 +54,10 @@ export default function ButtonAddAsset({ className }: { className?: string }) {
               <DropdownMenuItem
                 key={value}
                 onClick={() =>
-                  navigateOnclickWithoutUpdate(
-                    `/add-asset/${value.toLocaleLowerCase()}`,
+                  startTransition(() =>
+                    navigateOnclickWithoutUpdate(
+                      `/add-asset/${value.toLocaleLowerCase()}`,
+                    ),
                   )
                 }
               >

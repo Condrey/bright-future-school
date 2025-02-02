@@ -166,7 +166,6 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
                 <HistoryIcon className="float-start size-4" />
                 {item.updatedAt > item.createdAt && (
                   <span>
-                    {" "}
                     (Updated on {format(item.updatedAt, "PPpp")}) and`
                   </span>
                 )}
@@ -180,9 +179,7 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
               {/* Asset  */}
               <div className="flex w-full items-center gap-1">
                 <hr className="w-full flex-1" />
-                <span className="text-muted-foreground">
-                  Asset details
-                </span>{" "}
+                <span className="text-muted-foreground">Asset details</span>
                 <hr className="w-full flex-1" />
               </div>
               <div>

@@ -18,10 +18,11 @@ import {
   ArrowUpRightIcon,
   CopyIcon,
   Edit2Icon,
+  Loader2,
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import FormUpdateIndividualItem from "../item/[individualItemId]/form-update-individual-item";
 import DialogDeleteIndividualItem from "./dialog-delete-individual-item";
 
@@ -33,6 +34,7 @@ export default function DropDownMenuIndividualItem({
   item,
 }: DropDownMenuIndividualItemProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const { user } = useSession();
@@ -43,7 +45,11 @@ export default function DropDownMenuIndividualItem({
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="size-8 p-0">
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
+            {isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <MoreHorizontal />
+            )}
           </Button>
         </DropdownMenuTrigger>
 
@@ -68,8 +74,10 @@ export default function DropDownMenuIndividualItem({
             )}
             <DropdownMenuItem
               onClick={() =>
-                navigateOnclickWithPathnameWithoutUpdate(
-                  `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`,
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`,
+                  ),
                 )
               }
             >

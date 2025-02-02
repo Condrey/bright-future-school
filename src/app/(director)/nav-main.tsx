@@ -2,6 +2,7 @@
 
 import { ChevronRight, LifeBuoy, LucideIcon, User } from "lucide-react";
 
+import LoadingButton from "@/components/loading-button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -21,6 +22,7 @@ import { DirectorDashboardParam } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 
 interface NavMainProps {
   dashboardParams: DirectorDashboardParam;
@@ -28,6 +30,7 @@ interface NavMainProps {
 
 export function NavMain({ dashboardParams }: NavMainProps) {
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
   const basePathname = "/director/repository";
   const {
     academicYears,
@@ -161,24 +164,31 @@ export function NavMain({ dashboardParams }: NavMainProps) {
                         className={cn(!subItem.isVisible && "hidden")}
                       >
                         <SidebarMenuSubButton asChild>
-                          <Link
-                            href={
-                              basePathname +
-                              "/" +
-                              subItem.url +
-                              "?" +
-                              searchParams.toString()
-                            }
-                            className="flex w-full"
+                          <LoadingButton
+                            asChild
+                            loading={isPending}
+                            variant={"link"}
+                            onClick={() => startTransition(() => {})}
                           >
-                            <span>{subItem.title}</span>
-                            <span
-                              className={cn(
-                                "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
-                                !subItem.showIndicator && "hidden",
-                              )}
-                            />
-                          </Link>
+                            <Link
+                              href={
+                                basePathname +
+                                "/" +
+                                subItem.url +
+                                "?" +
+                                searchParams.toString()
+                              }
+                              className="flex w-full"
+                            >
+                              <span>{subItem.title}</span>
+                              <span
+                                className={cn(
+                                  "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
+                                  !subItem.showIndicator && "hidden",
+                                )}
+                              />
+                            </Link>
+                          </LoadingButton>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
