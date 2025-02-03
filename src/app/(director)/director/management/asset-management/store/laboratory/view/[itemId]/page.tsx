@@ -3,7 +3,7 @@ import HeaderContainer from "@/app/(director)/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 import ListOfItems from "./(tables)/list-of-items";
-import { getLibraryItem } from "./action";
+import { getLaboratoryItem } from "./action";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
@@ -11,7 +11,7 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
-  const item = await getLibraryItem(itemId);
+  const item = await getLaboratoryItem(itemId);
   if (!item) throw new Error("Item not found");
 
   return (
@@ -20,11 +20,11 @@ export default async function Page({ params }: PageProps) {
         breadCrumbs={[
           { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Library Assets",
-            url: `/management/asset-management/store/${AssetCategory.LIBRARY.toLocaleLowerCase()}`,
+            label: "Laboratory Assets",
+            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
           },
           {
-            label: `${item.author}'s ${item.title} books`,
+            label: `${item.name} items`,
           },
         ]}
       />

@@ -1,13 +1,13 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { labItemDataInclude } from "@/lib/types";
+import { laboratoryItemDataInclude } from "@/lib/types";
 import { laboratoryAssetSchema, LaboratoryAssetSchema } from "@/lib/validation";
 
 export async function getAllLaboratoryAssetItems() {
   const data = await prisma.labItem.findMany({
     orderBy: { updatedAt: "desc" },
-    include: labItemDataInclude,
+    include: laboratoryItemDataInclude,
   });
   return data;
 }
@@ -34,7 +34,7 @@ export async function createLaboratoryAssetItem(input: LaboratoryAssetSchema) {
         },
       },
     },
-    include: labItemDataInclude,
+    include: laboratoryItemDataInclude,
   });
   return data;
 }

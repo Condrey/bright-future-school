@@ -2,7 +2,7 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
-import { LabItemData } from "@/lib/types";
+import { LaboratoryItemData } from "@/lib/types";
 import {
   AssetSchema,
   laboratoryAssetSchema,
@@ -41,7 +41,7 @@ import ListOfLabItems from "./list-of-lab-items";
 import { useLaboratoryMutation } from "./mutation";
 
 interface FormLaboratoryProps {
-  laboratoryItemToEdit?: LabItemData;
+  laboratoryItemToEdit?: LaboratoryItemData;
 }
 
 export default function FormLaboratory({

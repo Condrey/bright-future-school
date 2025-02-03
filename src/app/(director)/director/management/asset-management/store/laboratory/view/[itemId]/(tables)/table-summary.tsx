@@ -5,16 +5,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IndividualLibraryBookData } from "@/lib/types";
-import { AssetCondition, BookStatus } from "@prisma/client";
+import { IndividualLaboratoryItemData } from "@/lib/types";
+import { AssetCondition, AssetStatus } from "@prisma/client";
 import { NumericHolder } from "../../../../../(header)/numeric-holder";
 import {
   assetConditions,
-  bookStatuses,
+  assetStatuses,
 } from "../../../../../add-asset/barrel-file";
 
 interface TableSummaryProps {
-  items: IndividualLibraryBookData[];
+  items: IndividualLaboratoryItemData[];
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
@@ -23,7 +23,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Conditions</CardTitle>
-          <CardDescription>Summary showing book conditions</CardDescription>
+          <CardDescription>Summary showing item conditions</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetCondition).map((condition) => {
@@ -38,12 +38,12 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Statuses</CardTitle>
-          <CardDescription>Summary showing book statuses</CardDescription>
+          <CardDescription>Summary showing item statuses</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
-          {Object.values(BookStatus).map((status) => {
+          {Object.values(AssetStatus).map((status) => {
             const count = items.filter((i) => i.status === status).length;
-            const label = bookStatuses[status];
+            const label = assetStatuses[status];
             return <NumericHolder key={status} count={count} label={label} />;
           })}
         </CardContent>

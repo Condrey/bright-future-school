@@ -1,30 +1,25 @@
-"use client";
-
 import { toast } from "@/hooks/use-toast";
 import { LaboratoryItemData } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createLaboratoryAssetItem } from "./action";
+import { deleteLaboratoryItem } from "./action";
 
-export function useLaboratoryMutation() {
+export function useDeleteLaboratoryItemMutation() {
+  const queryKey: QueryKey = ["assets", "laboratory-asset", "list"];
   const queryClient = useQueryClient();
-  const queryKey: QueryKey = ["lab-assets", "list"];
   const mutation = useMutation({
-    mutationFn: createLaboratoryAssetItem,
-    onSuccess: async (addedItem, variables) => {
+    mutationFn: deleteLaboratoryItem,
+    onSuccess: async (id) => {
       await queryClient.cancelQueries({ queryKey });
-      // lab asset list
       queryClient.setQueryData<LaboratoryItemData[]>(
         queryKey,
-        (oldData) => oldData && [addedItem, ...oldData],
+        (oldData) => oldData && oldData.filter((d) => d.id !== id),
       );
-      toast({
-        description: `Successfully added ${variables.name} to the list of assets.`,
-      });
+      toast({ description: "Successfully deleted the item." });
     },
     onError(error) {
       console.error(error);
       toast({
-        description: "Failed to create lab item, please try again",
+        description: "Failed to delete laboratory item.",
         variant: "destructive",
       });
     },

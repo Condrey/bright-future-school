@@ -309,11 +309,23 @@ export type ComputerLabItemData = Prisma.ComputerLabItemGetPayload<{
 }>;
 
 // Lab item
-export const labItemDataInclude = {
+export const individualLaboratoryItemDataInclude = {
+  labItem: { include: { asset: true } },
+  assetDamages: {
+    orderBy: { createdAt: "desc" },
+    include: { damagedBy: { select: userDataSelect } },
+  },
+  _count: { select: { assetDamages: true } },
+} satisfies Prisma.IndividualLabItemInclude;
+export type IndividualLaboratoryItemData = Prisma.IndividualLabItemGetPayload<{
+  include: typeof individualLaboratoryItemDataInclude;
+}>;
+export const laboratoryItemDataInclude = {
   asset: true,
+  individualLabItems: { include: individualLaboratoryItemDataInclude },
 } satisfies Prisma.LabItemInclude;
-export type LabItemData = Prisma.LabItemGetPayload<{
-  include: typeof labItemDataInclude;
+export type LaboratoryItemData = Prisma.LabItemGetPayload<{
+  include: typeof laboratoryItemDataInclude;
 }>;
 
 //General store

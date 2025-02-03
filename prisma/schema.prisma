@@ -294,19 +294,30 @@ model Borrower {
 }
 
 model LabItem {
-  id            String          @id @default(uuid())
-  name          String
-  quantity      Float?
-  unit          AssetUnit
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  assetId       String
-  trackQuantity Boolean         @default(false)
-  status        AssetItemStatus @default(AVAILABLE)
-  damages       AssetDamage[]
-  asset         Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id                 String              @id @default(uuid())
+  name               String
+  quantity           Float?
+  unit               AssetUnit
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  assetId            String
+  trackQuantity      Boolean             @default(false)
+  asset              Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  individualLabItems IndividualLabItem[]
 
   @@map("lab_items")
+}
+
+model IndividualLabItem {
+  id               String         @id @default(uuid())
+  labItemId        String
+  uniqueIdentifier String?        @unique
+  status           AssetStatus    @default(AVAILABLE)
+  condition        AssetCondition @default(NEW)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  assetDamages     AssetDamage[]
+  labItem          LabItem        @relation(fields: [labItemId], references: [id], onDelete: Cascade)
 }
 
 model ComputerLabItem {
@@ -363,15 +374,15 @@ model AssetDamage {
   repairedAt                  DateTime?
   userId                      String
   generalStoreItemId          String?
-  labItemId                   String?
   generalStoreItem            GeneralStoreItem?          @relation(fields: [generalStoreItemId], references: [id])
-  labItem                     LabItem?                   @relation(fields: [labItemId], references: [id])
   damagedBy                   User                       @relation(fields: [userId], references: [id])
   individualComputerLabItem   IndividualComputerLabItem? @relation(fields: [individualComputerLabItemId], references: [id])
   individualComputerLabItemId String?
   createdAt                   DateTime                   @default(now())
   individualBook              IndividualBook?            @relation(fields: [individualBookId], references: [id])
   individualBookId            String?
+  individualLabItem           IndividualLabItem?         @relation(fields: [individualLabItemId], references: [id])
+  individualLabItemId         String?
 
   @@map("asset_damages")
 }

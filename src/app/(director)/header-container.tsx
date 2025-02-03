@@ -68,7 +68,7 @@ export default function HeaderContainer({
                               onClick={() => startTransition(() => {})}
                               className={cn(
                                 isPending &&
-                                  "animate-pulse rounded-md bg-card px-2 py-1 text-card-foreground",
+                                  "animate-pulse rounded-md bg-card text-card-foreground",
                               )}
                             >
                               <Link

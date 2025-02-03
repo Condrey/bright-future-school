@@ -59,7 +59,7 @@ export async function getAllLabItems() {
     select: {
       id: true,
       name: true,
-      status: true,
+      individualLabItems: true,
     },
   });
   return summary;

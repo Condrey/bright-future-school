@@ -2,7 +2,7 @@ import BodyContainer from "@/app/(director)/body-container";
 import HeaderContainer from "@/app/(director)/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import { getIndividualBook } from "../../action";
+import { getIndividualLaboratoryItem } from "../../action";
 import ItemBody from "./item-body";
 
 interface PageProps {
@@ -11,7 +11,7 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { individualItemId } = await params;
-  const individualItem = await getIndividualBook(
+  const individualItem = await getIndividualLaboratoryItem(
     decodeURIComponent(individualItemId),
   );
   if (!individualItem) throw Error("Missing item.");
@@ -21,15 +21,16 @@ export default async function Page({ params }: PageProps) {
         breadCrumbs={[
           { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Library Assets",
-            url: `/management/asset-management/store/${AssetCategory.LIBRARY.toLocaleLowerCase()}`,
+            label: "Laboratory Assets",
+            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
           },
           {
-            label: `${individualItem.libraryBook.author}'s ${individualItem.libraryBook.title} books `,
-            url: `/management/asset-management/store/${AssetCategory.LIBRARY.toLocaleLowerCase()}/view/${individualItem.libraryBookId}`,
+            label: `${individualItem.labItem.name} items `,
+            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}/view/${individualItem.labItemId}`,
           },
           {
-            label: individualItem.isbn || "Unknown ISBN",
+            label:
+              individualItem.uniqueIdentifier || "Unknown unique Identifier",
           },
         ]}
         className="max-w-[90rem]"

@@ -4,7 +4,6 @@ import {
   AssetItemStatus,
   AssetStatus,
   AssetUnit,
-  BookStatus,
 } from "@prisma/client";
 import z from "zod";
 
@@ -159,6 +158,18 @@ export const assetSchema = z.object({
 export type AssetSchema = z.infer<typeof assetSchema>;
 
 // Lab asset
+export const individualLaboratorySchema = z.object({
+  id: z.string().optional(),
+  uniqueIdentifier: z.string().optional(),
+  status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+
+  laboratoryId: requiredString.min(1, "Library book is missing"),
+});
+export type IndividualLaboratorySchema = z.infer<
+  typeof individualLaboratorySchema
+>;
+
 export const laboratoryAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
@@ -264,7 +275,7 @@ export type LibraryAssetSchema = z.infer<typeof libraryAssetSchema>;
 export const individualBookSchema = z.object({
   id: z.string().optional(),
   isbn: z.string().optional(),
-  status: z.nativeEnum(BookStatus).default(BookStatus.AVAILABLE),
+  status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
   condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
 
   libraryBookId: requiredString.min(1, "Library book is missing"),

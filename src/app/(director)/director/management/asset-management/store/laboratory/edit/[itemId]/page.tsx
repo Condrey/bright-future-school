@@ -1,9 +1,10 @@
 import BodyContainer from "@/app/(director)/body-container";
 import HeaderContainer from "@/app/(director)/header-container";
+import prisma from "@/lib/prisma";
+import { laboratoryItemDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import ListOfItems from "./(tables)/list-of-items";
-import { getLibraryItem } from "./action";
+import FormLaboratory from "../../../../add-asset/[assetCategory]/(lab)/form-laboratory";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
@@ -11,7 +12,10 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
-  const item = await getLibraryItem(itemId);
+  const item = await prisma.labItem.findUnique({
+    where: { id: itemId },
+    include: laboratoryItemDataInclude,
+  });
   if (!item) throw new Error("Item not found");
 
   return (
@@ -20,17 +24,17 @@ export default async function Page({ params }: PageProps) {
         breadCrumbs={[
           { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Library Assets",
-            url: `/management/asset-management/store/${AssetCategory.LIBRARY.toLocaleLowerCase()}`,
+            label: "Laboratory Assets",
+            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
           },
           {
-            label: `${item.author}'s ${item.title} books`,
+            label: `Update ${item.name}`,
           },
         ]}
+        className="max-w-[95rem]"
       />
-      <BodyContainer>
-        {/* list of items  */}
-        <ListOfItems oldItem={item} />
+      <BodyContainer className="max-w-[95rem]">
+        <FormLaboratory laboratoryItemToEdit={item} />
       </BodyContainer>
     </Fragment>
   );
