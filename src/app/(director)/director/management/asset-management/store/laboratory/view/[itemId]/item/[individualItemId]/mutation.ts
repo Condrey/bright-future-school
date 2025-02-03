@@ -12,7 +12,7 @@ export function useUpdateIndividualItem() {
     onSuccess: async (updateItem, variables) => {
       const queryKey: QueryKey = [
         "assets",
-        "library-asset",
+        "laboratory-asset",
         "item",
         variables.id,
       ];
@@ -25,7 +25,7 @@ export function useUpdateIndividualItem() {
 
       //   for list of individual items
       queryClient.invalidateQueries({
-        queryKey: ["assets", "library-asset", "item"],
+        queryKey: ["assets", "laboratory-asset", "item"],
       });
       toast({
         description: `Successfully updated the item with unique Identifier ${variables.uniqueIdentifier}`,

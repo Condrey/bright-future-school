@@ -54,6 +54,18 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+              onClick={() =>
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${asset.category.toLocaleLowerCase()}`,
+                  ),
+                )
+              }
+            >
+              <ArrowUpRightIcon className="mr-2 size-4" />
+              <span>View asset</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(asset.id)}
             >
               <CopyIcon className="mr-2 size-4" />
@@ -69,18 +81,7 @@ export default function DropDownMenuAsset({ asset }: DropDownMenuAssetProps) {
                 <span>Copy Asset</span>
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              onClick={() =>
-                startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${asset.category.toLocaleLowerCase()}`,
-                  ),
-                )
-              }
-            >
-              <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View asset</span>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
           <DropdownMenuGroup>

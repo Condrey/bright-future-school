@@ -47,6 +47,7 @@ export async function getAllGeneralStoreItems() {
           id: true,
           name: true,
           status: true,
+          individualGeneralStoreItems: true,
         },
       },
     },
@@ -59,6 +60,7 @@ export async function getAllLabItems() {
     select: {
       id: true,
       name: true,
+      status: true,
       individualLabItems: true,
     },
   });

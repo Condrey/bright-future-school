@@ -16,7 +16,7 @@ export default function Page() {
         ]}
       />
       <BodyContainer>
-        {/* Lits of assets in computer lab  */}
+        {/* Lits of assets  */}
         <ListOfIndividualLibraryItems />
       </BodyContainer>
     </Fragment>

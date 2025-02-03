@@ -55,6 +55,7 @@ export default function DropDownMenuLaboratory({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+              disabled={!laboratory.trackQuantity}
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(

@@ -8,11 +8,12 @@ import {
   generalStoreAssetSchema,
   GeneralStoreAssetSchema,
 } from "@/lib/validation";
-import { AssetCategory } from "@prisma/client";
+import { AssetCategory, AssetCondition, AssetStatus } from "@prisma/client";
+import cuid from "cuid";
 
 export async function getAllAssets() {
   const data = await prisma.asset.findMany({
-    where:{category:AssetCategory.GENERAL_STORE},
+    where: { category: AssetCategory.GENERAL_STORE },
     orderBy: { name: "asc" },
     include: assetDataInclude,
   });
@@ -44,6 +45,8 @@ export async function createGeneralStoreAssetItem(
 ) {
   const { asset, name, quantity, status, trackQuantity, unit } =
     generalStoreAssetSchema.parse(input);
+  const uniqueId = cuid();
+
   const data = await prisma.generalStoreItem.create({
     data: {
       name,
@@ -60,6 +63,19 @@ export async function createGeneralStoreAssetItem(
             name: asset.name,
             description: asset.description,
           },
+        },
+      },
+      individualGeneralStoreItems: {
+        createMany: {
+          data:
+            trackQuantity && !!quantity && quantity > 0
+              ? Array.from({ length: quantity }).map((_, index) => ({
+                  id: `${uniqueId}=${index}`,
+                  uniqueIdentifier: null,
+                  condition: AssetCondition.NEW,
+                  status: AssetStatus.AVAILABLE,
+                }))
+              : [],
         },
       },
     },

@@ -8,6 +8,8 @@ import {
   supplierSchema,
   SupplierSchema,
 } from "@/lib/validation";
+import { AssetCondition, AssetStatus } from "@prisma/client";
+import cuid from "cuid";
 
 export async function getAllFoodStoreAssetSuppliers() {
   const data = await prisma.supplier.findMany({
@@ -32,8 +34,18 @@ export async function getAllFoodStoreAssetItems() {
 }
 
 export async function createFoodStoreAssetItem(input: FoodStoreAssetSchema) {
-  const { asset, foodName, quantity, status, trackQuantity, unit, supplier } =
-    foodStoreAssetSchema.parse(input);
+  const {
+    asset,
+    foodName,
+    quantity,
+    isConsumable,
+    status,
+    trackQuantity,
+    unit,
+    supplier,
+  } = foodStoreAssetSchema.parse(input);
+  const uniqueId = cuid();
+
   const data = await prisma.foodStoreItem.create({
     data: {
       foodName,
@@ -63,6 +75,19 @@ export async function createFoodStoreAssetItem(input: FoodStoreAssetSchema) {
             name: asset.name,
             description: asset.description,
           },
+        },
+      },
+      individualFoodStoreItems: {
+        createMany: {
+          data:
+            trackQuantity && !isConsumable && !!quantity && quantity > 0
+              ? Array.from({ length: quantity }).map((_, index) => ({
+                  id: `${uniqueId}=${index}`,
+                  uniqueIdentifier: null,
+                  condition: AssetCondition.NEW,
+                  status: AssetStatus.AVAILABLE,
+                }))
+              : [],
         },
       },
     },

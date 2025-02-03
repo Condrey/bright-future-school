@@ -46,8 +46,13 @@ export async function getLaboratoryItem(id: string) {
 }
 
 export async function updateIndividualItem(input: IndividualLaboratorySchema) {
-  const { condition, status, id, uniqueIdentifier, laboratoryId } =
-    individualLaboratorySchema.parse(input);
+  const {
+    condition,
+    status,
+    id,
+    uniqueIdentifier,
+    labItemId: laboratoryId,
+  } = individualLaboratorySchema.parse(input);
   const data = await prisma.individualLabItem.update({
     where: { id },
     data: {

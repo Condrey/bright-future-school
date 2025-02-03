@@ -36,10 +36,7 @@ export const useItemColumn: ColumnDef<IndividualLaboratoryItemData>[] = [
     accessorKey: "uniqueIdentifier",
     header({ column }) {
       return (
-        <DataTableColumnHeader
-          column={column}
-          title="unique uniqueIdentifier"
-        />
+        <DataTableColumnHeader column={column} title="unique Identifier" />
       );
     },
     cell: ({ row }) => (

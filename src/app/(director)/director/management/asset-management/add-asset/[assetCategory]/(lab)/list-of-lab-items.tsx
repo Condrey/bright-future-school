@@ -8,6 +8,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { HistoryIcon, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import {
+  assetStatuses,
   assetUnits,
   Card,
   CardContent,
@@ -104,10 +105,12 @@ export default function ListOfLabItems() {
                 {item.trackQuantity ? (
                   <div className="flex items-center gap-1">
                     <span>{formatNumber(item.quantity || 0)}</span>
-                    <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"} left`}</span>
+                    <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"}`}</span>
                   </div>
                 ) : (
-                  <Badge variant={"outline"}>{item.status}</Badge>
+                  <Badge variant={"outline"}>
+                    {assetStatuses[item.status]}
+                  </Badge>
                 )}
               </div>
             </li>

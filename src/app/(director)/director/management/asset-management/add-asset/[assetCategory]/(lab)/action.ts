@@ -3,6 +3,8 @@
 import prisma from "@/lib/prisma";
 import { laboratoryItemDataInclude } from "@/lib/types";
 import { laboratoryAssetSchema, LaboratoryAssetSchema } from "@/lib/validation";
+import { AssetCondition, AssetStatus } from "@prisma/client";
+import cuid from "cuid";
 
 export async function getAllLaboratoryAssetItems() {
   const data = await prisma.labItem.findMany({
@@ -13,13 +15,14 @@ export async function getAllLaboratoryAssetItems() {
 }
 
 export async function createLaboratoryAssetItem(input: LaboratoryAssetSchema) {
-  const { asset, name, quantity, status, trackQuantity, unit } =
+  const { asset, name, quantity, trackQuantity, unit } =
     laboratoryAssetSchema.parse(input);
+  const uniqueId = cuid();
+
   const data = await prisma.labItem.create({
     data: {
       name,
       quantity: quantity || 0,
-      status,
       trackQuantity,
       unit,
       asset: {
@@ -31,6 +34,20 @@ export async function createLaboratoryAssetItem(input: LaboratoryAssetSchema) {
             name: asset.name,
             description: asset.description,
           },
+        },
+      },
+      individualLabItems: {
+        createMany: {
+          data:
+            !!quantity && quantity > 0
+              ? Array.from({ length: quantity }).map((_, index) => ({
+                  id: `${uniqueId}=${index}`,
+                  uniqueIdentifier: null,
+                  condition: AssetCondition.NEW,
+                  status: AssetStatus.AVAILABLE,
+                }))
+              : [],
+          skipDuplicates: true,
         },
       },
     },

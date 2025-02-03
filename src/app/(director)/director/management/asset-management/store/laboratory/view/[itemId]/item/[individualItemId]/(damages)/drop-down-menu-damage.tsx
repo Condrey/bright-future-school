@@ -71,7 +71,7 @@ export default function DropDownMenuDamage({ item }: DropDownMenuDamageProps) {
                 mutation.mutate({
                   ...item,
                   isRepaired: !item.isRepaired,
-                  parentId: item.individualBookId!,
+                  parentId: item.individualLabItemId!,
                 })
               }
               className={cn(
@@ -113,7 +113,7 @@ export default function DropDownMenuDamage({ item }: DropDownMenuDamageProps) {
       <FormAddEditDamage
         open={showEditDialog}
         setOpen={setShowEditDialog}
-        parentId={item.individualBookId!}
+        parentId={item.individualLabItemId!}
         damageToEdit={item}
       />
       <DialogDeleteDamage

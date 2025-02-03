@@ -4,6 +4,7 @@ import {
   AssetItemStatus,
   AssetStatus,
   AssetUnit,
+  BorrowStatus,
 } from "@prisma/client";
 import z from "zod";
 
@@ -163,13 +164,11 @@ export const individualLaboratorySchema = z.object({
   uniqueIdentifier: z.string().optional(),
   status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
   condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
-
-  laboratoryId: requiredString.min(1, "Library book is missing"),
+  labItemId: requiredString.min(1, "Laboratory item is missing"),
 });
 export type IndividualLaboratorySchema = z.infer<
   typeof individualLaboratorySchema
 >;
-
 export const laboratoryAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
@@ -177,7 +176,7 @@ export const laboratoryAssetSchema = z.object({
   quantity: z.number().optional(),
   trackQuantity: z.boolean().default(false),
   unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
-  status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
+  status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
 });
 export type LaboratoryAssetSchema = z.infer<typeof laboratoryAssetSchema>;
 
@@ -190,12 +189,23 @@ export const supplierSchema = z.object({
   address: z.string().optional(),
 });
 export type SupplierSchema = z.infer<typeof supplierSchema>;
+export const individualFoodStoreSchema = z.object({
+  id: z.string().optional(),
+  uniqueIdentifier: z.string().optional(),
+  status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+  foodStoreItemId: requiredString.min(1, "food store is missing"),
+});
+export type IndividualFoodStoreSchema = z.infer<
+  typeof individualFoodStoreSchema
+>;
 export const foodStoreAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
   foodName: requiredString.min(1, "Provide a food store item name"),
   quantity: z.number().optional(),
   trackQuantity: z.boolean().default(false),
+  isConsumable: z.boolean().default(true),
   status: z.nativeEnum(AssetItemStatus).default(AssetItemStatus.AVAILABLE),
   unit: z.nativeEnum(AssetUnit).default(AssetUnit.PIECE),
   supplier: supplierSchema.optional(),
@@ -214,6 +224,16 @@ export const foodConsumptionSchema = z.object({
 export type FoodConsumptionSchema = z.infer<typeof foodConsumptionSchema>;
 
 // General store
+export const individualGeneralStoreSchema = z.object({
+  id: z.string().optional(),
+  uniqueIdentifier: z.string().optional(),
+  status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
+  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+  generalStoreItemId: requiredString.min(1, "General store is missing"),
+});
+export type IndividualGeneralStoreSchema = z.infer<
+  typeof individualGeneralStoreSchema
+>;
 export const generalStoreAssetSchema = z.object({
   id: z.string().optional(),
   asset: assetSchema,
@@ -249,6 +269,17 @@ export type IndividualComputerLabItemSchema = z.infer<
 >;
 
 // Library lab
+export const borrowerSchema = z.object({
+  id: z.string().optional(),
+  borrowedAt: z.date({
+    required_error: "Please include the time of borrowing",
+  }),
+  returnAt: z.date().optional(),
+  status: z.nativeEnum(BorrowStatus).default(BorrowStatus.ONGOING),
+  userId: requiredString.min(1, "Please specify the borrower"),
+  individualBookId: requiredString.min(1, "Please specify the book."),
+});
+export type BorrowerSchema = z.infer<typeof borrowerSchema>;
 export const libraryAssetCategorySchema = z.object({
   id: z.string().optional(),
   category: requiredString.min(1, "Provide a category name"),
@@ -277,7 +308,6 @@ export const individualBookSchema = z.object({
   isbn: z.string().optional(),
   status: z.nativeEnum(AssetStatus).default(AssetStatus.AVAILABLE),
   condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
-
   libraryBookId: requiredString.min(1, "Library book is missing"),
 });
 export type IndividualBookSchema = z.infer<typeof individualBookSchema>;
@@ -296,6 +326,15 @@ export const assetDamageSchema = z.object({
   parentId: z.string(),
 });
 export type AssetDamageSchema = z.infer<typeof assetDamageSchema>;
+
+// asset repair payment
+export const assetRepairPaymentSchema = z.object({
+  id: z.string().optional(),
+  paidAmount: z.number({ required_error: "Please include received payment" }),
+  userId: requiredString.min(1, "Missing recipient of the payment"),
+  assetDamageId: requiredString.min(1, "The asset damage is missing."),
+});
+export type AssetRepairPaymentSchema = z.infer<typeof assetRepairPaymentSchema>;
 
 //miscellaneous
 export const itemSchema = z.object({

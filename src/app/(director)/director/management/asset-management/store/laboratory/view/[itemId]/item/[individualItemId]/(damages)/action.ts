@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { userDataSelect } from "@/lib/types";
 import { assetDamageSchema, AssetDamageSchema } from "@/lib/validation";
-import { AssetCondition, BookStatus } from "@prisma/client";
+import { AssetCondition, AssetStatus } from "@prisma/client";
 
 export async function getAllPossibleAssetDamagers() {
   const currentYear = new Date().getFullYear();
@@ -47,15 +47,15 @@ export async function getAllPossibleAssetDamagers() {
 export async function addDamage(input: AssetDamageSchema) {
   const { condition, damageDetails, quantity, isRepaired, userId, parentId } =
     assetDamageSchema.parse(input);
-  await prisma.individualBook.update({
+  await prisma.individualLabItem.update({
     where: { id: parentId },
     data: {
       condition,
       status:
         condition === AssetCondition.DAMAGED
-          ? BookStatus.DAMAGED
-          : BookStatus.AVAILABLE,
-      bookDamages: {
+          ? AssetStatus.UNDER_MAINTENANCE
+          : AssetStatus.AVAILABLE,
+      assetDamages: {
         create: {
           condition,
           damageDetails,
@@ -78,15 +78,15 @@ export async function updateDamage(input: AssetDamageSchema) {
     id,
     parentId,
   } = assetDamageSchema.parse(input);
-  await prisma.individualBook.update({
+  await prisma.individualLabItem.update({
     where: { id: parentId },
     data: {
       condition,
       status:
         condition === AssetCondition.DAMAGED
-          ? BookStatus.DAMAGED
-          : BookStatus.AVAILABLE,
-      bookDamages: {
+          ? AssetStatus.UNDER_MAINTENANCE
+          : AssetStatus.AVAILABLE,
+      assetDamages: {
         update: {
           where: { id },
           data: { condition, damageDetails, quantity, isRepaired, userId },
@@ -98,12 +98,14 @@ export async function updateDamage(input: AssetDamageSchema) {
 
 export async function repairUnrepairDamage(input: AssetDamageSchema) {
   const { isRepaired, id, parentId } = assetDamageSchema.parse(input);
-  await prisma.individualBook.update({
+  await prisma.individualLabItem.update({
     where: { id: parentId },
     data: {
       condition: isRepaired ? AssetCondition.GOOD : AssetCondition.DAMAGED,
-      status: !isRepaired ? BookStatus.DAMAGED : BookStatus.AVAILABLE,
-      bookDamages: {
+      status: !isRepaired
+        ? AssetStatus.UNDER_MAINTENANCE
+        : AssetStatus.AVAILABLE,
+      assetDamages: {
         update: {
           where: { id },
           data: {

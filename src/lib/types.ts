@@ -329,16 +329,45 @@ export type LaboratoryItemData = Prisma.LabItemGetPayload<{
 }>;
 
 //General store
+export const individualGeneralStoreItemDataInclude = {
+  generalStoreItem: { include: { asset: true } },
+  assetDamages: {
+    orderBy: { createdAt: "desc" },
+    include: { damagedBy: { select: userDataSelect } },
+  },
+  _count: { select: { assetDamages: true } },
+} satisfies Prisma.IndividualGeneralStoreItemInclude;
+export type IndividualGeneralStoreItemData =
+  Prisma.IndividualGeneralStoreItemGetPayload<{
+    include: typeof individualGeneralStoreItemDataInclude;
+  }>;
 export const generalStoreItemDataInclude = {
   asset: true,
+  individualGeneralStoreItems: {
+    include: individualGeneralStoreItemDataInclude,
+  },
 } satisfies Prisma.GeneralStoreItemInclude;
 export type GeneralStoreItemData = Prisma.GeneralStoreItemGetPayload<{
   include: typeof generalStoreItemDataInclude;
 }>;
 
 // Food store
+export const individualFoodStoreItemDataInclude = {
+  foodStoreItem: { include: { asset: true } },
+  assetDamages: {
+    orderBy: { createdAt: "desc" },
+    include: { damagedBy: { select: userDataSelect } },
+  },
+  _count: { select: { assetDamages: true } },
+} satisfies Prisma.IndividualFoodStoreItemInclude;
+export type IndividualFoodStoreItemData =
+  Prisma.IndividualFoodStoreItemGetPayload<{
+    include: typeof individualFoodStoreItemDataInclude;
+  }>;
 export const foodStoreItemDataInclude = {
   asset: true,
+  individualFoodStoreItems: { include: individualFoodStoreItemDataInclude },
+  consumptions: true,
 } satisfies Prisma.FoodStoreItemInclude;
 export type FoodStoreItemData = Prisma.FoodStoreItemGetPayload<{
   include: typeof foodStoreItemDataInclude;

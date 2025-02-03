@@ -9,7 +9,12 @@ import {
   LaboratoryAssetSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
+import {
+  AssetCategory,
+  AssetItemStatus,
+  AssetStatus,
+  AssetUnit,
+} from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
   assetItemStatuses,
@@ -62,7 +67,7 @@ export default function FormLaboratory({
       quantity: laboratoryItemToEdit?.quantity!,
       trackQuantity: laboratoryItemToEdit?.trackQuantity || false,
       unit: laboratoryItemToEdit?.unit || AssetUnit.PIECE,
-      status: laboratoryItemToEdit?.status || AssetItemStatus.AVAILABLE,
+      status: laboratoryItemToEdit?.status || AssetStatus.AVAILABLE,
     },
   });
   const mutation = useLaboratoryMutation();

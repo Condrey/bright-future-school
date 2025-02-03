@@ -49,7 +49,7 @@ export default function FormUpdateIndividualItem({
     resolver: zodResolver(individualLaboratorySchema),
     defaultValues: {
       id: individualItemToEdit.id || "",
-      laboratoryId: individualItemToEdit.labItemId || "",
+      labItemId: individualItemToEdit.labItemId || "",
       condition: individualItemToEdit.condition || AssetCondition.NEW,
       status: individualItemToEdit.status || AssetStatus.AVAILABLE,
       uniqueIdentifier: individualItemToEdit.uniqueIdentifier || "",
@@ -81,7 +81,7 @@ export default function FormUpdateIndividualItem({
             name="uniqueIdentifier"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>UNIQUEuniqueIdentifier</FormLabel>
+                <FormLabel>Unique Identifier</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="enter unique identifier here..."
