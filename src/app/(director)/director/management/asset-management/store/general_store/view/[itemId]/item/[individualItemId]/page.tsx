@@ -21,7 +21,7 @@ export default async function Page({ params }: PageProps) {
         breadCrumbs={[
           { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "General Store Assets",
+            label: "General Store sub Assets",
             url: `/management/asset-management/store/${AssetCategory.GENERAL_STORE.toLocaleLowerCase()}`,
           },
           {
