@@ -57,7 +57,7 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={models} label="Brands" />
+          <NumericHolder count={models} label="Brand models" />
           {Object.values(AssetStatus).map((value) => {
             const _label = assetStatuses[value];
             const _count = data.summary
