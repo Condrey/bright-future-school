@@ -33,7 +33,7 @@ export default function DialogDeleteDamage({
     <ResponsiveDrawer
       open={open}
       setOpen={openChange}
-      title={`Delete this damage by ${damage.damagedBy.name}`}
+      title={`Delete this damage ${!damage.isSchoolCost && !!damage.damagedBy ? `by ${damage.damagedBy.name}` : "under school cost"}`}
       description="Please note that this change is irreversible. This will delete this Damage and all the associated data attached to it."
       className="max-w-md"
     >

@@ -31,6 +31,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
 
   const items = data.summary.flatMap((s) => s.title).filter(Boolean);
   const authors = data.authors.map((a) => a.author).length;
+  const categories = data.summary.flatMap((s) => s.category).length;
   const numberOfItems = data.summary
     .map((s) => s.individualBooks.length)
     .reduce((value, total) => value + total, 0);
@@ -56,6 +57,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
       <CardHeader>
         <div className="flex flex-row gap-2">
           <NumericHolder count={authors} label="Authors" />
+          <NumericHolder count={categories} label="Book categories" />
           {Object.values(AssetItemStatus).map((value) => {
             const _count = data.summary
               .flatMap((s) => s.individualBooks.flatMap((i) => i.status))
