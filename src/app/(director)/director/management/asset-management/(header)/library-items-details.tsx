@@ -31,7 +31,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
 
   const items = data.summary.flatMap((s) => s.title).filter(Boolean);
   const authors = data.authors.map((a) => a.author).length;
-  const categories = data.summary.flatMap((s) => s.category).length;
+  const categories = data.categories.map((a) => a.category).length;
   const numberOfItems = data.summary
     .map((s) => s.individualBooks.length)
     .reduce((value, total) => value + total, 0);

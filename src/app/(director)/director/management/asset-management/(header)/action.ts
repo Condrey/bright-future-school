@@ -91,14 +91,17 @@ export async function getAllLibraryItems() {
           id: true,
           title: true,
           individualBooks: { select: { status: true } },
-          category: { select: { id: true } },
         },
       });
       const authors = await tx.libraryBook.groupBy({
         by: "author",
         _count: { title: true, author: true },
       });
-      return { summary, authors };
+      const categories = await tx.libraryBookCategory.groupBy({
+        by: "category",
+        _count: { category: true },
+      });
+      return { summary, authors, categories };
     },
     {
       maxWait: 60000,
