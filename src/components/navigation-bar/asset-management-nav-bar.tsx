@@ -18,6 +18,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 
 interface AssetManagementNavBarProps {
+  isRoot?: boolean;
   children?: React.ReactNode;
   assetCategory: AssetCategory;
   className?: string;
@@ -25,6 +26,7 @@ interface AssetManagementNavBarProps {
 }
 
 export default function AssetManagementNavBar({
+  isRoot = false,
   children,
   assetCategory,
   className,
@@ -42,28 +44,30 @@ export default function AssetManagementNavBar({
     <NavigationMenu>
       <NavigationMenuList className={className}>
         {/* dashboard nav */}
-        <NavigationMenuLinkItem
-          isActive={isHomeActive}
-          path={basePathname + "?" + searchParams.toString()}
-        >
-          <div className="flex items-center">
-            <BaseIcon className="mr-1.5 size-4" strokeWidth={1.0} />
-            <span>Dashboard</span>
-          </div>
-        </NavigationMenuLinkItem>
+        {!isRoot && (
+          <NavigationMenuLinkItem
+            isActive={isHomeActive}
+            path={basePathname + "?" + searchParams.toString()}
+          >
+            <div className="flex items-center">
+              <BaseIcon className="mr-1.5 size-4" strokeWidth={1.0} />
+              <span>Dashboard</span>
+            </div>
+          </NavigationMenuLinkItem>
+        )}
 
         {/* All asset nav  */}
         <AllAssetsNavItem />
 
         {/* vandalism nav  */}
-        <VandalismNavItem assetCategory={assetCategory} />
+        {!isRoot && <VandalismNavItem assetCategory={assetCategory} />}
 
         {/* other nav(s) */}
         <>
           {otherNavItems.map((item) => {
             const path =
               basePathname + item.url + "?" + searchParams.toString();
-            const isActive = pathname.startsWith(path);
+            const isActive = pathname.startsWith(basePathname + item.url);
 
             return (
               <NavigationMenuLinkItem
@@ -91,6 +95,7 @@ interface NavigationMenuLinkItemProps {
   isActive: boolean;
 }
 function NavigationMenuLinkItem({
+  key,
   path,
   isActive,
   children,
@@ -98,12 +103,12 @@ function NavigationMenuLinkItem({
   const [isPending, startTransition] = useTransition();
 
   return (
-    <NavigationMenuItem>
+    <NavigationMenuItem key={key}>
       <Link href={path} legacyBehavior passHref>
         <NavigationMenuLink
           className={cn(
             navigationMenuTriggerStyle(),
-            isActive && "bg-accent text-accent-foreground",
+            isActive && "focus: bg-accent text-accent-foreground",
           )}
           onClick={() => startTransition(() => {})}
         >

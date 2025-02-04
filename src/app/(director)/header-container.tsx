@@ -24,11 +24,13 @@ export interface HeaderContainerBreadCrumb {
 interface HeaderContainerProps {
   breadCrumbs?: HeaderContainerBreadCrumb[];
   className?: string;
+  children?: React.ReactNode;
 }
 
 export default function HeaderContainer({
   breadCrumbs = [],
   className,
+  children,
 }: HeaderContainerProps) {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
@@ -39,6 +41,7 @@ export default function HeaderContainer({
   ];
   return (
     <div className={cn("mx-auto w-full max-w-[80rem]", className)}>
+      {children}
       <header
         className={cn(
           "flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12",

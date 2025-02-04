@@ -52,13 +52,13 @@ export default function VandalismNavItem({
 
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger>
-        <div
-          className={cn(
-            "flex items-center",
-            isParentActive && "bg-accent text-accent-foreground",
-          )}
-        >
+      <NavigationMenuTrigger
+        className={cn(
+          isParentActive &&
+            "rounded-md bg-accent px-2 py-1 text-accent-foreground",
+        )}
+      >
+        <div className="flex items-center">
           {isPending && <Loader2Icon className="mr-2 size-4 animate-spin" />}
           <span>Vandalism</span>
         </div>
