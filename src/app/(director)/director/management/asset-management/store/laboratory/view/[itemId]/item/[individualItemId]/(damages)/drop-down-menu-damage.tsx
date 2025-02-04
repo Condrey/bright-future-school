@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AssetDamageData } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { AssetDamageSchema } from "@/lib/validation";
 import { Role } from "@prisma/client";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
@@ -72,7 +73,7 @@ export default function DropDownMenuDamage({ item }: DropDownMenuDamageProps) {
                   ...item,
                   isRepaired: !item.isRepaired,
                   parentId: item.individualLabItemId!,
-                })
+                } as AssetDamageSchema)
               }
               className={cn(
                 item.isRepaired

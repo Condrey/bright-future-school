@@ -16,13 +16,7 @@ import { NumericHolder } from "./numeric-holder";
 interface ComputerLabItemsDetailsProps {}
 
 export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps) {
-  const {
-    data: summary,
-    status,
-    error,
-    isFetching,
-    refetch,
-  } = useQuery({
+  const { data, status, error, isFetching, refetch } = useQuery({
     queryKey: ["computer-lab", "summary"],
     queryFn: getComputerLabSummary,
   });
@@ -35,8 +29,9 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
     return null;
   }
 
-  const items = summary.flatMap((s) => s.name).filter(Boolean);
-  const numberOfItems = summary
+  const items = data.summary.flatMap((s) => s.name).filter(Boolean);
+  const models = data.models.flatMap((m) => m.model).length;
+  const numberOfItems = data.summary
     .map((s) => s.individualComputerLabItems.length)
     .reduce((value, total) => value + total, 0);
   return (
@@ -51,7 +46,7 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
             <CardTitle className="uppercase tracking-wider">
               ComputerLab
             </CardTitle>
-            <CardTitle>{`${formatNumber(summary.length)} asset${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(data.summary.length)} asset${data.summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (
@@ -62,9 +57,10 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
+          <NumericHolder count={models} label="Brands" />
           {Object.values(AssetStatus).map((value) => {
             const _label = assetStatuses[value];
-            const _count = summary
+            const _count = data.summary
               .flatMap((s) =>
                 s.individualComputerLabItems.flatMap((i) => i.status),
               )

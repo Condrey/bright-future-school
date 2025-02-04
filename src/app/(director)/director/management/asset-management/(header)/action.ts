@@ -5,14 +5,28 @@ import { AssetCategory } from "@prisma/client";
 import { endOfDay, startOfDay } from "date-fns";
 
 export async function getComputerLabSummary() {
-  const summary = await prisma.computerLabItem.findMany({
-    select: {
-      id: true,
-      name: true,
-      individualComputerLabItems: { select: { status: true } },
+  const data = await prisma.$transaction(
+    async (tx) => {
+      const summary = await tx.computerLabItem.findMany({
+        select: {
+          id: true,
+          name: true,
+          individualComputerLabItems: { select: { status: true } },
+        },
+      });
+      const models = await tx.computerLabItem.groupBy({
+        by: "model",
+        _count: { name: true, model: true },
+      });
+      return { summary, models };
     },
-  });
-  return summary;
+    {
+      maxWait: 60000,
+      timeout: 60000,
+    },
+  );
+
+  return data;
 }
 
 export async function getFoodStoreItems() {
@@ -70,21 +84,27 @@ export async function getAllLabItems() {
 }
 
 export async function getAllLibraryItems() {
-  const data = await prisma.$transaction(async (tx) => {
-    const summary = await tx.libraryBook.findMany({
-      select: {
-        id: true,
-        title: true,
-        individualBooks: { select: { status: true } },
-        category: { select: { id: true } },
-      },
-    });
-    const authors = await tx.libraryBook.groupBy({
-      by: "author",
-      _count: { title: true, author: true },
-    });
-    return { summary, authors };
-  });
+  const data = await prisma.$transaction(
+    async (tx) => {
+      const summary = await tx.libraryBook.findMany({
+        select: {
+          id: true,
+          title: true,
+          individualBooks: { select: { status: true } },
+          category: { select: { id: true } },
+        },
+      });
+      const authors = await tx.libraryBook.groupBy({
+        by: "author",
+        _count: { title: true, author: true },
+      });
+      return { summary, authors };
+    },
+    {
+      maxWait: 60000,
+      timeout: 60000,
+    },
+  );
 
   return data;
 }
