@@ -12,8 +12,10 @@ import {
 import { assetCategories } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 
 interface AssetManagementNavBarProps {
   children?: React.ReactNode;
@@ -31,7 +33,8 @@ export default function AssetManagementNavBar({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const basePathname =
-    "/director/management/asset-management/store" + assetCategory.toLowerCase();
+    "/director/management/asset-management/store/" +
+    assetCategory.toLowerCase();
   const BaseIcon = assetCategories[assetCategory].icon;
   const isHomeActive = pathname.toString() === basePathname;
 
@@ -39,22 +42,15 @@ export default function AssetManagementNavBar({
     <NavigationMenu>
       <NavigationMenuList className={className}>
         {/* dashboard nav */}
-        <NavigationMenuItem
-          className={cn(isHomeActive && "bg-accent text-accent-foreground")}
+        <NavigationMenuLinkItem
+          isActive={isHomeActive}
+          path={basePathname + "?" + searchParams.toString()}
         >
-          <Link
-            href={basePathname + "?" + searchParams.toString()}
-            legacyBehavior
-            passHref
-          >
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <div className="flex items-center">
-                <BaseIcon className="mr-1.5 size-4" strokeWidth={1.0} />
-                <span>Dashboard</span>
-              </div>
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
+          <div className="flex items-center">
+            <BaseIcon className="mr-1.5 size-4" strokeWidth={1.0} />
+            <span>Dashboard</span>
+          </div>
+        </NavigationMenuLinkItem>
 
         {/* All asset nav  */}
         <AllAssetsNavItem />
@@ -70,16 +66,13 @@ export default function AssetManagementNavBar({
             const isActive = pathname.startsWith(path);
 
             return (
-              <NavigationMenuItem
+              <NavigationMenuLinkItem
                 key={item.url}
-                className={cn(isActive && "bg-accent text-accent-foreground")}
+                isActive={isActive}
+                path={path}
               >
-                <Link href={path} legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {item.label}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+                {item.label}
+              </NavigationMenuLinkItem>
             );
           })}
         </>
@@ -88,5 +81,38 @@ export default function AssetManagementNavBar({
         {children}
       </NavigationMenuList>
     </NavigationMenu>
+  );
+}
+
+interface NavigationMenuLinkItemProps {
+  key?: string;
+  children: React.ReactNode;
+  path: string;
+  isActive: boolean;
+}
+function NavigationMenuLinkItem({
+  path,
+  isActive,
+  children,
+}: NavigationMenuLinkItemProps) {
+  const [isPending, startTransition] = useTransition();
+
+  return (
+    <NavigationMenuItem>
+      <Link href={path} legacyBehavior passHref>
+        <NavigationMenuLink
+          className={cn(
+            navigationMenuTriggerStyle(),
+            isActive && "bg-accent text-accent-foreground",
+          )}
+          onClick={() => startTransition(() => {})}
+        >
+          <div className="flex items-center">
+            {isPending && <Loader2 className="mr-1.5 size-4 animate-spin" />}
+            {children}
+          </div>
+        </NavigationMenuLink>
+      </Link>
+    </NavigationMenuItem>
   );
 }
