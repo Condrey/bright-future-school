@@ -7,13 +7,14 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const webName = "Bright future school";
+export const countryCurrency = "SDG";
 
 export function formatCurrency(price: number | string = 0, currency?: string) {
   const numericPrice = Number(price);
 
   const formattedPrice = Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: currency || "UGX",
+    currency: currency || countryCurrency,
     minimumFractionDigits: numericPrice % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(numericPrice);

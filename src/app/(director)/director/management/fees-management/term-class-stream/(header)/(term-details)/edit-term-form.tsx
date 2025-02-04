@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { countryCurrency } from "@/lib/utils";
 import { classTermSchema, ClassTermSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClassTerm } from "@prisma/client";
@@ -76,7 +77,7 @@ export default function EditTermForm({
                   <NumberInput
                     placeholder="e.g., 450000"
                     {...field}
-                    suffix="UGX"
+                    suffix={countryCurrency}
                   />
                 </FormControl>
 

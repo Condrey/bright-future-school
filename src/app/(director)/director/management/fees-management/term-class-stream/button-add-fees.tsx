@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
 import { PupilData } from "@/lib/types";
-import { cn, formatCurrency, formatNumber } from "@/lib/utils";
+import { cn, countryCurrency, formatCurrency, formatNumber } from "@/lib/utils";
 import { feesSchema, FeesSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -102,7 +102,7 @@ export default function ButtonAddFees({
                     <FormControl>
                       <NumberInput
                         placeholder="amount received..."
-                        suffix="UGX"
+                        suffix={countryCurrency}
                         {...field}
                       />
                     </FormControl>
