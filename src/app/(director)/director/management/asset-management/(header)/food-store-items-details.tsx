@@ -1,9 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/utils";
-import { AssetItemStatus } from "@prisma/client";
+import { AssetStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { ForkKnifeIcon } from "lucide-react";
 import {
+  assetStatuses,
   Card,
   CardDescription,
   CardHeader,
@@ -34,24 +35,17 @@ export default function FoodStoreItemsDetails({}: FoodStoreItemsDetailsProps) {
     return null;
   }
 
-  const itemsAvailable = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f !== AssetItemStatus.EXPIRED).length;
-  const itemsExpired = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f === AssetItemStatus.EXPIRED).length;
   const items = summary.flatMap((s) => s.foodName).filter(Boolean);
 
-  const suppliers = 1;
+  const suppliers = summary.filter((s) => s.supplier !== null).length;
   const todaysConsumption = summary
     .flatMap((s) => s._count.consumptions)
     .reduce((amount, total) => amount + total, 0);
 
-  const numberOfItems = items.length;
-  // TODO: change
-  // summary
-  //   .map((s) => s.individualComputerLabItems.length)
-  //   .reduce((value, total) => value + total, 0);
+  const numberOfItems = summary
+    .map((s) => s.individualFoodStoreItems.length)
+    .reduce((value, total) => value + total, 0);
+
   return (
     <Card className="flex flex-col lg:flex-row">
       <CardHeader>
@@ -75,10 +69,22 @@ export default function FoodStoreItemsDetails({}: FoodStoreItemsDetailsProps) {
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={itemsAvailable} label="Available" />
-          <NumericHolder count={itemsExpired} label="Expired" />
           <NumericHolder count={suppliers} label="Suppliers" />
-          <NumericHolder count={todaysConsumption} label="Consumed today" />
+          <NumericHolder
+            count={todaysConsumption}
+            label="Today's consumption"
+          />
+          {Object.values(AssetStatus).map((status) => {
+            const _count = summary
+              .map(
+                (s) =>
+                  s.individualFoodStoreItems.filter((i) => i.status === status)
+                    .length,
+              )
+              .reduce((value, total) => value + total, 0);
+            const _label = assetStatuses[status];
+            return <NumericHolder key={status} count={_count} label={_label} />;
+          })}
         </div>
       </CardHeader>
     </Card>

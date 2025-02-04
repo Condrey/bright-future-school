@@ -9,7 +9,7 @@ export async function getComputerLabSummary() {
     select: {
       id: true,
       name: true,
-      individualComputerLabItems: true,
+      individualComputerLabItems: { select: { status: true } },
     },
   });
   return summary;
@@ -21,6 +21,8 @@ export async function getFoodStoreItems() {
       id: true,
       foodName: true,
       status: true,
+      supplier: { select: { name: true } },
+      individualFoodStoreItems: { select: { status: true } },
       _count: {
         select: {
           consumptions: {
@@ -47,7 +49,7 @@ export async function getAllGeneralStoreItems() {
           id: true,
           name: true,
           status: true,
-          individualGeneralStoreItems: true,
+          individualGeneralStoreItems: { select: { status: true } },
         },
       },
     },
@@ -61,19 +63,28 @@ export async function getAllLabItems() {
       id: true,
       name: true,
       status: true,
-      individualLabItems: true,
+      individualLabItems: { select: { status: true } },
     },
   });
   return summary;
 }
 
 export async function getAllLibraryItems() {
-  const summary = await prisma.libraryBook.findMany({
-    select: {
-      id: true,
-      title: true,
-      individualBooks: true,
-    },
+  const data = await prisma.$transaction(async (tx) => {
+    const summary = await tx.libraryBook.findMany({
+      select: {
+        id: true,
+        title: true,
+        individualBooks: { select: { status: true } },
+        category: { select: { id: true } },
+      },
+    });
+    const authors = await tx.libraryBook.groupBy({
+      by: "author",
+      _count: { title: true, author: true },
+    });
+    return { summary, authors };
   });
-  return summary;
+
+  return data;
 }

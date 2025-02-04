@@ -16,13 +16,7 @@ import { NumericHolder } from "./numeric-holder";
 interface LibraryItemsDetailsProps {}
 
 export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
-  const {
-    data: summary,
-    status,
-    error,
-    isFetching,
-    refetch,
-  } = useQuery({
+  const { data, status, error, isFetching, refetch } = useQuery({
     queryKey: ["library-items", "summary"],
     queryFn: getAllLibraryItems,
   });
@@ -35,8 +29,9 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
     return null;
   }
 
-  const items = summary.flatMap((s) => s.title).filter(Boolean);
-  const numberOfItems = summary
+  const items = data.summary.flatMap((s) => s.title).filter(Boolean);
+  const authors = data.authors.map((a) => a.author).length;
+  const numberOfItems = data.summary
     .map((s) => s.individualBooks.length)
     .reduce((value, total) => value + total, 0);
   return (
@@ -49,7 +44,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
           />
           <div>
             <CardTitle className="uppercase tracking-wider">Library</CardTitle>
-            <CardTitle>{`${formatNumber(summary.length)} book${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
+            <CardTitle>{`${formatNumber(data.summary.length)} book${data.summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>
         {!!items.length && items.length > 1 && (
@@ -60,8 +55,9 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
+          <NumericHolder count={authors} label="Authors" />
           {Object.values(AssetItemStatus).map((value) => {
-            const _count = summary
+            const _count = data.summary
               .flatMap((s) => s.individualBooks.flatMap((i) => i.status))
               .filter((f) => f === value).length;
             const _label = assetItemStatuses[value];

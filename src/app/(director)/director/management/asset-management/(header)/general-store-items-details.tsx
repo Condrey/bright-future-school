@@ -4,6 +4,7 @@ import { AssetItemStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { StoreIcon } from "lucide-react";
 import {
+  assetItemStatuses,
   Card,
   CardDescription,
   CardHeader,
@@ -34,22 +35,6 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
     return null;
   }
 
-  const itemsAvailable = summary
-    .map(
-      (s) =>
-        s.generalStoreItems
-          .flatMap((g) => g.status)
-          .filter((f) => f !== AssetItemStatus.EXPIRED).length,
-    )
-    .reduce((count, total) => count + total, 0);
-  const itemsExpired = summary
-    .map(
-      (s) =>
-        s.generalStoreItems
-          .flatMap((g) => g.status)
-          .filter((f) => f === AssetItemStatus.EXPIRED).length,
-    )
-    .reduce((count, total) => count + total, 0);
   const items = summary
     .flatMap((s) => s.generalStoreItems.flatMap((g) => g.name))
     .filter(Boolean);
@@ -81,8 +66,18 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={itemsAvailable} label="Available" />
-          <NumericHolder count={itemsExpired} label="Expired" />
+          {Object.values(AssetItemStatus).map((status) => {
+            const _count = summary
+              .map(
+                (s) =>
+                  s.generalStoreItems
+                    .flatMap((g) => g.status)
+                    .filter((f) => f === status).length,
+              )
+              .reduce((count, total) => count + total, 0);
+            const _label = assetItemStatuses[status];
+            return <NumericHolder key={status} count={_count} label={_label} />;
+          })}
         </div>
       </CardHeader>
     </Card>

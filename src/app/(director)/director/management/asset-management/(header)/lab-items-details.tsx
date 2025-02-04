@@ -64,8 +64,12 @@ export default function LaboratoryItemsDetails({}: LaboratoryItemsDetailsProps) 
         <div className="flex flex-row gap-2">
           {Object.values(AssetStatus).map((status) => {
             const _count = summary
-              .flatMap((s) => s.status)
-              .filter((f) => f !== status).length;
+              .map(
+                (s) =>
+                  s.individualLabItems.filter((i) => i.status === status)
+                    .length,
+              )
+              .reduce((value, total) => value + total, 0);
             const _label = assetStatuses[status];
             return <NumericHolder key={status} count={_count} label={_label} />;
           })}

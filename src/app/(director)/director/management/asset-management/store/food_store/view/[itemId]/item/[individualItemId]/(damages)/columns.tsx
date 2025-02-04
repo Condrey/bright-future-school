@@ -24,15 +24,21 @@ export const useDamagesColumns: ColumnDef<AssetDamageData>[] = [
     cell: ({ row }) => {
       const person = row.original.damagedBy;
       return (
-        <div className="flex gap-2">
-          <UserAvatar avatarUrl={person.avatarUrl} />
-          <div>
-            <div>{person.name}</div>
-            <div className="text-xs text-muted-foreground">
-              {person.telephone || person.email || `@${person.username}`}
+        <>
+          {!row.original.isSchoolCost && !!person ? (
+            <div className="flex gap-2">
+              <UserAvatar avatarUrl={person.avatarUrl} />
+              <div>
+                <div>{person.name}</div>
+                <div className="text-xs text-muted-foreground">
+                  {person.telephone || person.email || `@${person.username}`}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          ) : (
+            <Badge variant={"secondary"}>School cost</Badge>
+          )}
+        </>
       );
     },
   },
