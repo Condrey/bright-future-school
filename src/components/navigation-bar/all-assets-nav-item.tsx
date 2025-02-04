@@ -9,56 +9,25 @@ import {
 import { assetCategories } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
-import { HammerIcon, Loader2Icon } from "lucide-react";
+import { Loader2Icon, PackageIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import { ListItem, NavItem } from "./list-item";
+import { ListItem } from "./list-item";
 
-export default function VandalismNavItem({
-  assetCategory,
-}: {
-  assetCategory: AssetCategory;
-}) {
-  const navList: NavItem[] = [
-    {
-      label: "List of damages",
-      url: "/damages",
-      description: `Table showing all ${assetCategories[assetCategory].label} asset variant damages and payments made to cover damages.`,
-    },
-    {
-      label: "Vandalizers list",
-      url: "/vandalizers",
-      description: `Concise representation of ${assetCategories[assetCategory].label} asset damagers.`,
-    },
-    {
-      label: "Payment history",
-      url: "/payments",
-      description: `Table showing all ${assetCategories[assetCategory].label} asset repair payments made overtime.`,
-    },
-  ];
+const basePathname = "/director/management/asset-management";
 
-  const basePathname =
-    "/director/management/asset-management/store/" +
-    assetCategory.toLowerCase() +
-    "/vandalism";
-
+export default function AllAssetsNavItem() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const isParentActive = pathname.startsWith(basePathname);
 
   return (
     <NavigationMenuItem>
       <NavigationMenuTrigger>
-        <div
-          className={cn(
-            "flex items-center",
-            isParentActive && "bg-accent text-accent-foreground",
-          )}
-        >
+        <div className="flex items-center">
           {isPending && <Loader2Icon className="mr-2 size-4 animate-spin" />}
-          <span>Vandalism</span>
+          <span>Asset management</span>
         </div>
       </NavigationMenuTrigger>
       <NavigationMenuContent>
@@ -72,29 +41,27 @@ export default function VandalismNavItem({
                 href={basePathname + "?" + searchParams.toString()}
                 className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
               >
-                <HammerIcon className="size-12" strokeWidth={0.8} />
-                <div className="mb-2 mt-4 text-lg font-medium">
-                  Vandalism overview
-                </div>
+                <PackageIcon className="size-12" strokeWidth={0.8} />
+                <div className="mb-2 mt-4 text-lg font-medium">All assets</div>
                 <p className="text-sm leading-tight text-muted-foreground">
-                  An overview using cards, graphs and tables to show{" "}
-                  {assetCategories[assetCategory].label}'s damages overtime.
+                  A one-stop-point for efficiently managing and analyzing all
+                  school assets.
                 </p>
               </Link>
             </NavigationMenuLink>
           </li>
-          {navList.map((item) => {
-            const path = basePathname + item.url;
+          {Object.values(AssetCategory).map((category) => {
+            const path = basePathname + "/store/" + category.toLowerCase();
             const isActive = pathname.startsWith(path);
             return (
               <ListItem
-                key={item.url}
+                key={category}
                 href={path + "?" + searchParams.toString()}
                 onClick={() => startTransition(() => {})}
-                title={item.label}
+                title={assetCategories[category].label}
                 className={cn(isActive && "bg-accent text-accent-foreground")}
               >
-                {item.description}
+                {assetCategories[category].explanation}
               </ListItem>
             );
           })}

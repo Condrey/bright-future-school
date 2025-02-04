@@ -2,6 +2,7 @@ import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import React from "react";
 
+export type NavItem = { label: string; url: string; description?: string };
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
