@@ -57,6 +57,18 @@ export default function DropDownMenuIndividualItem({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+              onClick={() =>
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`,
+                  ),
+                )
+              }
+            >
+              <ArrowUpRightIcon className="mr-2 size-4" />
+              <span>View individual item</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(item.id)}
             >
               <CopyIcon className="mr-2 size-4" />
@@ -72,18 +84,7 @@ export default function DropDownMenuIndividualItem({
                 <span>Copy individual item</span>
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              onClick={() =>
-                startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`,
-                  ),
-                )
-              }
-            >
-              <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View individual item</span>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
           <DropdownMenuGroup>

@@ -1,9 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/utils";
-import { AssetItemStatus } from "@prisma/client";
+import { AssetStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { TestTubeIcon } from "lucide-react";
 import {
+  assetStatuses,
   Card,
   CardDescription,
   CardHeader,
@@ -34,18 +35,10 @@ export default function LaboratoryItemsDetails({}: LaboratoryItemsDetailsProps) 
     return null;
   }
 
-  const itemsAvailable = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f !== AssetItemStatus.EXPIRED).length;
-  const itemsExpired = summary
-    .flatMap((s) => s.status)
-    .filter((f) => f === AssetItemStatus.EXPIRED).length;
   const items = summary.flatMap((s) => s.name).filter(Boolean);
-  const numberOfItems = items.length;
-  // TODO: change
-  // summary
-  //   .map((s) => s.individualComputerLabItems.length)
-  //   .reduce((value, total) => value + total, 0);
+  const numberOfItems = summary
+    .map((s) => s.individualLabItems.length)
+    .reduce((value, total) => value + total, 0);
   return (
     <Card className="flex flex-col lg:flex-row">
       <CardHeader>
@@ -69,8 +62,13 @@ export default function LaboratoryItemsDetails({}: LaboratoryItemsDetailsProps) 
       </CardHeader>
       <CardHeader>
         <div className="flex flex-row gap-2">
-          <NumericHolder count={itemsAvailable} label="Available" />
-          <NumericHolder count={itemsExpired} label="Expired" />
+          {Object.values(AssetStatus).map((status) => {
+            const _count = summary
+              .flatMap((s) => s.status)
+              .filter((f) => f !== status).length;
+            const _label = assetStatuses[status];
+            return <NumericHolder key={status} count={_count} label={_label} />;
+          })}
         </div>
       </CardHeader>
     </Card>

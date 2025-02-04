@@ -24,7 +24,7 @@ export default async function Page({ params }: PageProps) {
             url: `/management/asset-management/store/${AssetCategory.FOOD_STORE.toLocaleLowerCase()}`,
           },
           {
-            label: `${item.foodName} items`,
+            label: `${item.foodName} variants`,
           },
         ]}
       />

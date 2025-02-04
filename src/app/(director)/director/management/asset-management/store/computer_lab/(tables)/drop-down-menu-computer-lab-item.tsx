@@ -55,6 +55,19 @@ export default function DropDownMenuComputerLabItem({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+            disabled={!computerLabItem.trackQuantity}
+              onClick={() =>
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`,
+                  ),
+                )
+              }
+            >
+              <ArrowUpRightIcon className="mr-2 size-4" />
+              <span>View individual item</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(computerLabItem.id)}
             >
               <CopyIcon className="mr-2 size-4" />
@@ -70,18 +83,7 @@ export default function DropDownMenuComputerLabItem({
                 <span>Copy Individual item</span>
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              onClick={() =>
-                startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`,
-                  ),
-                )
-              }
-            >
-              <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View individual item</span>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
           <DropdownMenuGroup>

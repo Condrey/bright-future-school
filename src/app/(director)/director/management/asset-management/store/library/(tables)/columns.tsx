@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { LibraryBookData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
-import { AssetCondition, BookStatus } from "@prisma/client";
+import { AssetCondition, AssetStatus, BookStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetUnits } from "../../../add-asset/barrel-file";
+import { assetItemStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuLibraryItem from "./drop-down-menu-library-item";
 
 export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
@@ -41,7 +41,11 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
       return (
         <div>
           {itemNumber === 0 ? (
-            <Badge variant={"destructive"}>No items</Badge>
+            <Badge
+              variant={row.original.trackQuantity ? "destructive" : "secondary"}
+            >
+              {row.original.trackQuantity ? "No item" : "Not trackable"}
+            </Badge>
           ) : (
             <span>{`${formatNumber(itemNumber)} ${assetUnits[row.original.unit]}${itemNumber === 1 ? "" : "s"}`}</span>
           )}
@@ -59,9 +63,19 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
         (i) => i.status === BookStatus.AVAILABLE,
       ).length;
       return (
-        <Badge variant={available === 0 ? "destructive" : "go"}>
-          {available === 0 ? "None " : `${formatNumber(available)} available`}
-        </Badge>
+        <div>
+          {!row.original.trackQuantity ? (
+            <Badge variant={"go"}>
+              {assetItemStatuses[AssetStatus.AVAILABLE]}
+            </Badge>
+          ) : (
+            <Badge variant={available === 0 ? "destructive" : "go"}>
+              {available === 0
+                ? "None "
+                : `${formatNumber(available)} available`}
+            </Badge>
+          )}
+        </div>
       );
     },
   },

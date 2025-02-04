@@ -366,6 +366,7 @@ export type IndividualFoodStoreItemData =
   }>;
 export const foodStoreItemDataInclude = {
   asset: true,
+  supplier:true,
   individualFoodStoreItems: { include: individualFoodStoreItemDataInclude },
   consumptions: true,
 } satisfies Prisma.FoodStoreItemInclude;

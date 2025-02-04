@@ -1,5 +1,6 @@
 "use client";
 
+import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { FoodStoreItemData } from "@/lib/types";
@@ -19,9 +20,43 @@ export const useFoodStoreColumns: ColumnDef<FoodStoreItemData>[] = [
   {
     accessorKey: "foodName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="FoodName" />
+      <DataTableColumnHeader column={column} title="Food item" />
     ),
-    cell: ({ row }) => <span>{row.original.foodName}</span>,
+    cell: ({ row }) => (
+      <div>
+        {" "}
+        <div>{row.original.foodName}</div>
+        <Badge
+          className="px-2 py-0"
+          variant={row.original.isConsumable ? "go" : "destructive"}
+        >
+          {row.original.isConsumable ? "Consumable" : "Not consumable"}
+        </Badge>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "supplier.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Supplier" />
+    ),
+    cell: ({ row }) => (
+      <>
+        {row.original.supplier ? (
+          <TooltipContainer label={row.original.supplier.name!}>
+            <div>
+              <div>{row.original.supplier.name}</div>
+              <div>{row.original.supplier.contactInfo}</div>
+              <div>
+                <p>{row.original.supplier.address}</p>
+              </div>
+            </div>
+          </TooltipContainer>
+        ) : (
+          "N/A"
+        )}
+      </>
+    ),
   },
 
   {

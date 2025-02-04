@@ -55,6 +55,18 @@ export default function DropDownMenuLibraryItem({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+              onClick={() =>
+                startTransition(() =>
+                  navigateOnclickWithPathnameWithoutUpdate(
+                    `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/view/${libraryItem.id}`,
+                  ),
+                )
+              }
+            >
+              <ArrowUpRightIcon className="mr-2 size-4" />
+              <span>View individual item</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(libraryItem.id)}
             >
               <CopyIcon className="mr-2 size-4" />
@@ -70,18 +82,7 @@ export default function DropDownMenuLibraryItem({
                 <span>Copy Individual item</span>
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              onClick={() =>
-                startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/view/${libraryItem.id}`,
-                  ),
-                )
-              }
-            >
-              <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View individual item</span>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
           <DropdownMenuGroup>

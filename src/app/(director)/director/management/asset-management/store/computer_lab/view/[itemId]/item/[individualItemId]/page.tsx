@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps) {
             url: `/management/asset-management/store/${AssetCategory.COMPUTER_LAB.toLocaleLowerCase()}`,
           },
           {
-            label: `${individualItem.computerLabItem.model} ${individualItem.computerLabItem.name}s`,
+            label: `${individualItem.computerLabItem.model} ${individualItem.computerLabItem.name} variants`,
             url: `/management/asset-management/store/${AssetCategory.COMPUTER_LAB.toLocaleLowerCase()}/view/${individualItem.computerLabItemId}`,
           },
           {

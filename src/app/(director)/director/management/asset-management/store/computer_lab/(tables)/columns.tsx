@@ -9,7 +9,7 @@ import { formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetUnits } from "../../../add-asset/barrel-file";
+import { assetItemStatuses, assetStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuComputerLabItem from "./drop-down-menu-computer-lab-item";
 
 export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
@@ -53,7 +53,11 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
       return (
         <div>
           {itemNumber === 0 ? (
-            <Badge variant={"destructive"}>No items</Badge>
+            <Badge
+              variant={row.original.trackQuantity ? "destructive" : "secondary"}
+            >
+              {row.original.trackQuantity ? "No item" : "Not trackable"}
+            </Badge>
           ) : (
             <span>{`${formatNumber(itemNumber)} ${assetUnits[row.original.unit]}${itemNumber === 1 ? "" : "s"}`}</span>
           )}
@@ -71,9 +75,19 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
         (i) => i.status === AssetStatus.AVAILABLE,
       ).length;
       return (
-        <Badge variant={available === 0 ? "destructive" : "go"}>
-          {available === 0 ? "None " : `${formatNumber(available)} available`}
-        </Badge>
+        <div>
+          {!row.original.trackQuantity ? (
+            <Badge variant={"go"}>
+              {assetStatuses[AssetStatus.AVAILABLE]}
+            </Badge>
+          ) : (
+            <Badge variant={available === 0 ? "destructive" : "go"}>
+              {available === 0
+                ? "None "
+                : `${formatNumber(available)} available`}
+            </Badge>
+          )}
+        </div>
       );
     },
   },

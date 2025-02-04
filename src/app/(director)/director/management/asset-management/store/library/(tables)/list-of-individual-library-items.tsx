@@ -24,7 +24,7 @@ export function ListOfIndividualLibraryItems() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
-          Individual Library Items{" "}
+          Library assets{" "}
           <span className="text-muted-foreground">
             ({formatNumber(data?.length || 0)})
           </span>

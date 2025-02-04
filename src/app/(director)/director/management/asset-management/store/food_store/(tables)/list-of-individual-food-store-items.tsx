@@ -24,7 +24,7 @@ export function ListOfIndividualFoodStoreItems() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
-          Individual FoodStore Items{" "}
+          Food store assets{" "}
           <span className="text-muted-foreground">
             ({formatNumber(data?.length || 0)})
           </span>
@@ -69,7 +69,7 @@ export function ListOfIndividualFoodStoreItems() {
         <DataTable
           columns={useFoodStoreColumns}
           data={data}
-          filterColumn={{ id: "foodName", label: "name" }}
+          filterColumn={{ id: "foodName", label: "food item" }}
         />
       )}
     </div>

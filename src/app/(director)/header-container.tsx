@@ -56,8 +56,8 @@ export default function HeaderContainer({
               ) : (
                 <>
                   {breadCrumbItems.map((item, index, array) => (
-                    <div key={item.label} className="flex items-center gap-2">
-                      <BreadcrumbItem className="block">
+                    <div key={item.label} className="flex items-center gap-0.5">
+                      <BreadcrumbItem className="block gap-0">
                         {index === array.length - 1 ? (
                           <BreadcrumbPage>{item.label}</BreadcrumbPage>
                         ) : (
@@ -67,6 +67,7 @@ export default function HeaderContainer({
                               variant={"link"}
                               onClick={() => startTransition(() => {})}
                               className={cn(
+                                "flex max-w-40 items-center justify-start text-start lg:max-w-48",
                                 isPending &&
                                   "animate-pulse rounded-md bg-card text-card-foreground",
                               )}
@@ -79,8 +80,9 @@ export default function HeaderContainer({
                                   searchParams.toString()
                                 }
                                 className={cn(
+                                  "w-fit",
                                   (index !== array.length - 1 || index === 0) &&
-                                    "line-clamp-1 max-w-24 text-ellipsis break-words lg:max-w-48",
+                                    "break-word line-clamp-1 text-ellipsis",
                                 )}
                               >
                                 {item.label}
@@ -90,7 +92,7 @@ export default function HeaderContainer({
                         )}
                       </BreadcrumbItem>
                       {index !== array.length - 1 && (
-                        <BreadcrumbSeparator className="block" />
+                        <BreadcrumbSeparator className="block px-0 mx-0" />
                       )}
                     </div>
                   ))}

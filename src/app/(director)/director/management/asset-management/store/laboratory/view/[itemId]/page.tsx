@@ -24,7 +24,7 @@ export default async function Page({ params }: PageProps) {
             url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
           },
           {
-            label: `${item.name} items`,
+            label: `${item.name} variants`,
           },
         ]}
       />

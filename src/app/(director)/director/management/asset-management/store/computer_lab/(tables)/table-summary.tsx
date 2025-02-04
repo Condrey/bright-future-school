@@ -20,7 +20,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Conditions</CardTitle>
-          <CardDescription>Summary showing item conditions</CardDescription>
+          <CardDescription>Summary showing asset conditions</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetCondition).map((condition) => {
@@ -39,7 +39,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Statuses</CardTitle>
-          <CardDescription>Summary showing item statuses</CardDescription>
+          <CardDescription>Summary showing asset statuses</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetStatus).map((status) => {

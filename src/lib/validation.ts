@@ -316,10 +316,9 @@ export type IndividualBookSchema = z.infer<typeof individualBookSchema>;
 export const assetDamageSchema = z.object({
   quantity: z.number().optional().default(1),
   isRepaired: z.boolean(),
-  userId: requiredString.min(
-    1,
-    "Please include the person that damaged the item",
-  ),
+  repairPrice: z.number().optional(),
+  isSchoolCost: z.boolean(),
+  userId: z.string().optional(),
   damageDetails: requiredString.min(1, "Please describe the damage."),
   condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
   id: z.string(),
@@ -331,7 +330,8 @@ export type AssetDamageSchema = z.infer<typeof assetDamageSchema>;
 export const assetRepairPaymentSchema = z.object({
   id: z.string().optional(),
   paidAmount: z.number({ required_error: "Please include received payment" }),
-  userId: requiredString.min(1, "Missing recipient of the payment"),
+  isSchoolCost: z.boolean(),
+  userId: z.string().optional(),
   assetDamageId: requiredString.min(1, "The asset damage is missing."),
 });
 export type AssetRepairPaymentSchema = z.infer<typeof assetRepairPaymentSchema>;

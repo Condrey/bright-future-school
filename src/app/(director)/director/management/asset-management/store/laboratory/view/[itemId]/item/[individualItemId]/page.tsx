@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps) {
             url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
           },
           {
-            label: `${individualItem.labItem.name} items `,
+            label: `${individualItem.labItem.name} variants `,
             url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}/view/${individualItem.labItemId}`,
           },
           {

@@ -411,8 +411,8 @@ model AssetDamage {
   repairBalance                Float                       @default(0)
   isSchoolCost                 Boolean                     @default(false)
   assetRepairPayments          AssetRepairPayment[]
-  userId                       String
-  damagedBy                    User                        @relation(fields: [userId], references: [id])
+  userId                       String?
+  damagedBy                    User?                       @relation(fields: [userId], references: [id])
   individualComputerLabItem    IndividualComputerLabItem?  @relation(fields: [individualComputerLabItemId], references: [id], onDelete: Cascade)
   individualComputerLabItemId  String?
   createdAt                    DateTime                    @default(now())
@@ -431,12 +431,13 @@ model AssetDamage {
 model AssetRepairPayment {
   id            String       @id @default(uuid())
   paidAmount    Float
-  receivedBy    User         @relation(fields: [userId], references: [id])
+  isSchoolCost  Boolean      @default(false)
+  receivedBy    User?        @relation(fields: [userId], references: [id])
   paidAt        DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   assetDamage   AssetDamage? @relation(fields: [assetDamageId], references: [id])
   assetDamageId String?
-  userId        String
+  userId        String?
 
   @@map("asset_repair_payments")
 }

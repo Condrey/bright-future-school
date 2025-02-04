@@ -6,11 +6,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FoodStoreItemData } from "@/lib/types";
-import { AssetCondition, AssetItemStatus } from "@prisma/client";
+import { AssetCondition, AssetStatus } from "@prisma/client";
 import { NumericHolder } from "../../../(header)/numeric-holder";
 import {
   assetConditions,
-  assetItemStatuses,
+  assetStatuses,
 } from "../../../add-asset/barrel-file";
 
 interface TableSummaryProps {
@@ -23,7 +23,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Conditions</CardTitle>
-          <CardDescription>Summary showing item conditions</CardDescription>
+          <CardDescription>Summary showing asset conditions</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetCondition).map((condition) => {
@@ -42,14 +42,14 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Statuses</CardTitle>
-          <CardDescription>Summary showing item statuses</CardDescription>
+          <CardDescription>Summary showing asset statuses</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
-          {Object.values(AssetItemStatus).map((status) => {
+          {Object.values(AssetStatus).map((status) => {
             const count = items.flatMap((i) =>
               i.individualFoodStoreItems.filter((d) => d.status === status),
             ).length;
-            const label = assetItemStatuses[status];
+            const label = assetStatuses[status];
             return <NumericHolder key={status} count={count} label={label} />;
           })}
         </CardContent>

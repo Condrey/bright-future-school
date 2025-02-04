@@ -44,7 +44,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
-          <span>{oldItem.name} items </span>
+          <span>{oldItem.name} variants </span>
           <span className="text-muted-foreground">
             ({formatNumber(items.length || 0)})
           </span>
@@ -81,7 +81,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
             !missingIdItems.length ? null : (
               <div className="flex w-fit items-center gap-2 rounded-md bg-destructive/80 px-2 py-1 text-destructive-foreground">
                 <AlertTriangle className="size-4 flex-none" />
-                <p>{` ${formatNumber(missingIdItems.length)} item${missingIdItems.length === 1 ? " is" : "s are"} missing a uniqueIdentifier. Please update.`}</p>
+                <p>{` ${formatNumber(missingIdItems.length)} item${missingIdItems.length === 1 ? " is" : "s are"} missing a unique Identifier. Please update.`}</p>
               </div>
             )
           }

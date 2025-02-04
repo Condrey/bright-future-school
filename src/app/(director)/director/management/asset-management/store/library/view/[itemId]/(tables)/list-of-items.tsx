@@ -45,8 +45,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
           <span>
-            {oldItem.author}'s
-            <cite>{oldItem.author}'s</cite> {oldItem.title} books{" "}
+            <cite>{oldItem.author}'s</cite> {oldItem.title} variants{" "}
           </span>
           <span className="text-muted-foreground">
             ({formatNumber(items.length || 0)})
