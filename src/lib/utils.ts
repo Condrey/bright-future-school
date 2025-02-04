@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const webName = "Bright future school";
-export const countryCurrency = "SDG";
+export const countryCurrency = "SSP";
 
 export function formatCurrency(price: number | string = 0, currency?: string) {
   const numericPrice = Number(price);
