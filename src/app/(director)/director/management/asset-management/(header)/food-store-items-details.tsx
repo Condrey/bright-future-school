@@ -68,7 +68,7 @@ export default function FoodStoreItemsDetails({}: FoodStoreItemsDetailsProps) {
         )}
       </CardHeader>
       <CardHeader>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row flex-wrap gap-2">
           <NumericHolder count={suppliers} label="Suppliers" />
           <NumericHolder
             count={todaysConsumption}

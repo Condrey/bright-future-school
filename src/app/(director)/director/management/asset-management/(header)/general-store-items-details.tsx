@@ -65,7 +65,7 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
         )}
       </CardHeader>
       <CardHeader>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetItemStatus).map((status) => {
             const _count = summary
               .map(

@@ -55,7 +55,7 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
         )}
       </CardHeader>
       <CardHeader>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row flex-wrap gap-2">
           <NumericHolder count={authors} label="Authors" />
           <NumericHolder count={categories} label="Book categories" />
           {Object.values(AssetItemStatus).map((value) => {
