@@ -5,10 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { assetConditions, bookStatuses } from "@/lib/enums";
 import { LibraryBookData } from "@/lib/types";
 import { AssetCondition, BookStatus } from "@prisma/client";
 import { NumericHolder } from "../../../(header)/numeric-holder";
-import { assetConditions, bookStatuses } from "../../../add-asset/barrel-file";
 
 interface TableSummaryProps {
   items: LibraryBookData[];

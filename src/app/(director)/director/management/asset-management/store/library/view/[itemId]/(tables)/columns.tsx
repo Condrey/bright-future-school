@@ -1,13 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetConditions, bookStatuses } from "@/lib/enums";
 import { IndividualLibraryBookData } from "@/lib/types";
 import { cn, formatNumber } from "@/lib/utils";
 import { AssetCondition, BookStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  assetConditions,
-  bookStatuses,
-} from "../../../../../add-asset/barrel-file";
 import DropDownMenuIndividualItem from "./drop-down-menu-individual-item";
 
 export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [

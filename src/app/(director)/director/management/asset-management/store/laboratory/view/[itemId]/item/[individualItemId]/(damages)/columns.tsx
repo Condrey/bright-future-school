@@ -1,9 +1,9 @@
-import { assetConditions } from "@/app/(director)/director/management/asset-management/add-asset/barrel-file";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
+import { assetConditions } from "@/lib/enums";
 import { AssetDamageData } from "@/lib/types";
 import { AssetCondition } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";

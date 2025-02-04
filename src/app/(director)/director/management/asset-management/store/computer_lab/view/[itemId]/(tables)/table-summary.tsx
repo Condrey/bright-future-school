@@ -5,13 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { assetConditions, assetStatuses } from "@/lib/enums";
 import { IndividualComputerLabItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { NumericHolder } from "../../../../../(header)/numeric-holder";
-import {
-  assetConditions,
-  assetStatuses,
-} from "../../../../../add-asset/barrel-file";
 
 interface TableSummaryProps {
   items: IndividualComputerLabItemData[];

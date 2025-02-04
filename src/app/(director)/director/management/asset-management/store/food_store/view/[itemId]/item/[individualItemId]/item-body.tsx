@@ -1,10 +1,5 @@
 "use client";
 
-import {
-  assetCategories,
-  assetConditions,
-  assetStatuses,
-} from "@/app/(director)/director/management/asset-management/add-asset/barrel-file";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { assetCategories, assetConditions, assetStatuses } from "@/lib/enums";
 import { IndividualFoodStoreItemData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";

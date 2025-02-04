@@ -2,12 +2,12 @@
 
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetItemStatuses, assetUnits } from "@/lib/enums";
 import { GeneralStoreItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetItemStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuGeneralStoreItem from "./drop-down-menu-general-store-item";
 
 export const useGeneralStoreColumns: ColumnDef<GeneralStoreItemData>[] = [

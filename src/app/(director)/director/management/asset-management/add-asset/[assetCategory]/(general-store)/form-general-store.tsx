@@ -2,6 +2,7 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
+import { assetCategories, assetItemStatuses, assetUnits } from "@/lib/enums";
 import { GeneralStoreItemData } from "@/lib/types";
 import {
   AssetSchema,
@@ -12,8 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetItemStatuses,
-  assetUnits,
   Card,
   CardContent,
   CardDescription,
@@ -54,9 +53,8 @@ export default function FormGeneralStore({
       asset: (generalStoreItemToEdit?.asset as AssetSchema) || {
         id: "general-Store",
         category: AssetCategory.GENERAL_STORE,
-        description:
-          "Items like furniture, basketballs, footballs, buses, keys and others.",
-        name: "General store equipments",
+        description: assetCategories[AssetCategory.GENERAL_STORE].explanation,
+        name: assetCategories[AssetCategory.GENERAL_STORE].label,
       },
       id: generalStoreItemToEdit?.id || "",
       name: generalStoreItemToEdit?.name || "",

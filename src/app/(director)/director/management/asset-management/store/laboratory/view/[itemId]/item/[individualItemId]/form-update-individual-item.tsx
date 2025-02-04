@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  assetConditions,
-  assetStatuses,
-} from "@/app/(director)/director/management/asset-management/add-asset/barrel-file";
 import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
 import {
@@ -24,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { assetConditions, assetStatuses } from "@/lib/enums";
 import { IndividualLaboratoryItemData } from "@/lib/types";
 import {
   IndividualLaboratorySchema,

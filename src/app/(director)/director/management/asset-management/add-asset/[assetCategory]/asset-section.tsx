@@ -1,10 +1,10 @@
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
+import { assetCategories } from "@/lib/enums";
 import { AssetSchema } from "@/lib/validation";
 import { AssetCategory } from "@prisma/client";
 import { FileQuestionIcon, LucideIcon } from "lucide-react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import {
-  assetCategories,
   Card,
   CardContent,
   CardDescription,

@@ -1,4 +1,3 @@
-import { assetConditions } from "@/app/(director)/director/management/asset-management/add-asset/barrel-file";
 import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
 import TipTapEditorWithHeader from "@/components/tip-tap-editor/tip-tap-editor-with-header";
@@ -19,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { assetConditions } from "@/lib/enums";
 import { AssetDamageData } from "@/lib/types";
 import { assetDamageSchema, AssetDamageSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";

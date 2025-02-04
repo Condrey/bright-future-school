@@ -1,13 +1,13 @@
 import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
 import TipTapEditorWithHeader from "@/components/tip-tap-editor/tip-tap-editor-with-header";
+import { assetCategories } from "@/lib/enums";
 import { AssetData } from "@/lib/types";
 import { assetSchema, AssetSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetCategories,
   Form,
   FormControl,
   FormDescription,

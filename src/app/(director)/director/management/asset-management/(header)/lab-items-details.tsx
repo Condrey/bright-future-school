@@ -1,10 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { assetStatuses } from "@/lib/enums";
 import { formatNumber } from "@/lib/utils";
 import { AssetStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { TestTubeIcon } from "lucide-react";
 import {
-  assetStatuses,
   Card,
   CardDescription,
   CardHeader,

@@ -2,12 +2,12 @@
 
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetStatuses, assetUnits } from "@/lib/enums";
 import { LaboratoryItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuLaboratoryItem from "./drop-down-menu-laboratory-item";
 
 export const useLaboratoryColumns: ColumnDef<LaboratoryItemData>[] = [

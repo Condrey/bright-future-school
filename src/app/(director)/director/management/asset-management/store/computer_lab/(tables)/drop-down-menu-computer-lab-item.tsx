@@ -55,7 +55,7 @@ export default function DropDownMenuComputerLabItem({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-            disabled={!computerLabItem.trackQuantity}
+              disabled={!computerLabItem.trackQuantity}
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(

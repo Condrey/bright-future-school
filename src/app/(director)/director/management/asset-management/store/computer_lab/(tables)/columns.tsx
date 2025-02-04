@@ -4,12 +4,12 @@ import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetStatuses, assetUnits } from "@/lib/enums";
 import { ComputerLabItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetItemStatuses, assetStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuComputerLabItem from "./drop-down-menu-computer-lab-item";
 
 export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
@@ -77,9 +77,7 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
       return (
         <div>
           {!row.original.trackQuantity ? (
-            <Badge variant={"go"}>
-              {assetStatuses[AssetStatus.AVAILABLE]}
-            </Badge>
+            <Badge variant={"go"}>{assetStatuses[AssetStatus.AVAILABLE]}</Badge>
           ) : (
             <Badge variant={available === 0 ? "destructive" : "go"}>
               {available === 0

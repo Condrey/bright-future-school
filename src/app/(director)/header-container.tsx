@@ -92,7 +92,7 @@ export default function HeaderContainer({
                         )}
                       </BreadcrumbItem>
                       {index !== array.length - 1 && (
-                        <BreadcrumbSeparator className="block px-0 mx-0" />
+                        <BreadcrumbSeparator className="mx-0 block px-0" />
                       )}
                     </div>
                   ))}

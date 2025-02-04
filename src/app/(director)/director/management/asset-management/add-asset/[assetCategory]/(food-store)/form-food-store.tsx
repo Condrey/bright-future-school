@@ -2,6 +2,7 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
+import { assetCategories, assetItemStatuses, assetUnits } from "@/lib/enums";
 import { FoodStoreItemData } from "@/lib/types";
 import {
   AssetSchema,
@@ -12,8 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetItemStatus, AssetUnit } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetItemStatuses,
-  assetUnits,
   Card,
   CardContent,
   CardDescription,
@@ -54,9 +53,8 @@ export default function FormFoodStore({
       asset: (foodStoreItemToEdit?.asset as AssetSchema) || {
         id: "food-Store",
         category: AssetCategory.FOOD_STORE,
-        description:
-          "Food items like maize flour, beans, cooking oil, onions, and many others.",
-        name: "Food store items",
+        description: assetCategories[AssetCategory.FOOD_STORE].explanation,
+        name: assetCategories[AssetCategory.FOOD_STORE].label,
       },
       id: foodStoreItemToEdit?.id || "",
       foodName: foodStoreItemToEdit?.foodName || "",

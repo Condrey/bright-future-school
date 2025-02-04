@@ -2,6 +2,7 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
+import { assetCategories, assetUnits } from "@/lib/enums";
 import { LibraryBookData } from "@/lib/types";
 import {
   AssetSchema,
@@ -13,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetUnit } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetUnits,
   Card,
   CardContent,
   CardDescription,
@@ -52,9 +52,8 @@ export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
       asset: (libraryItemToEdit?.asset as AssetSchema) || {
         id: "library",
         category: AssetCategory.LIBRARY,
-        description:
-          "Library asset items like books, novels, text books, encyclopedia, newspapers, journals. e.t.c.",
-        name: "Library items",
+        description: assetCategories[AssetCategory.LIBRARY].explanation,
+        name: assetCategories[AssetCategory.LIBRARY].label,
       },
       category: libraryItemToEdit?.category! as LibraryAssetCategorySchema,
       id: libraryItemToEdit?.id || "",

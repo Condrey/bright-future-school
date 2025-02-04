@@ -3,6 +3,7 @@
 import LoadingButton from "@/components/loading-button";
 import TipTapEditorWithHeader from "@/components/tip-tap-editor/tip-tap-editor-with-header";
 import TooltipContainer from "@/components/tooltip-container";
+import { assetCategories, assetUnits } from "@/lib/enums";
 import { ComputerLabItemData } from "@/lib/types";
 import {
   AssetSchema,
@@ -13,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AssetCategory, AssetUnit } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetUnits,
   Card,
   CardContent,
   CardDescription,
@@ -56,9 +56,8 @@ export default function FormComputerLab({
       asset: (computerLabItemToEdit?.asset as AssetSchema) || {
         id: "computer-Lab",
         category: AssetCategory.COMPUTER_LAB,
-        description:
-          "Computer items like mice, UPS, AC, Whiteboard, Projector, Keyboard, Monitors, e.t.c.",
-        name: "Computer lab items",
+        description: assetCategories[AssetCategory.COMPUTER_LAB].explanation,
+        name: assetCategories[AssetCategory.COMPUTER_LAB].label,
       },
       id: computerLabItemToEdit?.id || "",
       name: computerLabItemToEdit?.name || "",

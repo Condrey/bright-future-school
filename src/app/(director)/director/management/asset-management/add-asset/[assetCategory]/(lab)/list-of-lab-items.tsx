@@ -3,13 +3,12 @@
 import LoadingButton from "@/components/loading-button";
 import { Badge } from "@/components/ui/badge";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
+import { assetStatuses, assetUnits } from "@/lib/enums";
 import { formatNumber } from "@/lib/utils";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { HistoryIcon, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import {
-  assetStatuses,
-  assetUnits,
   Card,
   CardContent,
   CardDescription,

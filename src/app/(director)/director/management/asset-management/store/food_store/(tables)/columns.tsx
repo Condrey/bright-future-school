@@ -3,12 +3,12 @@
 import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetItemStatuses, assetUnits } from "@/lib/enums";
 import { FoodStoreItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetItemStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuFoodStoreItem from "./drop-down-menu-food-store-item";
 
 export const useFoodStoreColumns: ColumnDef<FoodStoreItemData>[] = [

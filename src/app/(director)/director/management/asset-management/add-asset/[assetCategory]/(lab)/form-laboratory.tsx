@@ -2,6 +2,7 @@
 
 import LoadingButton from "@/components/loading-button";
 import TooltipContainer from "@/components/tooltip-container";
+import { assetCategories, assetItemStatuses, assetUnits } from "@/lib/enums";
 import { LaboratoryItemData } from "@/lib/types";
 import {
   AssetSchema,
@@ -17,8 +18,6 @@ import {
 } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
-  assetItemStatuses,
-  assetUnits,
   Card,
   CardContent,
   CardDescription,
@@ -58,9 +57,8 @@ export default function FormLaboratory({
       asset: (laboratoryItemToEdit?.asset as AssetSchema) || {
         id: "laboratory",
         category: AssetCategory.LABORATORY,
-        description:
-          "Equipments for performing laboratory experiments. For example, in the Chemistry department, Physics department, Biology department, and many more others.",
-        name: "Science lab equipments",
+        description: assetCategories[AssetCategory.LABORATORY].explanation,
+        name: assetCategories[AssetCategory.LABORATORY].label,
       },
       id: laboratoryItemToEdit?.id || "",
       name: laboratoryItemToEdit?.name || "",

@@ -2,12 +2,12 @@
 
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetItemStatuses, assetUnits } from "@/lib/enums";
 import { LibraryBookData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus, BookStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { assetItemStatuses, assetUnits } from "../../../add-asset/barrel-file";
 import DropDownMenuLibraryItem from "./drop-down-menu-library-item";
 
 export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [

@@ -22,7 +22,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>{/* <LevelSwitcher /> */}</SidebarHeader>
-      <SidebarContent >
+      <SidebarContent>
         {status === "pending" ? (
           <div className="flex flex-col gap-6 px-4 py-6">
             {Array.from({ length: 3 }, (_, index) => (

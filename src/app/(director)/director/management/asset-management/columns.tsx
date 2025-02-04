@@ -2,6 +2,7 @@ import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { assetCategories } from "@/lib/enums";
 import { AssetData } from "@/lib/types";
 import { cn, formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
@@ -15,7 +16,6 @@ import {
   StoreIcon,
   TestTubeIcon,
 } from "lucide-react";
-import { assetCategories } from "./add-asset/barrel-file";
 import DropDownMenuAsset from "./drop-down-menu-asset";
 
 export const useAssetColumns: ColumnDef<AssetData>[] = [
