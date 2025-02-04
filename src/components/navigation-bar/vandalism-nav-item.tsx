@@ -38,6 +38,8 @@ export default function VandalismNavItem({
     },
   ];
 
+  const Icon = assetCategories[assetCategory].icon;
+
   const basePathname =
     "/director/management/asset-management/store/" +
     assetCategory.toLowerCase() +
@@ -72,11 +74,14 @@ export default function VandalismNavItem({
                 href={basePathname + "?" + searchParams.toString()}
                 className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
               >
-                <HammerIcon className="size-12" strokeWidth={0.8} />
-                <div className="mb-2 mt-4 text-lg font-medium">
+                <div className="flex w-full items-center justify-center">
+                  <HammerIcon className="size-12" strokeWidth={0.8} />
+                  <Icon className="my-auto size-4" />
+                </div>
+                <div className="mb-2 mt-4 w-full text-center text-lg font-medium">
                   Vandalism overview
                 </div>
-                <p className="text-sm leading-tight text-muted-foreground">
+                <p className="text-pretty text-sm leading-tight text-muted-foreground">
                   An overview using cards, graphs and tables to show{" "}
                   {assetCategories[assetCategory].label}'s damages overtime.
                 </p>
