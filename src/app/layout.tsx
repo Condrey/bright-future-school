@@ -18,8 +18,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${webName} School Management System`,
-  description: "For School fees, report cards, and asset management.",
+  title: {
+    template: `%s | ${webName} Management System`,
+    absolute: `${webName} Management System`,
+    default: `${webName} Management System`,
+  },
+  description:
+    "School management system For School fees, report cards, and asset management.",
 };
 
 export default function RootLayout({

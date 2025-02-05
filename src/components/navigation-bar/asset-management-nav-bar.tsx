@@ -89,13 +89,11 @@ export default function AssetManagementNavBar({
 }
 
 interface NavigationMenuLinkItemProps {
-  key?: string;
   children: React.ReactNode;
   path: string;
   isActive: boolean;
 }
 function NavigationMenuLinkItem({
-  key,
   path,
   isActive,
   children,
@@ -103,7 +101,7 @@ function NavigationMenuLinkItem({
   const [isPending, startTransition] = useTransition();
 
   return (
-    <NavigationMenuItem key={key}>
+    <NavigationMenuItem>
       <Link href={path} legacyBehavior passHref>
         <NavigationMenuLink
           className={cn(

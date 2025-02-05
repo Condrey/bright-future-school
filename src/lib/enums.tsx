@@ -5,6 +5,7 @@ import {
   AssetStatus,
   AssetUnit,
   BookStatus,
+  StaffType,
 } from "@prisma/client";
 import {
   ComputerIcon,
@@ -90,4 +91,20 @@ export const bookStatuses: Record<BookStatus, string> = {
   AVAILABLE: "Is available",
   DAMAGED: "Is damaged",
   BORROWED: "Is borrowed",
+};
+
+export const staffTypes: Record<
+  StaffType,
+  { label: string; description: string }
+> = {
+  TEACHING_STAFF: {
+    label: "Teaching staff",
+    description:
+      "These are staffs that perform staff duties inclusive of organizing and officially tutoring classes.",
+  },
+  NON_TEACHING_STAFF: {
+    label: "Non teaching staff",
+    description:
+      "These are staffs that perform staff duties exclusive of organizing and officially tutoring classes.",
+  },
 };
