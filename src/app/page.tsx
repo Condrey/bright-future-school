@@ -1,16 +1,22 @@
 import { buttonVariants } from "@/components/ui/button";
-import { webName } from "@/lib/utils";
+import { cn, webName } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-dvh">
-      <div className="m-auto flex max-w-5xl flex-col gap-5">
-        <span>Welcome to {webName}</span>
-        <Link href={`/director?level=all`} className={buttonVariants()}>
-          Director
-        </Link>
+    <div className="flex size-full min-h-svh flex-col items-center justify-center gap-12">
+      <div className="mx-auto flex max-w-md flex-col gap-0.5">
+        <h1 className="text-center text-2xl font-bold uppercase tracking-tight lg:text-3xl">
+          {webName}
+        </h1>
+        <h4 className="text-center italic">school management system</h4>
       </div>
+      <Link
+        href={`/login`}
+        className={cn(buttonVariants({ className: "w-full max-w-sm" }))}
+      >
+        Login
+      </Link>
     </div>
   );
 }
