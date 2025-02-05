@@ -16,6 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { PARAM_NAME_LEVEL } from "@/lib/constants";
 import { AudioWaveform, Blocks, Columns4, Command } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -23,7 +24,7 @@ export function LevelSwitcher() {
   const { isMobile } = useSidebar();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const searchParamLevel = searchParams.get("level") ?? undefined;
+  const searchParamLevel = searchParams.get(PARAM_NAME_LEVEL) ?? undefined;
   const levels = [
     {
       name: "All",
@@ -51,7 +52,7 @@ export function LevelSwitcher() {
 
   const handleLevelClick = (level: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("level", level.toLowerCase());
+    params.set(PARAM_NAME_LEVEL, level.toLowerCase());
     router.push(`/director?${params.toString()}`);
   };
 

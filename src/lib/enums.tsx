@@ -5,15 +5,23 @@ import {
   AssetStatus,
   AssetUnit,
   BookStatus,
+  Role,
   StaffType,
 } from "@prisma/client";
 import {
+  AnchorIcon,
   ComputerIcon,
+  CrossIcon,
   ForkKnifeIcon,
   LibraryIcon,
   LucideIcon,
+  PresentationIcon,
+  ShieldIcon,
   StoreIcon,
   TestTubeIcon,
+  UserRoundIcon,
+  UserRoundPenIcon,
+  WalletIcon,
 } from "lucide-react";
 
 export const assetCategories: Record<
@@ -107,4 +115,129 @@ export const staffTypes: Record<
     description:
       "These are staffs that perform staff duties exclusive of organizing and officially tutoring classes.",
   },
+};
+
+export const userRoles: Record<
+  Role,
+  { label: string; description: string; icon: LucideIcon }
+> = {
+  DIRECTOR: {
+    label: "School director",
+    icon: AnchorIcon,
+    description: "",
+  },
+  BURSAR: {
+    label: "The bursar",
+    icon: WalletIcon,
+    description: "",
+  },
+  ASSET_CARETAKER: {
+    label: "Overall asset caretaker",
+    icon: CrossIcon,
+    description: "",
+  },
+  GENERAL_STORE_ASSET_CARETAKER: {
+    label: "General store asset caretaker",
+    icon: StoreIcon,
+    description: "",
+  },
+  COMPUTER_LAB_ASSET_CARETAKER: {
+    label: "Computer lab asset caretaker",
+    icon: ComputerIcon,
+    description: "",
+  },
+  LABORATORY_ASSET_CARETAKER: {
+    label: "Laboratory asset caretaker",
+    icon: TestTubeIcon,
+    description: "",
+  },
+  LIBRARY_ASSET_CARETAKER: {
+    label: "Library asset caretaker",
+    icon: LibraryIcon,
+    description: "",
+  },
+  FOOD_STORE_ASSET_CARETAKER: {
+    label: "Food store asset caretaker",
+    icon: ForkKnifeIcon,
+    description: "",
+  },
+  STAFF: {
+    label: "Staff",
+    icon: PresentationIcon,
+    description: "",
+  },
+  CLASS_TEACHER: {
+    label: "Class teacher",
+    icon: UserRoundPenIcon,
+    description: "",
+  },
+  USER: {
+    label: "Student/ pupil",
+    icon: UserRoundIcon,
+    description: "",
+  },
+  SUPER_ADMIN: {
+    label: "Root admin",
+    icon: ShieldIcon,
+    description: "",
+  },
+};
+
+export const roleRedirectPaths: Record<Role, string> = {
+  DIRECTOR: "/director",
+  BURSAR: "/bursar",
+  ASSET_CARETAKER: "/general-asset-manager",
+  CLASS_TEACHER: "/class-teacher",
+  USER: "/student",
+  SUPER_ADMIN: "/root",
+  GENERAL_STORE_ASSET_CARETAKER: "/general-store-asset-manager",
+  COMPUTER_LAB_ASSET_CARETAKER: "/computer-lab-asset-manager",
+  LABORATORY_ASSET_CARETAKER: "/laboratory-asset-manager",
+  LIBRARY_ASSET_CARETAKER: "/library-asset-manager",
+  FOOD_STORE_ASSET_CARETAKER: "/food-store-asset-manager",
+  STAFF: "/staff",
+};
+
+const allRoles = Object.values(Role);
+export const myPrivileges: Record<Role, Role[]> = {
+  SUPER_ADMIN: allRoles,
+
+  DIRECTOR: allRoles.filter((role) => role !== Role.SUPER_ADMIN),
+
+  BURSAR: Object.values(Role).filter(
+    (role) => !([Role.SUPER_ADMIN, Role.DIRECTOR] as Role[]).includes(role),
+  ),
+
+  ASSET_CARETAKER: [
+    Role.ASSET_CARETAKER,
+    Role.GENERAL_STORE_ASSET_CARETAKER,
+    Role.COMPUTER_LAB_ASSET_CARETAKER,
+    Role.LABORATORY_ASSET_CARETAKER,
+    Role.LIBRARY_ASSET_CARETAKER,
+    Role.FOOD_STORE_ASSET_CARETAKER,
+    Role.STAFF,
+  ],
+
+  GENERAL_STORE_ASSET_CARETAKER: [
+    Role.GENERAL_STORE_ASSET_CARETAKER,
+    Role.STAFF,
+  ],
+  COMPUTER_LAB_ASSET_CARETAKER: [Role.COMPUTER_LAB_ASSET_CARETAKER, Role.STAFF],
+  LABORATORY_ASSET_CARETAKER: [Role.LABORATORY_ASSET_CARETAKER, Role.STAFF],
+  LIBRARY_ASSET_CARETAKER: [Role.LIBRARY_ASSET_CARETAKER, Role.STAFF],
+  FOOD_STORE_ASSET_CARETAKER: [Role.FOOD_STORE_ASSET_CARETAKER, Role.STAFF],
+
+  CLASS_TEACHER: [Role.CLASS_TEACHER, Role.STAFF],
+  STAFF: [Role.STAFF],
+  USER: [Role.USER],
+};
+
+const myDeniedPrivileges = (myRole: Role) => {
+  const deniedPrivileges: Record<Role, Role[]> = {} as Record<Role, Role[]>;
+  for (const role of allRoles) {
+    deniedPrivileges[role] = allRoles.filter(
+      (r) => !myPrivileges[role].includes(r),
+    );
+  }
+  return deniedPrivileges[myRole];
 };

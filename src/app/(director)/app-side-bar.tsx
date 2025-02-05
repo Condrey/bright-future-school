@@ -1,6 +1,7 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
+import RoleSwitcher from "@/components/switchers/role-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -21,7 +22,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>{/* <LevelSwitcher /> */}</SidebarHeader>
+      <SidebarHeader>
+        <RoleSwitcher />
+      </SidebarHeader>
       <SidebarContent>
         {status === "pending" ? (
           <div className="flex flex-col gap-6 px-4 py-6">

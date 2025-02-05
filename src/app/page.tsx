@@ -1,8 +1,15 @@
+import { validateRequest } from "@/auth";
 import { buttonVariants } from "@/components/ui/button";
+import { roleRedirectPaths } from "@/lib/enums";
 import { cn, webName } from "@/lib/utils";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const { user } = await validateRequest();
+
+  if (user) redirect(roleRedirectPaths[user.role]);
+
   return (
     <div className="flex size-full min-h-svh flex-col items-center justify-center gap-12">
       <div className="mx-auto flex max-w-md flex-col gap-0.5">
