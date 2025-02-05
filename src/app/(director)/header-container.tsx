@@ -72,7 +72,7 @@ export default function HeaderContainer({
                               className={cn(
                                 "flex max-w-40 items-center justify-start text-start lg:max-w-48",
                                 isPending &&
-                                  "animate-pulse rounded-md bg-card text-card-foreground",
+                                  "animate-pulse rounded-md bg-accent text-accent-foreground",
                               )}
                             >
                               <Link

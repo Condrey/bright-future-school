@@ -177,7 +177,10 @@ function MenuItemLink({ item }: MenuItemLinkProps) {
       disabled={item.disabled}
       onClick={() => startTransition(() => {})}
       isActive={isActive}
-      className={cn(isPending && "animate-pulse bg-card text-card-foreground")}
+      className={cn(
+        isPending &&
+          "animate-pulse bg-sidebar-accent text-sidebar-accent-foreground",
+      )}
     >
       <Link
         href={basePathname + "/" + item.url + "?" + searchParams.toString()}

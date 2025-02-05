@@ -197,7 +197,8 @@ function SubmenuItem({ subItem }: SubmenuItemProps) {
         isActive={isActive}
         onClick={() => startTransition(() => {})}
         className={cn(
-          isPending && "animate-pulse bg-card text-card-foreground",
+          isPending &&
+            "animate-pulse bg-sidebar-accent text-sidebar-accent-foreground",
         )}
       >
         <Link
