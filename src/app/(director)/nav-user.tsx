@@ -1,13 +1,17 @@
 "use client";
 
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut, SunIcon } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -17,12 +21,15 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import UserAvatar from "@/components/user-avatar";
+import { toast } from "@/hooks/use-toast";
+import { useTheme } from "next-themes";
 import { useSession } from "../session-provider";
 import { logoutUser } from "./action";
-import { toast } from "@/hooks/use-toast";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const { setTheme } = useTheme();
+
   const { user } = useSession();
 
   async function handleLogout() {
@@ -79,6 +86,28 @@ export function NavUser() {
 
             {/* <DropdownMenuSeparator /> */}
 
+            {/* Mode toggle  */}
+
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <SunIcon className="mr-2 size-4" />
+                <span>Toggle theme</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+            {/* logging out  */}
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
