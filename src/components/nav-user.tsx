@@ -23,8 +23,8 @@ import {
 import UserAvatar from "@/components/user-avatar";
 import { toast } from "@/hooks/use-toast";
 import { useTheme } from "next-themes";
-import { useSession } from "../session-provider";
-import { logoutUser } from "./action";
+import { logoutUser } from "../app/(director)/action";
+import { useSession } from "../app/session-provider";
 
 export function NavUser() {
   const { isMobile } = useSidebar();

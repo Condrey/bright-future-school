@@ -1,7 +1,7 @@
-import BodyContainer from "@/app/(director)/body-container";
+import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer, {
   HeaderContainerFallback,
-} from "@/app/(director)/header-container";
+} from "@/components/sidebar/header-container";
 import { PARAM_NAME_ACADEMIC_YEAR } from "@/lib/constants";
 import { SearchParam } from "@/lib/types";
 import { Fragment, Suspense } from "react";

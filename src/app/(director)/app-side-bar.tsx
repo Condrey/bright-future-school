@@ -1,6 +1,8 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
+import { NavUser } from "@/components/nav-user";
+import SideBarContentItemFallback from "@/components/sidebar/sidebar-content-item-fallback";
 import RoleSwitcher from "@/components/switchers/role-switcher";
 import {
   Sidebar,
@@ -9,12 +11,10 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { useDirectorDashboardParamsQuery } from "./hook";
 import { NavMain } from "./nav-main";
 import { NavManagements } from "./nav-managements";
-import { NavUser } from "./nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data, status, isRefetching, refetch } =
@@ -55,24 +55,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
-}
-
-function SideBarContentItemFallback() {
-  return (
-    <div className="flex flex-col gap-2">
-      <Skeleton className="h-4 w-3/4" />
-      <div className="space-y-2">
-        <div className="flex gap-2">
-          <Skeleton className="size-8" />
-          <Skeleton className="h-8 w-full" />
-        </div>
-        <div className="w-full space-y-2 pl-2">
-          {Array.from({ length: 7 }, (_, i) => (
-            <Skeleton key={i} className="h-6 w-full" />
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "@/app/session-provider";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { roleRedirectPaths } from "@/lib/enums";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -32,9 +34,10 @@ export default function HeaderContainer({
   className,
   children,
 }: HeaderContainerProps) {
+  const { user } = useSession();
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
-  const basePathName = "/director";
+  const basePathName = roleRedirectPaths[user.role];
   const breadCrumbItems: HeaderContainerBreadCrumb[] = [
     { label: "Home", url: "" },
     ...breadCrumbs,

@@ -1,5 +1,5 @@
-import BodyContainer from "@/app/(director)/body-container";
-import HeaderContainer from "@/app/(director)/header-container";
+import BodyContainer from "@/components/sidebar/body-container";
+import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 import { getIndividualGeneralStoreItem } from "../../action";

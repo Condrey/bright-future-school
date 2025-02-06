@@ -1,7 +1,7 @@
-import BodyContainer from "@/app/(director)/body-container";
+import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer, {
   HeaderContainerFallback,
-} from "@/app/(director)/header-container";
+} from "@/components/sidebar/header-container";
 import { Fragment, Suspense } from "react";
 import { getTermsAction } from "./action";
 import ButtonNewTerm from "./button-new-term";
