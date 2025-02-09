@@ -127,7 +127,12 @@ export function NavMain() {
                   >
                     {/* <Link href={basePathname+'/'+item.url+'?'+searchParams.toString()}> */}
                     <ItemIcon />
-                    <span className={cn(isActive && "font-extrabold")}>
+                    <span
+                      className={cn(
+                        isActive && "font-semibold",
+                        "line-clamp-1 text-ellipsis break-words",
+                      )}
+                    >
                       {item.title}
                     </span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -181,7 +186,7 @@ function SubmenuItem({ subItem }: SubmenuItemProps) {
           }
           className="flex w-full"
         >
-          <span className={cn(isActive && "font-extrabold")}>
+          <span className={cn(isActive && "font-semibold")}>
             {subItem.title}
           </span>
           <span

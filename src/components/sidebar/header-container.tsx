@@ -13,8 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PARAM_NAME_ROLE } from "@/lib/constants";
 import { roleRedirectPaths } from "@/lib/enums";
 import { cn } from "@/lib/utils";
+import { Role } from "@prisma/client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTransition } from "react";
@@ -37,7 +39,9 @@ export default function HeaderContainer({
   const { user } = useSession();
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
-  const basePathName = roleRedirectPaths[user.role];
+  const searchParamRole = searchParams.get(PARAM_NAME_ROLE);
+  const basePathName =
+    roleRedirectPaths[(searchParamRole as Role) || user.role];
   const breadCrumbItems: HeaderContainerBreadCrumb[] = [
     { label: "Home", url: "" },
     ...breadCrumbs,
