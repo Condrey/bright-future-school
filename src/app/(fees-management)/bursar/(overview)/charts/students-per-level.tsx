@@ -15,10 +15,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatNumber } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Pie, PieChart } from "recharts";
 import { getStudentsPerLevel } from "./action";
-import { formatNumber } from "@/lib/utils";
 
 interface StudentsPerLevelProps {
   data: { count: number; level: string }[];
@@ -60,13 +60,17 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
     },
     {},
   );
-  const chartData = Object.entries(groupedData).map(
-    ([level, count], index) => ({
-      level,
-      count,
-      fill: `hsl(var(--chart-${index + 1}))`,
-    }),
-  );
+  const chartData = Object.entries(groupedData)
+    .map(([level, count], index) =>
+      count > 0
+        ? {
+            level,
+            count,
+            fill: `hsl(var(--chart-${index + 1}))`,
+          }
+        : undefined,
+    )
+    .filter(Boolean) as { level: string; count: number; fill: string }[];
   const levelConfig = Object.fromEntries(
     chartData.map((d, index) => [
       d.level,
@@ -85,8 +89,8 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
   return (
     <Card>
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie chart - School Levels</CardTitle>
-        <CardDescription>For year {new Date().getFullYear()}</CardDescription>
+        <CardTitle>Pie chart - School pupils/ students per Level</CardTitle>
+        <CardDescription>For this year, {new Date().getFullYear()}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -94,25 +98,36 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
           className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
           <PieChart>
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} 
-                 formatter={(value, name, item, index) => (
-                                  <>
-                                    <div
-                                      className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
-                                      style={
-                                        {
-                                          "--color-bg": `var(--chart-${index+1})`,
-                                        } as React.CSSProperties
-                                      }
-                                    />
-                                   <span className=" text-muted-foreground"> {chartConfig[name as keyof typeof chartConfig]?.label ||
-                                      name} level</span>
-                                    <div className="ml-auto flex items-baseline font-bold gap-0.5 font-mono  tabular-nums text-foreground">
-                                        { formatNumber(value as number)}
-                                    </div>
-                                  </>
-                                )}/>
-            <Pie data={chartData} dataKey={"count"} label nameKey={"level"} />
+            <ChartTooltip
+              content={<ChartTooltipContent labelFormatter={value=><span>{value}(pupils/ students)</span>} />}
+              formatter={(value, name, item, index) => (
+                <>
+                  <div
+                    className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                    style={
+                      {
+                        "--color-bg": `hsl(var(--chart-${index + 1}))`,
+                      } as React.CSSProperties
+                    }
+                  />
+                  <span className="text-muted-foreground">
+                    {" "}
+                    {chartConfig[name as keyof typeof chartConfig]?.label ||
+                      name}{" "}
+                    level
+                  </span>
+                  <div className="ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums text-foreground">
+                    {formatNumber(value as number)}
+                  </div>
+                </>
+              )}
+            />
+            <Pie
+              data={chartData}
+              dataKey={"count"}
+              label={chartData.length > 1}
+              nameKey={"level"}
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>

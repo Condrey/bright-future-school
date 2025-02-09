@@ -22,7 +22,7 @@ export default async function Charts() {
 
 export function ChartsFallback() {
   return (
-    <div className="flex flex-wrap justify-between gap-3">
+    <div className="flex flex-wrap justify-start gap-3">
       {Array.from({ length: 2 }, (_, index) => (
         <Card key={index} className="w-fit animate-pulse">
           <CardHeader className="items-center">
