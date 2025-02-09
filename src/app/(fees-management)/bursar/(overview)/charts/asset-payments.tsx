@@ -2,6 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 
+import LoadingButton from "@/components/loading-button";
 import {
   Card,
   CardContent,
@@ -17,8 +18,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Pie, PieChart } from "recharts";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { Pie, PieChart } from "recharts";
+import { getAssetPayments } from "./action";
 
 const assetDamageSelect = {
   repairPrice: true,
@@ -34,8 +37,31 @@ interface AssetPaymentsProps {
 
 export default function AssetPayments({ assetDamages }: AssetPaymentsProps) {
   const isMobile = useIsMobile();
+  const { data, status, error, refetch, isFetching } = useQuery({
+    queryKey: ["asset-damages"],
+    initialData: assetDamages,
+    queryFn: getAssetPayments,
+  });
+  if (status === "error") {
+    console.error(error);
+    return (
+      <div className="flex size-full flex-col items-center justify-center gap-4">
+        <span className="mx-auto max-w-sm text-center text-muted-foreground">
+          An error occurred while fetching asset payments
+        </span>
+        <LoadingButton
+          variant={"destructive"}
+          loading={isFetching}
+          onClick={() => refetch()}
+        >
+          Refresh
+        </LoadingButton>
+      </div>
+    );
+  }
+
   const studentGroupChartData = () => {
-    const group = assetDamages.filter((a) => !a.isSchoolCost);
+    const group = data.filter((a) => !a.isSchoolCost);
     const totalPaymentAmount = group.reduce(
       (acc, item) => acc + (item.repairPrice || 0),
       0,
@@ -59,7 +85,7 @@ export default function AssetPayments({ assetDamages }: AssetPaymentsProps) {
   };
 
   const schoolGroupChartData = () => {
-    const group = assetDamages.filter((a) => a.isSchoolCost);
+    const group = data.filter((a) => a.isSchoolCost);
     const totalPaymentAmount = group.reduce(
       (acc, item) => acc + (item.repairPrice || 0),
       0,

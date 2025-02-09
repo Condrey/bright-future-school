@@ -22,12 +22,12 @@ model User {
   bio                 String?
   isWelcomed          Boolean              @default(false)
   assetDamages        AssetDamage[]
+  assetRepairPayments AssetRepairPayment[]
   borrowers           Borrower[]
   feesPayments        FeesPayment[]
   pupils              Pupil[]
   sessions            Session[]
   staffs              Staff[]
-  assetRepairPayments AssetRepairPayment[]
 
   @@map("users")
 }
@@ -38,7 +38,7 @@ model Pupil {
   classStreamId   String?
   genericPassword String
   fees            Fees[]
-  classStream     classStream? @relation(fields: [classStreamId], references: [id], onDelete: SetNull)
+  classStream     classStream? @relation(fields: [classStreamId], references: [id])
   user            User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("pupils")
@@ -206,11 +206,11 @@ model FoodStoreItem {
   updatedAt                DateTime                  @updatedAt
   supplierId               String?
   trackQuantity            Boolean                   @default(false)
-  isConsumable             Boolean                   @default(true)
   status                   AssetItemStatus           @default(AVAILABLE)
+  isConsumable             Boolean                   @default(true)
   consumptions             FoodConsumption[]
   asset                    Asset                     @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  supplier                 Supplier?                 @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  supplier                 Supplier?                 @relation(fields: [supplierId], references: [id])
   individualFoodStoreItems IndividualFoodStoreItem[]
 
   @@map("food_store_items")
@@ -276,13 +276,13 @@ model IndividualBook {
   id            String         @id @default(uuid())
   isbn          String?
   status        BookStatus     @default(AVAILABLE)
-  condition     AssetCondition @default(NEW)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   libraryBookId String
+  condition     AssetCondition @default(NEW)
+  bookDamages   AssetDamage[]
   borrowers     Borrower[]
   libraryBook   LibraryBook    @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
-  bookDamages   AssetDamage[]
 
   @@map("individual_books")
 }
@@ -316,11 +316,11 @@ model LabItem {
   unit               AssetUnit
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
-  status             AssetStatus         @default(AVAILABLE)
   assetId            String
   trackQuantity      Boolean             @default(false)
-  asset              Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  status             AssetStatus         @default(AVAILABLE)
   individualLabItems IndividualLabItem[]
+  asset              Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
   @@map("lab_items")
 }
@@ -350,8 +350,8 @@ model ComputerLabItem {
   assetId                    String
   trackQuantity              Boolean                     @default(false)
   unit                       AssetUnit
-  individualComputerLabItems IndividualComputerLabItem[]
   asset                      Asset                       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  individualComputerLabItems IndividualComputerLabItem[]
 
   @@map("computer_lab_items")
 }
@@ -405,25 +405,25 @@ model AssetDamage {
   damageDetails                String
   condition                    AssetCondition
   quantity                     Int
+  userId                       String?
+  individualComputerLabItemId  String?
   isRepaired                   Boolean                     @default(false)
   repairedAt                   DateTime?
-  repairPrice                  Float?
-  repairBalance                Float                       @default(0)
-  isSchoolCost                 Boolean                     @default(false)
-  assetRepairPayments          AssetRepairPayment[]
-  userId                       String?
-  damagedBy                    User?                       @relation(fields: [userId], references: [id])
-  individualComputerLabItem    IndividualComputerLabItem?  @relation(fields: [individualComputerLabItemId], references: [id], onDelete: Cascade)
-  individualComputerLabItemId  String?
   createdAt                    DateTime                    @default(now())
-  individualBook               IndividualBook?             @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
   individualBookId             String?
-  individualLabItem            IndividualLabItem?          @relation(fields: [individualLabItemId], references: [id], onDelete: Cascade)
   individualLabItemId          String?
-  individualGeneralStoreItem   IndividualGeneralStoreItem? @relation(fields: [individualGeneralStoreItemId], references: [id], onDelete: Cascade)
-  individualGeneralStoreItemId String?
-  individualFoodStoreItem      IndividualFoodStoreItem?    @relation(fields: [individualFoodStoreItemId], references: [id], onDelete: Cascade)
   individualFoodStoreItemId    String?
+  individualGeneralStoreItemId String?
+  isSchoolCost                 Boolean                     @default(false)
+  repairBalance                Float                       @default(0)
+  repairPrice                  Float?
+  individualBook               IndividualBook?             @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
+  individualComputerLabItem    IndividualComputerLabItem?  @relation(fields: [individualComputerLabItemId], references: [id], onDelete: Cascade)
+  individualFoodStoreItem      IndividualFoodStoreItem?    @relation(fields: [individualFoodStoreItemId], references: [id], onDelete: Cascade)
+  individualGeneralStoreItem   IndividualGeneralStoreItem? @relation(fields: [individualGeneralStoreItemId], references: [id], onDelete: Cascade)
+  individualLabItem            IndividualLabItem?          @relation(fields: [individualLabItemId], references: [id], onDelete: Cascade)
+  damagedBy                    User?                       @relation(fields: [userId], references: [id])
+  assetRepairPayments          AssetRepairPayment[]
 
   @@map("asset_damages")
 }
@@ -431,13 +431,13 @@ model AssetDamage {
 model AssetRepairPayment {
   id            String       @id @default(uuid())
   paidAmount    Float
-  isSchoolCost  Boolean      @default(false)
-  receivedBy    User?        @relation(fields: [userId], references: [id])
   paidAt        DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  assetDamage   AssetDamage? @relation(fields: [assetDamageId], references: [id])
   assetDamageId String?
   userId        String?
+  isSchoolCost  Boolean      @default(false)
+  assetDamage   AssetDamage? @relation(fields: [assetDamageId], references: [id])
+  receivedBy    User?        @relation(fields: [userId], references: [id])
 
   @@map("asset_repair_payments")
 }
@@ -454,18 +454,18 @@ enum FeesStatus {
 }
 
 enum Role {
-  SUPER_ADMIN
   DIRECTOR
   BURSAR
   ASSET_CARETAKER
+  CLASS_TEACHER
+  USER
+  SUPER_ADMIN
   GENERAL_STORE_ASSET_CARETAKER
   COMPUTER_LAB_ASSET_CARETAKER
   LABORATORY_ASSET_CARETAKER
   LIBRARY_ASSET_CARETAKER
   FOOD_STORE_ASSET_CARETAKER
   STAFF
-  CLASS_TEACHER
-  USER
 }
 
 enum AssetCategory {

@@ -21,7 +21,6 @@ export default async function Page({ searchParams }: PageProps) {
     (await searchParams)[PARAM_NAME_ACADEMIC_YEAR],
     (await searchParams)[PARAM_NAME_TERM],
   ]);
-  console.log("year", year, "termId", termId);
   const [terms, term] = await Promise.all([
     await getYearTermFeesManagementSummary({
       year: !year ? undefined : (year as string),
