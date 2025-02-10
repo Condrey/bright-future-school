@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "@/app/session-provider";
+import ButtonAddFees from "@/components/school-fees/class-term/button-add-fees";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
@@ -19,9 +20,13 @@ import { formatCurrency, formatNumber } from "@/lib/utils";
 import { FeesStatus, Role } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ArrowUpRightIcon, CopyIcon, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpRightIcon,
+  CopyIcon,
+  Loader2Icon,
+  MoreHorizontal,
+} from "lucide-react";
 import { useTransition } from "react";
-import ButtonAddFees from "./button-add-fees";
 
 export const usePupilColumns = ({
   classTermId,
@@ -30,9 +35,6 @@ export const usePupilColumns = ({
   classTermId: string;
   feesAmount: number;
 }): ColumnDef<PupilData>[] => {
-  const { user } = useSession();
-  const { navigateOnclickWithoutUpdate } = useCustomSearchParams();
-  const [isPending, startTransition] = useTransition();
   return [
     {
       id: "index",
@@ -202,6 +204,9 @@ export const usePupilColumns = ({
       ),
       cell: ({ row }) => {
         const pupil = row.original;
+        const { user } = useSession();
+        const { navigateOnclickWithoutUpdate } = useCustomSearchParams();
+        const [isPending, startTransition] = useTransition();
         return (
           <div className="flex items-center gap-2">
             <ButtonAddFees classTermId={classTermId} pupil={row.original} />
@@ -209,7 +214,11 @@ export const usePupilColumns = ({
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="size-8 p-0">
                   <span className="sr-only">Open menu</span>
-                  <MoreHorizontal />
+                  {isPending ? (
+                    <Loader2Icon className="size-4 animate-spin" />
+                  ) : (
+                    <MoreHorizontal />
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>

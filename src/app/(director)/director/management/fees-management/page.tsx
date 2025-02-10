@@ -6,8 +6,8 @@ import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { SearchParam } from "@/lib/types";
 import { Fragment, Suspense } from "react";
+import { getYearTermFeesManagementSummary } from "../../../../../components/school-fees/action";
 import ManagementSwitches from "../management-switches";
-import { getYearTermFeesManagementSummary } from "./action";
 import ListOfTermClassStreams from "./list-of-term-class-streams";
 
 interface PageProps {

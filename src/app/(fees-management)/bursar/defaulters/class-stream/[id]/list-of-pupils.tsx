@@ -2,47 +2,40 @@
 
 import LoadingButton from "@/components/loading-button";
 import { usePupilColumns } from "@/components/school-fees/class-term/column";
-import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { ClassStreamData, PupilData } from "@/lib/types";
+import DataTableLoadingSkeleton from "@/components/ui/data-table-loading-skeleton";
+import { ClassStreamData } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { getStreamPupils } from "../../../../../../components/school-fees/action";
-import AssignPupils from "../../../repository/(users)/students/(tables)/(pupils)/assign-pupils";
+import { getDefaultedStudents } from "./action";
 
 interface ListOfPupilsProps {
-  pupils: PupilData[];
+  feesAmount: number;
   classStream: ClassStreamData;
   classTermId: string;
 }
 
 export default function ListOfPupils({
-  pupils,
   classStream,
   classTermId,
+  feesAmount,
 }: ListOfPupilsProps) {
-  const [open, setOpen] = useState(false);
   const { data, status, isFetching, refetch } = useQuery({
     queryKey: ["pupils", "classStream", classStream.id],
     queryFn: async () =>
-      getStreamPupils({ classStreamId: classStream.id, classTermId }),
-    initialData: pupils,
+      getDefaultedStudents({
+        feesAmount,
+        classStreamId: classStream.id,
+        classTermId,
+      }),
   });
   return (
     <>
       <div className="size-full space-y-4">
-        <div className="flex w-full gap-4">
-          <span className="hidden md:flex">List of pupils/ students</span>
-          <Button
-            variant={"outline"}
-            onClick={() => setOpen(true)}
-            className="ms-auto"
-          >
-            + Pupil/ student
-          </Button>
-        </div>
+        <span className="hidden md:flex">List of pupils/ students</span>
 
-        {status === "error" ? (
+        {status === "pending" ? (
+          <DataTableLoadingSkeleton />
+        ) : status === "error" ? (
           <div className="flex size-full flex-col items-center justify-center">
             <LoadingButton
               loading={isFetching}
@@ -61,22 +54,12 @@ export default function ListOfPupils({
             <p className="text-muted-foreground">
               There are no assigned pupils/ students
             </p>
-            <Button
-              onClick={() => setOpen(true)}
-              variant={"secondary"}
-              className="w-fit"
-            >
-              Assign pupils/ students
-            </Button>
           </div>
         ) : (
           <DataTable
             columns={usePupilColumns({
               classTermId,
-              feesAmount:
-                data.flatMap((d) =>
-                  d.fees.flatMap((f) => f.term.feesAmount),
-                )[0] || 0,
+              feesAmount,
             })}
             data={data}
             ROWS_PER_TABLE={5}
@@ -84,12 +67,6 @@ export default function ListOfPupils({
           />
         )}
       </div>
-      <AssignPupils
-        classStream={classStream}
-        year={classStream.class?.academicYear?.year!}
-        open={open}
-        setOpen={setOpen}
-      />
     </>
   );
 }

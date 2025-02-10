@@ -5,7 +5,7 @@ import HeaderContainer, {
 import { PARAM_NAME_CLASS_TERM } from "@/lib/constants";
 import { SearchParam } from "@/lib/types";
 import { Fragment, Suspense } from "react";
-import { getClassTerm } from "../action";
+import { getClassTerm } from "../../../../../../components/school-fees/action";
 import TermDetails from "./(header)/(term-details)/term-details";
 import ClassDetails from "./(header)/class-details";
 import FeesDetails from "./(header)/fees-details";

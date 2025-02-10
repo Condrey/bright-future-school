@@ -24,9 +24,9 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { useState, useTransition } from "react";
-import AssignClassTeacher from "../../repository/(users)/students/(tables)/(class-teacher)/assign-class-teacher";
-import AssignPupils from "../../repository/(users)/students/(tables)/(pupils)/assign-pupils";
-import EditTermForm from "./term-class-stream/(header)/(term-details)/edit-term-form";
+import EditTermForm from "../../app/(director)/director/management/fees-management/term-class-stream/(header)/(term-details)/edit-term-form";
+import AssignClassTeacher from "../../app/(director)/director/repository/(users)/students/(tables)/(class-teacher)/assign-class-teacher";
+import AssignPupils from "../../app/(director)/director/repository/(users)/students/(tables)/(pupils)/assign-pupils";
 
 interface DropDownMenuTermClassStreamProps {
   termClassStream: TermWithYearData;

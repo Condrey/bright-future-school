@@ -1,23 +1,26 @@
 "use server";
 
-import { getYearTermFeesManagementSummary } from "@/app/(director)/director/management/fees-management/action";
+import { getYearTermFeesManagementSummary } from "@/components/school-fees/action";
 import prisma from "@/lib/prisma";
 import { getYear } from "date-fns";
+import { cache } from "react";
 
-export const getPaymentsByClass = async (year?: string, termId?: string) => {
+const fetchPaymentsByClass = async (year?: string, termId?: string) => {
   const [terms, term] = await Promise.all([
-    await getYearTermFeesManagementSummary({
-      year: !year ? undefined : (year as string),
-      termId: !termId ? undefined : (termId as string),
+    getYearTermFeesManagementSummary({
+      year: year ? year : undefined,
+      termId: termId ? termId : undefined,
     }),
-    !termId
-      ? undefined
-      : await prisma.term.findFirstOrThrow({
-          where: { id: termId as string },
-        }),
+    termId
+      ? prisma.term.findFirstOrThrow({
+          where: { id: termId },
+        })
+      : Promise.resolve(null),
   ]);
-  return { terms, term: term! };
+
+  return { terms, term };
 };
+export const getPaymentsByClass = cache(fetchPaymentsByClass);
 
 export async function getYearlyPayments() {
   const data = await prisma.feesPayment.findMany({

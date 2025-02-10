@@ -6,7 +6,7 @@ import { formatCurrency } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { AlertTriangle, CalendarIcon } from "lucide-react";
-import { getClassTerm } from "../../../action";
+import { getClassTerm } from "../../../../../../../../components/school-fees/action";
 import ButtonUpdateClassTerm from "./button-update-class-term";
 
 interface TermDetailsProps {

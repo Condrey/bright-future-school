@@ -10,7 +10,7 @@ import { TermWithYearData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getClassTerm } from "../../action";
+import { getClassTerm } from "../../../../../../../components/school-fees/action";
 
 interface ClassDetailsProps {
   oldTerm: TermWithYearData;

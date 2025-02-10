@@ -16,9 +16,9 @@ import { DirectorDashboardParam, TermWithYearData } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import { getYearTermFeesManagementSummary } from "../../../../../components/school-fees/action";
+import { useYearTermStreamColumns } from "../../../../../components/school-fees/columns";
 import { yearTermStreamsQueryKey } from "../../repository/(users)/utils";
-import { getYearTermFeesManagementSummary } from "./action";
-import { useYearTermStreamColumns } from "./columns";
 
 interface ListOfTermClassStreamsProps {
   terms: TermWithYearData[];

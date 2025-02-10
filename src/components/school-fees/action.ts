@@ -8,8 +8,9 @@ import {
   pupilDataInclude,
   TermWithYearData,
 } from "@/lib/types";
+import { cache } from "react";
 
-export async function getYearTermFeesManagementSummary({
+export async function fetchPaymentsByClass({
   year,
   termId,
 }: {
@@ -26,8 +27,9 @@ export async function getYearTermFeesManagementSummary({
   );
   return terms;
 }
+export const getYearTermFeesManagementSummary = cache(fetchPaymentsByClass);
 
-export async function getClassTerm({ classTermId }: { classTermId: string }) {
+export async function fetchClassTerm({ classTermId }: { classTermId: string }) {
   const data: TermWithYearData | null =
     await prisma.classTerm.findUniqueOrThrow({
       where: { id: classTermId },
@@ -36,8 +38,9 @@ export async function getClassTerm({ classTermId }: { classTermId: string }) {
   if (!data) throw Error("This term with id does not exist.");
   return data;
 }
+export const getClassTerm = cache(fetchClassTerm);
 
-export async function getStreamPupils({
+export async function fetchStreamPupils({
   classStreamId,
   classTermId,
 }: {
@@ -54,3 +57,4 @@ export async function getStreamPupils({
   });
   return data;
 }
+export const getStreamPupils = cache(fetchStreamPupils);
