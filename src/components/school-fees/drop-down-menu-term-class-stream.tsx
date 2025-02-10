@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { PARAM_NAME_CLASS_TERM } from "@/lib/constants";
+import { myPrivileges } from "@/lib/enums";
 import { TermWithYearData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Role } from "@prisma/client";
@@ -30,13 +31,17 @@ import AssignPupils from "../../app/(director)/director/repository/(users)/stude
 
 interface DropDownMenuTermClassStreamProps {
   termClassStream: TermWithYearData;
+  hasParams: boolean;
 }
 
 export default function DropDownMenuTermClassStream({
   termClassStream,
+  hasParams,
 }: DropDownMenuTermClassStreamProps) {
   const { user } = useSession();
-  const { navigateOnclick } = useCustomSearchParams();
+  const canUpdateFees = myPrivileges[user.role].includes(Role.DIRECTOR);
+  const { navigateOnclick, navigateOnclickWithoutUpdate } =
+    useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
   const [showAssignClassTeacherSheet, setShowAssignClassTeacherSheet] =
     useState(false);
@@ -75,21 +80,27 @@ export default function DropDownMenuTermClassStream({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclick(
-                    PARAM_NAME_CLASS_TERM,
-                    termClassStream.id,
-                    "/director/management/fees-management/term-class-stream",
-                  ),
+                  !hasParams
+                    ? navigateOnclick(
+                        PARAM_NAME_CLASS_TERM,
+                        termClassStream.id,
+                        "/director/management/fees-management/term-class-stream",
+                      )
+                    : navigateOnclickWithoutUpdate(
+                        `/class-stream/${termClassStream.id}`,
+                      ),
                 )
               }
             >
               <ArrowUpRightIcon className="mr-2 size-4" />
               <span>Open</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setShowEditTermDetails(true)}>
-              <CalculatorIcon className="mr-2 size-4" />
-              <span>Update fees amount</span>
-            </DropdownMenuItem>
+            {canUpdateFees && (
+              <DropdownMenuItem onClick={() => setShowEditTermDetails(true)}>
+                <CalculatorIcon className="mr-2 size-4" />
+                <span>Update fees amount</span>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
 

@@ -59,7 +59,7 @@ export default function ListOfDefaUlters() {
   return (
     <div>
       <DataTable
-        columns={useYearTermStreamColumns}
+        columns={useYearTermStreamColumns(true)}
         data={data}
         ROWS_PER_TABLE={5}
         filterColumn={{ id: "classStream_class_class_name", label: "Class" }}
