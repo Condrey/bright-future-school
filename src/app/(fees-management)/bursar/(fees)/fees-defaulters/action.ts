@@ -1,7 +1,7 @@
 "use server";
 
 import { TermWithYearData } from "@/lib/types";
-import { getPaymentsByClass } from "../(overview)/graphs/action";
+import { getPaymentsByClass } from "../../(overview)/graphs/action";
 
 export async function fetchDefaulterList(year?: string, termId?: string) {
   const { terms } = await getPaymentsByClass(year);

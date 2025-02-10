@@ -57,14 +57,14 @@ export function NavMain() {
       isVisible: true,
       items: [
         {
-          title: `Fees defaulters`,
-          url: "fees-defaulters",
+          title: "Geneal record",
+          url: "all-records",
           showIndicator: false,
           isVisible: true,
         },
         {
-          title: "Geneal record",
-          url: "all-records",
+          title: `Fees defaulters`,
+          url: "fees-defaulters",
           showIndicator: false,
           isVisible: true,
         },
