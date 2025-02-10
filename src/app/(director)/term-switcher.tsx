@@ -17,8 +17,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { toast } from "@/hooks/use-toast";
 import { PARAM_NAME_TERM } from "@/lib/constants";
+import { myPrivileges } from "@/lib/enums";
+import { Role } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
+import { useSession } from "../session-provider";
 import FormAddEditTerm from "./director/repository/(utils)/terms/form-add-edit-term";
 import { useTermSwitcherQuery } from "./hook";
 
@@ -29,6 +32,8 @@ interface TermSwitcherProps {
 export default function TermSwitcher({ pathname }: TermSwitcherProps) {
   const [openAddItemDialog, setOpenAddItemDialog] = useState(false);
 
+  const { user } = useSession();
+  const canAddTerm = myPrivileges[user.role].includes(Role.DIRECTOR);
   const { navigateOnclick } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
@@ -128,15 +133,17 @@ export default function TermSwitcher({ pathname }: TermSwitcherProps) {
             );
           })}
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="gap-2 p-2"
-            onClick={() => setOpenAddItemDialog(true)}
-          >
-            <div className="flex size-6 items-center justify-center">
-              <Plus className="size-4" />
-            </div>
-            <div className="font-medium text-muted-foreground">Add term</div>
-          </DropdownMenuItem>
+          {canAddTerm && (
+            <DropdownMenuItem
+              className="gap-2 p-2"
+              onClick={() => setOpenAddItemDialog(true)}
+            >
+              <div className="flex size-6 items-center justify-center">
+                <Plus className="size-4" />
+              </div>
+              <div className="font-medium text-muted-foreground">Add term</div>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <FormAddEditTerm

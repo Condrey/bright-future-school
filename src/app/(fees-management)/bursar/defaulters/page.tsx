@@ -9,9 +9,10 @@ export const metadata: Metadata = {
   title: `${currentYear} school fees defaulters`,
 };
 export default function Page() {
+  const currentYear = new Date().getFullYear();
   return (
     <Fragment>
-      <HeaderContainer breadCrumbs={[{ label: "Defaulters" }]} />
+      <HeaderContainer breadCrumbs={[{ label: `${currentYear} defaulters` }]} />
       <BodyContainer>
         <h1 className="text-xl">{new Date().getFullYear()} fees defaulters</h1>
         <ListOfDefaUlters />

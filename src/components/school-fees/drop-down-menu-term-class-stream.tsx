@@ -39,7 +39,9 @@ export default function DropDownMenuTermClassStream({
   hasParams,
 }: DropDownMenuTermClassStreamProps) {
   const { user } = useSession();
-  const canUpdateFees = myPrivileges[user.role].includes(Role.DIRECTOR);
+  const userPrivileges = myPrivileges[user.role];
+  const hasDirectorPrivileges = userPrivileges.includes(Role.DIRECTOR);
+  const canAssignPupils = userPrivileges.includes(Role.CLASS_TEACHER);
   const { navigateOnclick, navigateOnclickWithoutUpdate } =
     useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -95,7 +97,7 @@ export default function DropDownMenuTermClassStream({
               <ArrowUpRightIcon className="mr-2 size-4" />
               <span>Open</span>
             </DropdownMenuItem>
-            {canUpdateFees && (
+            {hasDirectorPrivileges && (
               <DropdownMenuItem onClick={() => setShowEditTermDetails(true)}>
                 <CalculatorIcon className="mr-2 size-4" />
                 <span>Update fees amount</span>
@@ -126,19 +128,22 @@ export default function DropDownMenuTermClassStream({
           </DropdownMenuGroup>
 
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setShowAssignPupilsSheet(true)}>
-              <UsersIcon className="mr-2 size-4" />
-              <span>Add pupils</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => setShowAssignClassTeacherSheet(true)}
-            >
-              <UserIcon className="mr-2 size-4" />
-              <span>
-                {!hasClassTeacher ? "Assign" : "Unassign"} class teacher
-              </span>
-            </DropdownMenuItem>
+            {canAssignPupils && (
+              <DropdownMenuItem onClick={() => setShowAssignPupilsSheet(true)}>
+                <UsersIcon className="mr-2 size-4" />
+                <span>Add pupils</span>
+              </DropdownMenuItem>
+            )}
+            {hasDirectorPrivileges && (
+              <DropdownMenuItem
+                onClick={() => setShowAssignClassTeacherSheet(true)}
+              >
+                <UserIcon className="mr-2 size-4" />
+                <span>
+                  {!hasClassTeacher ? "Assign" : "Unassign"} class teacher
+                </span>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

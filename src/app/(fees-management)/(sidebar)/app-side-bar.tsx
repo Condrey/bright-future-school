@@ -10,6 +10,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
+import { NavShortcuts } from "./nav-shortcuts";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -18,6 +19,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <RoleSwitcher />
       </SidebarHeader>
       <SidebarContent>
+        <NavShortcuts />
         <NavMain />
       </SidebarContent>
       <SidebarFooter>

@@ -22,7 +22,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { roleRedirectPaths } from "@/lib/enums";
 import { cn } from "@/lib/utils";
+import { Role } from "@prisma/client";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
@@ -33,9 +35,11 @@ type SubItem = {
   showIndicator: boolean;
   isVisible: boolean;
 };
+
+const basePathname = roleRedirectPaths[Role.BURSAR];
+
 export function NavMain() {
   const pathname = usePathname();
-  const basePathname = "/bursar";
 
   const items: {
     title: string;
@@ -47,26 +51,20 @@ export function NavMain() {
   }[] = [
     {
       title: "School fees management",
-      url: "this-years-school-fees",
+      url: "defaulters",
       icon: ReceiptEuroIcon,
       isActive: true,
       isVisible: true,
       items: [
         {
-          title: `${new Date().getFullYear()} fees defaulters`,
-          url: "defaulters",
+          title: `Fees defaulters`,
+          url: "fees-defaulters",
           showIndicator: false,
           isVisible: true,
         },
         {
-          title: "This year's record",
-          url: "this-years-school-fees",
-          showIndicator: false,
-          isVisible: true,
-        },
-        {
-          title: "Other years' record",
-          url: "other-years-school-fees",
+          title: "Geneal record",
+          url: "all-records",
           showIndicator: false,
           isVisible: true,
         },
@@ -161,7 +159,6 @@ interface SubmenuItemProps {
 
 function SubmenuItem({ subItem }: SubmenuItemProps) {
   const [isPending, startTransition] = useTransition();
-  const basePathname = "/bursar";
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const isActive = pathname.startsWith(basePathname + "/" + subItem.url);

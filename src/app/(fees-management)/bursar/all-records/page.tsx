@@ -6,16 +6,27 @@ import HeaderContainer, {
 import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { SearchParam } from "@/lib/types";
+import { Metadata } from "next";
 import { Fragment, Suspense } from "react";
-import ManagementSwitches from "../management-switches";
-import ListOfTermClassStreams from "./list-of-term-class-streams";
+import ListOfGeneralRecords from "./list-of-general-records";
 
 interface PageProps {
   searchParams: Promise<SearchParam>;
 }
 
-export const dynamic = "force-dynamic";
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const [year] = await Promise.all([
+    (await searchParams)[PARAM_NAME_ACADEMIC_YEAR],
+    (await searchParams)[PARAM_NAME_TERM],
+  ]);
+  return {
+    title: `${!year ? "All" : `Year ${year}`} fees records`,
+  };
+}
 
+export const dynamic = "force-dynamic";
 export default async function Page({ searchParams }: PageProps) {
   const [year, termId] = await Promise.all([
     (await searchParams)[PARAM_NAME_ACADEMIC_YEAR],
@@ -36,16 +47,10 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <Fragment>
       <Suspense fallback={<HeaderContainerFallback />}>
-        <HeaderContainer
-          breadCrumbs={[{ label: "Fees management (streams)" }]}
-        />
+        <HeaderContainer breadCrumbs={[{ label: "Fees records" }]} />
       </Suspense>
-      <BodyContainer className="gap-6">
-        <ManagementSwitches
-          yearPathnameEndPoint="fees-management"
-          termPathnameEndPoint="fees-management"
-        />
-        <ListOfTermClassStreams
+      <BodyContainer>
+        <ListOfGeneralRecords
           terms={terms}
           termName={!term ? "All terms" : `${term.term}`}
         />

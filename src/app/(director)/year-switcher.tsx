@@ -22,9 +22,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { toast } from "@/hooks/use-toast";
 import { PARAM_NAME_ACADEMIC_YEAR } from "@/lib/constants";
+import { myPrivileges } from "@/lib/enums";
+import { Role } from "@prisma/client";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
+import { useSession } from "../session-provider";
 import FormAddEditYear from "./director/repository/(utils)/years/form-add-edit-year";
 import { useYearSwitcherQuery } from "./hook";
 
@@ -35,6 +38,8 @@ interface YearSwitcherProps {
 export default function YearSwitcher({ pathname }: YearSwitcherProps) {
   const [openAddItemDialog, setOpenAddItemDialog] = useState(false);
 
+  const { user } = useSession();
+  const canAddYears = myPrivileges[user.role].includes(Role.DIRECTOR);
   const { navigateOnclick } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
@@ -147,15 +152,17 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
             );
           })}
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="gap-2 p-2"
-            onClick={() => setOpenAddItemDialog(true)}
-          >
-            <div className="flex size-6 items-center justify-center">
-              <Plus className="size-4" />
-            </div>
-            <div className="font-medium text-muted-foreground">Add year</div>
-          </DropdownMenuItem>
+          {canAddYears && (
+            <DropdownMenuItem
+              className="gap-2 p-2"
+              onClick={() => setOpenAddItemDialog(true)}
+            >
+              <div className="flex size-6 items-center justify-center">
+                <Plus className="size-4" />
+              </div>
+              <div className="font-medium text-muted-foreground">Add year</div>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <FormAddEditYear

@@ -4,7 +4,7 @@ import { yearTermStreamsQueryKey } from "@/app/(director)/director/repository/(u
 import LoadingButton from "@/components/loading-button";
 import { useYearTermStreamColumns } from "@/components/school-fees/columns";
 import { DataTable } from "@/components/ui/data-table";
-import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
+import { PARAM_NAME_TERM } from "@/lib/constants";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -13,12 +13,13 @@ import { fetchDefaulterList } from "./action";
 export default function ListOfDefaUlters() {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
-  const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
+  // const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
   const termId = searchParams.get(PARAM_NAME_TERM) ?? undefined;
+  const currentYear = new Date().getFullYear().toString();
 
   const { data, status, error, isFetching, refetch } = useQuery({
-    queryKey: yearTermStreamsQueryKey(year, termId),
-    queryFn: async () => await fetchDefaulterList(),
+    queryKey: yearTermStreamsQueryKey(currentYear, termId),
+    queryFn: async () => await fetchDefaulterList(currentYear),
   });
   if (status === "pending") {
     return (

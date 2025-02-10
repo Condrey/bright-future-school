@@ -1,27 +1,21 @@
 "use client";
 
-import { directorDashboardParamsQueryKey } from "@/app/(director)/hook";
+import { yearTermStreamsQueryKey } from "@/app/(director)/director/repository/(users)/utils";
 import LoadingButton from "@/components/loading-button";
-import { Button } from "@/components/ui/button";
-
-import { getYearTermFeesManagementSummary } from "@/components/school-fees/action";
 import { useYearTermStreamColumns } from "@/components/school-fees/columns";
-import { TableHeaderSection } from "@/components/school-fees/fees-table-header-section";
 import { DataTable } from "@/components/ui/data-table";
 import { PARAM_NAME_ACADEMIC_YEAR, PARAM_NAME_TERM } from "@/lib/constants";
-import { DirectorDashboardParam, TermWithYearData } from "@/lib/types";
+import { TermWithYearData } from "@/lib/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { yearTermStreamsQueryKey } from "../../repository/(users)/utils";
+import { fetchDefaulterList } from "./action";
 
-interface ListOfTermClassStreamsProps {
-  terms: TermWithYearData[];
-  termName: string;
+interface ListOfDefaUltersProps {
+  defaulters: TermWithYearData[];
 }
-export default function ListOfTermClassStreams({
-  terms,
-  termName,
-}: ListOfTermClassStreamsProps) {
+export default function ListOfDefaUlters({
+  defaulters,
+}: ListOfDefaUltersProps) {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const year = searchParams.get(PARAM_NAME_ACADEMIC_YEAR) ?? undefined;
@@ -29,11 +23,19 @@ export default function ListOfTermClassStreams({
 
   const { data, status, error, isFetching, refetch } = useQuery({
     queryKey: yearTermStreamsQueryKey(year, termId),
-    queryFn: async () =>
-      await getYearTermFeesManagementSummary({ year, termId }),
-    initialData: terms,
-    // staleTime: Infinity,
+    queryFn: async () => await fetchDefaulterList(year, termId),
+    initialData: defaulters,
   });
+  // if (status === "pending") {
+  //   return (
+  //     <div className="flex size-full flex-col items-center justify-center gap-4">
+  //       <Loader2Icon className="size-4 animate-spin" />
+  //       <p className="max-w-sm text-center text-muted-foreground">
+  //         Fetching list, please wait
+  //       </p>
+  //     </div>
+  //   );
+  // }
   if (status === "error") {
     console.error(error);
     return (
@@ -52,36 +54,27 @@ export default function ListOfTermClassStreams({
     );
   }
   if (status === "success" && !data.length) {
-    async function handleClick() {
-      await queryClient.cancelQueries();
-      queryClient.setQueryData<DirectorDashboardParam>(
-        directorDashboardParamsQueryKey,
-        (oldData) => oldData && { ...oldData, classStreams: 0 },
-      );
-    }
     return (
-      <div className="flex flex-col items-center justify-center gap-4">
-        <p>There are no class streams in the database.</p>
-        <Button onClick={() => handleClick()}>Create class streams</Button>
+      <div className="flex min-h-96 flex-col items-center justify-center gap-4">
+        <p className="max-w-sm text-center text-muted-foreground">
+          There are no registered defaulters in the system yet
+        </p>
       </div>
     );
   }
   return (
     <div>
       <DataTable
-        columns={useYearTermStreamColumns()}
+        columns={useYearTermStreamColumns(true)}
         data={data}
         ROWS_PER_TABLE={5}
         filterColumn={{ id: "classStream_class_class_name", label: "Class" }}
-        tableHeaderSection={
-          <TableHeaderSection terms={data} termName={termName} />
-        }
       />
     </div>
   );
 }
 
-export function ListOfTermClassStreamsFallback() {
+export function ListOfDefaUltersFallback() {
   // TODO: implement the function body.
   return <div>Loading</div>;
 }
