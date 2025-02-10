@@ -72,11 +72,17 @@ export function NavMain() {
     },
     {
       title: "Asset repair payments",
-      url: "school-related-payments",
+      url: "all-asset-records",
       icon: Package2Icon,
       isActive: true,
       isVisible: true,
       items: [
+        {
+          title: "General record",
+          url: "all-asset-records",
+          showIndicator: false,
+          isVisible: true,
+        },
         {
           title: `Unpaid asset repairs`,
           url: "unpaid-assets",
@@ -86,12 +92,6 @@ export function NavMain() {
         {
           title: "School related payments",
           url: "school-related-payments",
-          showIndicator: false,
-          isVisible: true,
-        },
-        {
-          title: "All asset payments",
-          url: "other-years-school-fees",
           showIndicator: false,
           isVisible: true,
         },
