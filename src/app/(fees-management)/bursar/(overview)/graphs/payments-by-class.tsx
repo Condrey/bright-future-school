@@ -33,7 +33,7 @@ import { useSearchParams } from "next/navigation";
 import { getPaymentsByClass } from "./action";
 
 interface PaymentsByClassProps {
-  data: { terms: TermWithYearData[]; term: Term };
+  data: { terms: TermWithYearData[]; term: Term | null };
 }
 
 const chartConfig = {
@@ -48,7 +48,8 @@ const chartConfig = {
   extraPayment: {
     label: "Extra payments",
     color: "hsl(var(--chart-3))",
-  },  feesCollected: {
+  },
+  feesCollected: {
     label: "Collected fees",
     color: "hsl(var(--chart-4))",
   },
@@ -165,7 +166,8 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
         level,
         totalFeesAmount,
         balance,
-        extraPayment,feesCollected
+        extraPayment,
+        feesCollected,
       } = curr;
       if (!acc[classId]) {
         acc[classId] = {
@@ -176,7 +178,7 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
           totalFeesAmount: 0,
           balance: 0,
           extraPayment: 0,
-          feesCollected:0
+          feesCollected: 0,
         };
       }
       acc[classId].totalFeesAmount += totalFeesAmount;
@@ -241,16 +243,20 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
                 content={
                   <ChartTooltipContent
                     indicator="line"
-                    labelFormatter={(value) =>  <div> 
-                      <div className="font-bold">{value}</div>
-                      <div> <span className="italic">from</span>{" "}
-                      {`${searchParamsYear || "All years"}, ${!updatedTerm ? "All terms" : updatedTerm.term}`}</div>
-                      </div>}
+                    labelFormatter={(value) => (
+                      <div>
+                        <div className="font-bold">{value}</div>
+                        <div>
+                          {" "}
+                          <span className="italic">from</span>{" "}
+                          {`${searchParamsYear || "All years"}, ${!updatedTerm ? "All terms" : updatedTerm.term}`}
+                        </div>
+                      </div>
+                    )}
                     formatter={(value, name, item, index) => (
                       <>
-                     
                         {item.dataKey !== "totalFeesAmount" && (
-                          <div className="flex gap-1 w-full items-center">
+                          <div className="flex w-full items-center gap-1">
                             <div
                               className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
                               style={
@@ -269,14 +275,11 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
                           </div>
                         )}
                         {/* Add this after the last item */}
-                        {index === 2 &&  (
+                        {index === 2 && (
                           <div className="mt-1.5 flex basis-full items-center gap-2 border-t pt-1.5 text-xs font-medium text-foreground">
-                        
                             <span>Total fees expected</span>
                             <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                              {formatCurrency(
-                                item.payload.totalFeesAmount
-                              )}
+                              {formatCurrency(item.payload.totalFeesAmount)}
                             </div>
                           </div>
                         )}
