@@ -115,7 +115,7 @@ export const useDamagesColumns = (
   {
     accessorKey: "repairBalance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment" />
+      <DataTableColumnHeader column={column} title="Balance" />
     ),
     cell: ({ row }) => {
       const paidAmount = row.original.assetRepairPayments

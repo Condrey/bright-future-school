@@ -46,7 +46,7 @@ export default function ButtonAddItem({
 
   const form = useForm<ItemSchema>({
     resolver: zodResolver(itemSchema),
-    values: {
+    defaultValues: {
       parentId: computerLabItem.id,
       quantity: undefined,
     },
