@@ -33,7 +33,7 @@ export default function FormAddEditYear({
   const updateMutation = useUpdateYearMutation();
   const form = useForm<YearSchema>({
     resolver: zodResolver(yearSchema),
-    values: {
+    defaultValues: {
       year: yearToEdit?.year || "",
       id: yearToEdit?.id || "",
       startAt: yearToEdit?.startAt,
