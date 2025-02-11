@@ -177,7 +177,10 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           )}
         </CardFooter>
       </Card>
-      <ItemDamages individualItem={item} assetCategory={AssetCategory} />
+      <ItemDamages
+        individualItem={item}
+        assetCategory={AssetCategory.FOOD_STORE}
+      />
     </div>
   );
 }
