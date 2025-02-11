@@ -101,10 +101,13 @@ export default function DropDownMenuDamage({
             <DropdownMenuItem
               onClick={() =>
                 mutation.mutate({
-                  ...item,
-                  isRepaired: !item.isRepaired,
-                  parentId: currentCategoryValue.parentId!,
-                } as AssetDamageSchema)
+                  input: {
+                    ...item,
+                    isRepaired: !item.isRepaired,
+                    parentId: currentCategoryValue.parentId!,
+                  } as AssetDamageSchema,
+                  assetCategory,
+                })
               }
               className={cn(
                 item.isRepaired
@@ -148,6 +151,7 @@ export default function DropDownMenuDamage({
         setOpen={setShowEditDialog}
         parentId={currentCategoryValue.parentId!}
         damageToEdit={item}
+        damagedByStudent={item.isSchoolCost}
       />
       <DialogDeleteDamage
         assetCategory={assetCategory}
