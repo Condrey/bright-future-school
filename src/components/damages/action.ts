@@ -51,22 +51,6 @@ export async function upsertAssetRepairPayment({
       },
     },
   });
-
-  // await prisma.assetRepairPayment.upsert({
-  //   where: { id },
-  //   create: {
-  //     paidAmount,
-  //     assetDamageId,
-  //     isSchoolCost,
-  //     userId: user.id,
-  //   },
-  //   update: {
-  //     paidAmount,
-  //     assetDamageId,
-  //     isSchoolCost,
-  //     userId: user.id,
-  //   },
-  // });
 }
 
 export async function getAllPossibleAssetDamagers() {

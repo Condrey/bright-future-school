@@ -62,6 +62,7 @@ export default function FormFoodStore({
       trackQuantity: foodStoreItemToEdit?.trackQuantity || false,
       unit: foodStoreItemToEdit?.unit || AssetUnit.PIECE,
       status: foodStoreItemToEdit?.status || AssetItemStatus.AVAILABLE,
+      isConsumable: foodStoreItemToEdit?.isConsumable || true,
     },
   });
   const mutation = useFoodStoreMutation();
