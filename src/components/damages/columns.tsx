@@ -9,7 +9,6 @@ import { formatCurrency } from "@/lib/utils";
 import { AssetCategory, AssetCondition } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Fragment } from "react";
 import DropDownMenuDamage from "./drop-down-menu-damage";
 
 export const useDamagesColumns = (
@@ -125,18 +124,19 @@ export const useDamagesColumns = (
       const price = row.original.repairBalance;
       return (
         <div>
-          <div className="">Paid {formatCurrency(paidAmount)}</div>
-          {!price && (
-            <Fragment>
-              {price <= 0 ? (
-                <Badge variant={"go"}>Cleared payments</Badge>
-              ) : (
-                <div>
-                  <span className="italic text-muted-foreground">bal of</span>{" "}
-                  {formatCurrency(price)}
-                </div>
-              )}
-            </Fragment>
+          {paidAmount <= 0 ? (
+            <Badge variant={"destructive"}>Not paid</Badge>
+          ) : (
+            <div className="">Paid {formatCurrency(paidAmount)}</div>
+          )}
+
+          {price <= 0 ? (
+            <Badge variant={"go"}>Cleared payments</Badge>
+          ) : (
+            <div>
+              <span className="italic text-muted-foreground">bal of</span>{" "}
+              {formatCurrency(price)}
+            </div>
           )}
         </div>
       );
