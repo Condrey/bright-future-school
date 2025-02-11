@@ -48,7 +48,7 @@ interface FormLibraryProps {
 export default function FormLibrary({ libraryItemToEdit }: FormLibraryProps) {
   const form = useForm<LibraryAssetSchema>({
     resolver: zodResolver(libraryAssetSchema),
-    defaultValues: {
+    values: {
       asset: (libraryItemToEdit?.asset as AssetSchema) || {
         id: "library",
         category: AssetCategory.LIBRARY,

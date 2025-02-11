@@ -44,7 +44,7 @@ export default function FormUpdateIndividualItem({
 }: FormUpdateIndividualItemProps) {
   const form = useForm<IndividualGeneralStoreSchema>({
     resolver: zodResolver(individualGeneralStoreSchema),
-    defaultValues: {
+    values: {
       id: individualItemToEdit.id || "",
       generalStoreItemId: individualItemToEdit.generalStoreItemId || "",
       condition: individualItemToEdit.condition || AssetCondition.NEW,

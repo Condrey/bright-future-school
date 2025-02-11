@@ -1,14 +1,73 @@
 "use server";
 
+import { validateRequest } from "@/auth";
+import { myPrivileges } from "@/lib/enums";
 import prisma from "@/lib/prisma";
 import { userDataSelect } from "@/lib/types";
-import { assetDamageSchema, AssetDamageSchema } from "@/lib/validation";
+import {
+  assetDamageSchema,
+  AssetDamageSchema,
+  assetRepairPaymentSchema,
+  AssetRepairPaymentSchema,
+} from "@/lib/validation";
 import {
   AssetCategory,
   AssetCondition,
   AssetStatus,
   BookStatus,
+  Role,
 } from "@prisma/client";
+
+export async function upsertAssetRepairPayment({
+  input,
+}: {
+  input: AssetRepairPaymentSchema;
+}) {
+  const { user } = await validateRequest();
+  if (!user) throw Error("Unauthorized");
+  const canUpsertPayment = myPrivileges[user.role].includes(Role.BURSAR);
+  if (!canUpsertPayment) throw Error("Unauthorized");
+  const { assetDamageId, isSchoolCost, paidAmount, id } =
+    assetRepairPaymentSchema.parse(input);
+
+  await prisma.assetDamage.update({
+    where: { id: assetDamageId },
+    data: {
+      repairBalance: { decrement: paidAmount },
+      assetRepairPayments: {
+        upsert: {
+          where: { id },
+          create: {
+            paidAmount,
+            isSchoolCost,
+            userId: user.id,
+          },
+          update: {
+            paidAmount,
+            isSchoolCost,
+            userId: user.id,
+          },
+        },
+      },
+    },
+  });
+
+  // await prisma.assetRepairPayment.upsert({
+  //   where: { id },
+  //   create: {
+  //     paidAmount,
+  //     assetDamageId,
+  //     isSchoolCost,
+  //     userId: user.id,
+  //   },
+  //   update: {
+  //     paidAmount,
+  //     assetDamageId,
+  //     isSchoolCost,
+  //     userId: user.id,
+  //   },
+  // });
+}
 
 export async function getAllPossibleAssetDamagers() {
   const currentYear = new Date().getFullYear();
@@ -82,8 +141,9 @@ export async function addDamage({
               damageDetails,
               quantity,
               isRepaired,
-              userId,
+              userId: isSchoolCost ? undefined : userId,
               repairPrice,
+              repairBalance: repairPrice,
               isSchoolCost,
             },
           },
@@ -108,8 +168,9 @@ export async function addDamage({
               damageDetails,
               quantity,
               isRepaired,
-              userId,
+              userId: isSchoolCost ? undefined : userId,
               repairPrice,
+              repairBalance: repairPrice,
               isSchoolCost,
             },
           },
@@ -131,8 +192,9 @@ export async function addDamage({
               damageDetails,
               quantity,
               isRepaired,
-              userId,
+              userId: isSchoolCost ? undefined : userId,
               repairPrice,
+              repairBalance: repairPrice,
               isSchoolCost,
             },
           },
@@ -154,8 +216,9 @@ export async function addDamage({
               damageDetails,
               quantity,
               isRepaired,
-              userId,
+              userId: isSchoolCost ? undefined : userId,
               repairPrice,
+              repairBalance: repairPrice,
               isSchoolCost,
             },
           },
@@ -177,8 +240,9 @@ export async function addDamage({
               damageDetails,
               quantity,
               isRepaired,
-              userId,
+              userId: isSchoolCost ? undefined : userId,
               repairPrice,
+              repairBalance: repairPrice,
               isSchoolCost,
             },
           },
@@ -208,137 +272,211 @@ export async function updateDamage({
   } = assetDamageSchema.parse(input);
   switch (assetCategory) {
     case "LIBRARY":
-      await prisma.individualBook.update({
-        where: { id: parentId },
-        data: {
-          condition,
-          status:
-            condition === AssetCondition.DAMAGED
-              ? BookStatus.DAMAGED
-              : BookStatus.AVAILABLE,
-          bookDamages: {
-            update: {
-              where: { id },
-              data: {
-                condition,
-                repairPrice,
-                isSchoolCost,
-                damageDetails,
-                quantity,
-                isRepaired,
-                userId,
+      await prisma.$transaction(
+        async (tx) => {
+          const previousPayments = await tx.assetRepairPayment.aggregate({
+            _sum: { paidAmount: true },
+          });
+          await tx.individualBook.update({
+            where: { id: parentId },
+            data: {
+              condition,
+              status:
+                condition === AssetCondition.DAMAGED
+                  ? BookStatus.DAMAGED
+                  : BookStatus.AVAILABLE,
+              bookDamages: {
+                update: {
+                  where: { id },
+                  data: {
+                    condition,
+                    repairPrice,
+                    repairBalance:
+                      (repairPrice || 0) -
+                      (previousPayments._sum.paidAmount ?? 0),
+                    isSchoolCost,
+                    damageDetails,
+                    quantity,
+                    isRepaired,
+                    userId: isSchoolCost ? undefined : userId,
+                  },
+                },
               },
             },
-          },
+          });
         },
-      });
+        {
+          timeout: 60000,
+          maxWait: 60000,
+        },
+      );
       break;
     case "COMPUTER_LAB":
-      await prisma.individualComputerLabItem.update({
-        where: { id: parentId },
-        data: {
-          condition,
-          status:
-            condition === AssetCondition.DAMAGED
-              ? AssetStatus.DISPOSED
-              : condition === AssetCondition.FAIR ||
-                  condition === AssetCondition.POOR
-                ? AssetStatus.UNDER_MAINTENANCE
-                : AssetStatus.AVAILABLE,
-          assetDamages: {
-            update: {
-              where: { id },
-              data: {
-                condition,
-                repairPrice,
-                isSchoolCost,
-                damageDetails,
-                quantity,
-                isRepaired,
-                userId,
+      await prisma.$transaction(
+        async (tx) => {
+          const previousPayments = await tx.assetRepairPayment.aggregate({
+            _sum: { paidAmount: true },
+          });
+          await tx.individualComputerLabItem.update({
+            where: { id: parentId },
+            data: {
+              condition,
+              status:
+                condition === AssetCondition.DAMAGED
+                  ? AssetStatus.DISPOSED
+                  : condition === AssetCondition.FAIR ||
+                      condition === AssetCondition.POOR
+                    ? AssetStatus.UNDER_MAINTENANCE
+                    : AssetStatus.AVAILABLE,
+              assetDamages: {
+                update: {
+                  where: { id },
+                  data: {
+                    condition,
+                    repairPrice,
+                    repairBalance:
+                      (repairPrice || 0) -
+                      (previousPayments._sum.paidAmount ?? 0),
+                    isSchoolCost,
+                    damageDetails,
+                    quantity,
+                    isRepaired,
+                    userId: isSchoolCost ? undefined : userId,
+                  },
+                },
               },
             },
-          },
+          });
         },
-      });
+        {
+          timeout: 60000,
+          maxWait: 60000,
+        },
+      );
+
       break;
     case "LABORATORY":
-      await prisma.individualLabItem.update({
-        where: { id: parentId },
-        data: {
-          condition,
-          status:
-            condition === AssetCondition.DAMAGED
-              ? AssetStatus.UNDER_MAINTENANCE
-              : AssetStatus.AVAILABLE,
-          assetDamages: {
-            update: {
-              where: { id },
-              data: {
-                condition,
-                damageDetails,
-                repairPrice,
-                isSchoolCost,
-                quantity,
-                isRepaired,
-                userId,
+      await prisma.$transaction(
+        async (tx) => {
+          const previousPayments = await tx.assetRepairPayment.aggregate({
+            _sum: { paidAmount: true },
+          });
+          await tx.individualLabItem.update({
+            where: { id: parentId },
+            data: {
+              condition,
+              status:
+                condition === AssetCondition.DAMAGED
+                  ? AssetStatus.UNDER_MAINTENANCE
+                  : AssetStatus.AVAILABLE,
+              assetDamages: {
+                update: {
+                  where: { id },
+                  data: {
+                    condition,
+                    damageDetails,
+                    repairPrice,
+                    repairBalance:
+                      (repairPrice || 0) -
+                      (previousPayments._sum.paidAmount ?? 0),
+                    isSchoolCost,
+                    quantity,
+                    isRepaired,
+                    userId: isSchoolCost ? undefined : userId,
+                  },
+                },
               },
             },
-          },
+          });
         },
-      });
+        {
+          timeout: 60000,
+          maxWait: 60000,
+        },
+      );
+
       break;
     case "GENERAL_STORE":
-      await prisma.individualGeneralStoreItem.update({
-        where: { id: parentId },
-        data: {
-          condition,
-          status:
-            condition === AssetCondition.DAMAGED
-              ? AssetStatus.UNDER_MAINTENANCE
-              : AssetStatus.AVAILABLE,
-          assetDamages: {
-            update: {
-              where: { id },
-              data: {
-                condition,
-                damageDetails,
-                repairPrice,
-                isSchoolCost,
-                quantity,
-                isRepaired,
-                userId,
+      await prisma.$transaction(
+        async (tx) => {
+          const previousPayments = await tx.assetRepairPayment.aggregate({
+            _sum: { paidAmount: true },
+          });
+          await tx.individualGeneralStoreItem.update({
+            where: { id: parentId },
+            data: {
+              condition,
+              status:
+                condition === AssetCondition.DAMAGED
+                  ? AssetStatus.UNDER_MAINTENANCE
+                  : AssetStatus.AVAILABLE,
+              assetDamages: {
+                update: {
+                  where: { id },
+                  data: {
+                    condition,
+                    damageDetails,
+                    repairPrice,
+                    repairBalance:
+                      (repairPrice || 0) -
+                      (previousPayments._sum.paidAmount ?? 0),
+                    isSchoolCost,
+                    quantity,
+                    isRepaired,
+                    userId: isSchoolCost ? undefined : userId,
+                  },
+                },
               },
             },
-          },
+          });
         },
-      });
+        {
+          timeout: 60000,
+          maxWait: 60000,
+        },
+      );
+
       break;
     case "FOOD_STORE":
-      await prisma.individualFoodStoreItem.update({
-        where: { id: parentId },
-        data: {
-          condition,
-          status:
-            condition === AssetCondition.DAMAGED
-              ? AssetStatus.UNDER_MAINTENANCE
-              : AssetStatus.AVAILABLE,
-          assetDamages: {
-            update: {
-              where: { id },
-              data: {
-                condition,
-                repairPrice,
-                isSchoolCost,
-                damageDetails,
-                quantity,
-                isRepaired,
-                userId,
+      await prisma.$transaction(
+        async (tx) => {
+          const previousPayments = await tx.assetRepairPayment.aggregate({
+            _sum: { paidAmount: true },
+          });
+          await tx.individualFoodStoreItem.update({
+            where: { id: parentId },
+            data: {
+              condition,
+              status:
+                condition === AssetCondition.DAMAGED
+                  ? AssetStatus.UNDER_MAINTENANCE
+                  : AssetStatus.AVAILABLE,
+              assetDamages: {
+                update: {
+                  where: { id },
+                  data: {
+                    condition,
+                    repairPrice,
+                    repairBalance:
+                      (repairPrice || 0) -
+                      (previousPayments._sum.paidAmount ?? 0),
+                    isSchoolCost,
+                    damageDetails,
+                    quantity,
+                    isRepaired,
+                    userId: isSchoolCost ? undefined : userId,
+                  },
+                },
               },
             },
-          },
+          });
         },
-      });
+        {
+          timeout: 60000,
+          maxWait: 60000,
+        },
+      );
+
       break;
   }
 }

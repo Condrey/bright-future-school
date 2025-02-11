@@ -41,7 +41,7 @@ export default function FormUpdateIndividualItem({
 }: FormUpdateIndividualItemProps) {
   const form = useForm<IndividualBookSchema>({
     resolver: zodResolver(individualBookSchema),
-    defaultValues: {
+    values: {
       id: individualItemToEdit.id || "",
       libraryBookId: individualItemToEdit.libraryBookId || "",
       condition: individualItemToEdit.condition || AssetCondition.NEW,

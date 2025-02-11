@@ -52,7 +52,7 @@ export default function Supplier({ form }: SupplierProps) {
   const watchedSupplier = form.watch("supplier");
   const form2 = useForm<SupplierSchema>({
     resolver: zodResolver(supplierSchema),
-    defaultValues: {
+    values: {
       address: watchedSupplier?.address || "",
       name: watchedSupplier?.name || "",
       contactInfo: watchedSupplier?.contactInfo || "",

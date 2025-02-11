@@ -11,15 +11,12 @@ import {
   IndividualFoodStoreItemData,
   IndividualGeneralStoreItemData,
   IndividualLaboratoryItemData,
-  IndividualLibraryBookData,
+  ModifiedLibData,
 } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import ButtonRecordDamage from "./button-record-damage";
 import { useDamagesColumns } from "./columns";
 
-type ModifiedLibData = Omit<IndividualLibraryBookData, "bookDamages"> & {
-  assetDamages: IndividualLibraryBookData["bookDamages"];
-};
 interface ItemDamagesProps {
   individualItem:
     | IndividualFoodStoreItemData

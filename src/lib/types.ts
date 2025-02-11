@@ -263,12 +263,30 @@ export type AssetData = Prisma.AssetGetPayload<{
   include: typeof assetDataInclude;
 }>;
 
+//Asset Repair Payments
+export const assetRepairPaymentDataInclude = {
+  receivedBy: { select: userDataSelect },
+  assetDamage: true,
+} satisfies Prisma.AssetRepairPaymentInclude;
+export type AssetRepairPaymentData = Prisma.AssetRepairPaymentGetPayload<{
+  include: typeof assetRepairPaymentDataInclude;
+}>;
+
+//Asset damages
+export const assetDamageDataInclude = {
+  damagedBy: { select: userDataSelect },
+  assetRepairPayments: { select: { isSchoolCost: true, paidAmount: true } },
+} satisfies Prisma.AssetDamageInclude;
+export type AssetDamageData = Prisma.AssetDamageGetPayload<{
+  include: typeof assetDamageDataInclude;
+}>;
+
 // Library
 export const individualLibraryBookDataInclude = {
   libraryBook: { include: { asset: true } },
   bookDamages: {
     orderBy: { createdAt: "desc" },
-    include: { damagedBy: { select: userDataSelect } },
+    include: assetDamageDataInclude,
   },
   _count: { select: { bookDamages: true } },
 } satisfies Prisma.IndividualBookInclude;
@@ -283,13 +301,16 @@ export const libraryBookDataInclude = {
 export type LibraryBookData = Prisma.LibraryBookGetPayload<{
   include: typeof libraryBookDataInclude;
 }>;
+export type ModifiedLibData = Omit<IndividualLibraryBookData, "bookDamages"> & {
+  assetDamages: IndividualLibraryBookData["bookDamages"];
+};
 
 // Computer lab item
 export const individualComputerLabItemDataInclude = {
   computerLabItem: { include: { asset: true } },
   assetDamages: {
     orderBy: { createdAt: "desc" },
-    include: { damagedBy: { select: userDataSelect } },
+    include: assetDamageDataInclude,
   },
   _count: { select: { assetDamages: true } },
 } satisfies Prisma.IndividualComputerLabItemInclude;
@@ -313,7 +334,7 @@ export const individualLaboratoryItemDataInclude = {
   labItem: { include: { asset: true } },
   assetDamages: {
     orderBy: { createdAt: "desc" },
-    include: { damagedBy: { select: userDataSelect } },
+    include: assetDamageDataInclude,
   },
   _count: { select: { assetDamages: true } },
 } satisfies Prisma.IndividualLabItemInclude;
@@ -333,7 +354,7 @@ export const individualGeneralStoreItemDataInclude = {
   generalStoreItem: { include: { asset: true } },
   assetDamages: {
     orderBy: { createdAt: "desc" },
-    include: { damagedBy: { select: userDataSelect } },
+    include: assetDamageDataInclude,
   },
   _count: { select: { assetDamages: true } },
 } satisfies Prisma.IndividualGeneralStoreItemInclude;
@@ -356,7 +377,7 @@ export const individualFoodStoreItemDataInclude = {
   foodStoreItem: { include: { asset: true } },
   assetDamages: {
     orderBy: { createdAt: "desc" },
-    include: { damagedBy: { select: userDataSelect } },
+    include: assetDamageDataInclude,
   },
   _count: { select: { assetDamages: true } },
 } satisfies Prisma.IndividualFoodStoreItemInclude;
@@ -380,12 +401,5 @@ export type SupplierData = Prisma.SupplierGetPayload<{
   include: typeof supplierDataInclude;
 }>;
 
-//Asset damages
-export const assetDamageDataInclude = {
-  damagedBy: { select: userDataSelect },
-} satisfies Prisma.AssetDamageInclude;
-export type AssetDamageData = Prisma.AssetDamageGetPayload<{
-  include: typeof assetDamageDataInclude;
-}>;
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };

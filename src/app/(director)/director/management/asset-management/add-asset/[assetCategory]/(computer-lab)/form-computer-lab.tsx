@@ -52,7 +52,7 @@ export default function FormComputerLab({
 }: FormComputerLabProps) {
   const form = useForm<ComputerLabAssetSchema>({
     resolver: zodResolver(computerLabAssetSchema),
-    defaultValues: {
+    values: {
       asset: (computerLabItemToEdit?.asset as AssetSchema) || {
         id: "computer-Lab",
         category: AssetCategory.COMPUTER_LAB,

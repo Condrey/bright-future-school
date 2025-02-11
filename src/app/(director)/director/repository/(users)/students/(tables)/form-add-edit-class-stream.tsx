@@ -34,7 +34,7 @@ export default function FormAddEditClassStream({
   const updateMutation = useUpdateClassStreamMutation();
   const form = useForm<ClassStreamSchema>({
     resolver: zodResolver(classStreamSchema),
-    defaultValues: {
+    values: {
       classId: classStreamToEdit?.classId || "",
       streamId: classStreamToEdit?.streamId || "",
       staffId: classStreamToEdit?.staffId || "",

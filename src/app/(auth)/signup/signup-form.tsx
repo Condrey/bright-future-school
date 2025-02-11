@@ -21,7 +21,7 @@ export default function SignUpForm() {
   const [isPending, startTransition] = useTransition();
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: {
+    values: {
       username: "",
       email: "",
       password: "",

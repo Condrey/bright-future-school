@@ -44,7 +44,7 @@ export default function FormUpdateIndividualItem({
 }: FormUpdateIndividualItemProps) {
   const form = useForm<IndividualLaboratorySchema>({
     resolver: zodResolver(individualLaboratorySchema),
-    defaultValues: {
+    values: {
       id: individualItemToEdit.id || "",
       labItemId: individualItemToEdit.labItemId || "",
       condition: individualItemToEdit.condition || AssetCondition.NEW,

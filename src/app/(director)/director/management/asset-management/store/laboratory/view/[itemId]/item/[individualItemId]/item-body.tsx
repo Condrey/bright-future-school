@@ -1,5 +1,6 @@
 "use client";
 
+import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import { Badge } from "@/components/ui/badge";
@@ -14,13 +15,12 @@ import {
 import { assetCategories, assetConditions, assetStatuses } from "@/lib/enums";
 import { IndividualLaboratoryItemData } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { AssetCondition, AssetStatus } from "@prisma/client";
+import { AssetCategory, AssetCondition, AssetStatus } from "@prisma/client";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { AlertTriangleIcon, ChevronDown, HistoryIcon } from "lucide-react";
 import { useState } from "react";
 import { getIndividualLaboratoryItem } from "../../action";
-import ItemDamages from "./(damages)/item-damages";
 import ButtonEditIndividualItem from "./button-edit-individual-item";
 
 interface ItemBodyProps {
@@ -176,7 +176,10 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           )}
         </CardFooter>
       </Card>
-      <ItemDamages individualItem={item} />
+      <ItemDamages
+        individualItem={item}
+        assetCategory={AssetCategory.LABORATORY}
+      />
     </div>
   );
 }

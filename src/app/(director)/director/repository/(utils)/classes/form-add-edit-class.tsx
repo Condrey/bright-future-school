@@ -32,7 +32,7 @@ export default function FormAddEditClass({
   const updateMutation = useUpdateClassMutation();
   const form = useForm<ClassSchema>({
     resolver: zodResolver(classSchema),
-    defaultValues: {
+    values: {
       name: classToEdit?.name || "",
       id: classToEdit?.id || "",
       level: classToEdit?.level as LevelSchema,

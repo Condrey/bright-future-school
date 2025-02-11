@@ -31,7 +31,7 @@ export default function FormAddEditLevel({
   const updateMutation = useUpdateLevelMutation();
   const form = useForm<LevelSchema>({
     resolver: zodResolver(levelSchema),
-    defaultValues: {
+    values: {
       name: levelToEdit?.name || "",
       id: levelToEdit?.id || "",
     },

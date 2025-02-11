@@ -4,6 +4,7 @@ import TipTapEditorWithHeader from "@/components/tip-tap-editor/tip-tap-editor-w
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,6 +28,7 @@ import { AssetCategory, AssetCondition } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { NumberInput } from "../number-input/number-input";
 import { Badge } from "../ui/badge";
+import { Checkbox } from "../ui/checkbox";
 import FormDamagedBy from "./form-damaged-by";
 import { useAddItemDamage, useUpdateItemDamage } from "./mutation";
 
@@ -76,18 +78,21 @@ export default function FormAddEditDamage({
 
   const form = useForm<AssetDamageSchema>({
     resolver: zodResolver(assetDamageSchema),
-    defaultValues: {
+    values: {
       id: damageToEdit?.id || "",
       condition: damageToEdit?.condition || AssetCondition.DAMAGED,
       damageDetails: damageToEdit?.damageDetails || "",
       isRepaired: damageToEdit?.isRepaired || false,
       quantity: damageToEdit?.quantity || 1,
-      userId: damageToEdit?.userId!,
+      userId: damageToEdit?.userId || "",
       parentId: currentCategoryValue.parentId || parentId,
-      isSchoolCost: damageToEdit?.isSchoolCost || damagedByStudent,
+      isSchoolCost: damageToEdit?.isSchoolCost || !damagedByStudent,
       repairPrice: damageToEdit?.repairPrice!,
     },
   });
+
+  const watchedIsSchoolCost = form.watch("isSchoolCost");
+
   const addMutation = useAddItemDamage(assetCategory);
   const updateMutation = useUpdateItemDamage(assetCategory);
   function onSuccess() {
@@ -105,18 +110,49 @@ export default function FormAddEditDamage({
       open={open}
       setOpen={setOpen}
       title={damageToEdit ? "Update damage" : "Register new damage record"}
-      description={`Cost of repair covered by ${damagedByStudent ? "pupil/ student" : "school"}`}
+      description={`Cost of repair covered by ${!watchedIsSchoolCost ? "pupil/ student" : "school"}`}
     >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleFormSubmit)}
           className="space-y-4"
         >
-          {!damagedByStudent ? (
-            <Badge variant={"go"}>School covered cost</Badge>
-          ) : (
-            <FormDamagedBy form={form} />
-          )}
+          {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+          <div className="space-y-4 rounded-md border p-3">
+            <FormField
+              control={form.control}
+              name="isSchoolCost"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="flex items-baseline gap-2">
+                      <Checkbox
+                        onCheckedChange={field.onChange}
+                        defaultChecked={field.value}
+                        id="form-checkbox"
+                      />
+                      <div>
+                        <FormLabel htmlFor="form-checkbox">
+                          Repair cost is under school
+                        </FormLabel>
+                        <FormDescription>
+                          Check if repair maintenance cost is to be met by the
+                          school.
+                        </FormDescription>
+                      </div>
+                    </div>
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {watchedIsSchoolCost ? (
+              <Badge variant={"go"}>School covered cost</Badge>
+            ) : (
+              <FormDamagedBy form={form} />
+            )}
+          </div>
 
           <FormField
             control={form.control}

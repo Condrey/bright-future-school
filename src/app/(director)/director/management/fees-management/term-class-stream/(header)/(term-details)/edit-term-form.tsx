@@ -43,7 +43,7 @@ export default function EditTermForm({
 
   const form = useForm<ClassTermSchema>({
     resolver: zodResolver(classTermSchema),
-    defaultValues: {
+    values: {
       id: termToEdit.id,
       feesAmount: termToEdit.feesAmount!,
       endAt: termToEdit.endAt,

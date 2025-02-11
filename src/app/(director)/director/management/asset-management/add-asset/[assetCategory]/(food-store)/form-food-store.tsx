@@ -49,7 +49,7 @@ export default function FormFoodStore({
 }: FormFoodStoreProps) {
   const form = useForm<FoodStoreAssetSchema>({
     resolver: zodResolver(foodStoreAssetSchema),
-    defaultValues: {
+    values: {
       asset: (foodStoreItemToEdit?.asset as AssetSchema) || {
         id: "food-Store",
         category: AssetCategory.FOOD_STORE,

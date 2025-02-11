@@ -37,7 +37,7 @@ export default function FormAddEditNonTeachingStaff({
   const updateMutation = useUpdateNonTeachingStaffMutation();
   const form = useForm<NonTeachingStaffSchema>({
     resolver: zodResolver(nonTeachingStaffSchema),
-    defaultValues: {
+    values: {
       user: nonTeachingStaffToEdit
         ? {
             email: nonTeachingStaffToEdit.user?.email ?? "",

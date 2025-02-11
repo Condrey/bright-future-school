@@ -34,7 +34,7 @@ export default function FormAddUnregisteredPupil({
 
   const form = useForm<PupilSchema>({
     resolver: zodResolver(pupilSchema),
-    defaultValues: {
+    values: {
       id: "",
       user: { email: "", id: "", name: "", telephone: "", username: "" },
     },

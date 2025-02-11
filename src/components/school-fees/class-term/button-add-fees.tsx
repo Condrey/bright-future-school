@@ -34,7 +34,7 @@ export default function ButtonAddFees({
   const [open, setOpen] = useState(false);
   const form = useForm<FeesSchema>({
     resolver: zodResolver(feesSchema),
-    defaultValues: {
+    values: {
       termId: classTermId,
       pupilId: pupil.id,
       feesPayment: {},

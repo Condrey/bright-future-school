@@ -40,7 +40,7 @@ export default function Levels({ form }: LevelsProps) {
 
   const form2 = useForm<LevelSchema>({
     resolver: zodResolver(levelSchema),
-    defaultValues: watchedLevel,
+    values: watchedLevel,
   });
 
   function removeInputField() {

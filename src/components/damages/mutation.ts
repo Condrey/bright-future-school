@@ -8,6 +8,7 @@ import {
   deleteDamage,
   repairUnrepairDamage,
   updateDamage,
+  upsertAssetRepairPayment,
 } from "./action";
 
 const categories = (assetCategory: AssetCategory) => {
@@ -20,6 +21,28 @@ const categories = (assetCategory: AssetCategory) => {
   };
   return values[assetCategory];
 };
+
+export function useUpsertAssetRepairPayment(assetCategory: AssetCategory) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: upsertAssetRepairPayment,
+    onSuccess: async () => {
+      const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+
+      await queryClient.cancelQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
+      toast({ description: "successfully registered the payment." });
+    },
+    onError(error) {
+      console.error(error);
+      toast({
+        description: "failed to record this payment.",
+        variant: "destructive",
+      });
+    },
+  });
+  return mutation;
+}
 
 export function useAddItemDamage(assetCategory: AssetCategory) {
   const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];

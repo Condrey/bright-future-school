@@ -31,7 +31,7 @@ export default function FormAddEditTerm({
   const updateMutation = useUpdateTermMutation();
   const form = useForm<TermSchema>({
     resolver: zodResolver(termSchema),
-    defaultValues: {
+    values: {
       term: termToEdit?.term || "",
       id: termToEdit?.id || "",
     },

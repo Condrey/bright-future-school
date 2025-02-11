@@ -37,7 +37,7 @@ export default function AddEditAsset({
 }: AddEditAssetProps) {
   const form = useForm<AssetSchema>({
     resolver: zodResolver(assetSchema),
-    defaultValues: {
+    values: {
       category: assetToEdit?.category,
       description: assetToEdit?.description || "",
       id: assetToEdit?.id || "",

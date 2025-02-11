@@ -50,7 +50,7 @@ export default function Asset({ form }: AssetProps) {
   const watchedAsset = form.watch("asset");
   const form2 = useForm<AssetSchema>({
     resolver: zodResolver(assetSchema),
-    defaultValues: {
+    values: {
       name: watchedAsset?.name || "",
       description: watchedAsset?.description || "",
       category: watchedAsset.category || AssetCategory.GENERAL_STORE,

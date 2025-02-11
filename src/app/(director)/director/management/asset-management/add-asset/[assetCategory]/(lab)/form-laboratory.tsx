@@ -53,7 +53,7 @@ export default function FormLaboratory({
 }: FormLaboratoryProps) {
   const form = useForm<LaboratoryAssetSchema>({
     resolver: zodResolver(laboratoryAssetSchema),
-    defaultValues: {
+    values: {
       asset: (laboratoryItemToEdit?.asset as AssetSchema) || {
         id: "laboratory",
         category: AssetCategory.LABORATORY,

@@ -49,7 +49,7 @@ export default function FormGeneralStore({
 }: FormGeneralStoreProps) {
   const form = useForm<GeneralStoreAssetSchema>({
     resolver: zodResolver(generalStoreAssetSchema),
-    defaultValues: {
+    values: {
       asset: (generalStoreItemToEdit?.asset as AssetSchema) || {
         id: "general-Store",
         category: AssetCategory.GENERAL_STORE,

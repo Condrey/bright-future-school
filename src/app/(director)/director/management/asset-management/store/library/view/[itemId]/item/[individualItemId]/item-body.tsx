@@ -1,5 +1,6 @@
 "use client";
 
+import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import { Badge } from "@/components/ui/badge";
@@ -13,15 +14,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { assetCategories, assetConditions, bookStatuses } from "@/lib/enums";
-import { IndividualLibraryBookData } from "@/lib/types";
+import { IndividualLibraryBookData, ModifiedLibData } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { AssetCondition, BookStatus } from "@prisma/client";
+import { AssetCategory, AssetCondition, BookStatus } from "@prisma/client";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { AlertTriangleIcon, ChevronDown, HistoryIcon } from "lucide-react";
 import { useState } from "react";
 import { getIndividualBook } from "../../action";
-import ItemDamages from "./(damages)/item-damages";
 import ButtonEditIndividualItem from "./button-edit-individual-item";
 
 interface ItemBodyProps {
@@ -176,7 +176,10 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           )}
         </CardFooter>
       </Card>
-      <ItemDamages individualItem={item} />
+      <ItemDamages
+        individualItem={item as unknown as ModifiedLibData}
+        assetCategory={AssetCategory.LIBRARY}
+      />
     </div>
   );
 }

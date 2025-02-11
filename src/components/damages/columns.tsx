@@ -5,6 +5,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import UserAvatar from "@/components/user-avatar";
 import { assetConditions } from "@/lib/enums";
 import { AssetDamageData } from "@/lib/types";
+import { formatCurrency } from "@/lib/utils";
 import { AssetCategory, AssetCondition } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -102,12 +103,36 @@ export const useDamagesColumns = (
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "repairPrice",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Recorded at" />
+      <DataTableColumnHeader column={column} title="Repair price" />
     ),
     cell: ({ row }) => {
-      return <span>{format(row.original.createdAt, "PPP")}</span>;
+      const price = row.original.repairPrice;
+      return <span>{!price ? "Not Added" : formatCurrency(price || 0)}</span>;
+    },
+  },
+  {
+    accessorKey: "repairBalance",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Payment" />
+    ),
+    cell: ({ row }) => {
+      const paidAmount = row.original.assetRepairPayments
+        .flatMap((a) => a.paidAmount)
+        .reduce((total, amount) => total + amount, 0);
+      const price = row.original.repairBalance || 0;
+      return (
+        <div>
+          <div className="">Paid {formatCurrency(paidAmount)}</div>
+          {price > 0 && (
+            <div>
+              <span className="italic text-muted-foreground">bal of</span>{" "}
+              {formatCurrency(price)}
+            </div>
+          )}
+        </div>
+      );
     },
   },
   {

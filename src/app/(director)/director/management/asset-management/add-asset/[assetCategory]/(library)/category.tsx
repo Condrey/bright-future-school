@@ -52,7 +52,7 @@ export default function Category({ form }: CategoryProps) {
   const watchedCategory = form.watch("category");
   const form2 = useForm<LibraryAssetCategorySchema>({
     resolver: zodResolver(libraryAssetCategorySchema),
-    defaultValues: {
+    values: {
       category: watchedCategory?.category || "",
       description: watchedCategory?.description || "",
       id: watchedCategory?.id || "",

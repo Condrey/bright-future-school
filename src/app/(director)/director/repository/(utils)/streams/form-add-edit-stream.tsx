@@ -31,7 +31,7 @@ export default function FormAddEditStream({
   const updateMutation = useUpdateStreamMutation();
   const form = useForm<StreamSchema>({
     resolver: zodResolver(streamSchema),
-    defaultValues: {
+    values: {
       name: streamToEdit?.name || "",
       id: streamToEdit?.id || "",
     },

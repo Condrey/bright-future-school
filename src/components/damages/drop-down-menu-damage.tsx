@@ -10,12 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { myPrivileges } from "@/lib/enums";
 import { AssetDamageData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AssetDamageSchema } from "@/lib/validation";
 import { AssetCategory, Role } from "@prisma/client";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
+  CalculatorIcon,
   CheckIcon,
   CopyIcon,
   Edit2Icon,
@@ -25,6 +27,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import DialogDeleteDamage from "./dialog-delete-damage";
+import FormAddEditAssetPayment from "./form-add-edit-asset-payment";
 import FormAddEditDamage from "./form-add-edit-damage";
 import { useRepairUnrepairItemDamage } from "./mutation";
 
@@ -37,11 +40,6 @@ export default function DropDownMenuDamage({
   item,
   assetCategory,
 }: DropDownMenuDamageProps) {
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const mutation = useRepairUnrepairItemDamage(assetCategory);
-  const { user } = useSession();
-
   const categories: Record<
     AssetCategory,
     { parentId: string | null | undefined; label: string }
@@ -69,6 +67,13 @@ export default function DropDownMenuDamage({
   };
   const currentCategoryValue = categories[assetCategory];
 
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showAddPaymentDialog, setShowAddPaymentDialog] = useState(false);
+  const mutation = useRepairUnrepairItemDamage(assetCategory);
+  const { user } = useSession();
+  const canAddPayment = myPrivileges[user.role].includes(Role.BURSAR);
+
   return (
     <>
       <DropdownMenu>
@@ -82,20 +87,10 @@ export default function DropDownMenuDamage({
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(item.id)}
-            >
-              <CopyIcon className="mr-2 size-4" />
-              <span>Copy damage record Id</span>
-            </DropdownMenuItem>
-            {user.role === Role.SUPER_ADMIN && (
-              <DropdownMenuItem
-                onClick={() =>
-                  navigator.clipboard.writeText(JSON.stringify(item))
-                }
-              >
-                <CopyIcon className="mr-2 size-4" />
-                <span>Copy damage record</span>
+            {canAddPayment && (
+              <DropdownMenuItem onClick={() => setShowAddPaymentDialog(true)}>
+                <CalculatorIcon className="mr-2 size-4" />
+                <span>Add payment</span>
               </DropdownMenuItem>
             )}
             <DropdownMenuItem
@@ -124,6 +119,23 @@ export default function DropDownMenuDamage({
                 {item.isRepaired ? "Undo repair record" : "Register repair"}
               </span>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(item.id)}
+            >
+              <CopyIcon className="mr-2 size-4" />
+              <span>Copy damage record Id</span>
+            </DropdownMenuItem>
+            {user.role === Role.SUPER_ADMIN && (
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(JSON.stringify(item))
+                }
+              >
+                <CopyIcon className="mr-2 size-4" />
+                <span>Copy damage record</span>
+              </DropdownMenuItem>
+            )}
+
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
           <DropdownMenuGroup>
@@ -158,6 +170,12 @@ export default function DropDownMenuDamage({
         damage={item}
         open={showDeleteDialog}
         openChange={setShowDeleteDialog}
+      />
+      <FormAddEditAssetPayment
+        open={showAddPaymentDialog}
+        setOpen={setShowAddPaymentDialog}
+        assetCategory={assetCategory}
+        assetDamage={item}
       />
     </>
   );
