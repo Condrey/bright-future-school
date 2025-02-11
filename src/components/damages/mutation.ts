@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
+import { AssetCategory } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   addDamage,
@@ -9,9 +10,20 @@ import {
   updateDamage,
 } from "./action";
 
-const queryKey: QueryKey = ["assets", "general-store-asset", "item"];
+const categories = (assetCategory: AssetCategory) => {
+  const values: Record<AssetCategory, string> = {
+    LIBRARY: "library-asset",
+    COMPUTER_LAB: "computer-lab-asset",
+    LABORATORY: "laboratory-asset",
+    GENERAL_STORE: "general-store-asset",
+    FOOD_STORE: "food-store-asset",
+  };
+  return values[assetCategory];
+};
 
-export function useAddItemDamage() {
+export function useAddItemDamage(assetCategory: AssetCategory) {
+  const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addDamage,
@@ -31,7 +43,9 @@ export function useAddItemDamage() {
   return mutation;
 }
 
-export function useUpdateItemDamage() {
+export function useUpdateItemDamage(assetCategory: AssetCategory) {
+  const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: updateDamage,
@@ -51,7 +65,9 @@ export function useUpdateItemDamage() {
   return mutation;
 }
 
-export function useRepairUnrepairItemDamage() {
+export function useRepairUnrepairItemDamage(assetCategory: AssetCategory) {
+  const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: repairUnrepairDamage,
@@ -59,13 +75,13 @@ export function useRepairUnrepairItemDamage() {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
       toast({
-        description: `successfully ${variables.isRepaired ? "repaired" : "undone repair to"} the damage.`,
+        description: `successfully ${variables.input.isRepaired ? "repaired" : "undone repair to"} the damage.`,
       });
     },
     onError(error, variables) {
       console.error(error);
       toast({
-        description: `failed to ${variables.isRepaired ? "register repair" : "undo repair register to"} this damage.`,
+        description: `failed to ${variables.input.isRepaired ? "register repair" : "undo repair register to"} this damage.`,
         variant: "destructive",
       });
     },
@@ -73,7 +89,9 @@ export function useRepairUnrepairItemDamage() {
   return mutation;
 }
 
-export function useDeleteItemDamageMutation() {
+export function useDeleteItemDamageMutation(assetCategory: AssetCategory) {
+  const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: deleteDamage,

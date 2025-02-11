@@ -2,7 +2,7 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { Metadata } from "next";
 import { Fragment } from "react";
-const title = "All records";
+const title = "All asset records";
 export const metadata: Metadata = {
   title,
 };

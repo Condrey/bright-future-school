@@ -2,9 +2,11 @@ import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
 import { Button } from "@/components/ui/button";
 import { AssetDamageData } from "@/lib/types";
+import { AssetCategory } from "@prisma/client";
 import { useDeleteItemDamageMutation } from "./mutation";
 
 interface DeleteDamageDialogProps {
+  assetCategory: AssetCategory;
   damage: AssetDamageData;
   open: boolean;
   openChange: (open: boolean) => void;
@@ -14,8 +16,9 @@ export default function DialogDeleteDamage({
   damage,
   open,
   openChange,
+  assetCategory,
 }: DeleteDamageDialogProps) {
-  const mutation = useDeleteItemDamageMutation();
+  const mutation = useDeleteItemDamageMutation(assetCategory);
 
   async function handleDeletion() {
     try {

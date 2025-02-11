@@ -5,12 +5,14 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import UserAvatar from "@/components/user-avatar";
 import { assetConditions } from "@/lib/enums";
 import { AssetDamageData } from "@/lib/types";
-import { AssetCondition } from "@prisma/client";
+import { AssetCategory, AssetCondition } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import DropDownMenuDamage from "./drop-down-menu-damage";
 
-export const useDamagesColumns: ColumnDef<AssetDamageData>[] = [
+export const useDamagesColumns = (
+  assetCategory: AssetCategory,
+): ColumnDef<AssetDamageData>[] => [
   {
     id: "index",
     header: ({ column }) => <DataTableColumnHeader column={column} title="#" />,
@@ -113,6 +115,8 @@ export const useDamagesColumns: ColumnDef<AssetDamageData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
     ),
-    cell: ({ row }) => <DropDownMenuDamage item={row.original} />,
+    cell: ({ row }) => (
+      <DropDownMenuDamage item={row.original} assetCategory={assetCategory} />
+    ),
   },
 ];

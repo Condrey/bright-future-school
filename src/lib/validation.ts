@@ -314,17 +314,28 @@ export const individualBookSchema = z.object({
 export type IndividualBookSchema = z.infer<typeof individualBookSchema>;
 
 // Asset damages
-export const assetDamageSchema = z.object({
-  quantity: z.number().optional().default(1),
-  isRepaired: z.boolean(),
-  repairPrice: z.number().optional(),
-  isSchoolCost: z.boolean(),
-  userId: z.string().optional(),
-  damageDetails: requiredString.min(1, "Please describe the damage."),
-  condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
-  id: z.string(),
-  parentId: z.string(),
-});
+export const assetDamageSchema = z
+  .object({
+    quantity: z.number().optional().default(1),
+    isRepaired: z.boolean(),
+    repairPrice: z.number().optional(),
+    isSchoolCost: z.boolean(),
+    userId: z.string().optional(),
+    damageDetails: requiredString.min(1, "Please describe the damage."),
+    condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
+    id: z.string(),
+    parentId: z.string(),
+  })
+  .superRefine((data, ctx) => {
+    // When isSchoolCost is false, ensure userId is provided.
+    if (!data.isSchoolCost && (!data.userId || data.userId.trim() === "")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "The person who damaged the asset is missing",
+        path: ["userId"],
+      });
+    }
+  });
 export type AssetDamageSchema = z.infer<typeof assetDamageSchema>;
 
 // asset repair payment

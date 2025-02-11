@@ -13,7 +13,7 @@ import {
 import { AssetDamageData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AssetDamageSchema } from "@/lib/validation";
-import { Role } from "@prisma/client";
+import { AssetCategory, Role } from "@prisma/client";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
   CheckIcon,
@@ -30,13 +30,44 @@ import { useRepairUnrepairItemDamage } from "./mutation";
 
 interface DropDownMenuDamageProps {
   item: AssetDamageData;
+  assetCategory: AssetCategory;
 }
 
-export default function DropDownMenuDamage({ item }: DropDownMenuDamageProps) {
+export default function DropDownMenuDamage({
+  item,
+  assetCategory,
+}: DropDownMenuDamageProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const mutation = useRepairUnrepairItemDamage();
+  const mutation = useRepairUnrepairItemDamage(assetCategory);
   const { user } = useSession();
+
+  const categories: Record<
+    AssetCategory,
+    { parentId: string | null | undefined; label: string }
+  > = {
+    LIBRARY: {
+      parentId: item.individualLabItemId,
+      label: "Library",
+    },
+    COMPUTER_LAB: {
+      parentId: item.individualComputerLabItemId,
+      label: "Computer lab",
+    },
+    LABORATORY: {
+      parentId: item.individualLabItemId,
+      label: "Laboratory",
+    },
+    GENERAL_STORE: {
+      parentId: item.individualGeneralStoreItemId,
+      label: "General store",
+    },
+    FOOD_STORE: {
+      parentId: item.individualFoodStoreItemId,
+      label: "Food store",
+    },
+  };
+  const currentCategoryValue = categories[assetCategory];
 
   return (
     <>
@@ -72,7 +103,7 @@ export default function DropDownMenuDamage({ item }: DropDownMenuDamageProps) {
                 mutation.mutate({
                   ...item,
                   isRepaired: !item.isRepaired,
-                  parentId: item.individualGeneralStoreItemId!,
+                  parentId: currentCategoryValue.parentId!,
                 } as AssetDamageSchema)
               }
               className={cn(
@@ -112,12 +143,14 @@ export default function DropDownMenuDamage({ item }: DropDownMenuDamageProps) {
         </DropdownMenuContent>
       </DropdownMenu>
       <FormAddEditDamage
+        assetCategory={assetCategory}
         open={showEditDialog}
         setOpen={setShowEditDialog}
-        parentId={item.individualGeneralStoreItemId!}
+        parentId={currentCategoryValue.parentId!}
         damageToEdit={item}
       />
       <DialogDeleteDamage
+        assetCategory={assetCategory}
         damage={item}
         open={showDeleteDialog}
         openChange={setShowDeleteDialog}

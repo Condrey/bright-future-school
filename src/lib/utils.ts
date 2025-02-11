@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const webName = "Bright future school";
+export const webName = "Bright Future School";
 export const countryCurrency = "SSP";
 
 export function formatCurrency(price: number | string = 0, currency?: string) {
