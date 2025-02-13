@@ -21,6 +21,7 @@ import {
   CheckIcon,
   CopyIcon,
   Edit2Icon,
+  Loader2Icon,
   MoreHorizontal,
   Trash2Icon,
   XIcon,
@@ -65,6 +66,7 @@ export default function DropDownMenuDamage({
       label: "Food store",
     },
   };
+
   const currentCategoryValue = categories[assetCategory];
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -80,7 +82,11 @@ export default function DropDownMenuDamage({
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="size-8 p-0">
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
+            {mutation.isPending ? (
+              <Loader2Icon className="animate-spin" />
+            ) : (
+              <MoreHorizontal />
+            )}
           </Button>
         </DropdownMenuTrigger>
 
@@ -98,6 +104,7 @@ export default function DropDownMenuDamage({
                 mutation.mutate({
                   input: {
                     ...item,
+                    userId: item.userId || "",
                     isRepaired: !item.isRepaired,
                     parentId: currentCategoryValue.parentId!,
                   } as AssetDamageSchema,

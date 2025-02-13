@@ -15,6 +15,29 @@ interface TableSummaryProps {
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
+  const payments =
+    items
+      .map((i) =>
+        i.assetDamages.flatMap(
+          (a) =>
+            a.assetRepairPayments
+              .flatMap((r) => r.paidAmount)
+              .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+        ),
+      )
+      .flat()
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+  const cost =
+    items
+      .map((i) => i.assetDamages.flatMap((a) => a.repairPrice))
+      .flat()
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+  const balance =
+    items
+      .map((i) => i.assetDamages.flatMap((a) => a.repairBalance))
+      .flat()
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-wrap gap-4 *:min-w-[24rem] *:flex-1">
       <Card>
@@ -43,6 +66,19 @@ export default function TableSummary({ items }: TableSummaryProps) {
             const label = assetStatuses[status];
             return <NumericHolder key={status} count={count} label={label} />;
           })}
+        </CardContent>
+      </Card>{" "}
+      <Card>
+        <CardHeader>
+          <CardTitle>Repair payments</CardTitle>
+          <CardDescription>
+            Figures of payments made to repair this sub asset
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-row flex-wrap gap-2">
+          <NumericHolder isCurrency count={cost} label={"Repair cost"} />
+          <NumericHolder isCurrency count={payments} label={"Paid amount"} />
+          <NumericHolder isCurrency count={balance} label={"Pending amount"} />
         </CardContent>
       </Card>
     </div>

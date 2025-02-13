@@ -320,7 +320,7 @@ export const assetDamageSchema = z
     isRepaired: z.boolean(),
     repairPrice: z.number().optional(),
     isSchoolCost: z.boolean().default(true),
-    userId: z.string().optional(),
+    userId: z.string().optional().default(""),
     damageDetails: requiredString.min(1, "Please describe the damage."),
     condition: z.nativeEnum(AssetCondition).default(AssetCondition.NEW),
     id: z.string(),

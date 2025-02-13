@@ -12,7 +12,7 @@ export default function Page() {
             label: "Asset management",
             url: "/management/asset-management",
           },
-          { label: "General store sub assets" },
+          { label: "General store assets" },
         ]}
       />
       <BodyContainer>

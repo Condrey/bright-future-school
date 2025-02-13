@@ -1,5 +1,6 @@
 "use client";
 
+import { NumericHolder } from "@/app/(director)/director/management/asset-management/(header)/numeric-holder";
 import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -74,8 +76,28 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
     );
   }
   const Icon = assetCategories[item.generalStoreItem.asset.category].icon;
+  const payments =
+    item.assetDamages
+      .flatMap(
+        (a) =>
+          a.assetRepairPayments
+            .flatMap((r) => r.paidAmount)
+            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      )
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const cost =
+    item.assetDamages
+      .flatMap((a) => a.repairPrice)
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const balance =
+    item.assetDamages
+      .flatMap((a) => a.repairBalance)
+
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-6">
       <Card className="h-fit w-full max-w-md">
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
@@ -183,6 +205,19 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
             </div>
           )}
         </CardFooter>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Repair payments</CardTitle>
+          <CardDescription>
+            Figures of payments made to repair this sub asset variant
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-row flex-wrap gap-2">
+          <NumericHolder isCurrency count={cost} label={"Repair cost"} />
+          <NumericHolder isCurrency count={payments} label={"Paid amount"} />
+          <NumericHolder isCurrency count={balance} label={"Pending amount"} />
+        </CardContent>
       </Card>
       <ItemDamages
         individualItem={item}

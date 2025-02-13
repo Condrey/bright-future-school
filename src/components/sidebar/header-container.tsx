@@ -37,7 +37,6 @@ export default function HeaderContainer({
   children,
 }: HeaderContainerProps) {
   const { user } = useSession();
-  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const searchParamRole = searchParams.get(PARAM_NAME_ROLE);
   const basePathName =
@@ -71,34 +70,10 @@ export default function HeaderContainer({
                         {index === array.length - 1 ? (
                           <BreadcrumbPage>{item.label}</BreadcrumbPage>
                         ) : (
-                          <BreadcrumbLink asChild>
-                            <Button
-                              asChild
-                              variant={"link"}
-                              onClick={() => startTransition(() => {})}
-                              className={cn(
-                                "flex max-w-40 items-center justify-start text-start lg:max-w-48",
-                                isPending &&
-                                  "animate-pulse rounded-md bg-accent text-accent-foreground",
-                              )}
-                            >
-                              <Link
-                                href={
-                                  basePathName +
-                                  item.url +
-                                  "?" +
-                                  searchParams.toString()
-                                }
-                                className={cn(
-                                  "w-fit",
-                                  (index !== array.length - 1 || index === 0) &&
-                                    "break-word line-clamp-1 text-ellipsis",
-                                )}
-                              >
-                                {item.label}
-                              </Link>
-                            </Button>
-                          </BreadcrumbLink>
+                          <BreadcrumbLinkItem
+                            basePathName={basePathName}
+                            item={item}
+                          />
                         )}
                       </BreadcrumbItem>
                       {index !== array.length - 1 && (
@@ -113,6 +88,37 @@ export default function HeaderContainer({
         </div>
       </header>
     </div>
+  );
+}
+
+interface BreadcrumbLinkItemProps {
+  basePathName: string;
+  item: HeaderContainerBreadCrumb;
+}
+function BreadcrumbLinkItem({ basePathName, item }: BreadcrumbLinkItemProps) {
+  const searchParams = useSearchParams();
+
+  const [isPending, startTransition] = useTransition();
+  return (
+    <BreadcrumbLink asChild>
+      <Button
+        asChild
+        variant={"link"}
+        onClick={() => startTransition(() => {})}
+        className={cn(
+          "flex max-w-40 items-center justify-start text-start lg:max-w-48",
+          isPending &&
+            "animate-pulse rounded-md bg-accent text-accent-foreground",
+        )}
+      >
+        <Link
+          href={basePathName + item.url + "?" + searchParams.toString()}
+          className={cn("w-fit", "break-word line-clamp-1 text-ellipsis")}
+        >
+          {item.label}
+        </Link>
+      </Button>
+    </BreadcrumbLink>
   );
 }
 
