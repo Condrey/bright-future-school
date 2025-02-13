@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { assetStatuses, assetUnits } from "@/lib/enums";
 import { ComputerLabItemData } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -118,6 +118,81 @@ export const useComputerLabColumns: ColumnDef<ComputerLabItemData>[] = [
             <div className="text-xs text-muted-foreground">
               (Updated {format(row.original.updatedAt, "PP")})
             </div>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    id: "repairPrice",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair cost" />;
+    },
+    cell({ row }) {
+      const price =
+        row.original.individualComputerLabItems
+          .map(
+            (i) =>
+              i.assetDamages
+                .flatMap((a) => a.repairPrice)
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0,
+          )
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+      return formatCurrency(price);
+    },
+  },
+  {
+    id: "repairBalance",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair balance" />;
+    },
+    cell({ row }) {
+      const hasDamages = !!row.original.individualComputerLabItems.flatMap(
+        (i) => i.assetDamages,
+      ).length;
+      const balance =
+        row.original.individualComputerLabItems
+          .map(
+            (i) =>
+              i.assetDamages
+                .flatMap((a) => a.repairBalance)
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0,
+          )
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const paid =
+        row.original.individualComputerLabItems
+          .map(
+            (i) =>
+              i.assetDamages
+                .flatMap((a) =>
+                  a.assetRepairPayments.flatMap((p) => p.paidAmount),
+                )
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0,
+          )
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+      return (
+        <div>
+          {hasDamages ? (
+            <div>
+              {paid <= 0 ? (
+                <Badge variant={"destructive"}>Not paid</Badge>
+              ) : (
+                <div>Paid {formatCurrency(paid)}</div>
+              )}
+              <div>
+                <span className="italic text-muted-foreground">bal of</span>{" "}
+                {formatCurrency(balance)}
+              </div>
+            </div>
+          ) : (
+            <span className="italic text-muted-foreground">
+              --Not applicable--
+            </span>
           )}
         </div>
       );

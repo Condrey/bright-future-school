@@ -9,12 +9,35 @@ import { assetConditions, bookStatuses } from "@/lib/enums";
 import { IndividualLibraryBookData } from "@/lib/types";
 import { AssetCondition, BookStatus } from "@prisma/client";
 import { NumericHolder } from "../../../../../(header)/numeric-holder";
+import AssetRepairSummary from "../../../../../asset-repair-summary";
 
 interface TableSummaryProps {
   items: IndividualLibraryBookData[];
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
+  const payments =
+    items
+      .map((i) =>
+        i.bookDamages.flatMap(
+          (a) =>
+            a.assetRepairPayments
+              .flatMap((r) => r.paidAmount)
+              .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+        ),
+      )
+      .flat()
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+  const cost =
+    items
+      .map((i) => i.bookDamages.flatMap((a) => a.repairPrice))
+      .flat()
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+  const balance =
+    items
+      .map((i) => i.bookDamages.flatMap((a) => a.repairBalance))
+      .flat()
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-wrap gap-4 *:min-w-[24rem] *:flex-1">
       <Card>
@@ -45,6 +68,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
           })}
         </CardContent>
       </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
     </div>
   );
 }

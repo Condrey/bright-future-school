@@ -32,9 +32,8 @@ export default async function Page({ params }: PageProps) {
             label: individualItem.isbn || "Unknown ISBN",
           },
         ]}
-        className="max-w-[90rem]"
       />
-      <BodyContainer className="max-w-[90rem]">
+      <BodyContainer>
         <ItemBody oldItem={individualItem} />
       </BodyContainer>
     </Fragment>

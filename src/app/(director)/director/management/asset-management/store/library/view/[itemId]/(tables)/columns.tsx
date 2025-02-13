@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { assetConditions, bookStatuses } from "@/lib/enums";
 import { IndividualLibraryBookData } from "@/lib/types";
-import { cn, formatNumber } from "@/lib/utils";
+import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 import { AssetCondition, BookStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import DropDownMenuIndividualItem from "./drop-down-menu-individual-item";
@@ -133,6 +133,58 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
             <div>{"No repairs"}</div>
           ) : (
             <div>{`${formatNumber(repairs)} repair${repairs === 1 ? "" : "s"}`}</div>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    id: "bookDamages.repairPrice",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair cost" />;
+    },
+    cell({ row }) {
+      const price =
+        row.original.bookDamages
+          .flatMap((a) => a.repairPrice)
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      return formatCurrency(price);
+    },
+  },
+  {
+    id: "bookDamages.repairBalance",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair balance" />;
+    },
+    cell({ row }) {
+      const hasDamages = !!row.original.bookDamages.length;
+      const balance =
+        row.original.bookDamages
+          .flatMap((a) => a.repairBalance)
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const paid =
+        row.original.bookDamages
+          .flatMap((a) => a.assetRepairPayments.flatMap((p) => p.paidAmount))
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+      return (
+        <div>
+          {hasDamages ? (
+            <div>
+              {paid <= 0 ? (
+                <Badge variant={"destructive"}>Not paid</Badge>
+              ) : (
+                <div>Paid {formatCurrency(paid)}</div>
+              )}
+              <div>
+                <span className="italic text-muted-foreground">bal of</span>{" "}
+                {formatCurrency(balance)}
+              </div>
+            </div>
+          ) : (
+            <span className="italic text-muted-foreground">
+              --Not applicable--
+            </span>
           )}
         </div>
       );

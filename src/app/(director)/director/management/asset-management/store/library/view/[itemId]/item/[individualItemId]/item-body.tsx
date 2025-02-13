@@ -1,5 +1,6 @@
 "use client";
 
+import AssetRepairSummary from "@/app/(director)/director/management/asset-management/asset-repair-summary";
 import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
@@ -14,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { assetCategories, assetConditions, bookStatuses } from "@/lib/enums";
-import { IndividualLibraryBookData, ModifiedLibData } from "@/lib/types";
+import { IndividualLibraryBookData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { AssetCategory, AssetCondition, BookStatus } from "@prisma/client";
 import { QueryKey, useQuery } from "@tanstack/react-query";
@@ -70,6 +71,26 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
     );
   }
   const Icon = assetCategories[item.libraryBook.asset.category].icon;
+  const payments =
+    item.bookDamages
+      .flatMap(
+        (a) =>
+          a.assetRepairPayments
+            .flatMap((r) => r.paidAmount)
+            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      )
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const cost =
+    item.bookDamages
+      .flatMap((a) => a.repairPrice)
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const balance =
+    item.bookDamages
+      .flatMap((a) => a.repairBalance)
+
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
   return (
     <div className="flex flex-wrap gap-4">
       <Card className="h-fit w-full max-w-md">
@@ -176,8 +197,10 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           )}
         </CardFooter>
       </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
+
       <ItemDamages
-        individualItem={item as unknown as ModifiedLibData}
+        individualItem={{ ...item, assetDamages: item.bookDamages }}
         assetCategory={AssetCategory.LIBRARY}
       />
     </div>

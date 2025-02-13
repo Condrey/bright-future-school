@@ -301,7 +301,7 @@ export const libraryBookDataInclude = {
 export type LibraryBookData = Prisma.LibraryBookGetPayload<{
   include: typeof libraryBookDataInclude;
 }>;
-export type ModifiedLibData = Omit<IndividualLibraryBookData, "bookDamages"> & {
+export type ModifiedLibData = IndividualLibraryBookData & {
   assetDamages: IndividualLibraryBookData["bookDamages"];
 };
 

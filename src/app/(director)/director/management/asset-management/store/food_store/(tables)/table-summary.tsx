@@ -9,12 +9,52 @@ import { assetConditions, assetStatuses } from "@/lib/enums";
 import { FoodStoreItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { NumericHolder } from "../../../(header)/numeric-holder";
+import AssetRepairSummary from "../../../asset-repair-summary";
 
 interface TableSummaryProps {
   items: FoodStoreItemData[];
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
+  const payments =
+    items
+      .map(
+        (i) =>
+          i.individualFoodStoreItems
+            .map((g) =>
+              g.assetDamages.flatMap((a) =>
+                a.assetRepairPayments
+                  .flatMap((r) => r.paidAmount)
+                  .reduce((total, amount) => (total || 0) + (amount || 0), 0),
+              ),
+            )
+            .flat()
+            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      )
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const cost =
+    items
+      .map(
+        (i) =>
+          i.individualFoodStoreItems
+            .map((g) => g.assetDamages.flatMap((a) => a.repairPrice))
+            .flat()
+            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      )
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const balance =
+    items
+      .map(
+        (i) =>
+          i.individualFoodStoreItems
+            .map((g) => g.assetDamages.flatMap((a) => a.repairBalance))
+            .flat()
+            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      )
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-wrap gap-4 *:min-w-[24rem] *:flex-1">
       <Card>
@@ -51,6 +91,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
           })}
         </CardContent>
       </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
     </div>
   );
 }

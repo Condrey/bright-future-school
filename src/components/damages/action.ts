@@ -259,6 +259,7 @@ export async function updateDamage({
       await prisma.$transaction(
         async (tx) => {
           const previousPayments = await tx.assetRepairPayment.aggregate({
+            where: { assetDamageId: id },
             _sum: { paidAmount: true },
           });
           await tx.individualBook.update({
@@ -299,6 +300,7 @@ export async function updateDamage({
       await prisma.$transaction(
         async (tx) => {
           const previousPayments = await tx.assetRepairPayment.aggregate({
+            where: { assetDamageId: id },
             _sum: { paidAmount: true },
           });
           await tx.individualComputerLabItem.update({
@@ -343,6 +345,7 @@ export async function updateDamage({
       await prisma.$transaction(
         async (tx) => {
           const previousPayments = await tx.assetRepairPayment.aggregate({
+            where: { assetDamageId: id },
             _sum: { paidAmount: true },
           });
           await tx.individualLabItem.update({
@@ -384,6 +387,7 @@ export async function updateDamage({
       await prisma.$transaction(
         async (tx) => {
           const previousPayments = await tx.assetRepairPayment.aggregate({
+            where: { assetDamageId: id },
             _sum: { paidAmount: true },
           });
           await tx.individualGeneralStoreItem.update({
@@ -425,6 +429,7 @@ export async function updateDamage({
       await prisma.$transaction(
         async (tx) => {
           const previousPayments = await tx.assetRepairPayment.aggregate({
+            where: { assetDamageId: id },
             _sum: { paidAmount: true },
           });
           await tx.individualFoodStoreItem.update({

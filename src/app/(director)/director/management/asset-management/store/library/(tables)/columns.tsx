@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { assetItemStatuses, assetUnits } from "@/lib/enums";
 import { LibraryBookData } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus, BookStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -108,6 +108,81 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
             <div className="text-xs text-muted-foreground">
               (Updated {format(row.original.updatedAt, "PP")})
             </div>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    id: "repairPrice",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair cost" />;
+    },
+    cell({ row }) {
+      const price =
+        row.original.individualBooks
+          .map(
+            (i) =>
+              i.bookDamages
+                .flatMap((a) => a.repairPrice)
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0,
+          )
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+      return formatCurrency(price);
+    },
+  },
+  {
+    id: "repairBalance",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair balance" />;
+    },
+    cell({ row }) {
+      const hasDamages = !!row.original.individualBooks.flatMap(
+        (i) => i.bookDamages,
+      ).length;
+      const balance =
+        row.original.individualBooks
+          .map(
+            (i) =>
+              i.bookDamages
+                .flatMap((a) => a.repairBalance)
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0,
+          )
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const paid =
+        row.original.individualBooks
+          .map(
+            (i) =>
+              i.bookDamages
+                .flatMap((a) =>
+                  a.assetRepairPayments.flatMap((p) => p.paidAmount),
+                )
+                .reduce((total, amount) => (total || 0) + (amount || 0), 0) ||
+              0,
+          )
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+      return (
+        <div>
+          {hasDamages ? (
+            <div>
+              {paid <= 0 ? (
+                <Badge variant={"destructive"}>Not paid</Badge>
+              ) : (
+                <div>Paid {formatCurrency(paid)}</div>
+              )}
+              <div>
+                <span className="italic text-muted-foreground">bal of</span>{" "}
+                {formatCurrency(balance)}
+              </div>
+            </div>
+          ) : (
+            <span className="italic text-muted-foreground">
+              --Not applicable--
+            </span>
           )}
         </div>
       );

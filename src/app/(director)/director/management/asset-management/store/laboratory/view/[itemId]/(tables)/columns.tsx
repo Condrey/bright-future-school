@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { assetConditions, assetStatuses } from "@/lib/enums";
 import { IndividualLaboratoryItemData } from "@/lib/types";
-import { cn, formatNumber } from "@/lib/utils";
+import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import DropDownMenuIndividualItem from "./drop-down-menu-individual-item";
@@ -137,7 +137,59 @@ export const useItemColumn: ColumnDef<IndividualLaboratoryItemData>[] = [
       );
     },
   },
+  {
+    id: "assetDamages.repairPrice",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair cost" />;
+    },
+    cell({ row }) {
+      const price =
+        row.original.assetDamages
+          .flatMap((a) => a.repairPrice)
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      return formatCurrency(price);
+    },
+  },
+  {
+    id: "assetDamages.repairBalance",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Repair balance" />;
+    },
+    cell({ row }) {
+      const hasDamages = !!row.original.assetDamages.length;
 
+      const balance =
+        row.original.assetDamages
+          .flatMap((a) => a.repairBalance)
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+      const paid =
+        row.original.assetDamages
+          .flatMap((a) => a.assetRepairPayments.flatMap((p) => p.paidAmount))
+          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+      return (
+        <div>
+          {hasDamages ? (
+            <div>
+              {paid <= 0 ? (
+                <Badge variant={"destructive"}>Not paid</Badge>
+              ) : (
+                <div>Paid {formatCurrency(paid)}</div>
+              )}
+              <div>
+                <span className="italic text-muted-foreground">bal of</span>{" "}
+                {formatCurrency(balance)}
+              </div>
+            </div>
+          ) : (
+            <span className="italic text-muted-foreground">
+              --Not applicable--
+            </span>
+          )}
+        </div>
+      );
+    },
+  },
   {
     id: "action",
     header({ column }) {

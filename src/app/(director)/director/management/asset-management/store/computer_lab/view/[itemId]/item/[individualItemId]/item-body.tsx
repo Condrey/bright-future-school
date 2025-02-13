@@ -1,5 +1,6 @@
 "use client";
 
+import AssetRepairSummary from "@/app/(director)/director/management/asset-management/asset-repair-summary";
 import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
@@ -75,6 +76,27 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
     );
   }
   const Icon = assetCategories[item.computerLabItem.asset.category].icon;
+  const payments =
+    item.assetDamages
+      .flatMap(
+        (a) =>
+          a.assetRepairPayments
+            .flatMap((r) => r.paidAmount)
+            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      )
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const cost =
+    item.assetDamages
+      .flatMap((a) => a.repairPrice)
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
+  const balance =
+    item.assetDamages
+      .flatMap((a) => a.repairBalance)
+
+      .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
+
   return (
     <div className="flex flex-wrap gap-4">
       <Card className="h-fit w-full max-w-md">
@@ -195,6 +217,7 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           )}
         </CardFooter>
       </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
       <ItemDamages
         individualItem={item}
         assetCategory={AssetCategory.COMPUTER_LAB}

@@ -33,9 +33,8 @@ export default async function Page({ params }: PageProps) {
               individualItem.uniqueIdentifier || "Unknown unique Identifier",
           },
         ]}
-        className="max-w-[90rem]"
       />
-      <BodyContainer className="max-w-[90rem]">
+      <BodyContainer>
         <ItemBody oldItem={individualItem} />
       </BodyContainer>
     </Fragment>

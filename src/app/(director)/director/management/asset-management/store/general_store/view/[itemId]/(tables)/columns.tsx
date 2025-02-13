@@ -156,6 +156,8 @@ export const useItemColumn: ColumnDef<IndividualGeneralStoreItemData>[] = [
       return <DataTableColumnHeader column={column} title="Repair balance" />;
     },
     cell({ row }) {
+      const hasDamages = !!row.original.assetDamages.length;
+
       const balance =
         row.original.assetDamages
           .flatMap((a) => a.repairBalance)
@@ -167,15 +169,23 @@ export const useItemColumn: ColumnDef<IndividualGeneralStoreItemData>[] = [
 
       return (
         <div>
-          {paid <= 0 ? (
-            <Badge variant={"destructive"}>Not paid</Badge>
+          {hasDamages ? (
+            <div>
+              {paid <= 0 ? (
+                <Badge variant={"destructive"}>Not paid</Badge>
+              ) : (
+                <div>Paid {formatCurrency(paid)}</div>
+              )}
+              <div>
+                <span className="italic text-muted-foreground">bal of</span>{" "}
+                {formatCurrency(balance)}
+              </div>
+            </div>
           ) : (
-            <div>Paid {formatCurrency(paid)}</div>
+            <span className="italic text-muted-foreground">
+              --Not applicable--
+            </span>
           )}
-          <div>
-            <span className="italic text-muted-foreground">bal of</span>{" "}
-            {formatCurrency(balance)}
-          </div>
         </div>
       );
     },
