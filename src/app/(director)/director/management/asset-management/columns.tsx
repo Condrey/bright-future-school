@@ -125,10 +125,10 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
     cell: ({ row }) => {
       return (
         <div>
-          <div>{format(row.original.createdAt, "PPpp")}</div>
+          <div>{format(row.original.createdAt, "PP")}</div>
           {row.original.updatedAt > row.original.createdAt && (
             <div className="text-xs text-muted-foreground">
-              (Updated {format(row.original.updatedAt, "PPpp")})
+              (Updated {format(row.original.updatedAt, "PP")})
             </div>
           )}
         </div>
