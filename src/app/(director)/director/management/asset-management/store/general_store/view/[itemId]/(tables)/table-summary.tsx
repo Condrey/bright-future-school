@@ -9,6 +9,7 @@ import { assetConditions, assetStatuses } from "@/lib/enums";
 import { IndividualGeneralStoreItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { NumericHolder } from "../../../../../(header)/numeric-holder";
+import AssetRepairSummary from "../../../../../asset-repair-summary";
 
 interface TableSummaryProps {
   items: IndividualGeneralStoreItemData[];
@@ -67,20 +68,8 @@ export default function TableSummary({ items }: TableSummaryProps) {
             return <NumericHolder key={status} count={count} label={label} />;
           })}
         </CardContent>
-      </Card>{" "}
-      <Card>
-        <CardHeader>
-          <CardTitle>Repair payments</CardTitle>
-          <CardDescription>
-            Figures of payments made to repair this sub asset
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-row flex-wrap gap-2">
-          <NumericHolder isCurrency count={cost} label={"Repair cost"} />
-          <NumericHolder isCurrency count={payments} label={"Paid amount"} />
-          <NumericHolder isCurrency count={balance} label={"Pending amount"} />
-        </CardContent>
       </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
     </div>
   );
 }

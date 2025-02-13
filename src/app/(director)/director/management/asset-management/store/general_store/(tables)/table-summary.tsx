@@ -9,6 +9,7 @@ import { assetConditions, assetStatuses } from "@/lib/enums";
 import { GeneralStoreItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
 import { NumericHolder } from "../../../(header)/numeric-holder";
+import AssetRepairSummary from "../../../asset-repair-summary";
 
 interface TableSummaryProps {
   items: GeneralStoreItemData[];
@@ -21,14 +22,10 @@ export default function TableSummary({ items }: TableSummaryProps) {
         (i) =>
           i.individualGeneralStoreItems
             .map((g) =>
-              g.assetDamages.flatMap(
-                (a) =>
-                  a.assetRepairPayments
-                    .flatMap((r) => r.paidAmount)
-                    .reduce(
-                      (total, amount) => (total || 0) + (amount || 0) || 0,
-                    ),
-                0,
+              g.assetDamages.flatMap((a) =>
+                a.assetRepairPayments
+                  .flatMap((r) => r.paidAmount)
+                  .reduce((total, amount) => (total || 0) + (amount || 0), 0),
               ),
             )
             .flat()
@@ -96,17 +93,7 @@ export default function TableSummary({ items }: TableSummaryProps) {
           })}
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Statuses</CardTitle>
-          <CardDescription>Summary showing sub asset statuses</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-row flex-wrap gap-2">
-          <NumericHolder isCurrency count={cost} label={"Repair cost"} />
-          <NumericHolder isCurrency count={payments} label={"Paid amount"} />
-          <NumericHolder isCurrency count={balance} label={"Pending amount"} />
-        </CardContent>
-      </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
     </div>
   );
 }

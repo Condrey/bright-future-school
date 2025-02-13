@@ -10,6 +10,13 @@ export default {
   theme: {
     extend: {
       colors: {
+        // custom
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+
+        //main
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { NumericHolder } from "@/app/(director)/director/management/asset-management/(header)/numeric-holder";
+import AssetRepairSummary from "@/app/(director)/director/management/asset-management/asset-repair-summary";
 import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -206,19 +205,8 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           )}
         </CardFooter>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Repair payments</CardTitle>
-          <CardDescription>
-            Figures of payments made to repair this sub asset variant
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-row flex-wrap gap-2">
-          <NumericHolder isCurrency count={cost} label={"Repair cost"} />
-          <NumericHolder isCurrency count={payments} label={"Paid amount"} />
-          <NumericHolder isCurrency count={balance} label={"Pending amount"} />
-        </CardContent>
-      </Card>
+      <AssetRepairSummary cost={cost} payments={payments} balance={balance} />
+
       <ItemDamages
         individualItem={item}
         assetCategory={AssetCategory.GENERAL_STORE}
