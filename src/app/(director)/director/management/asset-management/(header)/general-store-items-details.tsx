@@ -1,3 +1,5 @@
+"use client";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import { assetItemStatuses } from "@/lib/enums";
 import { formatNumber } from "@/lib/utils";

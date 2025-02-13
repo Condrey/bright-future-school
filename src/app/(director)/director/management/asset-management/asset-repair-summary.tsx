@@ -19,7 +19,7 @@ export default function AssetRepairSummary({
   cost,
 }: AssetRepairSummaryProps) {
   return (
-    <Card className="bg-secondary text-secondary-foreground">
+    <Card className="bg-gradient-to-br from-secondary/20 to-secondary text-secondary-foreground">
       <CardHeader>
         <CardTitle>Repair payments</CardTitle>
         <CardDescription>Figures of payments made in repair</CardDescription>

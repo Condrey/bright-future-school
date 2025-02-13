@@ -282,13 +282,24 @@ export type AssetDamageData = Prisma.AssetDamageGetPayload<{
 }>;
 
 // Library
+// Borrower
+export const borrowerDataInclude = {
+  user: { select: userDataSelect },
+} satisfies Prisma.BorrowerInclude;
+export type BorrowerData = Prisma.BorrowerGetPayload<{
+  include: typeof borrowerDataInclude;
+}>;
 export const individualLibraryBookDataInclude = {
   libraryBook: { include: { asset: true } },
   bookDamages: {
     orderBy: { createdAt: "desc" },
     include: assetDamageDataInclude,
   },
-  _count: { select: { bookDamages: true } },
+  borrowers: {
+    orderBy: { borrowedAt: "desc" },
+    include: borrowerDataInclude,
+  },
+  _count: { select: { bookDamages: true, borrowers: true } },
 } satisfies Prisma.IndividualBookInclude;
 export type IndividualLibraryBookData = Prisma.IndividualBookGetPayload<{
   include: typeof individualLibraryBookDataInclude;

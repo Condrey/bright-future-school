@@ -17,6 +17,7 @@ import {
   BookStatus,
   Role,
 } from "@prisma/client";
+import { cache } from "react";
 
 export async function upsertAssetRepairPayment({
   input,
@@ -53,7 +54,7 @@ export async function upsertAssetRepairPayment({
   });
 }
 
-export async function getAllPossibleAssetDamagers() {
+export async function possibleAssetDamagers() {
   const currentYear = new Date().getFullYear();
   const data = await prisma.academicYear.findFirst({
     where: { year: { equals: currentYear.toString() } },
@@ -91,6 +92,7 @@ export async function getAllPossibleAssetDamagers() {
     ) || [];
   return formattedData;
 }
+export const getAllPossibleAssetDamagers = cache(possibleAssetDamagers);
 
 export async function addDamage({
   input,

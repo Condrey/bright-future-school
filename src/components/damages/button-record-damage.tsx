@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { SchoolIcon, Users2Icon } from "lucide-react";
 import { useState } from "react";
 import FormAddEditDamage from "./form-add-edit-damage";
 
@@ -41,16 +43,20 @@ export default function ButtonRecordDamage({
             className={cn("w-fit", className)}
           >
             {label || "Register a damage"}
+            <CaretSortIcon className="ml-2 size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuLabel>Cost of payment levied on</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => onItemClicked(true)}>
-              Pupil/ student
+              <Users2Icon className="mr-2 size-4" />
+              <span>Pupil/ student</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onItemClicked(false)}>
-              School
+              <SchoolIcon className="mr-2 size-4" />
+
+              <span> School</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
