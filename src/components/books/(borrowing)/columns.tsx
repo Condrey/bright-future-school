@@ -1,14 +1,17 @@
 "use client";
 
+import { useSession } from "@/app/session-provider";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
+import { myPrivileges } from "@/lib/enums";
 import { BorrowerData } from "@/lib/types";
-import { BorrowStatus } from "@prisma/client";
+import { BorrowStatus, Role } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { BookIcon } from "lucide-react";
 import RetrieveBook from "./retrieve-book";
+import UnRetrieveBook from "./un-retrieve-book";
 
 export const useBorrowerColumns: ColumnDef<BorrowerData>[] = [
   {
@@ -109,12 +112,27 @@ export const useBorrowerColumns: ColumnDef<BorrowerData>[] = [
       return <DataTableColumnHeader column={column} title="Action" />;
     },
     cell: ({ row }) => {
+      const { user } = useSession();
+      const canByPass = myPrivileges[user.role].includes(Role.DIRECTOR);
       return (
-        <RetrieveBook
-          individualBookId={row.original.individualBookId!}
-          borrowerId={row.original.id}
-          disabled={row.original.status === BorrowStatus.RETURNED}
-        />
+        <div>
+          {canByPass && row.original.status === BorrowStatus.RETURNED ? (
+            <UnRetrieveBook
+              individualBookId={row.original.individualBookId!}
+              borrowerId={row.original.id}
+            />
+          ) : (
+            <RetrieveBook
+              individualBookId={row.original.individualBookId!}
+              borrowerId={row.original.id}
+              disabled={
+                canByPass
+                  ? false
+                  : row.original.status === BorrowStatus.RETURNED
+              }
+            />
+          )}
+        </div>
       );
     },
   },

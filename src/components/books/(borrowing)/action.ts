@@ -36,6 +36,27 @@ export async function retrieveBook({
   });
 }
 
+export async function unRetrieveBook({
+  individualBookId,
+  borrowerId,
+}: {
+  individualBookId: string;
+  borrowerId: string;
+}) {
+  await prisma.individualBook.update({
+    where: { id: individualBookId },
+    data: {
+      status: BookStatus.BORROWED,
+      borrowers: {
+        update: {
+          where: { id: borrowerId },
+          data: { returnAt: null, status: BorrowStatus.ONGOING },
+        },
+      },
+    },
+  });
+}
+
 export async function lendBook({ input }: { input: BorrowerSchema }) {
   const { borrowedAt, individualBookId, status, userId, id, returnAt } =
     borrowerSchema.parse(input);
