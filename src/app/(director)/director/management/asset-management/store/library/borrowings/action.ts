@@ -5,6 +5,7 @@ import { borrowerDataInclude } from "@/lib/types";
 
 export async function getAllBorrowings() {
   const data = await prisma.borrower.findMany({
+    orderBy: { borrowedAt: "desc" },
     include: borrowerDataInclude,
   });
   return data;

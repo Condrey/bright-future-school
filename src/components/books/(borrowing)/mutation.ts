@@ -30,6 +30,9 @@ export function useRetrieveBookMutation() {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({
+        queryKey: ["lib-books", "borrowing-list"],
+      });
       toast({ description: "Successfully recorded book retrieval" });
     },
     onError(error) {
