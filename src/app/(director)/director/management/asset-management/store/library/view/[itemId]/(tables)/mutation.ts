@@ -99,6 +99,7 @@ export function useAddMultipleItemMutation(libraryItem: LibraryBookData) {
         (_, index) =>
           ({
             libraryBook: libraryItem,
+            borrowCount: 0,
             bookDamages: [],
             borrowers: [],
             _count: { bookDamages: 0, borrowers: 0 },
