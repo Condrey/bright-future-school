@@ -44,6 +44,7 @@ export async function lendBook({ input }: { input: BorrowerSchema }) {
     where: { id: individualBookId },
     data: {
       status: BookStatus.BORROWED,
+      borrowCount: { increment: 1 },
       borrowers: {
         upsert: {
           where: { id },

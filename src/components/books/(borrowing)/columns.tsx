@@ -7,6 +7,7 @@ import { BorrowerData } from "@/lib/types";
 import { BorrowStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { BookIcon } from "lucide-react";
 import RetrieveBook from "./retrieve-book";
 
 export const useBorrowerColumns: ColumnDef<BorrowerData>[] = [
@@ -31,6 +32,30 @@ export const useBorrowerColumns: ColumnDef<BorrowerData>[] = [
             <div>{user.name}</div>
             <div className="text-xs text-muted-foreground">
               {user.telephone || user.email || `@${user.username}`}
+            </div>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "libraryBook.libraryBook.title",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Book" />;
+    },
+    cell: ({ row }) => {
+      const book = row.original.libraryBook;
+      return (
+        <div className="flex gap-2">
+          <BookIcon className="size-12 fill-secondary" strokeWidth={0.5} />
+          <div>
+            <div>{book?.libraryBook.title}</div>
+
+            <div className="text-xs">
+              <span className="italic">by</span> {book?.libraryBook.author}
+            </div>
+            <div className="flex flex-col gap-0.5 text-xs text-muted-foreground">
+              ISBN: {book?.isbn || "Not assigned"}
             </div>
           </div>
         </div>

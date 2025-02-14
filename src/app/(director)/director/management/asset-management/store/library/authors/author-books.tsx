@@ -21,6 +21,15 @@ export default function AuthorBooks() {
 
   const { data, status, isFetching, error, refetch } =
     useFetchAllAuthorLibBooksQuery(author);
+  if (!searchParamsAuthor) {
+    return (
+      <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
+        <p className="max-w-sm text-center text-muted-foreground">
+          Please choose an author from the side bar to display their books here.
+        </p>
+      </div>
+    );
+  }
   if (status === "error") {
     console.error(error);
     return (
@@ -39,7 +48,6 @@ export default function AuthorBooks() {
     );
   }
   if (status === "pending") {
-    console.error(error);
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
@@ -62,36 +70,27 @@ export default function AuthorBooks() {
 
   return (
     <div className="flex min-h-[28rem] w-full flex-col items-center">
-      {!author ? (
-        <div className="flex min-h-[28rem] flex-col items-center justify-center">
-          <p className="max-w-sm text-center text-muted-foreground">
-            Please choose an author from the side bar to display their books
-            here.
-          </p>
-        </div>
-      ) : (
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>{author}</CardTitle>
-            <CardDescription>
-              {data.length === 0 ? (
-                <span>There are no books belonging to this author</span>
-              ) : (
-                <span>{`Containing ${data.length} library book${data.length === 1 ? "" : "s"}`}</span>
-              )}
-            </CardDescription>
-          </CardHeader>
-          {data.length > 0 && (
-            <CardContent className="space-y-3">
-              <div className="flex flex-wrap gap-2">
-                {data.map((book) => (
-                  <BookContainer key={book.id} book={book} />
-                ))}
-              </div>
-            </CardContent>
-          )}
-        </Card>
-      )}
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>{author}</CardTitle>
+          <CardDescription>
+            {data.length === 0 ? (
+              <span>There are no books belonging to this author</span>
+            ) : (
+              <span>{`Containing ${data.length} library book${data.length === 1 ? "" : "s"}`}</span>
+            )}
+          </CardDescription>
+        </CardHeader>
+        {data.length > 0 && (
+          <CardContent className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {data.map((book) => (
+                <BookContainer key={book.id} book={book} />
+              ))}
+            </div>
+          </CardContent>
+        )}
+      </Card>
     </div>
   );
 }

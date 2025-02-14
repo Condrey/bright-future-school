@@ -3,7 +3,7 @@ import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 interface NumericHolderProps {
   className?: string;
   label: string;
-  count: number;
+  count: number | null;
   isCurrency?: boolean;
 }
 
@@ -27,7 +27,7 @@ export const NumericHolder = ({
           isCurrency && "font-normal",
         )}
       >
-        {isCurrency ? formatCurrency(count) : formatNumber(count)}
+        {isCurrency ? formatCurrency(count || 0) : formatNumber(count || 0)}
       </h1>
       <span
         className={cn(

@@ -7,6 +7,7 @@ export const PARAM_NAME_ROLE = "role";
 export const PARAM_NAME_LEVEL = "level";
 export const PARAM_NAME_LIB_BOOK_CATEGORY_ID = "lib-book-category";
 export const PARAM_NAME_LIB_BOOK_AUTHOR = "lib-book-author";
+export const PARAM_NAME_LIB_BOOK_VARIANT = "lib-book-variant";
 
 export const staffTypes: Record<StaffType, string> = {
   TEACHING_STAFF: "Teaching Staff",

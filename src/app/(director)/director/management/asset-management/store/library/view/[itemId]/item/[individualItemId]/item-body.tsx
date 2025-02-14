@@ -1,6 +1,8 @@
 "use client";
 
 import AssetRepairSummary from "@/app/(director)/director/management/asset-management/asset-repair-summary";
+import BookBorrowings from "@/components/books/(borrowing)/book-borrowings";
+import LendBorrowBook from "@/components/books/(borrowing)/lend-book";
 import ItemDamages from "@/components/damages/item-damages";
 import LoadingButton from "@/components/loading-button";
 import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
@@ -29,8 +31,6 @@ import { format } from "date-fns";
 import { AlertTriangleIcon, ChevronDown, HistoryIcon } from "lucide-react";
 import { useState } from "react";
 import { getIndividualBook } from "../../action";
-import BookBorrowings from "./(borrowing)/book-borrowings";
-import LendBorrowBook from "./(borrowing)/lend-book";
 import ButtonEditIndividualItem from "./button-edit-individual-item";
 
 interface ItemBodyProps {

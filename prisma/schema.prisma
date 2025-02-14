@@ -283,6 +283,7 @@ model IndividualBook {
   bookDamages   AssetDamage[]
   borrowers     Borrower[]
   libraryBook   LibraryBook    @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
+  borrowCount   Int            @default(0)
 
   @@map("individual_books")
 }

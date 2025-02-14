@@ -31,7 +31,7 @@ export default function BookBorrowings({
           columns={useBorrowerColumns}
           data={borrowers}
           ROWS_PER_TABLE={5}
-          filterColumn={{ id: "user_name", label: "name" }}
+          filterColumn={{ id: "user_name", label: "borrower" }}
         />
       )}
     </Fragment>

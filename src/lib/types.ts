@@ -285,6 +285,12 @@ export type AssetDamageData = Prisma.AssetDamageGetPayload<{
 // Borrower
 export const borrowerDataInclude = {
   user: { select: userDataSelect },
+  libraryBook: {
+    select: {
+      isbn: true,
+      libraryBook: { select: { title: true, author: true } },
+    },
+  },
 } satisfies Prisma.BorrowerInclude;
 export type BorrowerData = Prisma.BorrowerGetPayload<{
   include: typeof borrowerDataInclude;
