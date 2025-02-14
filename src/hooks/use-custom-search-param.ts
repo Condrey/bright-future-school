@@ -16,6 +16,14 @@ export const useCustomSearchParams = () => {
     },
     [searchParams],
   );
+  const updateSearchParamsAndNavigate = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      router.push(currentPathname + "?" + params.toString());
+    },
+    [searchParams, currentPathname, router],
+  );
 
   const navigateOnclick = useCallback(
     (name: string, value: string, pathname?: string) => {
@@ -65,6 +73,7 @@ export const useCustomSearchParams = () => {
 
   return {
     updateSearchParams,
+    updateSearchParamsAndNavigate,
     navigateOnclick,
     navigateOnclickWithoutUpdate,
     navigateOnclickWithPathnameWithoutUpdate,

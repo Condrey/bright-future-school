@@ -54,16 +54,28 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
     },
   },
   {
-    id: "status.available",
+    id: "borrowings",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Available" />
+      <DataTableColumnHeader column={column} title="Borrowings" />
     ),
     cell({ row }) {
+      const borrowings = row.original.individualBooks
+        .map((b) => b._count.borrowers)
+        .reduce((count, total) => count + total, 0);
       const available = row.original.individualBooks.filter(
         (i) => i.status === BookStatus.AVAILABLE,
       ).length;
       return (
-        <div>
+        <div className="space-y-2">
+          <div>
+            {borrowings === 0 ? (
+              <Badge variant="outline">Not yet borrowed</Badge>
+            ) : (
+              <Badge
+                variant={"secondary"}
+              >{`borrowed ${formatNumber(borrowings)} time${borrowings === 1 ? "" : "s"}`}</Badge>
+            )}
+          </div>
           {!row.original.trackQuantity ? (
             <Badge variant={"go"}>
               {assetItemStatuses[AssetStatus.AVAILABLE]}
@@ -82,7 +94,7 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
   {
     id: "condition.damaged",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Damaged" />
+      <DataTableColumnHeader column={column} title="Damages" />
     ),
     cell({ row }) {
       const damaged = row.original.individualBooks.filter(
@@ -92,24 +104,6 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
         <Badge variant={damaged === 0 ? "secondary" : "destructive"}>
           {damaged === 0 ? "None " : `${formatNumber(damaged)} damaged`}
         </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created at" />
-    ),
-    cell({ row }) {
-      return (
-        <div>
-          <div>{format(row.original.createdAt, "PP")}</div>
-          {row.original.updatedAt > row.original.createdAt && (
-            <div className="text-xs text-muted-foreground">
-              (Updated {format(row.original.updatedAt, "PP")})
-            </div>
-          )}
-        </div>
       );
     },
   },
@@ -130,7 +124,11 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
           )
           .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
 
-      return formatCurrency(price);
+      return price === 0 ? (
+        <span className="italic text-muted-foreground">--Not applicable--</span>
+      ) : (
+        formatCurrency(price)
+      );
     },
   },
   {
@@ -183,6 +181,25 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
             <span className="italic text-muted-foreground">
               --Not applicable--
             </span>
+          )}
+        </div>
+      );
+    },
+  },
+
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created at" />
+    ),
+    cell({ row }) {
+      return (
+        <div>
+          <div>{format(row.original.createdAt, "PP")}</div>
+          {row.original.updatedAt > row.original.createdAt && (
+            <div className="text-xs text-muted-foreground">
+              (Updated {format(row.original.updatedAt, "PP")})
+            </div>
           )}
         </div>
       );

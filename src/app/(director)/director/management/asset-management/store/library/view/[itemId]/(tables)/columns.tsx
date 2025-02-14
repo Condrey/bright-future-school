@@ -50,29 +50,6 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
     ),
   },
   {
-    accessorKey: "condition",
-    header({ column }) {
-      return <DataTableColumnHeader column={column} title="Condition" />;
-    },
-    cell: ({ row }) => {
-      const condition = row.original.condition;
-      return (
-        <Badge
-          variant={
-            condition === AssetCondition.DAMAGED ||
-            condition === AssetCondition.POOR
-              ? "destructive"
-              : condition === AssetCondition.FAIR
-                ? "warn"
-                : "go"
-          }
-        >
-          {assetConditions[condition]}
-        </Badge>
-      );
-    },
-  },
-  {
     accessorKey: "status",
     header({ column }) {
       return <DataTableColumnHeader column={column} title="Status" />;
@@ -94,6 +71,27 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
       );
     },
   },
+
+  {
+    accessorKey: "_count.borrowers",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Borrowings" />;
+    },
+    cell: ({ row }) => {
+      const borrowings = row.original._count.borrowers;
+      return (
+        <div>
+          {borrowings === 0 ? (
+            <Badge variant={"outline"}>{"Not yet borrowed"}</Badge>
+          ) : (
+            <Badge
+              variant={"secondary"}
+            >{`borrowed ${formatNumber(borrowings)} time${borrowings === 1 ? "" : "s"}`}</Badge>
+          )}
+        </div>
+      );
+    },
+  },
   {
     accessorKey: "_count.assetDamages",
     header({ column }) {
@@ -103,41 +101,30 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
     },
     cell: ({ row }) => {
       const damages = row.original._count.bookDamages;
-      return (
-        <div>
-          {damages === 0 ? (
-            <Badge variant={"outline"}>{"Not registered"}</Badge>
-          ) : (
-            <Badge
-              variant={"secondary"}
-            >{`${formatNumber(damages)} record${damages === 1 ? "" : "s"}`}</Badge>
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "_count.assetDamages.repairs",
-    header({ column }) {
-      return (
-        <DataTableColumnHeader column={column} title="Performed repairs" />
-      );
-    },
-    cell: ({ row }) => {
       const repairs = row.original.bookDamages.filter(
         (a) => a.isRepaired,
       ).length;
       return (
-        <div>
-          {repairs === 0 ? (
-            <div>{"No repairs"}</div>
+        <div className="flex flex-col items-center space-y-1.5">
+          {damages === 0 ? (
+            <Badge variant={"outline"}>{"None"}</Badge>
           ) : (
-            <div>{`${formatNumber(repairs)} repair${repairs === 1 ? "" : "s"}`}</div>
+            <Badge
+              variant={"secondary"}
+            >{`${formatNumber(damages)} damage${damages === 1 ? "" : "s"}`}</Badge>
           )}
+          <div className="text-xs text-muted-foreground">
+            {repairs === 0 ? (
+              <div>{"No repairs"}</div>
+            ) : (
+              <div>{`${formatNumber(repairs)} repair${repairs === 1 ? "" : "s"}`}</div>
+            )}
+          </div>
         </div>
       );
     },
   },
+
   {
     id: "bookDamages.repairPrice",
     header({ column }) {
@@ -168,13 +155,18 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
           .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
 
       return (
-        <div>
+        <div className="gap-1.5">
           {hasDamages ? (
             <div>
               {paid <= 0 ? (
-                <Badge variant={"destructive"}>Not paid</Badge>
+                <Badge
+                  variant={"destructive"}
+                  className="mx-auto w-full max-w-fit"
+                >
+                  Not paid
+                </Badge>
               ) : (
-                <div>Paid {formatCurrency(paid)}</div>
+                <span>Paid {formatCurrency(paid)}</span>
               )}
               <div>
                 <span className="italic text-muted-foreground">bal of</span>{" "}
@@ -187,6 +179,29 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
             </span>
           )}
         </div>
+      );
+    },
+  },
+  {
+    accessorKey: "condition",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Condition" />;
+    },
+    cell: ({ row }) => {
+      const condition = row.original.condition;
+      return (
+        <Badge
+          variant={
+            condition === AssetCondition.DAMAGED ||
+            condition === AssetCondition.POOR
+              ? "destructive"
+              : condition === AssetCondition.FAIR
+                ? "warn"
+                : "go"
+          }
+        >
+          {assetConditions[condition]}
+        </Badge>
       );
     },
   },

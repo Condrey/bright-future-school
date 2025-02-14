@@ -315,6 +315,14 @@ export type LibraryBookData = Prisma.LibraryBookGetPayload<{
 export type ModifiedLibData = IndividualLibraryBookData & {
   assetDamages: IndividualLibraryBookData["bookDamages"];
 };
+// Library book category
+export const libraryBookCategoryDataInclude = {
+  _count: { select: { libraryBooks: true } },
+  libraryBooks: { select: { title: true, author: true, id: true } },
+} satisfies Prisma.LibraryBookCategoryInclude;
+export type LibraryBookCategoryData = Prisma.LibraryBookCategoryGetPayload<{
+  include: typeof libraryBookCategoryDataInclude;
+}>;
 
 // Computer lab item
 export const individualComputerLabItemDataInclude = {
