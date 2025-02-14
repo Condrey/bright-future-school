@@ -70,6 +70,7 @@ export default function ButtonAddItem({
             singleItemMutation.mutate({
               input: {
                 id: cuid(),
+                borrowCount: 0,
                 libraryBookId: libraryItem.id,
                 condition: AssetCondition.NEW,
                 status: BookStatus.AVAILABLE,
