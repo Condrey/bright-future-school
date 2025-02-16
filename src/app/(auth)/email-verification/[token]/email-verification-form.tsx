@@ -23,7 +23,7 @@ import { emailSchema, EmailSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { checkIsEmailVerified, resendEmailVerificationLink } from "./action";
+import { checkIsEmailVerified, resendEmailVerificationLink, sendWelcomingRemarks } from "./action";
 import { toast } from "@/hooks/use-toast";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
@@ -44,7 +44,7 @@ export default function EmailVerificationForm({ email }: { email: string }) {
   })
 
   if(data){
-    
+     sendWelcomingRemarks(email)
   }
   async function handleEmailResend(input: EmailSchema) {
     const { error } = await resendEmailVerificationLink(input.email);
