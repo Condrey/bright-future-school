@@ -57,6 +57,19 @@ export const userSchema = z.object({
 });
 export type UserSchema = z.infer<typeof userSchema>;
 
+export const verifyUserSchema = z.object({
+  name: requiredString
+    .min(1, "Name must be provided.")
+    .transform((val) =>
+      val.trim().replace(/\b\w/g, (char) => char.toUpperCase()),
+    ),
+  id: requiredString,
+  username: requiredString,
+  email: requiredString,
+  telephone: requiredString,
+});
+export type VerifyUserSchema = z.infer<typeof userSchema>;
+
 // Pupil
 export const pupilSchema = z.object({
   user: userSchema,

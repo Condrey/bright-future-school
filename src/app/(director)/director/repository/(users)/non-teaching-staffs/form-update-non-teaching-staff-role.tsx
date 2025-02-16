@@ -79,7 +79,7 @@ export default function FormUpdateNonTeachingStaffRole({
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
+          {/* <pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
           <FormField
             control={form.control}
             name="user.role"

@@ -28,7 +28,7 @@ export async function login(
         },
       },
     });
-    console.log(existingUser);
+
     if (!existingUser || !existingUser.passwordHash) {
       return {
         error: "Incorrect username or password.",
@@ -56,7 +56,9 @@ export async function login(
       sessionCookie.value,
       sessionCookie.attributes,
     );
-    return redirect("/");
+    return redirect(
+      existingUser.isVerified ? "/" : `/user-verification/${existingUser.id}`,
+    );
   } catch (error) {
     console.error(`Login error: ${error}`);
     return {

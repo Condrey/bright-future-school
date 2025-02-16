@@ -76,7 +76,7 @@ export async function signUp(
       sessionCookie.value,
       sessionCookie.attributes,
     );
-    return redirect("/dashboard");
+    return redirect("/");
   } catch (error) {
     console.error(error);
     return {
