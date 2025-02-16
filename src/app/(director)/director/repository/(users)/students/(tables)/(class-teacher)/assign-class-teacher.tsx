@@ -25,6 +25,7 @@ export default function AssignClassTeacher({
   classStream,
   year,
 }: AssignClassTeacherProps) {
+  
   const className = classStream.class?.class?.name;
   const streamName = classStream.stream?.name;
   const classTeacher = classStream.classTeacher;

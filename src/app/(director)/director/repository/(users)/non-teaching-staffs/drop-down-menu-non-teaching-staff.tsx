@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -10,10 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { StaffData as NonTeachingStaff } from "@/lib/types";
 import { Role } from "@prisma/client";
-import { CopyIcon, Edit2Icon, MoreHorizontal, Trash2Icon } from "lucide-react";
+import { CopyIcon, Edit2Icon, MoreHorizontal, ShieldIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import DialogDeleteNonTeachingStaff from "./dialog-delete-non-teaching-staff";
 import FormAddEditNonTeachingStaff from "./form-add-edit-non-teaching-staff";
+import FormUpdateNonTeachingStaffRole from "./form-update-non-teaching-staff-role";
 
 interface DropDownMenuNonTeachingStaffProps {
   nonTeachingStaff: NonTeachingStaff;
@@ -23,6 +25,8 @@ export default function DropDownMenuNonTeachingStaff({
   nonTeachingStaff,
 }: DropDownMenuNonTeachingStaffProps) {
   const [showDialog, setShowDialog] = useState(false);
+  const [showRoleDialog,setShowRoleDialog]=useState(false)
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
 
@@ -37,7 +41,14 @@ export default function DropDownMenuNonTeachingStaff({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+         <DropdownMenuGroup>
+         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+         <DropdownMenuItem
+            onClick={() => setShowRoleDialog(true)}
+          >
+            <ShieldIcon className="mr-2 size-4 " />
+            <span>Update role</span>
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => navigator.clipboard.writeText(nonTeachingStaff.id)}
           >
@@ -55,6 +66,7 @@ export default function DropDownMenuNonTeachingStaff({
             </DropdownMenuItem>
           )}
           <DropdownMenuSeparator />
+         </DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => setShowDialog(true)}
             className="font-semibold text-foreground"
@@ -72,6 +84,12 @@ export default function DropDownMenuNonTeachingStaff({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+        <FormUpdateNonTeachingStaffRole
+              nonTeachingStaff={nonTeachingStaff}
+              open={showRoleDialog}
+              setOpen={setShowRoleDialog}
+            />
 
       <FormAddEditNonTeachingStaff
         nonTeachingStaffToEdit={nonTeachingStaff}

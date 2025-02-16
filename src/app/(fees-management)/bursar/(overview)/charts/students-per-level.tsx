@@ -90,7 +90,9 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
     <Card>
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie chart - School pupils/ students per Level</CardTitle>
-        <CardDescription>For this year, {new Date().getFullYear()}</CardDescription>
+        <CardDescription>
+          For this year, {new Date().getFullYear()}
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -99,7 +101,13 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
         >
           <PieChart>
             <ChartTooltip
-              content={<ChartTooltipContent labelFormatter={value=><span>{value}(pupils/ students)</span>} />}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) => (
+                    <span>{value}(pupils/ students)</span>
+                  )}
+                />
+              }
               formatter={(value, name, item, index) => (
                 <>
                   <div

@@ -21,6 +21,7 @@ import {
   useAddNonTeachingStaffMutation,
   useUpdateNonTeachingStaffMutation,
 } from "./mutation";
+import { Role } from "@prisma/client";
 
 interface FormAddEditNonTeachingStaffProps {
   nonTeachingStaffToEdit?: StaffData;
@@ -45,8 +46,10 @@ export default function FormAddEditNonTeachingStaff({
             name: nonTeachingStaffToEdit.user?.name ?? "",
             telephone: nonTeachingStaffToEdit.user?.telephone ?? "",
             username: nonTeachingStaffToEdit.user?.username ?? "",
+                        role: nonTeachingStaffToEdit.user?.role ?? Role.USER
+            
           }
-        : { email: "", id: "", name: "", telephone: "", username: "" },
+        : { email: "", id: "", name: "", telephone: "", username: "",role:Role.USER },
       id: nonTeachingStaffToEdit?.id || "",
     },
   });

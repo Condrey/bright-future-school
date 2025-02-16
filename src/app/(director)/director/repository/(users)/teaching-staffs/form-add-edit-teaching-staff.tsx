@@ -18,6 +18,7 @@ import {
   useAddTeachingStaffMutation,
   useUpdateTeachingStaffMutation,
 } from "./mutation";
+import { Role } from "@prisma/client";
 
 interface FormAddEditTeachingStaffProps {
   teachingStaffToEdit?: StaffData;
@@ -35,15 +36,16 @@ export default function FormAddEditTeachingStaff({
   const form = useForm<TeachingStaffSchema>({
     resolver: zodResolver(teachingStaffSchema),
     values: {
-      user: teachingStaffToEdit
-        ? {
-            email: teachingStaffToEdit.user?.email ?? "",
-            id: teachingStaffToEdit.user?.id ?? "",
-            name: teachingStaffToEdit.user?.name ?? "",
-            telephone: teachingStaffToEdit.user?.telephone ?? "",
-            username: teachingStaffToEdit.user?.username ?? "",
-          }
-        : { email: "", id: "", name: "", telephone: "", username: "" },
+         user: teachingStaffToEdit
+           ? {
+               email: teachingStaffToEdit.user?.email ?? "",
+               id: teachingStaffToEdit.user?.id ?? "",
+               name: teachingStaffToEdit.user?.name ?? "",
+               telephone: teachingStaffToEdit.user?.telephone ?? "",
+               username: teachingStaffToEdit.user?.username ?? "",
+               role: teachingStaffToEdit.user?.role ?? Role.USER
+             }
+           : { email: "", id: "", name: "", telephone: "", username: "",role:Role.USER },
       id: teachingStaffToEdit?.id || "",
     },
   });

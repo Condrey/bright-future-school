@@ -7,6 +7,9 @@ import { StaffData as TeachingStaff } from "@/lib/types";
 import { AlertTriangle } from "lucide-react";
 import { useFetchTeachingStaffs } from "../hooks";
 import { useTeachingStaffColumns } from "./columns";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Role } from "@prisma/client";
+import { teachingStaffCategories, userRoles } from "@/lib/enums";
 
 interface ListOfTeachingStaffsProps {
   teachingStaffs: TeachingStaff[];
@@ -43,11 +46,27 @@ export default function ListOfTeachingStaffs({
     );
   }
   return (
-    <DataTable
-      columns={useTeachingStaffColumns}
-      data={data}
-      filterColumn={{ id: "user_name", label: "Name" }}
-      ROWS_PER_TABLE={10}
-    />
+    <div className="flex flex-col gap-4">
+      {/* <Tabs>
+        <TabsList className="max-w-md">
+          {teachingStaffCategories.map((role) => {
+            const { label, icon } = userRoles[role];
+            const Icon = icon;
+            return (
+              <TabsTrigger key={role} value={role}>
+                <Icon className="mr-2 size-4" />
+                {label}
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+      </Tabs> */}
+      <DataTable
+        columns={useTeachingStaffColumns}
+        data={data}
+        filterColumn={{ id: "user_name", label: "Name" }}
+        ROWS_PER_TABLE={10}
+      />
+    </div>
   );
 }

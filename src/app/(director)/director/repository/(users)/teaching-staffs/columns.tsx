@@ -4,8 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
 import { staffTypes } from "@/lib/constants";
+import { userRoles } from "@/lib/enums";
 import { StaffData as TeachingStaff } from "@/lib/types";
-import { StaffType } from "@prisma/client";
+import { Role, StaffType } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import DropDownMenuTeachingStaff from "./drop-down-menu-teaching-staff";
 
@@ -42,9 +43,32 @@ export const useTeachingStaffColumns: ColumnDef<TeachingStaff>[] = [
     },
   },
   {
+    accessorKey: "user.role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Staff Role" />
+    ),
+    cell({ row }) {
+      const staffRole = row.original.user?.role || Role.USER;
+      const { label, icon, description } = userRoles[staffRole];
+      const Icon = icon;
+      return (
+        <>
+          {staffRole === Role.USER || staffRole === Role.STAFF ? (
+            <Badge variant={"destructive"}>Not assigned</Badge>
+          ) : (
+            <Badge variant={"secondary"} className="text-xs">
+              <Icon className="mr-2 size-4" />
+              {label}
+            </Badge>
+          )}
+        </>
+      );
+    },
+  },
+  {
     accessorKey: "staffType",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Staff" />
+      <DataTableColumnHeader column={column} title="Staff type" />
     ),
     cell({ row }) {
       const staffType = row.original.staffType;

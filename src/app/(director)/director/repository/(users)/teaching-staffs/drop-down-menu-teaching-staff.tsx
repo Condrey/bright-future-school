@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -10,10 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { StaffData as TeachingStaff } from "@/lib/types";
 import { Role } from "@prisma/client";
-import { CopyIcon, Edit2Icon, MoreHorizontal, Trash2Icon } from "lucide-react";
+import { CopyIcon, Edit2Icon, MoreHorizontal, ShieldIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import DialogDeleteTeachingStaff from "./dialog-delete-teaching-staff";
 import FormAddEditTeachingStaff from "./form-add-edit-teaching-staff";
+import FormUpdateTeachingStaffRole from "./form-update-teaching-staff-role";
 
 interface DropDownMenuTeachingStaffProps {
   teachingStaff: TeachingStaff;
@@ -23,6 +25,7 @@ export default function DropDownMenuTeachingStaff({
   teachingStaff,
 }: DropDownMenuTeachingStaffProps) {
   const [showDialog, setShowDialog] = useState(false);
+  const [showRoleDialog,setShowRoleDialog]=useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
 
@@ -37,7 +40,13 @@ export default function DropDownMenuTeachingStaff({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuGroup><DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => setShowRoleDialog(true)}
+          >
+            <ShieldIcon className="mr-2 size-4 " />
+            <span>Update role</span>
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => navigator.clipboard.writeText(teachingStaff.id)}
           >
@@ -54,7 +63,7 @@ export default function DropDownMenuTeachingStaff({
               <span>Copy teaching staff</span>
             </DropdownMenuItem>
           )}
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator /></DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => setShowDialog(true)}
             className="font-semibold text-foreground"
@@ -77,6 +86,11 @@ export default function DropDownMenuTeachingStaff({
         teachingStaffToEdit={teachingStaff}
         open={showDialog}
         setOpen={setShowDialog}
+      />
+      <FormUpdateTeachingStaffRole
+        teachingStaff={teachingStaff}
+        open={showRoleDialog}
+        setOpen={setShowRoleDialog}
       />
       <DialogDeleteTeachingStaff
         teachingStaff={teachingStaff}

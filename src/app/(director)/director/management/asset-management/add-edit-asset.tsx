@@ -102,8 +102,8 @@ export default function AddEditAsset({
                   </FormControl>
                   <SelectContent>
                     {Object.values(AssetCategory).map((value) => {
-                      const Icon = assetCategories[value].icon;
-                      const label = assetCategories[value].label;
+                      const {label,icon,} = assetCategories[value]
+                      const Icon = icon;
                       return (
                         <SelectItem key={value} value={value}>
                           <div className="flex flex-row items-center">

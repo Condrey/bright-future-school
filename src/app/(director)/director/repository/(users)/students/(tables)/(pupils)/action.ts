@@ -24,11 +24,11 @@ export async function addUnregisteredPupil({
   const {
     user: { name },
   } = pupilSchema.parse(input);
-  const currentTimeMillis = Date.now().toString();
+  const currentTimeMills = Date.now().toString();
   const password =
     name.split(" ").pop() +
     "_learner@" +
-    currentTimeMillis.substring(currentTimeMillis.length - 3);
+    currentTimeMills.substring(currentTimeMills.length - 3);
 
   const passwordHash = await hash(password, {
     memoryCost: 19456,
@@ -45,7 +45,7 @@ export async function addUnregisteredPupil({
       });
       if (!!userWithUsername) {
         username =
-          username + currentTimeMillis.substring(currentTimeMillis.length - 3);
+          username + currentTimeMills.substring(currentTimeMills.length - 3);
       }
       const { id } = await tx.user.create({
         data: {

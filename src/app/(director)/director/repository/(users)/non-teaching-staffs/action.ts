@@ -8,7 +8,7 @@ import {
   NonTeachingStaffSchema,
 } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
-import { StaffType } from "@prisma/client";
+import { Role, StaffType } from "@prisma/client";
 
 export async function getNonTeachingStaffsAction() {
   const nonTeachingStaffs = await prisma.staff.findMany({
@@ -23,11 +23,11 @@ export async function addNonTeachingStaffAction(input: NonTeachingStaffSchema) {
   const {
     user: { name },
   } = nonTeachingStaffSchema.parse(input);
-  const currentTimeMillis = Date.now().toString();
+  const currentTimeMills = Date.now().toString();
   const password =
     name.split(" ").pop() +
-    "_staff@" +
-    currentTimeMillis.substring(currentTimeMillis.length - 3);
+    "_nts@" +
+    currentTimeMills.substring(currentTimeMills.length - 3);
 
   const passwordHash = await hash(password, {
     memoryCost: 19456,
@@ -44,7 +44,7 @@ export async function addNonTeachingStaffAction(input: NonTeachingStaffSchema) {
       });
       if (!!userWithUsername) {
         username =
-          username + currentTimeMillis.substring(currentTimeMillis.length - 3);
+          username + currentTimeMills.substring(currentTimeMills.length - 3);
       }
 
       const { id } = await tx.user.create({
@@ -52,6 +52,7 @@ export async function addNonTeachingStaffAction(input: NonTeachingStaffSchema) {
           name,
           username,
           passwordHash,
+          role: Role.STAFF,
         },
       });
       const staff = await tx.staff.create({
@@ -85,7 +86,7 @@ export async function editNonTeachingStaffAction(
   input: NonTeachingStaffSchema,
 ) {
   const {
-    user: { name, id },
+    user: { name, id, role, email, telephone, username },
     id: staffId,
   } = nonTeachingStaffSchema.parse(input);
 
@@ -95,6 +96,10 @@ export async function editNonTeachingStaffAction(
         where: { id },
         data: {
           name,
+          role,
+          email: email || null,
+          telephone,
+          username,
         },
       });
       const staff = await tx.staff.findUnique({

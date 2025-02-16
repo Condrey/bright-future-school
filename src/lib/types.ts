@@ -12,7 +12,7 @@ export const userDataSelect = {
 
 //  Staff
 export const staffDataInclude = {
-  user: { select: userDataSelect },
+  user: { select: { ...userDataSelect, role: true } },
 } satisfies Prisma.StaffInclude;
 
 export type StaffData = Prisma.StaffGetPayload<{

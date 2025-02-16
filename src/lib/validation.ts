@@ -6,6 +6,7 @@ import {
   AssetUnit,
   BookStatus,
   BorrowStatus,
+  Role,
 } from "@prisma/client";
 import z from "zod";
 
@@ -65,13 +66,13 @@ export type PupilSchema = z.infer<typeof pupilSchema>;
 
 // Teaching Staff
 export const teachingStaffSchema = z.object({
-  user: userSchema,
+  user: userSchema.extend({role:z.nativeEnum(Role).default(Role.USER)}),
   id: z.string().optional(),
 });
 export type TeachingStaffSchema = z.infer<typeof teachingStaffSchema>;
 // Non Teaching Staff
 export const nonTeachingStaffSchema = z.object({
-  user: userSchema,
+  user: userSchema.extend({role:z.nativeEnum(Role).default(Role.USER)}),
   id: z.string().optional(),
 });
 export type NonTeachingStaffSchema = z.infer<typeof nonTeachingStaffSchema>;

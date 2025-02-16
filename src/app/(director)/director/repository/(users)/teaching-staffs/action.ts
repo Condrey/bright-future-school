@@ -5,7 +5,7 @@ import { staffDataInclude } from "@/lib/types";
 import { slugify } from "@/lib/utils";
 import { teachingStaffSchema, TeachingStaffSchema } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
-import { StaffType } from "@prisma/client";
+import { Role, StaffType } from "@prisma/client";
 
 export async function getTeachingStaffsAction() {
   const teachingStaffs = await prisma.staff.findMany({
@@ -20,11 +20,11 @@ export async function addTeachingStaffAction(input: TeachingStaffSchema) {
   const {
     user: { name },
   } = teachingStaffSchema.parse(input);
-  const currentTimeMillis = Date.now().toString();
+  const currentTimeMills = Date.now().toString();
   const password =
     name.split(" ").pop() +
     "_staff@" +
-    currentTimeMillis.substring(currentTimeMillis.length - 3);
+    currentTimeMills.substring(currentTimeMills.length - 3);
 
   const passwordHash = await hash(password, {
     memoryCost: 19456,
@@ -41,14 +41,15 @@ export async function addTeachingStaffAction(input: TeachingStaffSchema) {
       });
       if (!!userWithUsername) {
         username =
-          username + currentTimeMillis.substring(currentTimeMillis.length - 3);
+          username + currentTimeMills.substring(currentTimeMills.length - 3);
       }
 
       const { id } = await tx.user.create({
         data: {
           name,
           username,
-          passwordHash,
+          passwordHash,          role:Role.STAFF
+          
         },
       });
       const staff = await tx.staff.create({
@@ -80,7 +81,7 @@ export async function addTeachingStaffAction(input: TeachingStaffSchema) {
 
 export async function editTeachingStaffAction(input: TeachingStaffSchema) {
   const {
-    user: { name, id },
+    user: { name, id, role, email,telephone,username, },
     id: staffId,
   } = teachingStaffSchema.parse(input);
 
@@ -89,7 +90,7 @@ export async function editTeachingStaffAction(input: TeachingStaffSchema) {
       await tx.user.update({
         where: { id },
         data: {
-          name,
+          name, role, email,telephone,username,
         },
       });
       const staff = await tx.staff.findUnique({

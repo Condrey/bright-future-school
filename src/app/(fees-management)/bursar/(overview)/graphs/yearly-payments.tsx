@@ -141,10 +141,15 @@ export default function YearlyPayments({ payments }: YearlyPaymentsProps) {
                             } as React.CSSProperties
                           }
                         />
-                       <span className=" text-muted-foreground"> {chartConfig[name as keyof typeof chartConfig]?.label ||
-                          name}</span>
-                        <div className="ml-auto flex items-baseline font-bold gap-0.5 font-mono  tabular-nums text-foreground">
-                            {item.dataKey === "totalAmountPaid" ? formatCurrency(value as number) : formatNumber(value as number)}
+                        <span className="text-muted-foreground">
+                          {" "}
+                          {chartConfig[name as keyof typeof chartConfig]
+                            ?.label || name}
+                        </span>
+                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums text-foreground">
+                          {item.dataKey === "totalAmountPaid"
+                            ? formatCurrency(value as number)
+                            : formatNumber(value as number)}
                         </div>
                       </>
                     )}

@@ -205,7 +205,8 @@ export const myPrivileges: Record<Role, Role[]> = {
   DIRECTOR: allRoles.filter((role) => role !== Role.SUPER_ADMIN),
 
   BURSAR: Object.values(Role).filter(
-    (role) => !([Role.SUPER_ADMIN, Role.DIRECTOR] as Role[]).includes(role),
+    (role) =>
+      !([Role.SUPER_ADMIN, Role.DIRECTOR, Role.USER] as Role[]).includes(role),
   ),
 
   ASSET_CARETAKER: [
@@ -231,6 +232,27 @@ export const myPrivileges: Record<Role, Role[]> = {
   STAFF: [Role.STAFF],
   USER: [Role.USER],
 };
+
+export const allTeachingStaffCategories = allRoles.filter(
+  (r) =>
+    !(
+      [Role.USER, Role.STAFF, Role.SUPER_ADMIN, Role.CLASS_TEACHER] as Role[]
+    ).includes(r),
+);
+
+export const teachingStaffCategories = [
+  Role.DIRECTOR,
+  Role.BURSAR,
+  Role.CLASS_TEACHER,
+];
+export const assetCaretakerCategories = [
+  Role.ASSET_CARETAKER,
+  Role.LIBRARY_ASSET_CARETAKER,
+  Role.FOOD_STORE_ASSET_CARETAKER,
+  Role.LABORATORY_ASSET_CARETAKER,
+  Role.COMPUTER_LAB_ASSET_CARETAKER,
+  Role.GENERAL_STORE_ASSET_CARETAKER,
+];
 
 const myDeniedPrivileges = (myRole: Role) => {
   const deniedPrivileges: Record<Role, Role[]> = {} as Record<Role, Role[]>;

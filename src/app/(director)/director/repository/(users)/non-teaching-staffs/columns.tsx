@@ -4,8 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import UserAvatar from "@/components/user-avatar";
 import { staffTypes } from "@/lib/constants";
+import { userRoles } from "@/lib/enums";
 import { StaffData as NonTeachingStaff } from "@/lib/types";
-import { StaffType } from "@prisma/client";
+import { Role, StaffType } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import DropDownMenuNonTeachingStaff from "./drop-down-menu-non-teaching-staff";
 
@@ -36,6 +37,29 @@ export const useNonTeachingStaffColumns: ColumnDef<NonTeachingStaff>[] = [
                 </div>
               </div>
             </div>
+          )}
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "user.role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Staff Role" />
+    ),
+    cell({ row }) {
+      const staffRole = row.original.user?.role || Role.USER;
+      const { label, icon, description } = userRoles[staffRole];
+      const Icon = icon;
+      return (
+        <>
+          {staffRole === Role.USER || staffRole === Role.STAFF ? (
+            <Badge variant={"destructive"}>Not assigned</Badge>
+          ) : (
+            <Badge variant={"secondary"} className="text-xs">
+              <Icon className="mr-2 size-4" />
+              {label}
+            </Badge>
           )}
         </>
       );

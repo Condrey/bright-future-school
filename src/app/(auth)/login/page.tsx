@@ -15,12 +15,12 @@ export default function Page() {
         <div className="w-full space-y-10 overflow-y-auto p-10 md:w-1/2">
           <h1 className="text-3xl font-bold">{`Login to ${webName}`}</h1>
           <div className="space-y-5">
-            <GoogleSignInButton />
+            {/* <GoogleSignInButton />
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-muted" />
               <span>OR</span>
               <div className="h-px flex-1 bg-muted" />
-            </div>
+            </div> */}
             <LoginForm />
             {/* TODO: I think we do not need sign up in this use-case  */}
             {/* <Link
