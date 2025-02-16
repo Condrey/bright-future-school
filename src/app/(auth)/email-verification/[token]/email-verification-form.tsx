@@ -90,7 +90,7 @@ export default function EmailVerificationForm({ email }: { email: string }) {
           </Form>
         </CardContent>
        { <CardFooter className={cn(" text-xs text-muted-foreground",isRefetching?'visible':'invisible')}>
-          <LoaderIcon className="animate-spin size-4"/> checking for token verification
+          <LoaderIcon className="animate-spin size-4 mr-2"/> checking for token verification
         </CardFooter>}
       </Card>
     </div>

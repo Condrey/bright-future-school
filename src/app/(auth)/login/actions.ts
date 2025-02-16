@@ -15,7 +15,7 @@ import { redirect } from "next/navigation";
 export async function login(
   credentials: LoginValues,
 ): Promise<{ error: string }> {
-  try {
+  // try {
     const cookieStore = await cookies();
     console.log(credentials);
     const { username, password } = loginSchema.parse(credentials);
@@ -59,12 +59,12 @@ export async function login(
     return redirect(
       existingUser.isVerified ? "/" : `/user-verification/${existingUser.id}`,
     );
-  } catch (error) {
-    console.error(`Login error: ${error}`);
-    return {
-      error: "Something went wrong, Please try again.!",
-    };
-  }
+  // } catch (error) {
+  //   console.error(`Login error: ${error}`);
+  //   return {
+  //     error: "Something went wrong, Please try again.!",
+  //   };
+  // }
 }
 
 type RedirectError = Error & {
