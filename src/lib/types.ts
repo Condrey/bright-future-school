@@ -20,7 +20,7 @@ export type StaffData = Prisma.StaffGetPayload<{
 }>;
 //  Class Teacher
 export const classTeacherDataInclude = {
-  user: { select: userDataSelect },
+  user: { select: { ...userDataSelect, role: true } },
   _count: { select: { classStreams: true } },
   classStreams: {
     select: {
