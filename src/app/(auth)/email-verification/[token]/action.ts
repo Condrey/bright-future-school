@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { lucia } from "@/auth";
 import { Role } from "@prisma/client";
 import { cookies } from "next/headers";
+import { sendWelcomeRemarksEmail } from "./email";
 
 export async function resendEmailVerificationLink(email: string): Promise <{error:string|null}> {
     try {
@@ -31,7 +32,7 @@ export async function sendWelcomingRemarks(email: string) {
             isWelcomed:true,
             emailVerified:true
         }})
-        await sendWelcomingRemarks(email);
+        await sendWelcomeRemarksEmail({email,name:user.name!});
         const session = await lucia.createSession(user.id, {
             role: user.role || Role.USER,
           });

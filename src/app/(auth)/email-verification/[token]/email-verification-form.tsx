@@ -36,7 +36,6 @@ export default function EmailVerificationForm({ email }: { email: string }) {
     resolver: zodResolver(emailSchema),
     defaultValues: { email },
   });
-  const currentTimeMills = new Date().getTime()
   const {data,isRefetching} = useQuery({
     queryKey:['isEmailVerified'],
     queryFn: async ()=>checkIsEmailVerified(email),
