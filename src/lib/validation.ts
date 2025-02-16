@@ -52,7 +52,7 @@ export const userSchema = z.object({
     ),
   id: z.string().optional(),
   username: z.string().optional(),
-  email: z.string().optional(),
+  email: z.string().email().optional(),
   telephone: z.string().optional(),
 });
 export type UserSchema = z.infer<typeof userSchema>;
@@ -63,12 +63,18 @@ export const verifyUserSchema = z.object({
     .transform((val) =>
       val.trim().replace(/\b\w/g, (char) => char.toUpperCase()),
     ),
-  id: requiredString,
-  username: requiredString,
-  email: requiredString,
-  telephone: requiredString,
+  id: requiredString.min(1, "User id is missing"),
+  username: requiredString
+    .min(1, "Please add a user name")
+    .describe("User username for the user.")
+    .regex(/^[a-zA-Z0-9_-]+$/, "Only letters, numbers, - and _ are allowed"),
+  email: requiredString.email().min(1, "A working email is required"),
+  telephone: z.string().trim().optional(),
+  password: requiredString
+    .min(8, "Password must be at least 8 characters")
+    .describe("Password for the user."),
 });
-export type VerifyUserSchema = z.infer<typeof userSchema>;
+export type VerifyUserSchema = z.infer<typeof verifyUserSchema>;
 
 // Pupil
 export const pupilSchema = z.object({
@@ -368,5 +374,5 @@ export const itemSchema = z.object({
   parentId: z.string(),
 });
 export type ItemSchema = z.infer<typeof itemSchema>;
-export const emailSchema = z.object({email:z.string().trim().email()})
- export type EmailSchema = z.infer<typeof emailSchema>
+export const emailSchema = z.object({ email: z.string().trim().email() });
+export type EmailSchema = z.infer<typeof emailSchema>;

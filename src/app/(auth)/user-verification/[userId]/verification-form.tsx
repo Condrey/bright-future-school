@@ -17,6 +17,7 @@ import { verifyUser } from "./action";
 import { toast } from "@/hooks/use-toast";
 import LoadingButton from "@/components/loading-button";
 import { useTransition } from "react";
+import { PasswordInput } from "@/components/password-input";
 
 interface VerificationFormProps {
   user: User;
@@ -30,6 +31,7 @@ export default function VerificationForm({ user }: VerificationFormProps) {
       name: user.name || "",
       telephone: user.telephone || "",
       username: user.username || "",
+      password: '',
       id: user.id || "",
     },
   });
@@ -110,7 +112,23 @@ export default function VerificationForm({ user }: VerificationFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        />  <FormField
+        control={form.control}
+        name="password"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <PasswordInput
+                {...field}
+                placeholder="Your password goes here ..."
+                type="password"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
         <LoadingButton className="w-full" loading={isPending}>
           Continue
         </LoadingButton>

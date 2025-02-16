@@ -45,7 +45,6 @@ export async function sendWelcomingRemarks(email: string) {
       where: { email },
       data: {
         isWelcomed: true,
-        emailVerified: true,
       },
     }),
     lucia.createSession(user.id, {
