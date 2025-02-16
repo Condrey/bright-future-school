@@ -40,7 +40,7 @@ export default function EmailVerificationForm({ email }: { email: string }) {
   const {data,isRefetching} = useQuery({
     queryKey:['isEmailVerified'],
     queryFn: async ()=>checkIsEmailVerified(email),
-    // refetchInterval: 10000 
+    refetchInterval: 10000 
   })
 
   if(data){

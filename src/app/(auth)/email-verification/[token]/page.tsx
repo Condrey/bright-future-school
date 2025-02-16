@@ -11,6 +11,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import EmailVerificationForm from "./email-verification-form";
+import { checkIsEmailVerified } from "./action";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
   title: "Email verification",
 };
 export default async function Page({ params }: PageProps) {
-  const [{ token }, cookieStore] = await Promise.all([params, cookies()]);
+  const { token: encodedToken } = await params
+  const token = decodeURIComponent(encodedToken)
 
   if (!token || token.startsWith('token')) {
     const email = decodeURIComponent(token.split('-')[1])
@@ -40,29 +42,10 @@ export default async function Page({ params }: PageProps) {
   }
   const user = await scrapeUser(token);
   if (!user) throw new Error("User not found");
-  const { id: userId, role, email } = user;
-  try {
-    const session = await lucia.createSession(userId, {
-      role: role || Role.USER,
-    });
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookieStore.set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
-    redirect("/");
-  } catch (e) {
-    console.error(error);
-  }
-
-  async function handleEmailResend() {
-    "use server";
-  }
+  const {  email } = user;
+  
 
   return (
-    <>
-     
-    </>
+    <EmailVerificationForm email={email!}/>
   );
 }
