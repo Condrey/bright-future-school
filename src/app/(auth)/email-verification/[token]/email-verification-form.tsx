@@ -52,7 +52,7 @@ export default function EmailVerificationForm({ email }: { email: string }) {
   }
 
   return (
-    <div className="flex size-full min-h-dvh flex-col justify-center">
+    <div className="flex size-full p-4 min-h-dvh flex-col justify-center">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader>
           <CardTitle>A verification link has been sent.</CardTitle>

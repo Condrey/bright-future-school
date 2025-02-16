@@ -19,7 +19,6 @@ export default async function Layout({
   if (!isAuthorized) return <UnauthorizedUser />;
   return (
     <SessionProvider value={{ session, user }}>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
       <div className="size-full">{children}</div>
     </SessionProvider>
   );
