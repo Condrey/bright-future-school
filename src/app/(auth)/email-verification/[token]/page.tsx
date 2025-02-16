@@ -10,6 +10,7 @@ import { Role } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import EmailVerificationForm from "./email-verification-form";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -33,8 +34,9 @@ export const metadata: Metadata = {
 export default async function Page({ params }: PageProps) {
   const [{ token }, cookieStore] = await Promise.all([params, cookies()]);
 
-  if (!token || token === "undefined") {
-    return <div>Email verification sent</div>;
+  if (!token || token.startsWith('token')) {
+    const email = decodeURIComponent(token.split('-')[1])
+    return <EmailVerificationForm email={email}/>;
   }
   const user = await scrapeUser(token);
   if (!user) throw new Error("User not found");
@@ -60,10 +62,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
-      <form action={handleEmailResend}>
-        <Button>Resend Verification Link</Button>
-        <Input id="email" value={email!} disabled />
-      </form>
+     
     </>
   );
 }

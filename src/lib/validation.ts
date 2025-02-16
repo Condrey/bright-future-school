@@ -368,3 +368,5 @@ export const itemSchema = z.object({
   parentId: z.string(),
 });
 export type ItemSchema = z.infer<typeof itemSchema>;
+export const emailSchema = z.object({email:z.string().trim().email()})
+ export type EmailSchema = z.infer<typeof emailSchema>

@@ -1,0 +1,98 @@
+"use client";
+
+import LoadingButton from "@/components/loading-button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { emailSchema, EmailSchema } from "@/lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { checkIsEmailVerified, resendEmailVerificationLink } from "./action";
+import { toast } from "@/hooks/use-toast";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
+import { LoaderIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+export default function EmailVerificationForm({ email }: { email: string }) {
+  const [error, setError] = useState<string>();
+  const form = useForm<EmailSchema>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: { email },
+  });
+  const currentTimeMills = new Date().getTime()
+  const {data,isRefetching} = useQuery({
+    queryKey:['isEmailVerified'],
+    queryFn: async ()=>checkIsEmailVerified(email),
+    // refetchInterval: 10000 
+  })
+
+  if(data){
+    
+  }
+  async function handleEmailResend(input: EmailSchema) {
+    const { error } = await resendEmailVerificationLink(input.email);
+      if (error){ setError(error)};
+      toast({description:'Verification link sent successfully.'})
+  }
+
+  return (
+    <div className="flex size-full min-h-dvh flex-col justify-center">
+      <Card className="mx-auto w-full max-w-md">
+        <CardHeader>
+          <CardTitle>A verification link has been sent.</CardTitle>
+          <CardDescription>
+            Please check your email for the link. If you did not receive it,
+            please tap on the resend verification link button bellow
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleEmailResend)}
+              className="space-y-4"
+            >
+                          {error && <Badge variant={"destructive"} className="w-full">{error}</Badge>}
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>You email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="email goes here..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <LoadingButton loading={form.formState.isSubmitting} className="w-full">
+                Resend Verification Link
+              </LoadingButton>
+            </form>
+          </Form>
+        </CardContent>
+       { <CardFooter className={cn(" text-xs text-muted-foreground",isRefetching?'visible':'invisible')}>
+          <LoaderIcon className="animate-spin size-4"/> checking for token verification
+        </CardFooter>}
+      </Card>
+    </div>
+  );
+}
