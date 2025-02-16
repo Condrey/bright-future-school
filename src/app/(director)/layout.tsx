@@ -12,12 +12,14 @@ export default async function Layout({
   const { session, user } = await validateRequest();
 
   if (!user) redirect("/login");
+  if (!user.isVerified) redirect(`/user-verification/${user.id}`);
   const isAuthorized =
     user.role === Role.DIRECTOR || user.role === Role.SUPER_ADMIN;
 
   if (!isAuthorized) return <UnauthorizedUser />;
   return (
     <SessionProvider value={{ session, user }}>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
       <div className="size-full">{children}</div>
     </SessionProvider>
   );

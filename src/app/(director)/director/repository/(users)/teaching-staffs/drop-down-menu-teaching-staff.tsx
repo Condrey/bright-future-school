@@ -11,7 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { StaffData as TeachingStaff } from "@/lib/types";
 import { Role } from "@prisma/client";
-import { CopyIcon, Edit2Icon, MoreHorizontal, ShieldIcon, Trash2Icon } from "lucide-react";
+import {
+  CopyIcon,
+  Edit2Icon,
+  MoreHorizontal,
+  ShieldIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useState } from "react";
 import DialogDeleteTeachingStaff from "./dialog-delete-teaching-staff";
 import FormAddEditTeachingStaff from "./form-add-edit-teaching-staff";
@@ -25,7 +31,7 @@ export default function DropDownMenuTeachingStaff({
   teachingStaff,
 }: DropDownMenuTeachingStaffProps) {
   const [showDialog, setShowDialog] = useState(false);
-  const [showRoleDialog,setShowRoleDialog]=useState(false)
+  const [showRoleDialog, setShowRoleDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
 
@@ -40,30 +46,30 @@ export default function DropDownMenuTeachingStaff({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenuGroup><DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => setShowRoleDialog(true)}
-          >
-            <ShieldIcon className="mr-2 size-4 " />
-            <span>Update role</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(teachingStaff.id)}
-          >
-            <CopyIcon className="mr-2 size-4" />
-            <span>Copy teaching staff Id</span>
-          </DropdownMenuItem>
-          {user.role === Role.SUPER_ADMIN && (
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setShowRoleDialog(true)}>
+              <ShieldIcon className="mr-2 size-4" />
+              <span>Update role</span>
+            </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(JSON.stringify(teachingStaff))
-              }
+              onClick={() => navigator.clipboard.writeText(teachingStaff.id)}
             >
               <CopyIcon className="mr-2 size-4" />
-              <span>Copy teaching staff</span>
+              <span>Copy teaching staff Id</span>
             </DropdownMenuItem>
-          )}
-          <DropdownMenuSeparator /></DropdownMenuGroup>
+            {user.role === Role.SUPER_ADMIN && (
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(JSON.stringify(teachingStaff))
+                }
+              >
+                <CopyIcon className="mr-2 size-4" />
+                <span>Copy teaching staff</span>
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+          </DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => setShowDialog(true)}
             className="font-semibold text-foreground"

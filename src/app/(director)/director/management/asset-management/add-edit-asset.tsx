@@ -102,7 +102,7 @@ export default function AddEditAsset({
                   </FormControl>
                   <SelectContent>
                     {Object.values(AssetCategory).map((value) => {
-                      const {label,icon,} = assetCategories[value]
+                      const { label, icon } = assetCategories[value];
                       const Icon = icon;
                       return (
                         <SelectItem key={value} value={value}>

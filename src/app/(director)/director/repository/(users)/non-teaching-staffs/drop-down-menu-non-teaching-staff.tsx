@@ -11,7 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { StaffData as NonTeachingStaff } from "@/lib/types";
 import { Role } from "@prisma/client";
-import { CopyIcon, Edit2Icon, MoreHorizontal, ShieldIcon, Trash2Icon } from "lucide-react";
+import {
+  CopyIcon,
+  Edit2Icon,
+  MoreHorizontal,
+  ShieldIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useState } from "react";
 import DialogDeleteNonTeachingStaff from "./dialog-delete-non-teaching-staff";
 import FormAddEditNonTeachingStaff from "./form-add-edit-non-teaching-staff";
@@ -25,7 +31,7 @@ export default function DropDownMenuNonTeachingStaff({
   nonTeachingStaff,
 }: DropDownMenuNonTeachingStaffProps) {
   const [showDialog, setShowDialog] = useState(false);
-  const [showRoleDialog,setShowRoleDialog]=useState(false)
+  const [showRoleDialog, setShowRoleDialog] = useState(false);
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
@@ -41,32 +47,32 @@ export default function DropDownMenuNonTeachingStaff({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-         <DropdownMenuGroup>
-         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-         <DropdownMenuItem
-            onClick={() => setShowRoleDialog(true)}
-          >
-            <ShieldIcon className="mr-2 size-4 " />
-            <span>Update role</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(nonTeachingStaff.id)}
-          >
-            <CopyIcon className="mr-2 size-4" />
-            <span>Copy Non Teaching Staff Id</span>
-          </DropdownMenuItem>
-          {user.role === Role.SUPER_ADMIN && (
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setShowRoleDialog(true)}>
+              <ShieldIcon className="mr-2 size-4" />
+              <span>Update role</span>
+            </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(JSON.stringify(nonTeachingStaff))
-              }
+              onClick={() => navigator.clipboard.writeText(nonTeachingStaff.id)}
             >
               <CopyIcon className="mr-2 size-4" />
-              <span>Copy Non Teaching Staff</span>
+              <span>Copy Non Teaching Staff Id</span>
             </DropdownMenuItem>
-          )}
-          <DropdownMenuSeparator />
-         </DropdownMenuGroup>
+            {user.role === Role.SUPER_ADMIN && (
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    JSON.stringify(nonTeachingStaff),
+                  )
+                }
+              >
+                <CopyIcon className="mr-2 size-4" />
+                <span>Copy Non Teaching Staff</span>
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+          </DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => setShowDialog(true)}
             className="font-semibold text-foreground"
@@ -85,11 +91,11 @@ export default function DropDownMenuNonTeachingStaff({
         </DropdownMenuContent>
       </DropdownMenu>
 
-        <FormUpdateNonTeachingStaffRole
-              nonTeachingStaff={nonTeachingStaff}
-              open={showRoleDialog}
-              setOpen={setShowRoleDialog}
-            />
+      <FormUpdateNonTeachingStaffRole
+        nonTeachingStaff={nonTeachingStaff}
+        open={showRoleDialog}
+        setOpen={setShowRoleDialog}
+      />
 
       <FormAddEditNonTeachingStaff
         nonTeachingStaffToEdit={nonTeachingStaff}

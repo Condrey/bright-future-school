@@ -46,10 +46,16 @@ export default function FormAddEditNonTeachingStaff({
             name: nonTeachingStaffToEdit.user?.name ?? "",
             telephone: nonTeachingStaffToEdit.user?.telephone ?? "",
             username: nonTeachingStaffToEdit.user?.username ?? "",
-                        role: nonTeachingStaffToEdit.user?.role ?? Role.USER
-            
+            role: nonTeachingStaffToEdit.user?.role ?? Role.USER,
           }
-        : { email: "", id: "", name: "", telephone: "", username: "",role:Role.USER },
+        : {
+            email: "",
+            id: "",
+            name: "",
+            telephone: "",
+            username: "",
+            role: Role.USER,
+          },
       id: nonTeachingStaffToEdit?.id || "",
     },
   });

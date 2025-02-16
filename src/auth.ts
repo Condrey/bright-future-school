@@ -49,7 +49,7 @@ interface DatabaseUserAttributes {
   googleId: string | null;
   role: Role;
   isVerified: string;
-  emailVerified:boolean
+  emailVerified: boolean;
 }
 interface DatabaseSessionAttributes {
   role: Role;

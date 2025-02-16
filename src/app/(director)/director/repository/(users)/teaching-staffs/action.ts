@@ -48,8 +48,8 @@ export async function addTeachingStaffAction(input: TeachingStaffSchema) {
         data: {
           name,
           username,
-          passwordHash,          role:Role.STAFF
-          
+          passwordHash,
+          role: Role.STAFF,
         },
       });
       const staff = await tx.staff.create({
@@ -81,7 +81,7 @@ export async function addTeachingStaffAction(input: TeachingStaffSchema) {
 
 export async function editTeachingStaffAction(input: TeachingStaffSchema) {
   const {
-    user: { name, id, role, email,telephone,username, },
+    user: { name, id, role, email, telephone, username },
     id: staffId,
   } = teachingStaffSchema.parse(input);
 
@@ -90,7 +90,11 @@ export async function editTeachingStaffAction(input: TeachingStaffSchema) {
       await tx.user.update({
         where: { id },
         data: {
-          name, role, email,telephone,username,
+          name,
+          role,
+          email,
+          telephone,
+          username,
         },
       });
       const staff = await tx.staff.findUnique({

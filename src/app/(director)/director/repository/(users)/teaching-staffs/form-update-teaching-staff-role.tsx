@@ -19,8 +19,18 @@ import {
   useUpdateTeachingStaffMutation,
 } from "./mutation";
 import { Role } from "@prisma/client";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { allTeachingStaffCategories, assetCategories, userRoles } from "@/lib/enums";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  allTeachingStaffCategories,
+  assetCategories,
+  userRoles,
+} from "@/lib/enums";
 
 interface FormUpdateTeachingStaffRoleProps {
   teachingStaff: StaffData;
@@ -44,28 +54,33 @@ export default function FormUpdateTeachingStaffRole({
             name: teachingStaff.user?.name ?? "",
             telephone: teachingStaff.user?.telephone ?? "",
             username: teachingStaff.user?.username ?? "",
-            role: teachingStaff.user?.role ?? Role.USER
+            role: teachingStaff.user?.role ?? Role.USER,
           }
-        : { email: "", id: "", name: "", telephone: "", username: "",role:Role.USER },
+        : {
+            email: "",
+            id: "",
+            name: "",
+            telephone: "",
+            username: "",
+            role: Role.USER,
+          },
       id: teachingStaff?.id || "",
     },
   });
 
   function handleSubmit(input: TeachingStaffSchema) {
-   
-      updateMutation.mutate(input, {
-        onSuccess() {
-          setOpen(false);
-          form.reset();
-        },
-      });
-    
+    updateMutation.mutate(input, {
+      onSuccess() {
+        setOpen(false);
+        form.reset();
+      },
+    });
   }
   return (
     <ResponsiveDrawer
       open={open}
       setOpen={setOpen}
-title="Change staff role"
+      title="Change staff role"
       description={`Update ${teachingStaff.user?.name}'s role`}
     >
       <Form {...form}>
@@ -88,7 +103,7 @@ title="Change staff role"
                   </FormControl>
                   <SelectContent>
                     {allTeachingStaffCategories.map((value) => {
-                      const {label,icon}=userRoles[value]
+                      const { label, icon } = userRoles[value];
                       const Icon = icon;
                       return (
                         <SelectItem key={value} value={value}>
@@ -107,12 +122,8 @@ title="Change staff role"
             )}
           />
           <div className="flex items-center justify-end">
-            <LoadingButton
-              loading={
-                updateMutation.isPending
-              }
-            >
-             Update
+            <LoadingButton loading={updateMutation.isPending}>
+              Update
             </LoadingButton>
           </div>
         </form>

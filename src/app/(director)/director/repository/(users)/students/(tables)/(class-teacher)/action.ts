@@ -73,10 +73,11 @@ export async function unAssignClassTeacher({
           user: {
             update: {
               role:
-                teacher._count.classStreams ===1?
-                Role.STAFF:
-                 teacher._count.classStreams>1 ? Role.CLASS_TEACHER
-                  : teacher.user?.role,
+                teacher._count.classStreams === 1
+                  ? Role.STAFF
+                  : teacher._count.classStreams > 1
+                    ? Role.CLASS_TEACHER
+                    : teacher.user?.role,
             },
           },
         },
@@ -86,5 +87,4 @@ export async function unAssignClassTeacher({
     { timeout: 60000, maxWait: 60000 },
   );
   return data;
-  
 }
