@@ -47,7 +47,7 @@ export type ClassTeacherDataSelect = Prisma.StaffGetPayload<{
 }>;
 export const getClassTeacherWithYearDataInclude = (year: string) => {
   const data = {
-    user: { select: userDataSelect },
+    user: { select: { ...userDataSelect, role: true } },
     _count: { select: { classStreams: true } },
     classStreams: {
       select: {
