@@ -7,27 +7,28 @@ import { sendEmailVerificationLink } from "./email";
 import { redirect } from "next/navigation";
 import { hash } from "@node-rs/argon2";
 
-export async function verifyUser(input: VerifyUserSchema):Promise<{error:string|null}> {
-  const { email, id, name, telephone, username ,password} =
+export async function verifyUser(
+  input: VerifyUserSchema,
+): Promise<{ error: string | null }> {
+  const { email, id, name, telephone, username, password } =
     verifyUserSchema.parse(input);
   try {
     const token = await generateEmailVerificationToken(id);
     await sendEmailVerificationLink({ email, token });
- const passwordHash = await hash(password, {
-    memoryCost: 19456,
-    timeCost: 2,
-    outputLen: 32,
-    parallelism: 1,
-  });
+    const passwordHash = await hash(password, {
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    });
 
-   await prisma.$transaction(
-    async (tx)=>{
+    await prisma.$transaction(async (tx) => {
       const userWithUsername = await tx.user.findUnique({
         where: { username },
       });
       if (!!userWithUsername) {
-        return {error:'User name exists.'};
-              }
+        return { error: "User name exists." };
+      }
 
       await tx.user.update({
         where: { id },
@@ -36,11 +37,10 @@ export async function verifyUser(input: VerifyUserSchema):Promise<{error:string|
           name,
           telephone,
           username,
-          passwordHash:!!password?passwordHash:{}
+          passwordHash: !!password ? passwordHash : {},
         },
       });
-    }
-   )
+    });
   } catch (error) {
     console.error("User verification Error: ", error);
     throw new Error("Failed to verify user");

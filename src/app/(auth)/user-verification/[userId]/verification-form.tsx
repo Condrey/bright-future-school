@@ -31,7 +31,7 @@ export default function VerificationForm({ user }: VerificationFormProps) {
       name: user.name || "",
       telephone: user.telephone || "",
       username: user.username || "",
-      password: '',
+      password: "",
       id: user.id || "",
     },
   });
@@ -112,23 +112,24 @@ export default function VerificationForm({ user }: VerificationFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />  <FormField
-        control={form.control}
-        name="password"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl>
-              <PasswordInput
-                {...field}
-                placeholder="Your password goes here ..."
-                type="password"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+        />{" "}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <PasswordInput
+                  {...field}
+                  placeholder="Your password goes here ..."
+                  type="password"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <LoadingButton className="w-full" loading={isPending}>
           Continue
         </LoadingButton>

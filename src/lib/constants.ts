@@ -9,6 +9,7 @@ export const PARAM_NAME_LIB_BOOK_CATEGORY_ID = "lib-book-category";
 export const PARAM_NAME_LIB_BOOK_AUTHOR = "lib-book-author";
 export const PARAM_NAME_LIB_BOOK_VARIANT = "lib-book-variant";
 export const PARAM_NAME_COMPUTER_LAB_BRAND_MODEL = "brand model";
+export const PARAM_NAME_GENERAL_STORE_ITEM_SUB_ASSET = "sub-asset";
 
 export const staffTypes: Record<StaffType, string> = {
   TEACHING_STAFF: "Teaching Staff",

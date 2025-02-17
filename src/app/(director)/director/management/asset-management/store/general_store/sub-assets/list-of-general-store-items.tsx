@@ -9,27 +9,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PARAM_NAME_COMPUTER_LAB_BRAND_MODEL } from "@/lib/constants";
+import { PARAM_NAME_GENERAL_STORE_ITEM_SUB_ASSET } from "@/lib/constants";
 import { Loader2Icon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useFetchBrandModelSItemsQuery } from "./hooks";
-import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
-import ComputerLabItemContainer from "./computer-lab-item-container";
+import { useFetchSubAssetItemsQuery } from "./hooks";
+import GeneralStoreItemContainer from "./general-store-item-container";
 
-export default function ComputerLabBrandModelItems() {
+export default function ListOfGeneralStoreItems() {
   const searchParams = useSearchParams();
-  const searchParamsBrandModel = searchParams.get(
-    PARAM_NAME_COMPUTER_LAB_BRAND_MODEL,
+  const searchParamsIndividualItem = searchParams.get(
+    PARAM_NAME_GENERAL_STORE_ITEM_SUB_ASSET,
   );
-  const brandModel = decodeURIComponent(searchParamsBrandModel!);
+  const individualItem = decodeURIComponent(searchParamsIndividualItem!);
 
   const { data, status, isFetching, error, refetch } =
-    useFetchBrandModelSItemsQuery(brandModel);
-  if (!searchParamsBrandModel) {
+    useFetchSubAssetItemsQuery(individualItem);
+  if (!searchParamsIndividualItem) {
     return (
       <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
-          Please choose a brand model from the side bar to display their items
+          Please choose a sub asset from the side bar to display their items
           here.
         </p>
       </div>
@@ -40,7 +39,7 @@ export default function ComputerLabBrandModelItems() {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
-          Failed to fetch brand model items. Please try again!
+          Failed to fetch sub asset items. Please try again!
         </p>
         <LoadingButton
           loading={isFetching}
@@ -56,7 +55,7 @@ export default function ComputerLabBrandModelItems() {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
-          Fetching brand model items
+          Fetching sub asset items
         </p>
         <Loader2Icon className="animate-spin" />
       </div>
@@ -66,7 +65,7 @@ export default function ComputerLabBrandModelItems() {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
-          There are no items belonging to this brand model added in the database
+          There are no items belonging to this sub asset added in the database
           yet. Please add
         </p>
       </div>
@@ -77,14 +76,14 @@ export default function ComputerLabBrandModelItems() {
     <div className="flex min-h-[28rem] w-full flex-col items-center">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>{brandModel}</CardTitle>
+          <CardTitle>General store items</CardTitle>
           <CardDescription>
             {data.length === 0 ? (
               <span>
-                There are no computer lab items belonging to this brand model.
+                There are no general store items belonging to this sub asset.
               </span>
             ) : (
-              <span>{`Containing ${data.length} computer item${data.length === 1 ? "" : "s"}`}</span>
+              <span>{`Containing ${data.length} general store item${data.length === 1 ? "" : "s"}`}</span>
             )}
           </CardDescription>
         </CardHeader>
@@ -92,16 +91,14 @@ export default function ComputerLabBrandModelItems() {
           <CardContent className="space-y-3">
             <div className="flex flex-wrap gap-2">
               {data.map((item) => (
-                <ComputerLabItemContainer
+                <GeneralStoreItemContainer
                   key={item.id}
-                  computerLabItem={
-                    item as {
-                      model: string;
-                      name: string;
-                      specification: string;
-                      id: string;
-                    }
-                  }
+                  individualStoreItem={{
+                    name: item.name,
+                    description: item.asset.description!,
+                    asset: item.asset.name,
+                    id: item.id,
+                  }}
                 />
               ))}
             </div>
