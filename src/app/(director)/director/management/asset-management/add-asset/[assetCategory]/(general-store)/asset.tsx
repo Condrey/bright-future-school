@@ -122,7 +122,7 @@ export default function Asset({ form }: AssetProps) {
       ) : status === "success" && !data.length ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
           <span className="max-w-sm text-center text-muted-foreground">
-            There are no categories in the system yet.
+            There are no asset categories in the system yet.
           </span>
         </div>
       ) : (

@@ -116,7 +116,7 @@ export default function FormComputerLab({
                     name="model"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Model</FormLabel>
+                        <FormLabel>Brand Model</FormLabel>
                         <FormControl>
                           <Input placeholder="e.g., DELL" {...field} />
                         </FormControl>

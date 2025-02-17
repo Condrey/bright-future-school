@@ -301,7 +301,7 @@ model IndividualBook {
 
 model LibraryBookCategory {
   id           String        @id @default(uuid())
-  category     String
+  category     String        @unique
   description  String?
   libraryBooks LibraryBook[]
 
