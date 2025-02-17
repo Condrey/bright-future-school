@@ -12,8 +12,6 @@ model User {
   name                    String?
   username                String?                  @unique
   email                   String?                  @unique
-  emailVerified           Boolean                  @default(false)
-  isVerified              Boolean                  @default(false)
   avatarUrl               String?
   role                    Role?                    @default(USER)
   createdAt               DateTime                 @default(now())
@@ -22,23 +20,25 @@ model User {
   googleId                String?                  @unique
   bio                     String?
   isWelcomed              Boolean                  @default(false)
+  isVerified              Boolean                  @default(false)
+  emailVerified           Boolean                  @default(false)
   assetDamages            AssetDamage[]
   assetRepairPayments     AssetRepairPayment[]
   borrowers               Borrower[]
+  emailVerificationTokens EmailVerificationToken[]
   feesPayments            FeesPayment[]
   pupils                  Pupil[]
   sessions                Session[]
   staffs                  Staff[]
-  emailVerificationTokens EmailVerificationToken[]
 
   @@map("users")
 }
 
 model EmailVerificationToken {
-  id      String   @id @default(uuid())
-  expires BigInt
-  user    User     @relation(fields: [userId], references: [id])
+  id      String @id @default(uuid())
   userId  String
+  expires BigInt
+  user    User   @relation(fields: [userId], references: [id])
 
   @@map("email_verifications")
 }
