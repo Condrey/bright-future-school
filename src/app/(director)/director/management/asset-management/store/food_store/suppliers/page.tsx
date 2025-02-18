@@ -2,10 +2,18 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
+import { Metadata } from "next";
 import { Fragment } from "react";
+import { getAllFoodStoreSuppliers } from "./action";
+import ListOfSuppliers from "./list-of-suppliers";
+import SupplierFoodItems from "./supplier-food-items";
 
-export default function Page() {
+export const metadata: Metadata = {
+  title: "Food store suppliers",
+};
+export default async function Page() {
   const assetCategory = AssetCategory.FOOD_STORE;
+  const suppliers = await getAllFoodStoreSuppliers();
   return (
     <Fragment>
       <HeaderContainer
@@ -18,12 +26,16 @@ export default function Page() {
             label: assetCategories[assetCategory].label + "s",
             url: `/management/asset-management/store/${assetCategory.toLocaleLowerCase()}`,
           },
-          { label: "Suppliers" },
+          { label: "Food store suppliers" },
         ]}
       />
-      <BodyContainer>
-        {/* TODO: Please implement this area */}
-        not yet implemented
+      <BodyContainer className="flex flex-row gap-6">
+        <ListOfSuppliers
+          oldData={
+            suppliers as { name: string; contactInfo: string; id: string }[]
+          }
+        />
+        <SupplierFoodItems />
       </BodyContainer>
     </Fragment>
   );
