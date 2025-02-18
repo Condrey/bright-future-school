@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
       static: 180,
     },
   },
+  async redirects() {
+    return [
+      {
+        source:
+          "/director/management/asset-management/store/food_store/consumptions",
+        destination: "/director/management/asset-management/store/food_store",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
