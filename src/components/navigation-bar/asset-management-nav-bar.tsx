@@ -41,7 +41,7 @@ export default function AssetManagementNavBar({
   const isHomeActive = pathname.toString() === basePathname;
 
   return (
-    <div className="flex z-50 sticky top-0 w-full items-center justify-start bg-background border-b px-4 py-2 lg:px-6">
+    <div className="sticky top-0 z-50 flex w-full items-center justify-start border-b bg-background px-4 py-2 lg:px-6">
       <NavigationMenu>
         <NavigationMenuList className={className}>
           {/* dashboard nav */}
@@ -59,7 +59,10 @@ export default function AssetManagementNavBar({
           {/* All asset nav  */}
           <AllAssetsNavItem />
           {/* vandalism nav  */}
-          {!isRoot && <VandalismNavItem assetCategory={assetCategory} />}
+          {!isRoot ||
+            (assetCategory !== AssetCategory.FOOD_STORE && (
+              <VandalismNavItem assetCategory={assetCategory} />
+            ))}
           {/* other nav(s) */}
           <>
             {otherNavItems.map((item) => {
