@@ -3,32 +3,35 @@ import { Button } from "@/components/ui/button";
 import LoadingButton from "@/components/loading-button";
 import { NumberInput } from "@/components/number-input/number-input";
 import ResponsiveDrawer from "@/components/responsive-drawer";
+import TipTapEditorWithHeader from "@/components/tip-tap-editor/tip-tap-editor-with-header";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { assetUnits } from "@/lib/enums";
+import { FoodStoreItemData } from "@/lib/types";
 import { FoodConsumptionSchema, foodConsumptionSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MinusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useConsumeFoodStoreItemMutation } from "./mutation";
-import { FoodStoreItemData } from "@/lib/types";
-import { assetUnits } from "@/lib/enums";
-import TipTapEditorWithHeader from "@/components/tip-tap-editor/tip-tap-editor-with-header";
+import { useConsumeFoodStoreItemMutation } from "./view/[itemId]/(tables)/mutation";
 export { NumberInput } from "@/components/number-input/number-input";
 
 interface ButtonConsumeItemProps {
   foodStoreItem: FoodStoreItemData;
-  isSecondary?: boolean
+  isSecondary?: boolean;
+  minify?: boolean;
 }
 
 export default function ButtonConsumeItem({
-  foodStoreItem,isSecondary=false
+  foodStoreItem,
+  isSecondary = false,
+  minify = false,
 }: ButtonConsumeItemProps) {
   const [open, setOpen] = useState(false);
   const mutation = useConsumeFoodStoreItemMutation();
@@ -37,7 +40,7 @@ export default function ButtonConsumeItem({
     defaultValues: {
       foodStoreItemId: foodStoreItem.id,
       quantityUsed: undefined,
-      usageDetails:''
+      usageDetails: "",
     },
   });
   function handleFormSubmit(input: FoodConsumptionSchema) {
@@ -51,10 +54,17 @@ export default function ButtonConsumeItem({
     <>
       <Button
         variant={isSecondary ? "secondary" : "default"}
+        size={minify ? "sm" : "default"}
         disabled={mutation.isPending}
         onClick={() => setOpen(true)}
       >
-        {isSecondary ? "Add consumption" : "Consume"}
+        {minify ? (
+          <MinusIcon className="size-4" />
+        ) : isSecondary ? (
+          "Add consumption"
+        ) : (
+          "Consume"
+        )}
       </Button>
 
       <ResponsiveDrawer

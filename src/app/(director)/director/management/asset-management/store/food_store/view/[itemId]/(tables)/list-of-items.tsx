@@ -4,9 +4,9 @@ import LoadingButton from "@/components/loading-button";
 import { DataTable } from "@/components/ui/data-table";
 import { FoodStoreItemData } from "@/lib/types";
 import { QueryKey, useQuery } from "@tanstack/react-query";
+import ButtonAddItem from "../../../button-add-item";
+import ButtonConsumeItem from "../../../button-consume-item";
 import { getFoodStoreItem } from "../action";
-import ButtonAddItem from "./button-add-item";
-import ButtonConsumeItem from "./button-consume-item";
 import { useItemColumn } from "./columns";
 import TableSummary from "./table-summary";
 
@@ -66,7 +66,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
           {item.isConsumable && <TableSummary item={item} />}
 
           {!item.consumptions.length ? (
-            <div className="flex flex-1 gap-4 flex-col items-center justify-center">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4">
               <span className="max-w-sm text-center text-muted-foreground">
                 The {item.foodName} food item, has not yet been consumed yet.
               </span>

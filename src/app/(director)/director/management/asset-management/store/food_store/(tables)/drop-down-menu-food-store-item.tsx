@@ -55,7 +55,7 @@ export default function DropDownMenuFoodStore({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              disabled={!foodStore.trackQuantity}
+              disabled={!foodStore.trackQuantity||!foodStore.isConsumable}
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(
@@ -65,13 +65,13 @@ export default function DropDownMenuFoodStore({
               }
             >
               <ArrowUpRightIcon className="mr-2 size-4" />
-              <span>View individual item</span>
+              <span>View food store item</span>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(foodStore.id)}
             >
               <CopyIcon className="mr-2 size-4" />
-              <span>Copy Individual item Id</span>
+              <span>Copy Food store item Id</span>
             </DropdownMenuItem>
             {user.role === Role.SUPER_ADMIN && (
               <DropdownMenuItem
@@ -80,7 +80,7 @@ export default function DropDownMenuFoodStore({
                 }
               >
                 <CopyIcon className="mr-2 size-4" />
-                <span>Copy Individual item</span>
+                <span>Copy Food store item</span>
               </DropdownMenuItem>
             )}
 
@@ -98,7 +98,7 @@ export default function DropDownMenuFoodStore({
               className="font-semibold text-foreground"
             >
               <Edit2Icon className="mr-2 size-4 fill-foreground text-foreground" />
-              <span>Edit Individual item</span>
+              <span>Edit Food store item</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -106,7 +106,7 @@ export default function DropDownMenuFoodStore({
               className="font-semibold text-destructive"
             >
               <Trash2Icon className="mr-2 size-4 fill-destructive" />
-              <span>Delete Individual item</span>
+              <span>Delete Food store item</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

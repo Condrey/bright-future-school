@@ -5,11 +5,11 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { assetUnits } from "@/lib/enums";
 import { FoodStoreConsumptionData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
+import { FoodConsumptionSchema } from "@/lib/validation";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { Loader2Icon, UndoIcon } from "lucide-react";
 import { useUndoFoodStoreItemConsumptionMutation } from "./mutation";
-import { FoodConsumptionSchema } from "@/lib/validation";
 
 export const useItemColumn: ColumnDef<FoodStoreConsumptionData>[] = [
   {
@@ -62,7 +62,7 @@ export const useItemColumn: ColumnDef<FoodStoreConsumptionData>[] = [
       `${formatNumber(row.original.quantityUsed || 0)} ${assetUnits[row.original.foodItem.unit]}${row.original.quantityUsed === 1 ? "" : "s"}`,
   },
   {
-    accessorKey: "quantity",
+    accessorKey: "foodItem.quantity",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Available" />
     ),
@@ -87,7 +87,7 @@ export const useItemColumn: ColumnDef<FoodStoreConsumptionData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Consumed at" />
     ),
-    cell: ({ row }) => format(row.original.dateUsedAt, "PP"),
+    cell: ({ row }) => format(row.original.dateUsedAt, "PPpp"),
   },
   {
     id: "action",
@@ -95,11 +95,18 @@ export const useItemColumn: ColumnDef<FoodStoreConsumptionData>[] = [
       return <DataTableColumnHeader column={column} title="Action" />;
     },
     cell: ({ row }) => {
-      const {mutate,isPending} = useUndoFoodStoreItemConsumptionMutation();
+      const { mutate, isPending } = useUndoFoodStoreItemConsumptionMutation();
       return (
-        <Button size={'sm'} variant={'secondary'}
-        onClick={()=>mutate(row.original as FoodConsumptionSchema)}>
-          {isPending?<Loader2Icon className="animate-spin size-4"/>:<UndoIcon className="size-4" />}
+        <Button
+          size={"sm"}
+          variant={"secondary"}
+          onClick={() => mutate(row.original as FoodConsumptionSchema)}
+        >
+          {isPending ? (
+            <Loader2Icon className="size-4 animate-spin" />
+          ) : (
+            <UndoIcon className="size-4" />
+          )}
           <span>Undo</span>
         </Button>
       );

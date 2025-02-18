@@ -38,20 +38,7 @@ export function useAddSingleItemMutation(foodStoreItem: FoodStoreItemData) {
       return { previousState };
     },
     async onSuccess(_, variables) {
-      const _key: QueryKey = ["assets", "foodStore-asset", "list"];
-      await queryClient.cancelQueries({
-        queryKey: _key,
-      });
-      queryClient.setQueryData<FoodStoreItemData[]>(
-        _key,
-        (oldData) =>
-          oldData &&
-          oldData.map((d) =>
-            d.id === variables.foodStoreItemId
-              ? { ...d, quantity: d.quantity || 0 + 1 }
-              : d,
-          ),
-      );
+   
       queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
@@ -95,16 +82,7 @@ export function useAddMultipleItemMutation(foodStoreItem: FoodStoreItemData) {
       await queryClient.cancelQueries({
         queryKey: _key,
       });
-      queryClient.setQueryData<FoodStoreItemData[]>(
-        _key,
-        (oldData) =>
-          oldData &&
-          oldData.map((d) =>
-            d.id === variables.parentId
-              ? { ...d, quantity: d.quantity || 0 + variables.quantity }
-              : d,
-          ),
-      );
+    
       queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
@@ -153,16 +131,7 @@ export function useConsumeFoodStoreItemMutation() {
       await queryClient.cancelQueries({
         queryKey: _key,
       });
-      queryClient.setQueryData<FoodStoreItemData[]>(
-        _key,
-        (oldData) =>
-          oldData &&
-          oldData.map((d) =>
-            d.id === variables.foodStoreItemId
-              ? { ...d, quantity: d.quantity || 0 + variables.quantityUsed }
-              : d,
-          ),
-      );
+  
       queryClient.invalidateQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey: _key });
     },
@@ -225,16 +194,7 @@ export function useUndoFoodStoreItemConsumptionMutation() {
       await queryClient.cancelQueries({
         queryKey: _key,
       });
-      queryClient.setQueryData<FoodStoreItemData[]>(
-        _key,
-        (oldData) =>
-          oldData &&
-          oldData.map((d) =>
-            d.id === variables.foodStoreItemId
-              ? { ...d, quantity: d.quantity || 0 + variables.quantityUsed }
-              : d,
-          ),
-      );
+  
       queryClient.invalidateQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey: _key });
     },

@@ -5,6 +5,7 @@ import { foodStoreItemDataInclude } from "@/lib/types";
 
 export async function getAllFoodStoreAssetItems() {
   const data = await prisma.foodStoreItem.findMany({
+    orderBy: { foodName: "desc" },
     include: foodStoreItemDataInclude,
   });
   return data;
