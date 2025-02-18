@@ -3,11 +3,10 @@
 import LoadingButton from "@/components/loading-button";
 import { DataTable } from "@/components/ui/data-table";
 import { FoodStoreItemData } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import { AlertTriangle } from "lucide-react";
-import { getIndividualFoodStoreItems } from "../action";
+import { getFoodStoreItem } from "../action";
 import ButtonAddItem from "./button-add-item";
+import ButtonConsumeItem from "./button-consume-item";
 import { useItemColumn } from "./columns";
 import TableSummary from "./table-summary";
 
@@ -16,76 +15,72 @@ interface ListOfItemsProps {
 }
 
 export default function ListOfItems({ oldItem }: ListOfItemsProps) {
-  const queryKey: QueryKey = [
-    "assets",
-    "food-store-asset",
-    "item",
-    oldItem.id,
-    "list",
-  ];
+  const queryKey: QueryKey = ["assets", "food-store-item", oldItem.id];
 
   const {
-    data: items,
+    data: item,
     status,
     error,
     refetch,
     isFetching,
   } = useQuery({
     queryKey,
-    queryFn: async () => getIndividualFoodStoreItems(oldItem.id),
-    initialData: oldItem.individualFoodStoreItems,
+    queryFn: async () => getFoodStoreItem(oldItem.id),
+    initialData: oldItem,
   });
+
   if (status === "error") {
     console.error(error);
   }
-  const missingIdItems = items.filter((i) => !i.uniqueIdentifier);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-xl font-bold">
-          <span>{oldItem.foodName} variants </span>
-          <span className="text-muted-foreground">
-            ({formatNumber(items.length || 0)})
-          </span>
-        </h1>
-        <ButtonAddItem foodStoreItem={oldItem} lastIndex={items.length - 1} />
+        <h1 className="text-xl font-bold">{oldItem.foodName}</h1>
+        <div className="flex gap-2">
+          <ButtonAddItem foodStoreItem={oldItem} />
+          <ButtonConsumeItem foodStoreItem={oldItem} />
+        </div>
       </div>
-      <TableSummary items={items} />
       {status === "error" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
           <p className="text-center text-muted-foreground">
-            Error occurred while fetching items for {oldItem.foodName}
+            Error occurred while fetching details for {oldItem.foodName}
           </p>
           <LoadingButton
             loading={isFetching}
-            onClick={() => refetch}
+            onClick={() => refetch()}
             variant={"destructive"}
           >
             Refresh
           </LoadingButton>
         </div>
-      ) : status === "success" && !items.length ? (
+      ) : !item ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
           <p className="text-muted-foreground">
-            No items exist for {oldItem.foodName} yet, please add it.
+            No details exist for {oldItem.foodName} yet.
           </p>
         </div>
       ) : (
-        <DataTable
-          data={items}
-          columns={useItemColumn}
-          ROWS_PER_TABLE={5}
-          filterColumn={{ id: "uniqueIdentifier", label: "unique Id" }}
-          tableHeaderSection={
-            !missingIdItems.length ? null : (
-              <div className="flex w-fit items-center gap-2 rounded-md bg-destructive/80 px-2 py-1 text-destructive-foreground">
-                <AlertTriangle className="size-4 flex-none" />
-                <p>{` ${formatNumber(missingIdItems.length)} item${missingIdItems.length === 1 ? " is" : "s are"} missing a uniqueIdentifier. Please update.`}</p>
-              </div>
-            )
-          }
-        />
+        <div className="flex flex-wrap gap-4">
+          {item.isConsumable && <TableSummary item={item} />}
+
+          {!item.consumptions.length ? (
+            <div className="flex flex-1 gap-4 flex-col items-center justify-center">
+              <span className="max-w-sm text-center text-muted-foreground">
+                The {item.foodName} food item, has not yet been consumed yet.
+              </span>
+              <ButtonConsumeItem isSecondary foodStoreItem={oldItem} />
+            </div>
+          ) : (
+            <DataTable
+              data={item.consumptions}
+              columns={useItemColumn}
+              ROWS_PER_TABLE={5}
+              // filterColumn={{ id: "uniqueIdentifier", label: "unique Id" }}
+            />
+          )}
+        </div>
       )}
     </div>
   );

@@ -1,13 +1,17 @@
+import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { assetConditions, assetStatuses } from "@/lib/enums";
-import { IndividualFoodStoreItemData } from "@/lib/types";
-import { cn, formatCurrency, formatNumber } from "@/lib/utils";
-import { AssetCondition, AssetStatus } from "@prisma/client";
+import { assetUnits } from "@/lib/enums";
+import { FoodStoreConsumptionData } from "@/lib/types";
+import { formatNumber } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import DropDownMenuIndividualItem from "./drop-down-menu-individual-item";
+import { format } from "date-fns";
+import { Loader2Icon, UndoIcon } from "lucide-react";
+import { useUndoFoodStoreItemConsumptionMutation } from "./mutation";
+import { FoodConsumptionSchema } from "@/lib/validation";
 
-export const useItemColumn: ColumnDef<IndividualFoodStoreItemData>[] = [
+export const useItemColumn: ColumnDef<FoodStoreConsumptionData>[] = [
   {
     id: "index",
     header({ column }) {
@@ -16,185 +20,89 @@ export const useItemColumn: ColumnDef<IndividualFoodStoreItemData>[] = [
     cell: ({ row }) => <span className="tabular-nums">{row.index + 1}</span>,
   },
   {
-    accessorKey: "foodStoreItem.foodName",
+    accessorKey: "foodItem.foodName",
     header({ column }) {
-      return <DataTableColumnHeader column={column} title="Items" />;
+      return <DataTableColumnHeader column={column} title="Food item" />;
     },
-    cell: ({ row }) => {
-      const foodStoreItem = row.original.foodStoreItem;
-      return (
-        <div>
-          <div>{foodStoreItem.foodName}</div>
-        </div>
-      );
-    },
+    cell: ({ row }) => row.original.foodItem.foodName,
   },
   {
-    accessorKey: "uniqueIdentifier",
-    header({ column }) {
-      return (
-        <DataTableColumnHeader column={column} title="unique Identifier" />
-      );
-    },
-    cell: ({ row }) => (
-      <Badge
-        className={cn(
-          "font-mono tracking-wide",
-          !row.original.uniqueIdentifier && "animate-pulse",
-        )}
-        variant={!row.original.uniqueIdentifier ? "destructive" : "outline"}
-      >
-        {row.original.uniqueIdentifier || "Not set"}
-      </Badge>
+    accessorKey: "foodItem.supplier.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Supplier" />
     ),
-  },
-  {
-    accessorKey: "condition",
-    header({ column }) {
-      return <DataTableColumnHeader column={column} title="Condition" />;
-    },
     cell: ({ row }) => {
-      const condition = row.original.condition;
+      const supplier = row.original.foodItem.supplier;
       return (
-        <Badge
-          variant={
-            condition === AssetCondition.DAMAGED ||
-            condition === AssetCondition.POOR
-              ? "destructive"
-              : condition === AssetCondition.FAIR
-                ? "warn"
-                : "go"
-          }
-        >
-          {assetConditions[condition]}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "status",
-    header({ column }) {
-      return <DataTableColumnHeader column={column} title="Status" />;
-    },
-    cell: ({ row }) => {
-      const status = row.original.status;
-      return (
-        <Badge
-          variant={
-            status === AssetStatus.AVAILABLE
-              ? "go"
-              : status === AssetStatus.UNDER_MAINTENANCE
-                ? "warn"
-                : "destructive"
-          }
-        >
-          {assetStatuses[status]}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "_count.assetDamages",
-    header({ column }) {
-      return (
-        <DataTableColumnHeader column={column} title="Registered damages" />
-      );
-    },
-    cell: ({ row }) => {
-      const damages = row.original._count.assetDamages;
-      return (
-        <div>
-          {damages === 0 ? (
-            <Badge variant={"outline"}>{"Not registered"}</Badge>
-          ) : (
-            <Badge
-              variant={"secondary"}
-            >{`${formatNumber(damages)} record${damages === 1 ? "" : "s"}`}</Badge>
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "_count.assetDamages.repairs",
-    header({ column }) {
-      return (
-        <DataTableColumnHeader column={column} title="Performed repairs" />
-      );
-    },
-    cell: ({ row }) => {
-      const repairs = row.original.assetDamages.filter(
-        (a) => a.isRepaired,
-      ).length;
-      return (
-        <div>
-          {repairs === 0 ? (
-            <div>{"No repairs"}</div>
-          ) : (
-            <div>{`${formatNumber(repairs)} repair${repairs === 1 ? "" : "s"}`}</div>
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    id: "assetDamages.repairPrice",
-    header({ column }) {
-      return <DataTableColumnHeader column={column} title="Repair cost" />;
-    },
-    cell({ row }) {
-      const price =
-        row.original.assetDamages
-          .flatMap((a) => a.repairPrice)
-          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-      return formatCurrency(price);
-    },
-  },
-  {
-    id: "assetDamages.repairBalance",
-    header({ column }) {
-      return <DataTableColumnHeader column={column} title="Repair balance" />;
-    },
-    cell({ row }) {
-      const hasDamages = !!row.original.assetDamages.length;
-
-      const balance =
-        row.original.assetDamages
-          .flatMap((a) => a.repairBalance)
-          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-      const paid =
-        row.original.assetDamages
-          .flatMap((a) => a.assetRepairPayments.flatMap((p) => p.paidAmount))
-          .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-
-      return (
-        <div>
-          {hasDamages ? (
-            <div>
-              {paid <= 0 ? (
-                <Badge variant={"destructive"}>Not paid</Badge>
-              ) : (
-                <div>Paid {formatCurrency(paid)}</div>
-              )}
+        <>
+          {supplier ? (
+            <TooltipContainer label={supplier.name!}>
               <div>
-                <span className="italic text-muted-foreground">bal of</span>{" "}
-                {formatCurrency(balance)}
+                <div>{supplier.name}</div>
+                <div>{supplier.contactInfo}</div>
+                <div>
+                  <p>{supplier.address}</p>
+                </div>
               </div>
-            </div>
+            </TooltipContainer>
           ) : (
-            <span className="italic text-muted-foreground">
-              --Not applicable--
-            </span>
+            "N/A"
+          )}
+        </>
+      );
+    },
+  },
+
+  {
+    accessorKey: "quantityUsed",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Consumed" />;
+    },
+    cell: ({ row }) =>
+      `${formatNumber(row.original.quantityUsed || 0)} ${assetUnits[row.original.foodItem.unit]}${row.original.quantityUsed === 1 ? "" : "s"}`,
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Available" />
+    ),
+    cell({ row }) {
+      const itemNumber = row.original.foodItem.quantity || 0;
+      const trackQuantity = row.original.foodItem.trackQuantity;
+      return (
+        <div>
+          {itemNumber === 0 ? (
+            <Badge variant={trackQuantity ? "destructive" : "secondary"}>
+              {trackQuantity ? "No item" : "Not trackable"}
+            </Badge>
+          ) : (
+            <span>{`${formatNumber(itemNumber)} ${assetUnits[row.original.foodItem.unit]}${itemNumber === 1 ? "" : "s"}`}</span>
           )}
         </div>
       );
     },
+  },
+  {
+    accessorKey: "dateUsedAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Consumed at" />
+    ),
+    cell: ({ row }) => format(row.original.dateUsedAt, "PP"),
   },
   {
     id: "action",
     header({ column }) {
       return <DataTableColumnHeader column={column} title="Action" />;
     },
-    cell: ({ row }) => <DropDownMenuIndividualItem item={row.original} />,
+    cell: ({ row }) => {
+      const {mutate,isPending} = useUndoFoodStoreItemConsumptionMutation();
+      return (
+        <Button size={'sm'} variant={'secondary'}
+        onClick={()=>mutate(row.original as FoodConsumptionSchema)}>
+          {isPending?<Loader2Icon className="animate-spin size-4"/>:<UndoIcon className="size-4" />}
+          <span>Undo</span>
+        </Button>
+      );
+    },
   },
 ];

@@ -61,7 +61,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
           </p>
           <LoadingButton
             loading={isFetching}
-            onClick={() => refetch}
+            onClick={() => refetch()}
             variant={"destructive"}
           >
             Refresh

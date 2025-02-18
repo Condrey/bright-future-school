@@ -2,47 +2,37 @@
 
 import { toast } from "@/hooks/use-toast";
 import { FoodStoreItemData, IndividualFoodStoreItemData } from "@/lib/types";
-import { AssetCondition, BookStatus } from "@prisma/client";
 import {
   MutationKey,
   QueryKey,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { addMultipleItem, addSingleItem, deleteIem } from "../action";
+import {
+  addMultipleItem,
+  addSingleItem,
+  consumeFoodStoreItem,
+  undoFoodStoreItemConsumption,
+} from "../action";
 
 const mutationKey: MutationKey = ["addedFoodStoreItem"];
 const _key: QueryKey = ["assets", "food-store-asset", "list"];
 
 export function useAddSingleItemMutation(foodStoreItem: FoodStoreItemData) {
   const queryClient = useQueryClient();
-  const queryKey: QueryKey = [
-    "assets",
-    "food-store-asset",
-    "item",
-    foodStoreItem.id,
-    "list",
-  ];
+  const queryKey: QueryKey = ["assets", "food-store-item", foodStoreItem.id];
   const mutation = useMutation({
     mutationKey,
     mutationFn: addSingleItem,
-    onMutate: async ({ input: addedItem }) => {
+    onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
       const previousState =
-        queryClient.getQueryData<IndividualFoodStoreItemData>(queryKey);
+        queryClient.getQueryData<FoodStoreItemData>(queryKey);
 
-      queryClient.setQueryData<IndividualFoodStoreItemData[]>(
+      queryClient.setQueryData<FoodStoreItemData>(
         queryKey,
         (oldData) =>
-          oldData && [
-            {
-              foodStoreItem: foodStoreItem,
-              ...addedItem,
-              assetDamages: [],
-              _count: { assetDamages: 0 },
-            } as IndividualFoodStoreItemData,
-            ...oldData,
-          ],
+          oldData && { ...oldData, quantity: (oldData.quantity || 0) + 1 },
       );
 
       return { previousState };
@@ -57,7 +47,7 @@ export function useAddSingleItemMutation(foodStoreItem: FoodStoreItemData) {
         (oldData) =>
           oldData &&
           oldData.map((d) =>
-            d.id === variables.input.foodStoreItemId
+            d.id === variables.foodStoreItemId
               ? { ...d, quantity: d.quantity || 0 + 1 }
               : d,
           ),
@@ -68,7 +58,7 @@ export function useAddSingleItemMutation(foodStoreItem: FoodStoreItemData) {
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
       toast({
-        description: `Failed to add item to list of ${foodStoreItem.foodName} `,
+        description: `Failed to add item quantity `,
         variant: "destructive",
       });
     },
@@ -83,39 +73,21 @@ export function useAddSingleItemMutation(foodStoreItem: FoodStoreItemData) {
 
 export function useAddMultipleItemMutation(foodStoreItem: FoodStoreItemData) {
   const queryClient = useQueryClient();
-  const queryKey: QueryKey = [
-    "assets",
-    "foodStore-asset",
-    "item",
-    foodStoreItem.id,
-    "list",
-  ];
+  const queryKey: QueryKey = ["assets", "food-store-item", foodStoreItem.id];
   const mutation = useMutation({
     mutationFn: addMultipleItem,
     onMutate: async ({ parentId, quantity }) => {
-      const itemsToAdd = Array.from(
-        { length: quantity },
-        (_, index) =>
-          ({
-            foodStoreItem: foodStoreItem,
-            assetDamages: [],
-            _count: { assetDamages: 0 },
-            id: `${parentId}==${index}`,
-            foodStoreItemId: parentId,
-            condition: AssetCondition.NEW,
-            status: BookStatus.AVAILABLE,
-            uniqueIdentifier: null,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }) as IndividualFoodStoreItemData,
-      );
       await queryClient.cancelQueries({ queryKey });
       const previousState =
-        queryClient.getQueryData<IndividualFoodStoreItemData>(queryKey);
+        queryClient.getQueryData<FoodStoreItemData>(queryKey);
 
-      queryClient.setQueryData<IndividualFoodStoreItemData[]>(
+      queryClient.setQueryData<FoodStoreItemData>(
         queryKey,
-        (oldData) => oldData && [...itemsToAdd, ...oldData],
+        (oldData) =>
+          oldData && {
+            ...oldData,
+            quantity: (oldData.quantity || 0) + quantity,
+          },
       );
       return { previousState };
     },
@@ -139,7 +111,7 @@ export function useAddMultipleItemMutation(foodStoreItem: FoodStoreItemData) {
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
       toast({
-        description: `Failed to add item to list of ${foodStoreItem.foodName}`,
+        description: `Failed to add item quantity}`,
         variant: "destructive",
       });
     },
@@ -151,30 +123,33 @@ export function useAddMultipleItemMutation(foodStoreItem: FoodStoreItemData) {
   });
   return mutation;
 }
-
-export function useDeleteItemMutation(foodStoreItemId: string) {
+export function useConsumeFoodStoreItemMutation() {
   const queryClient = useQueryClient();
-  const queryKey: QueryKey = [
-    "assets",
-    "foodStore-asset",
-    "item",
-    foodStoreItemId,
-    "list",
-  ];
   const mutation = useMutation({
-    mutationFn: deleteIem,
-    onMutate: async ({ id }) => {
+    mutationFn: consumeFoodStoreItem,
+    onMutate: async ({ foodStoreItemId, quantityUsed }) => {
+      const queryKey: QueryKey = ["assets", "food-store-item", foodStoreItemId];
       await queryClient.cancelQueries({ queryKey });
       const previousState =
-        queryClient.getQueryData<IndividualFoodStoreItemData>(queryKey);
+        queryClient.getQueryData<FoodStoreItemData>(queryKey);
 
-      queryClient.setQueryData<IndividualFoodStoreItemData[]>(
+      queryClient.setQueryData<FoodStoreItemData>(
         queryKey,
-        (oldData) => oldData && oldData.filter((d) => d.id !== id),
+        (oldData) =>
+          oldData && {
+            ...oldData,
+            quantity: (oldData.quantity || 0) - quantityUsed,
+          },
       );
       return { previousState };
     },
     async onSuccess(_, variables) {
+            const queryKey: QueryKey = [
+              "assets",
+              "food-store-item",
+              variables.foodStoreItemId,
+            ];
+
       await queryClient.cancelQueries({
         queryKey: _key,
       });
@@ -184,21 +159,33 @@ export function useDeleteItemMutation(foodStoreItemId: string) {
           oldData &&
           oldData.map((d) =>
             d.id === variables.foodStoreItemId
-              ? { ...d, quantity: d.quantity || 0 - 1 }
+              ? { ...d, quantity: d.quantity || 0 + variables.quantityUsed }
               : d,
           ),
       );
+      queryClient.invalidateQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
+      const queryKey: QueryKey = [
+        "assets",
+        "food-store-item",
+        variables.foodStoreItemId,
+      ];
+
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
       toast({
-        description: `Failed to delete this item. `,
+        description: `Failed to add item to list of consumptions`,
         variant: "destructive",
       });
     },
-    onSettled() {
+    onSettled(data, error, variables) {
+      const queryKey: QueryKey = [
+        "assets",
+        "food-store-item",
+        variables.foodStoreItemId,
+      ];
       if (queryClient.isMutating({ mutationKey }) === 1) {
         queryClient.invalidateQueries({ queryKey });
       }
@@ -206,3 +193,76 @@ export function useDeleteItemMutation(foodStoreItemId: string) {
   });
   return mutation;
 }
+
+
+export function useUndoFoodStoreItemConsumptionMutation() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: undoFoodStoreItemConsumption,
+    onMutate: async ({ foodStoreItemId, quantityUsed }) => {
+      const queryKey: QueryKey = ["assets", "food-store-item", foodStoreItemId];
+      await queryClient.cancelQueries({ queryKey });
+      const previousState =
+        queryClient.getQueryData<FoodStoreItemData>(queryKey);
+
+      queryClient.setQueryData<FoodStoreItemData>(
+        queryKey,
+        (oldData) =>
+          oldData && {
+            ...oldData,
+            quantity: (oldData.quantity || 0) + quantityUsed,
+          },
+      );
+      return { previousState };
+    },
+    async onSuccess(_, variables) {
+      const queryKey: QueryKey = [
+        "assets",
+        "food-store-item",
+        variables.foodStoreItemId,
+      ];
+
+      await queryClient.cancelQueries({
+        queryKey: _key,
+      });
+      queryClient.setQueryData<FoodStoreItemData[]>(
+        _key,
+        (oldData) =>
+          oldData &&
+          oldData.map((d) =>
+            d.id === variables.foodStoreItemId
+              ? { ...d, quantity: d.quantity || 0 + variables.quantityUsed }
+              : d,
+          ),
+      );
+      queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: _key });
+    },
+    onError: (error, variables, context) => {
+      const queryKey: QueryKey = [
+        "assets",
+        "food-store-item",
+        variables.foodStoreItemId,
+      ];
+
+      queryClient.setQueryData(queryKey, context?.previousState);
+      console.error(error);
+      toast({
+        description: `Failed to add item to list of consumptions`,
+        variant: "destructive",
+      });
+    },
+    onSettled(data, error, variables) {
+      const queryKey: QueryKey = [
+        "assets",
+        "food-store-item",
+        variables.foodStoreItemId,
+      ];
+      if (queryClient.isMutating({ mutationKey }) === 1) {
+        queryClient.invalidateQueries({ queryKey });
+      }
+    },
+  });
+  return mutation;
+}
+

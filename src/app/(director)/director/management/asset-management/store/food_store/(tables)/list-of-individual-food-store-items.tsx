@@ -24,7 +24,7 @@ export function ListOfIndividualFoodStoreItems() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
-          Food store assets{" "}
+          Food store items{" "}
           <span className="text-muted-foreground">
             ({formatNumber(data?.length || 0)})
           </span>
@@ -43,7 +43,8 @@ export function ListOfIndividualFoodStoreItems() {
           + Entry
         </LoadingButton>
       </div>
-      {!!data && !!data.length && <TableSummary items={data} />}
+      {/* I do not think this asset category need it  */}
+      {/* {!!data && !!data.length && <TableSummary items={data} />} */}
 
       {status === "pending" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
@@ -68,6 +69,7 @@ export function ListOfIndividualFoodStoreItems() {
       ) : (
         <DataTable
           columns={useFoodStoreColumns}
+          ROWS_PER_TABLE={10}
           data={data}
           filterColumn={{ id: "foodName", label: "food item" }}
         />

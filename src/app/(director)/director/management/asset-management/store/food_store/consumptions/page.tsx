@@ -2,8 +2,14 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
-import { Fragment } from "react";
+import { Metadata } from "next";
+import { Fragment, Suspense } from "react";
+import Borrowings from "./borrowings";
+import TableSummary, { TableSummaryFallback } from "./table-summary";
 
+export const metadata: Metadata = {
+  title: "Food consumptions",
+};
 export default function Page() {
   const assetCategory = AssetCategory.FOOD_STORE;
   return (
@@ -22,8 +28,10 @@ export default function Page() {
         ]}
       />
       <BodyContainer>
-        {/* TODO: Please implement this area */}
-        not yet implemented
+        <Suspense fallback={<TableSummaryFallback />}>
+          <TableSummary />
+        </Suspense>
+        <Borrowings />
       </BodyContainer>
     </Fragment>
   );

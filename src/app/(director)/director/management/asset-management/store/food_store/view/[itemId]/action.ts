@@ -2,38 +2,26 @@
 
 import prisma from "@/lib/prisma";
 import {
+  foodStoreConsumptionDataInclude,
   foodStoreItemDataInclude,
   individualFoodStoreItemDataInclude,
 } from "@/lib/types";
 import {
+  foodConsumptionSchema,
+  FoodConsumptionSchema,
   IndividualFoodStoreSchema,
   individualFoodStoreSchema,
   itemSchema,
   ItemSchema,
 } from "@/lib/validation";
-import {
-  AssetCondition,
-  AssetItemStatus,
-  IndividualFoodStoreItem,
-} from "@prisma/client";
-import cuid from "cuid";
 
-export async function getIndividualFoodStoreItem(id: string) {
-  const data = await prisma.individualFoodStoreItem.findUnique({
-    where: { id },
-    include: individualFoodStoreItemDataInclude,
+export async function getFoodStoreItemConsumptions(foodStoreItemId: string) {
+  const data = await prisma.foodConsumption.findMany({
+    where: { foodStoreItemId },
+    include: foodStoreConsumptionDataInclude,
   });
 
   return data;
-}
-
-export async function getIndividualFoodStoreItems(id: string) {
-  const data = await prisma.foodStoreItem.findUnique({
-    where: { id },
-    include: foodStoreItemDataInclude,
-  });
-
-  return data?.individualFoodStoreItems || [];
 }
 
 export async function getFoodStoreItem(id: string) {
@@ -66,24 +54,14 @@ export async function updateIndividualItem(input: IndividualFoodStoreSchema) {
 }
 
 export async function addSingleItem({
-  input,
+  foodStoreItemId,
 }: {
-  input: IndividualFoodStoreItem;
+  foodStoreItemId: string;
 }) {
-  const data = await prisma.$transaction(
-    async (tx) => {
-      await tx.foodStoreItem.update({
-        where: { id: input.foodStoreItemId },
-        data: { quantity: { increment: 1 } },
-      });
-      const data = await tx.individualFoodStoreItem.create({
-        data: { ...input },
-        include: individualFoodStoreItemDataInclude,
-      });
-      return data;
-    },
-    { maxWait: 60000, timeout: 60000 },
-  );
+  await prisma.foodStoreItem.update({
+    where: { id: foodStoreItemId },
+    data: { quantity: { increment: 1 } },
+  });
 }
 
 export async function addMultipleItem(input: ItemSchema) {
@@ -92,16 +70,22 @@ export async function addMultipleItem(input: ItemSchema) {
     where: { id: parentId },
     data: {
       quantity: { increment: quantity },
-      individualFoodStoreItems: {
-        createMany: {
-          data: Array.from({ length: quantity }, (_, index) => ({
-            id: `${cuid()}==${index}`,
-            condition: AssetCondition.NEW,
-            status: AssetItemStatus.AVAILABLE,
-            uniqueIdentifier: null,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          })),
+    },
+  });
+  return data;
+}
+
+export async function consumeFoodStoreItem(input: FoodConsumptionSchema) {
+  const { foodStoreItemId, quantityUsed, usageDetails } =
+    foodConsumptionSchema.parse(input);
+  const data = await prisma.foodStoreItem.update({
+    where: { id: foodStoreItemId },
+    data: {
+      quantity: { decrement: quantityUsed },
+      consumptions: {
+        create: {
+          quantityUsed,
+          usageDetails,
         },
       },
     },
@@ -109,23 +93,18 @@ export async function addMultipleItem(input: ItemSchema) {
   return data;
 }
 
-export async function deleteIem({
-  id,
-  foodStoreItemId,
-}: {
-  id: string;
-  foodStoreItemId: string;
-}) {
-  console.log("foodStoreItemId: ", foodStoreItemId, "id: ", id);
-  const data = await prisma.$transaction(async (tx) => {
-    await tx.foodStoreItem.update({
-      where: { id: foodStoreItemId },
-      data: { quantity: { decrement: 1 } },
-    });
-    const data = await tx.individualFoodStoreItem.delete({
-      where: { id },
-    });
-    return data;
+export async function undoFoodStoreItemConsumption(input: FoodConsumptionSchema) {
+  const { foodStoreItemId, quantityUsed, id } =
+    foodConsumptionSchema.parse(input);
+  const data = await prisma.foodStoreItem.update({
+    where: { id: foodStoreItemId },
+    data: {
+      quantity: { increment: quantityUsed },
+      consumptions: {
+       delete:{id}
+      },
+    },
   });
-  return data.id;
+  return data;
 }
+

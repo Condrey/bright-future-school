@@ -21,29 +21,24 @@ import {
 import { FoodStoreItemData } from "@/lib/types";
 import { ItemSchema, itemSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AssetCondition, BookStatus } from "@prisma/client";
-import cuid from "cuid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   useAddMultipleItemMutation,
   useAddSingleItemMutation,
 } from "./mutation";
+import { assetUnits } from "@/lib/enums";
 export { NumberInput } from "@/components/number-input/number-input";
 
 interface ButtonAddTemProps {
-  lastIndex: number;
   foodStoreItem: FoodStoreItemData;
 }
 
-export default function ButtonAddItem({
-  lastIndex,
-  foodStoreItem,
-}: ButtonAddTemProps) {
+export default function ButtonAddItem({ foodStoreItem }: ButtonAddTemProps) {
   const [open, setOpen] = useState(false);
   const singleItemMutation = useAddSingleItemMutation(foodStoreItem);
   const multipleItemMutation = useAddMultipleItemMutation(foodStoreItem);
-
+const unit = assetUnits[foodStoreItem.unit];
   const form = useForm<ItemSchema>({
     resolver: zodResolver(itemSchema),
     defaultValues: {
@@ -62,30 +57,24 @@ export default function ButtonAddItem({
     <>
       <div className="flex items-center gap-0">
         <LoadingButton
+          variant={"secondary"}
           loading={
             singleItemMutation.isPending || multipleItemMutation.isPending
           }
           className="rounded-r-none"
           onClick={() =>
             singleItemMutation.mutate({
-              input: {
-                id: cuid(),
-                foodStoreItemId: foodStoreItem.id,
-                condition: AssetCondition.NEW,
-                status: BookStatus.AVAILABLE,
-                uniqueIdentifier: null,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              },
+              foodStoreItemId: foodStoreItem.id,
             })
           }
         >
-          +1 item
+          +1 unit({unit})
         </LoadingButton>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               className="rounded-l-none"
+              variant={"secondary"}
               size={"icon"}
               disabled={
                 singleItemMutation.isPending || multipleItemMutation.isPending
@@ -96,7 +85,7 @@ export default function ButtonAddItem({
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => setOpen(true)}>
-              Add multiple items
+              Add multiple units({unit}s)
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -104,7 +93,7 @@ export default function ButtonAddItem({
       <ResponsiveDrawer
         open={open}
         setOpen={setOpen}
-        title="Add multiple items"
+        title="Add multiple unit quantities"
       >
         <Form {...form}>
           <form
@@ -116,10 +105,10 @@ export default function ButtonAddItem({
               name="quantity"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Quantity</FormLabel>
+                  <FormLabel>Quantity({unit}s)</FormLabel>
                   <FormControl>
                     <NumberInput
-                      placeholder="quantity of item ..."
+                      placeholder="unit quantity to be added"
                       {...field}
                     />
                   </FormControl>
@@ -129,7 +118,7 @@ export default function ButtonAddItem({
             />
             <div className="flex items-center justify-end">
               <LoadingButton loading={multipleItemMutation.isPending}>
-                Add items
+                Add
               </LoadingButton>
             </div>
           </form>

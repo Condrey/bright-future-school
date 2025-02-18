@@ -398,6 +398,12 @@ export type GeneralStoreItemData = Prisma.GeneralStoreItemGetPayload<{
 }>;
 
 // Food store
+export const foodStoreConsumptionDataInclude = {
+  foodItem: { include: { supplier: true } },
+} satisfies Prisma.FoodConsumptionInclude;
+export type FoodStoreConsumptionData = Prisma.FoodConsumptionGetPayload<{
+  include: typeof foodStoreConsumptionDataInclude;
+}>;
 export const individualFoodStoreItemDataInclude = {
   foodStoreItem: { include: { asset: true } },
   assetDamages: {
@@ -414,7 +420,10 @@ export const foodStoreItemDataInclude = {
   asset: true,
   supplier: true,
   individualFoodStoreItems: { include: individualFoodStoreItemDataInclude },
-  consumptions: true,
+  consumptions: {
+    orderBy: { dateUsedAt: "desc" },
+    include: foodStoreConsumptionDataInclude,
+  },
 } satisfies Prisma.FoodStoreItemInclude;
 export type FoodStoreItemData = Prisma.FoodStoreItemGetPayload<{
   include: typeof foodStoreItemDataInclude;

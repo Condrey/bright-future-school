@@ -12,7 +12,7 @@ export default function Page() {
             label: "Asset management",
             url: "/management/asset-management",
           },
-          { label: "Food store assets" },
+          { label: "Food store items" },
         ]}
       />
       <BodyContainer>
