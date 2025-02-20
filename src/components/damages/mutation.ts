@@ -28,9 +28,10 @@ export function useUpsertAssetRepairPayment(assetCategory: AssetCategory) {
     mutationFn: upsertAssetRepairPayment,
     onSuccess: async () => {
       const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
-
+      const _key: QueryKey = ["vandalism", assetCategory];
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: _key });
       toast({ description: "successfully registered the payment." });
     },
     onError(error) {
@@ -46,6 +47,7 @@ export function useUpsertAssetRepairPayment(assetCategory: AssetCategory) {
 
 export function useAddItemDamage(assetCategory: AssetCategory) {
   const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+  const _key: QueryKey = ["vandalism", assetCategory];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -53,6 +55,7 @@ export function useAddItemDamage(assetCategory: AssetCategory) {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: _key });
       toast({ description: "successfully registered the damage." });
     },
     onError(error) {
@@ -68,6 +71,7 @@ export function useAddItemDamage(assetCategory: AssetCategory) {
 
 export function useUpdateItemDamage(assetCategory: AssetCategory) {
   const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+  const _key: QueryKey = ["vandalism", assetCategory];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -75,6 +79,7 @@ export function useUpdateItemDamage(assetCategory: AssetCategory) {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: _key });
       toast({ description: "successfully updated the damage." });
     },
     onError(error) {
@@ -90,6 +95,7 @@ export function useUpdateItemDamage(assetCategory: AssetCategory) {
 
 export function useRepairUnrepairItemDamage(assetCategory: AssetCategory) {
   const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+  const _key: QueryKey = ["vandalism", assetCategory];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -97,6 +103,7 @@ export function useRepairUnrepairItemDamage(assetCategory: AssetCategory) {
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: _key });
       toast({
         description: `successfully ${variables.input.isRepaired ? "repaired" : "undone repair to"} the damage.`,
       });
@@ -114,6 +121,7 @@ export function useRepairUnrepairItemDamage(assetCategory: AssetCategory) {
 
 export function useDeleteItemDamageMutation(assetCategory: AssetCategory) {
   const queryKey: QueryKey = ["assets", categories(assetCategory), "item"];
+  const _key: QueryKey = ["vandalism", assetCategory];
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -121,6 +129,7 @@ export function useDeleteItemDamageMutation(assetCategory: AssetCategory) {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: _key });
       toast({ description: "successfully deleted the damage." });
     },
     onError(error) {

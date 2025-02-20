@@ -59,10 +59,9 @@ export default function AssetManagementNavBar({
           {/* All asset nav  */}
           <AllAssetsNavItem />
           {/* vandalism nav  */}
-          {!isRoot ||
-            (assetCategory !== AssetCategory.FOOD_STORE && (
-              <VandalismNavItem assetCategory={assetCategory} />
-            ))}
+          {!isRoot && assetCategory !== AssetCategory.FOOD_STORE && (
+            <VandalismNavItem assetCategory={assetCategory} />
+          )}
           {/* other nav(s) */}
           <>
             {otherNavItems.map((item) => {
@@ -106,7 +105,7 @@ function NavigationMenuLinkItem({
         <NavigationMenuLink
           className={cn(
             navigationMenuTriggerStyle(),
-            isActive && "focus: bg-accent text-accent-foreground",
+            isActive && "text-accent-foreground focus:bg-accent",
           )}
           onClick={() => startTransition(() => {})}
         >

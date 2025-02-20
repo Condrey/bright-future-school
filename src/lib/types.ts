@@ -437,3 +437,12 @@ export type SupplierData = Prisma.SupplierGetPayload<{
 
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };
+export type VandalismDamages = {
+  damages: AssetDamageData[];
+  item: {
+    id: string;
+    title: string;
+    description?: string | null;
+    uniqueIdentifier: string | null;
+  };
+}[];
