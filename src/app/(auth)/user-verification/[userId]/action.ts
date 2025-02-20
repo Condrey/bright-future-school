@@ -2,10 +2,10 @@
 
 import prisma from "@/lib/prisma";
 import { verifyUserSchema, VerifyUserSchema } from "@/lib/validation";
+import { hash } from "@node-rs/argon2";
+import { redirect } from "next/navigation";
 import { generateEmailVerificationToken } from "../../email-verification/[token]/token";
 import { sendEmailVerificationLink } from "./email";
-import { redirect } from "next/navigation";
-import { hash } from "@node-rs/argon2";
 
 export async function verifyUser(
   input: VerifyUserSchema,
@@ -28,6 +28,11 @@ export async function verifyUser(
       });
       if (!!userWithUsername) {
         return { error: "User name exists." };
+      }   const userWithEmail = await tx.user.findUnique({
+        where: { email },
+      });
+      if (!!userWithEmail) {
+        return { error: "Email already exists." };
       }
 
       await tx.user.update({
@@ -43,7 +48,7 @@ export async function verifyUser(
     });
   } catch (error) {
     console.error("User verification Error: ", error);
-    throw new Error("Failed to verify user");
+        return { error:`${error}` };
   }
   redirect(`/email-verification/token-${email}`);
 }
