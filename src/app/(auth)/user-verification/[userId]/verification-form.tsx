@@ -11,21 +11,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/hooks/use-toast";
 import { verifyUserSchema, VerifyUserSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@prisma/client";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { verifyUser } from "./action";
-import { useState } from "react";
 
 interface VerificationFormProps {
   user: User;
 }
 export default function VerificationForm({ user }: VerificationFormProps) {
   const [isPending, startTransition] = useTransition();
-  const [error , setError ] = useState<string>();
+  const [error, setError] = useState<string>();
   const form = useForm<VerifyUserSchema>({
     resolver: zodResolver(verifyUserSchema),
     defaultValues: {
@@ -38,24 +36,25 @@ export default function VerificationForm({ user }: VerificationFormProps) {
     },
   });
 
-  function onSubmit(input: VerifyUserSchema) {
-    try {
-      startTransition(() => {
-        verifyUser(input);
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        description: "Failed to verify user, please try again!",
-        variant: "destructive",
-      });
-    }
+  async function onSubmit(input: VerifyUserSchema) {
+    setError(undefined);
+    const error = await verifyUser(input);
+
+    startTransition(() => {
+      if (error) {
+        setError(error.error);
+      }
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        {error && <p className="bg-red-500/80 text-destructive-foreground px-2 py-1 rounded-md">{error}</p>}
+        {error && (
+          <p className="rounded-md bg-red-500/70 px-2 py-1 text-destructive-foreground">
+            {error}
+          </p>
+        )}
         <FormField
           control={form.control}
           name="name"
@@ -90,7 +89,6 @@ export default function VerificationForm({ user }: VerificationFormProps) {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  
                   {...field}
                   placeholder="Please enter an email ..."
                   type="email"
@@ -134,7 +132,7 @@ export default function VerificationForm({ user }: VerificationFormProps) {
             </FormItem>
           )}
         />
-        <LoadingButton className="w-full" loading={isPending}>
+        <LoadingButton className="w-full" loading={form.formState.isSubmitting}>
           Continue
         </LoadingButton>
       </form>
