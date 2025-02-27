@@ -4,8 +4,8 @@ import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 
-const assetCategory = AssetCategory.GENERAL_STORE;
-const category = assetCategories[assetCategory];
+export const assetCategory = AssetCategory.COMPUTER_LAB;
+export const category = assetCategories[assetCategory];
 
 export const metadata = {
   title: category.label,
@@ -14,7 +14,7 @@ export const metadata = {
 export default function Page() {
   return (
     <Fragment>
-      <HeaderContainer breadCrumbs={[{ label: category.label }]} />
+      <HeaderContainer breadCrumbs={[{ label: `${category.label} management` }]} />
       <BodyContainer>
         To display graphs and charts here, not yet implemented{" "}
       </BodyContainer>

@@ -11,7 +11,7 @@ import {
 import { PARAM_NAME_LIB_BOOK_AUTHOR } from "@/lib/constants";
 import { Loader2Icon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import BookContainer from "../categories/book-container";
+import BookContainer from "../category/book-container";
 import { useFetchAllAuthorLibBooksQuery } from "./hook";
 
 export default function AuthorBooks() {

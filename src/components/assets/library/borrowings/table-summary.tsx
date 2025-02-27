@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { NumericHolder } from "../../../(header)/numeric-holder";
+import { NumericHolder } from "../../../../app/(director)/director/management/asset-management/(header)/numeric-holder";
 import { getBorrowedBookAggregate } from "./action";
 
 export default async function TableSummary() {

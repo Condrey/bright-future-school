@@ -136,7 +136,7 @@ export function NavMain() {
         },
         {
           title: "Brand models",
-          url: "/sub-assets",
+          url: "/brand-models",
           showIndicator: false,
           isVisible: true,
         },
@@ -270,6 +270,7 @@ function SubmenuItem({ subItem ,baseUrl}: SubmenuItemProps) {
         key={subItem.title}
         className={cn(!subItem.isVisible && "hidden")}
       >
+        
         <SidebarMenuSubButton
           asChild
           isActive={isActive}
@@ -280,7 +281,7 @@ function SubmenuItem({ subItem ,baseUrl}: SubmenuItemProps) {
           )}
         >
           <Link
-            href={baseUrl + "/" + subItem.url + "?" + searchParams.toString()}
+            href={baseUrl + subItem.url + "?" + searchParams.toString()}
             className="flex w-full"
           >
             <span className={cn(isActive && "font-semibold")}>

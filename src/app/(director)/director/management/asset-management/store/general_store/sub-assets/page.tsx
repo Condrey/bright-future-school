@@ -4,12 +4,12 @@ import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Metadata } from "next";
 import { Fragment } from "react";
-import { getAllSubAssets } from "./action";
-import ListOfGeneralStoreItems from "./list-of-general-store-items";
-import ListOfSubAssets from "./list-of-sub-assets";
+import { getAllSubAssets } from "@/components/assets/general-asset-manager/sub-assets/action";
+import ListOfGeneralStoreItems from "@/components/assets/general-asset-manager/sub-assets/list-of-general-store-items";
+import ListOfSubAssets from "@/components/assets/general-asset-manager/sub-assets/list-of-sub-assets";
 
 export const metadata: Metadata = {
-  title: "Brand models - Computer assets",
+  title: "Sub assets",
 };
 export default async function Page() {
   const assetCategory = AssetCategory.GENERAL_STORE;

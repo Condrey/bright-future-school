@@ -15,19 +15,19 @@ export const metadata: Metadata = {
 
 export default function Page() {
   const assetCategory = AssetCategory.LIBRARY;
+    const category = assetCategories[assetCategory];
+
   return (
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
           {
-            label: "Asset management",
-            url: `/management/asset-management/`,
+            label: `${category.label} management`,
+            url: "/library-asset-management",
           },
           {
-            label: assetCategories[assetCategory].label + "s",
-            url: `/management/asset-management/store/${assetCategory.toLocaleLowerCase()}`,
+            label: "Library book borrowings",
           },
-          { label: "Borrowings" },
         ]}
       />
       <BodyContainer>

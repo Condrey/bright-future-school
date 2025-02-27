@@ -1,31 +1,25 @@
+import { getAllBrandModels } from "@/components/assets/computer-lab/model/action";
+import ComputerLabBrandModelItems from "@/components/assets/computer-lab/model/computer-lab-brand-model-items";
+import ListOfBrandModels from "@/components/assets/computer-lab/model/list-of-brand-models";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Metadata } from "next";
 import { Fragment } from "react";
-import { getAllBrandModels } from "@/components/assets/computer-lab/model/action";
-import ComputerLabBrandModelItems from "@/components/assets/computer-lab/model/computer-lab-brand-model-items";
-import ListOfBrandModels from "@/components/assets/computer-lab/model/list-of-brand-models";
 
 export const metadata: Metadata = {
   title: "Brand models - Computer assets",
 };
 export default async function Page() {
   const assetCategory = AssetCategory.COMPUTER_LAB;
+  const category = assetCategories[assetCategory];
   const models = await getAllBrandModels();
   return (
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          {
-            label: "Asset management",
-            url: `/management/asset-management/`,
-          },
-          {
-            label: assetCategories[assetCategory].label + "s",
-            url: `/management/asset-management/store/${assetCategory.toLocaleLowerCase()}`,
-          },
+        { label: `${category.label} management`,url:'computer-lab-asset-management' },
           { label: "Brand models" },
         ]}
       />

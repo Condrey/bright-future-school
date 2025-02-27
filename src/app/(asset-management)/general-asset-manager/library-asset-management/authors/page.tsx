@@ -16,20 +16,19 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const assetCategory = AssetCategory.LIBRARY;
+  const category = assetCategories[assetCategory];
   const authors = await getAllBookAuthors();
   return (
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
           {
-            label: "Asset management",
-            url: `/management/asset-management/`,
+            label: `${category.label} management`,
+            url: "/library-asset-management",
           },
           {
-            label: assetCategories[assetCategory].label + "s",
-            url: `/management/asset-management/store/${assetCategory.toLocaleLowerCase()}`,
+            label: "Library book authors",
           },
-          { label: "Authors" },
         ]}
       />
       <BodyContainer className="flex flex-row gap-6">
