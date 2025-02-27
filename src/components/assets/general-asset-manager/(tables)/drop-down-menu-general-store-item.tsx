@@ -22,9 +22,9 @@ import {
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 import DialogDeleteGeneralStore from "./dialog-delete-general-store-item";
-import { usePathname } from "next/navigation";
 
 interface DropDownMenuGeneralStoreProps {
   generalStore: GeneralStoreItemData;
@@ -43,6 +43,13 @@ export default function DropDownMenuGeneralStore({
     url = `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/view/${generalStore.id}`;
   } else if (pathname.startsWith("/general-store-asset-manager/")) {
     url = `/general-store-asset-manager/view/${generalStore.id}`;
+  }
+
+  let editUrl = `/general-asset-manager/general-asset-management/edit/${generalStore.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    editUrl = `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/edit/${generalStore.id}`;   
+  }else if (pathname.startsWith("/general-store-asset-manager/")) {
+    editUrl = `/general-store-asset-manager/edit/${generalStore.id}`;
   }
 
   return (
@@ -97,8 +104,7 @@ export default function DropDownMenuGeneralStore({
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/edit/${generalStore.id}`,
-                  ),
+editUrl                  ),
                 )
               }
               className="font-semibold text-foreground"

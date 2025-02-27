@@ -29,7 +29,10 @@ export default async function Page({ params }: PageProps) {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: "Asset management", url: "/management/asset-management/" },
+          {
+            label: "General asset management",
+            url: "/general-asset-management",
+          },
           {
             label: `Add ${assetCategories[assetCategory.toUpperCase() as AssetCategory].label.toLocaleLowerCase()}`,
           },

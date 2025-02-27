@@ -1,7 +1,7 @@
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { Fragment } from "react";
-import { ListOfIndividualLibraryItems } from "./(tables)/list-of-individual-library-items";
+import { ListOfIndividualLibraryItems } from "@/components/assets/library/(tables)/list-of-individual-library-items";
 
 export default function Page() {
   return (

@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
-import { LibraryBookData } from "@/lib/types";
+import { IndividualLibraryBookData } from "@/lib/types";
 import { Role } from "@prisma/client";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import {
@@ -22,20 +22,31 @@ import {
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
-import DialogDeleteLibraryItem from "./dialog-delete-library-item";
+import FormUpdateIndividualItem from "../item/form-update-individual-item";
+import DialogDeleteIndividualItem from "./dialog-delete-individual-item";
 
-interface DropDownMenuLibraryItemProps {
-  libraryItem: LibraryBookData;
+interface DropDownMenuIndividualItemProps {
+  item: IndividualLibraryBookData;
 }
 
-export default function DropDownMenuLibraryItem({
-  libraryItem,
-}: DropDownMenuLibraryItemProps) {
+export default function DropDownMenuIndividualItem({
+  item,
+}: DropDownMenuIndividualItemProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const { user } = useSession();
+
+  const pathname = usePathname();
+  let url = `/general-asset-manager/library-asset-management/view/${item.libraryBookId}/item/${item.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/store/${item.libraryBook.asset.category.toLocaleLowerCase()}/view/${item.libraryBookId}/item/${item.id}`;
+  } else if (pathname.startsWith("/library-asset-manager/")) {
+    url = `/library-asset-manager/view/${item.libraryBookId}/item/${item.id}`;
+  }
 
   return (
     <>
@@ -57,9 +68,7 @@ export default function DropDownMenuLibraryItem({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/view/${libraryItem.id}`,
-                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >
@@ -67,19 +76,19 @@ export default function DropDownMenuLibraryItem({
               <span>View individual item</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(libraryItem.id)}
+              onClick={() => navigator.clipboard.writeText(item.id)}
             >
               <CopyIcon className="mr-2 size-4" />
-              <span>Copy Individual item Id</span>
+              <span>Copy individual item Id</span>
             </DropdownMenuItem>
             {user.role === Role.SUPER_ADMIN && (
               <DropdownMenuItem
                 onClick={() =>
-                  navigator.clipboard.writeText(JSON.stringify(libraryItem))
+                  navigator.clipboard.writeText(JSON.stringify(item))
                 }
               >
                 <CopyIcon className="mr-2 size-4" />
-                <span>Copy Individual item</span>
+                <span>Copy individual item</span>
               </DropdownMenuItem>
             )}
 
@@ -87,17 +96,11 @@ export default function DropDownMenuLibraryItem({
           </DropdownMenuGroup>
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() =>
-                startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/edit/${libraryItem.id}`,
-                  ),
-                )
-              }
+              onClick={() => setShowEditDialog(true)}
               className="font-semibold text-foreground"
             >
               <Edit2Icon className="mr-2 size-4 fill-foreground text-foreground" />
-              <span>Edit Individual item</span>
+              <span>Edit individual item</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -105,14 +108,20 @@ export default function DropDownMenuLibraryItem({
               className="font-semibold text-destructive"
             >
               <Trash2Icon className="mr-2 size-4 fill-destructive" />
-              <span>Delete Individual item</span>
+              <span>Delete individual item</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DialogDeleteLibraryItem
-        libraryItem={libraryItem}
+      <FormUpdateIndividualItem
+        open={showEditDialog}
+        setOpen={setShowEditDialog}
+        individualItemToEdit={item}
+      />
+
+      <DialogDeleteIndividualItem
+        item={item}
         open={showDeleteDialog}
         openChange={setShowDeleteDialog}
       />

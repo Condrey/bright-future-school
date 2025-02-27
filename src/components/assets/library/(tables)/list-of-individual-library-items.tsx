@@ -8,6 +8,7 @@ import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { getAllLibraryAssetItems } from "./action";
 import { useLibraryColumns } from "./columns";
@@ -20,6 +21,14 @@ export function ListOfIndividualLibraryItems() {
     queryKey: ["assets", "library-asset", "list"],
     queryFn: getAllLibraryAssetItems,
   });
+  const pathname = usePathname();
+  let url = `/general-asset-manager/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`;
+  } else if (pathname.startsWith("/library-asset-manager/")) {
+    url = `/library-asset-manager/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`;
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
@@ -33,11 +42,7 @@ export function ListOfIndividualLibraryItems() {
           loading={isPending}
           className="w-fit"
           onClick={() =>
-            startTransition(() =>
-              navigateOnclickWithPathnameWithoutUpdate(
-                `/director/management/asset-management/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`,
-              ),
-            )
+            startTransition(() => navigateOnclickWithPathnameWithoutUpdate(url))
           }
         >
           + Entry

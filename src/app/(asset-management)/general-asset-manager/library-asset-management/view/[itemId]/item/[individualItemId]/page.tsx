@@ -2,12 +2,15 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import { getIndividualBook } from "../../../../../../../../../../../components/assets/library/view/action";
-import ItemBody from "../../../../../../../../../../../components/assets/library/view/item/item-body";
+import { getIndividualBook } from "@/components/assets/library/view/action";
+import ItemBody from "@/components/assets/library/view/item/item-body";
+import { assetCategories } from "@/lib/enums";
 
 interface PageProps {
   params: Promise<{ individualItemId: string }>;
 }
+const assetCategory = AssetCategory.LIBRARY;
+const category = assetCategories[assetCategory];
 
 export default async function Page({ params }: PageProps) {
   const { individualItemId } = await params;
@@ -19,14 +22,13 @@ export default async function Page({ params }: PageProps) {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Library Assets",
-            url: `/management/asset-management/store/${AssetCategory.LIBRARY.toLocaleLowerCase()}`,
+            label: `${category.label} management`,
+            url: "/library-asset-management",
           },
           {
             label: `${individualItem.libraryBook.author}'s ${individualItem.libraryBook.title} books `,
-            url: `/management/asset-management/store/${AssetCategory.LIBRARY.toLocaleLowerCase()}/view/${individualItem.libraryBookId}`,
+            url: `/library-asset-management//view/${individualItem.libraryBookId}`,
           },
           {
             label: individualItem.isbn || "Unknown ISBN",

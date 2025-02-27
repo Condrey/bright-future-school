@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { libraryBookDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import FormLibrary from "../../../../../../../../../components/assets/add-assets/(library)/form-library";
+import FormLibrary from "@/components/assets/add-assets/(library)/form-library";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
@@ -13,7 +13,7 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
   const item = await prisma.libraryBook.findUnique({
-    where: { id: itemId },
+    where: { id: decodeURIComponent(itemId) },
     include: libraryBookDataInclude,
   });
   if (!item) throw new Error("Item not found");

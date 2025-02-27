@@ -8,8 +8,8 @@ import {
 import { assetConditions, bookStatuses } from "@/lib/enums";
 import { IndividualLibraryBookData } from "@/lib/types";
 import { AssetCondition, BookStatus } from "@prisma/client";
-import { NumericHolder } from "../../../../../(header)/numeric-holder";
-import AssetRepairSummary from "../../../../../asset-repair-summary";
+import { NumericHolder } from "../../../../../app/(director)/director/management/asset-management/(header)/numeric-holder";
+import AssetRepairSummary from "../../../../../app/(director)/director/management/asset-management/asset-repair-summary";
 
 interface TableSummaryProps {
   items: IndividualLibraryBookData[];

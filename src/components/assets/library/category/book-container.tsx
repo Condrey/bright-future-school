@@ -3,9 +3,8 @@
 import { useSession } from "@/app/session-provider";
 import { Badge } from "@/components/ui/badge";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
-import { myPrivileges } from "@/lib/enums";
-import { Role } from "@prisma/client";
 import { BookIcon, Loader2Icon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 
 interface BookContainerProps {
@@ -22,10 +21,12 @@ export default function BookContainer({ book }: BookContainerProps) {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const privileges = myPrivileges[user.role];
-  let pathname = "";
-  if (privileges.includes(Role.DIRECTOR)) {
-    pathname = "/director/management/asset-management/store/library/view/";
+  const pathname = usePathname();
+  let url = "/general-asset-manager/library-asset-management/view/";
+  if (pathname.startsWith("/director/management/")) {
+    url = "/director/management/asset-management/store/library/view/";
+  } else if (pathname.startsWith("/library-asset-manager/")) {
+    url = "/library-asset-manager/view/";
   }
   return (
     <Badge
@@ -33,7 +34,7 @@ export default function BookContainer({ book }: BookContainerProps) {
       className="flex max-w-fit gap-1 p-2 hover:cursor-pointer hover:bg-secondary"
       onClick={() =>
         startTransition(() =>
-          navigateOnclickWithPathnameWithoutUpdate(pathname + book.id),
+          navigateOnclickWithPathnameWithoutUpdate(url + book.id),
         )
       }
     >

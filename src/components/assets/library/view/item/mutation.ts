@@ -3,7 +3,7 @@
 import { toast } from "@/hooks/use-toast";
 import { IndividualLibraryBookData } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateIndividualItem } from "../../action";
+import { updateIndividualItem } from "../action";
 
 export function useUpdateIndividualItem() {
   const queryClient = useQueryClient();

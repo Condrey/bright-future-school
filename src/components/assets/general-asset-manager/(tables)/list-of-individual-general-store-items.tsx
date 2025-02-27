@@ -1,18 +1,17 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
-import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { getAllGeneralStoreAssetItems } from "./action";
 import { useGeneralStoreColumns } from "./columns";
 import TableSummary from "./table-summary";
-import { usePathname } from "next/navigation";
 
 export function ListOfIndividualGeneralStoreItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
@@ -22,7 +21,7 @@ export function ListOfIndividualGeneralStoreItems() {
     queryFn: getAllGeneralStoreAssetItems,
   });
   const pathname = usePathname();
-  let url = `/general-asset-manager/general-asset-management/add-asset/${AssetCategory.GENERAL_STORE.toLowerCase()}`;
+  let url = `/general-asset-manager/add-asset/${AssetCategory.GENERAL_STORE.toLowerCase()}`;
   if (pathname.startsWith("/director/management/")) {
     url = `/director/management/asset-management/add-asset/${AssetCategory.GENERAL_STORE.toLowerCase()}`;
   } else if (pathname.startsWith("/general-store-asset-manager/")) {
