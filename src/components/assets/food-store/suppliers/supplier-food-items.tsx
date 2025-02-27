@@ -16,7 +16,9 @@ import FoodStoreItemContainer from "./food-store-item-container";
 
 export default function SupplierFoodItems() {
   const searchParams = useSearchParams();
-  const searchParamsSupplier = searchParams.get(PARAM_NAME_FOOD_STORE_ITEM_SUPPLIER);
+  const searchParamsSupplier = searchParams.get(
+    PARAM_NAME_FOOD_STORE_ITEM_SUPPLIER,
+  );
   const supplier = decodeURIComponent(searchParamsSupplier!);
 
   const { data, status, isFetching, error, refetch } =
@@ -25,7 +27,8 @@ export default function SupplierFoodItems() {
     return (
       <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
-          Please choose a supplier from the side bar to display their food store items here.
+          Please choose a supplier from the side bar to display their food store
+          items here.
         </p>
       </div>
     );
@@ -61,8 +64,7 @@ export default function SupplierFoodItems() {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
         <p className="max-w-sm text-center text-muted-foreground">
-          There are no  food Store items added in the database yet. Please
-          add
+          There are no food Store items added in the database yet. Please add
         </p>
       </div>
     );
@@ -75,7 +77,9 @@ export default function SupplierFoodItems() {
           <CardTitle>Food store items</CardTitle>
           <CardDescription>
             {data.length === 0 ? (
-              <span>There are no food store items belonging to this supplier</span>
+              <span>
+                There are no food store items belonging to this supplier
+              </span>
             ) : (
               <span>{`Containing ${data.length} food Store item${data.length === 1 ? "" : "s"}`}</span>
             )}
@@ -85,7 +89,10 @@ export default function SupplierFoodItems() {
           <CardContent className="space-y-3">
             <div className="flex flex-wrap gap-2">
               {data.map((foodStore) => (
-                <FoodStoreItemContainer key={foodStore.id} foodStoreItem={foodStore} />
+                <FoodStoreItemContainer
+                  key={foodStore.id}
+                  foodStoreItem={foodStore}
+                />
               ))}
             </div>
           </CardContent>

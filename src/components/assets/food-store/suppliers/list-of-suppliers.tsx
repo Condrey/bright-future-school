@@ -81,7 +81,7 @@ function SupplierItem({ supplier }: SupplierItemProps) {
           );
         })
       }
-      className={cn("w-full gap-0 items-start h-fit flex flex-col")}
+      className={cn("flex h-fit w-full flex-col items-start gap-0")}
     >
       <div>{supplier.name}</div>
       <div className="text-xs text-muted-foreground">

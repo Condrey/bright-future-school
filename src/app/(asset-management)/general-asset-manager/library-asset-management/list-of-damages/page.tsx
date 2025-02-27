@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 export default function Page() {
   const assetCategory = AssetCategory.LIBRARY;
-      const category = assetCategories[assetCategory];
+  const category = assetCategories[assetCategory];
 
   return (
     <Fragment>

@@ -3,7 +3,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllSubAssets, getSubAssetItems } from "./action";
 
-export function useFetchAllSubAssetsQuery(initialData: { name: string,id:string }[]) {
+export function useFetchAllSubAssetsQuery(
+  initialData: { name: string; id: string }[],
+) {
   const query = useQuery({
     queryKey: ["general-store-sub-asset", "list"],
     queryFn: getAllSubAssets,

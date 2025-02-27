@@ -55,7 +55,7 @@ export default function DropDownMenuFoodStore({
           <DropdownMenuGroup>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              disabled={!foodStore.trackQuantity||!foodStore.isConsumable}
+              disabled={!foodStore.trackQuantity || !foodStore.isConsumable}
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(

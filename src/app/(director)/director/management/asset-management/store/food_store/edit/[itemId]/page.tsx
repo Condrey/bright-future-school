@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { foodStoreItemDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import FormFoodStore from "../../../../add-asset/[assetCategory]/(food-store)/form-food-store";
+import FormFoodStore from "../../../../../../../../../components/assets/add-assets/(food-store)/form-food-store";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;

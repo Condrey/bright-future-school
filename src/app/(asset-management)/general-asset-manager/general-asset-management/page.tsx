@@ -1,3 +1,4 @@
+import { ListOfIndividualGeneralStoreItems } from "@/components/assets/general-asset-manager/(tables)/list-of-individual-general-store-items";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
@@ -16,7 +17,7 @@ export default function Page() {
     <Fragment>
       <HeaderContainer breadCrumbs={[{ label: category.label }]} />
       <BodyContainer>
-        To display graphs and charts here, not yet implemented{" "}
+        <ListOfIndividualGeneralStoreItems />
       </BodyContainer>
     </Fragment>
   );

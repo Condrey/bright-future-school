@@ -14,7 +14,9 @@ export const metadata = {
 export default function Page() {
   return (
     <Fragment>
-      <HeaderContainer breadCrumbs={[{ label: `${category.label} management` }]} />
+      <HeaderContainer
+        breadCrumbs={[{ label: `${category.label} management` }]}
+      />
       <BodyContainer>
         To display graphs and charts here, not yet implemented{" "}
       </BodyContainer>

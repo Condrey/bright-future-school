@@ -5,9 +5,8 @@ import TipTapViewer from "@/components/tip-tap-editor/tip-tap-viewer";
 import TooltipContainer from "@/components/tooltip-container";
 import { Badge } from "@/components/ui/badge";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
-import { myPrivileges } from "@/lib/enums";
-import { Role } from "@prisma/client";
-import { ComputerIcon, Loader2Icon, StoreIcon } from "lucide-react";
+import { Loader2Icon, StoreIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 
 interface GeneralStoreItemContainerProps {
@@ -24,14 +23,15 @@ export default function GeneralStoreItemContainer({
 }: GeneralStoreItemContainerProps) {
   const { user } = useSession();
   if (!user) throw Error("Not authorized");
+  const pathname = usePathname();
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const privileges = myPrivileges[user.role];
-  let pathname = "";
-  if (privileges.includes(Role.DIRECTOR)) {
-    pathname =
-      "/director/management/asset-management/store/general_store/view/";
+  let url = "/general-asset-manager/general-asset-management/view/";
+  if (pathname.startsWith("/director/management")) {
+    url = "/director/management/asset-management/store/general_store/view/";
+  } else if (pathname.startsWith("/general-store-asset-manager")) {
+    url = "/general-store-asset-manager/view/";
   }
   return (
     <Badge
@@ -40,7 +40,7 @@ export default function GeneralStoreItemContainer({
       onClick={() =>
         startTransition(() =>
           navigateOnclickWithPathnameWithoutUpdate(
-            pathname + individualStoreItem.id,
+            url + individualStoreItem.id,
           ),
         )
       }

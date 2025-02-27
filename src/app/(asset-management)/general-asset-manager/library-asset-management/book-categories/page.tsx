@@ -20,9 +20,15 @@ export default async function Page() {
   return (
     <Fragment>
       <HeaderContainer
-        breadCrumbs={[{ label: `${category.label} management`,url:'/library-asset-management' },{
-            label:'Library book categories'
-        }]}
+        breadCrumbs={[
+          {
+            label: `${category.label} management`,
+            url: "/library-asset-management",
+          },
+          {
+            label: "Library book categories",
+          },
+        ]}
       />
 
       <BodyContainer className="flex flex-row gap-6">

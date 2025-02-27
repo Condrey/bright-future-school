@@ -14,13 +14,13 @@ export const metadata: Metadata = {
 };
 export default async function Page() {
   const assetCategory = AssetCategory.FOOD_STORE;
-   const category = assetCategories[assetCategory];
+  const category = assetCategories[assetCategory];
   const suppliers = await getAllFoodStoreSuppliers();
   return (
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-         { label: `${category.label} management` },
+          { label: `${category.label} management` },
           { label: "Food store suppliers" },
         ]}
       />

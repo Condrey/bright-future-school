@@ -6,7 +6,7 @@ import { AssetCategory } from "@prisma/client";
 export async function getAllSubAssets() {
   const data = await prisma.asset.findMany({
     where: { category: AssetCategory.GENERAL_STORE },
-    select: { name: true ,id:true},
+    select: { name: true, id: true },
     orderBy: { name: "asc" },
   });
   return data;

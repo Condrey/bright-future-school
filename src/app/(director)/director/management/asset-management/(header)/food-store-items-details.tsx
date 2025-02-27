@@ -1,17 +1,17 @@
 "use client";
 
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/assets/add-assets/barrel-file";
 import { Skeleton } from "@/components/ui/skeleton";
 import { assetStatuses } from "@/lib/enums";
 import { formatNumber } from "@/lib/utils";
 import { AssetStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { ForkKnifeIcon } from "lucide-react";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../add-asset/barrel-file";
 import { getFoodStoreItems } from "./action";
 import { NumericHolder } from "./numeric-holder";
 

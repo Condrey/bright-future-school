@@ -93,7 +93,9 @@ export async function consumeFoodStoreItem(input: FoodConsumptionSchema) {
   return data;
 }
 
-export async function undoFoodStoreItemConsumption(input: FoodConsumptionSchema) {
+export async function undoFoodStoreItemConsumption(
+  input: FoodConsumptionSchema,
+) {
   const { foodStoreItemId, quantityUsed, id } =
     foodConsumptionSchema.parse(input);
   const data = await prisma.foodStoreItem.update({
@@ -101,10 +103,9 @@ export async function undoFoodStoreItemConsumption(input: FoodConsumptionSchema)
     data: {
       quantity: { increment: quantityUsed },
       consumptions: {
-       delete:{id}
+        delete: { id },
       },
     },
   });
   return data;
 }
-

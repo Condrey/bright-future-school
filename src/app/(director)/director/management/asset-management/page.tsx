@@ -20,9 +20,7 @@ export default async function Page() {
       <NavigationBar />
 
       <Suspense fallback={<HeaderContainerFallback />}>
-        <HeaderContainer
-          breadCrumbs={[{ label: "Asset management" }]}
-        />
+        <HeaderContainer breadCrumbs={[{ label: "Asset management" }]} />
       </Suspense>
       <BodyContainer className="gap-6">
         {/* header containers  */}

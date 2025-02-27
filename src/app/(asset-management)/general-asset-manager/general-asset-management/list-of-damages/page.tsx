@@ -19,7 +19,7 @@ export default function Page() {
             label: "General asset management",
             url: "/general-asset-management",
           },
-         
+
           { label: "List of damages" },
         ]}
       />

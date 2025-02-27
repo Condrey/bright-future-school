@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { libraryBookDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import FormLibrary from "../../../../add-asset/[assetCategory]/(library)/form-library";
+import FormLibrary from "../../../../../../../../../components/assets/add-assets/(library)/form-library";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;

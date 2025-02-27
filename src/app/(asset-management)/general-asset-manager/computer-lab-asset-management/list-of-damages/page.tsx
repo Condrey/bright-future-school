@@ -11,13 +11,16 @@ export const metadata: Metadata = {
 };
 export default function Page() {
   const assetCategory = AssetCategory.COMPUTER_LAB;
-    const category = assetCategories[assetCategory];
+  const category = assetCategories[assetCategory];
 
   return (
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: `${category.label} management` ,url:'/computer-lab-asset-management'},
+          {
+            label: `${category.label} management`,
+            url: "/computer-lab-asset-management",
+          },
 
           { label: "List of damages" },
         ]}

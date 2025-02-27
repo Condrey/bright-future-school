@@ -21,7 +21,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./add-asset/barrel-file";
+} from "@/components/assets/add-assets/barrel-file";
 import { useAddAssetMutation, useUpdateAssetMutation } from "./mutation";
 
 interface AddEditAssetProps {

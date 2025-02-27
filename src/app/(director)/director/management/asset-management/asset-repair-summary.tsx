@@ -1,11 +1,11 @@
-import { NumericHolder } from "./(header)/numeric-holder";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./add-asset/barrel-file";
+} from "@/components/assets/add-assets/barrel-file";
+import { NumericHolder } from "./(header)/numeric-holder";
 
 interface AssetRepairSummaryProps {
   payments: number;

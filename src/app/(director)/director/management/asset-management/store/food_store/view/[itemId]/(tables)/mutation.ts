@@ -38,7 +38,6 @@ export function useAddSingleItemMutation(foodStoreItem: FoodStoreItemData) {
       return { previousState };
     },
     async onSuccess(_, variables) {
-   
       queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
@@ -82,7 +81,7 @@ export function useAddMultipleItemMutation(foodStoreItem: FoodStoreItemData) {
       await queryClient.cancelQueries({
         queryKey: _key,
       });
-    
+
       queryClient.invalidateQueries({ queryKey: _key });
     },
     onError: (error, variables, context) => {
@@ -122,16 +121,16 @@ export function useConsumeFoodStoreItemMutation() {
       return { previousState };
     },
     async onSuccess(_, variables) {
-            const queryKey: QueryKey = [
-              "assets",
-              "food-store-item",
-              variables.foodStoreItemId,
-            ];
+      const queryKey: QueryKey = [
+        "assets",
+        "food-store-item",
+        variables.foodStoreItemId,
+      ];
 
       await queryClient.cancelQueries({
         queryKey: _key,
       });
-  
+
       queryClient.invalidateQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey: _key });
     },
@@ -162,7 +161,6 @@ export function useConsumeFoodStoreItemMutation() {
   });
   return mutation;
 }
-
 
 export function useUndoFoodStoreItemConsumptionMutation() {
   const queryClient = useQueryClient();
@@ -194,7 +192,7 @@ export function useUndoFoodStoreItemConsumptionMutation() {
       await queryClient.cancelQueries({
         queryKey: _key,
       });
-  
+
       queryClient.invalidateQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey: _key });
     },
@@ -225,4 +223,3 @@ export function useUndoFoodStoreItemConsumptionMutation() {
   });
   return mutation;
 }
-

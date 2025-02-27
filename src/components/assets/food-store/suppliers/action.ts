@@ -17,7 +17,7 @@ export async function getSupplierSFoodItems({
 }) {
   const data = await prisma.foodStoreItem.findMany({
     where: { supplierId },
-    select:{id:true, isConsumable:true, foodName:true}
+    select: { id: true, isConsumable: true, foodName: true },
   });
   return data;
 }

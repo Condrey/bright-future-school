@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useSession } from "@/app/session-provider";
@@ -17,7 +16,9 @@ interface FoodStoreItemContainerProps {
   };
 }
 
-export default function FoodStoreItemContainer({ foodStoreItem }: FoodStoreItemContainerProps) {
+export default function FoodStoreItemContainer({
+  foodStoreItem,
+}: FoodStoreItemContainerProps) {
   const { user } = useSession();
   if (!user) throw Error("Not authorized");
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
@@ -45,8 +46,11 @@ export default function FoodStoreItemContainer({ foodStoreItem }: FoodStoreItemC
       )}
       <div className="space-y-1.5">
         <div className="text-sm">{foodStoreItem.foodName}</div>{" "}
-        <Badge variant={foodStoreItem.isConsumable?'go':'destructive'} className="text-xs" >
-          {foodStoreItem.isConsumable?'Consumable':'Not Consumable'}
+        <Badge
+          variant={foodStoreItem.isConsumable ? "go" : "destructive"}
+          className="text-xs"
+        >
+          {foodStoreItem.isConsumable ? "Consumable" : "Not Consumable"}
         </Badge>
       </div>
     </Badge>
