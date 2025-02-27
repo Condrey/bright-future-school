@@ -1,10 +1,10 @@
+import FormComputerLab from "@/components/assets/add-assets/(computer-lab)/form-computer-lab";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import prisma from "@/lib/prisma";
 import { computerLabItemDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import FormComputerLab from "../../../../add-asset/[assetCategory]/(computer-lab)/form-computer-lab";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
