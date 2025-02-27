@@ -1,7 +1,7 @@
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { Fragment } from "react";
-import { ListOfIndividualLaboratoryItems } from "./(tables)/list-of-individual-laboratory-items";
+import { ListOfIndividualLaboratoryItems } from "@/components/assets/laboratory/(tables)/list-of-individual-laboratory-items";
 
 export default function Page() {
   return (

@@ -23,8 +23,9 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useState, useTransition } from "react";
-import FormUpdateIndividualItem from "../item/[individualItemId]/form-update-individual-item";
+import FormUpdateIndividualItem from "../item/form-update-individual-item";
 import DialogDeleteIndividualItem from "./dialog-delete-individual-item";
+import { usePathname } from "next/navigation";
 
 interface DropDownMenuIndividualItemProps {
   item: IndividualComputerLabItemData;
@@ -38,6 +39,13 @@ export default function DropDownMenuIndividualItem({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const { user } = useSession();
+  const pathname = usePathname()
+  let url = `/general-asset-manager/computer-lab-asset-management/view/${item.id}/item/${item.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`;
+  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+    url = `/computer-lab-asset-manager/view/${item.id}/item/${item.id}`;
+  }
 
   return (
     <>
@@ -60,8 +68,7 @@ export default function DropDownMenuIndividualItem({
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`,
-                  ),
+url                  ),
                 )
               }
             >

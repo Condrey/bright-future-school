@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useState, useTransition } from "react";
 import DialogDeleteLaboratory from "./dialog-delete-laboratory-item";
+import { usePathname } from "next/navigation";
 
 interface DropDownMenuLaboratoryProps {
   laboratory: LaboratoryItemData;
@@ -36,6 +37,22 @@ export default function DropDownMenuLaboratory({
   const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
+
+  const pathname = usePathname();
+  let url = `/general-asset-manager/laboratory-asset-management/view/${laboratory.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/store/${laboratory.asset.category.toLocaleLowerCase()}/view/${laboratory.id}`;
+  } else if (pathname.startsWith("/laboratory-asset-manager/")) {
+    url = `/laboratory-asset-manager/view/${laboratory.id}`;
+  }
+
+  let editUrl = `/general-asset-manager/laboratory-asset-management/edit/${laboratory.id}`;
+  if(pathname.startsWith("/director/management/")) {
+    editUrl = `/director/management/asset-management/store/${laboratory.asset.category.toLocaleLowerCase()}/edit/${laboratory.id}`;
+  }
+  else if(pathname.startsWith("/laboratory-asset-manager/")) {
+    editUrl = `/laboratory-asset-manager/edit/${laboratory.id}`;
+  }
 
   return (
     <>
@@ -59,8 +76,7 @@ export default function DropDownMenuLaboratory({
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${laboratory.asset.category.toLocaleLowerCase()}/view/${laboratory.id}`,
-                  ),
+url                  ),
                 )
               }
             >
@@ -91,8 +107,7 @@ export default function DropDownMenuLaboratory({
               onClick={() =>
                 startTransition(() =>
                   navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${laboratory.asset.category.toLocaleLowerCase()}/edit/${laboratory.id}`,
-                  ),
+editUrl                  ),
                 )
               }
               className="font-semibold text-foreground"

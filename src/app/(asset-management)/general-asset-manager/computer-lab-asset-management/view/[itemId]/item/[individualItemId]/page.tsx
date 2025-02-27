@@ -1,17 +1,19 @@
+import { getIndividualComputerLabItem } from "@/components/assets/computer-lab/view/action";
+import ItemBody from "@/components/assets/computer-lab/view/item/item-body";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
+import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import { getIndividualLaboratoryItem } from "@/components/assets/laboratory/view/action";
-import ItemBody from "@/components/assets/laboratory/view/item/item-body";
 
 interface PageProps {
   params: Promise<{ individualItemId: string }>;
 }
-
+const assetCategory = AssetCategory.COMPUTER_LAB;
+const category = assetCategories[assetCategory];
 export default async function Page({ params }: PageProps) {
   const { individualItemId } = await params;
-  const individualItem = await getIndividualLaboratoryItem(
+  const individualItem = await getIndividualComputerLabItem(
     decodeURIComponent(individualItemId),
   );
   if (!individualItem) throw Error("Missing item.");
@@ -19,18 +21,16 @@ export default async function Page({ params }: PageProps) {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Laboratory Assets",
-            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
+            label: `${category.label} management`,
+            url: "/computer-lab-asset-management",
           },
           {
-            label: `${individualItem.labItem.name} variants `,
-            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}/view/${individualItem.labItemId}`,
+            label: `${individualItem.computerLabItem.model} ${individualItem.computerLabItem.name} variants`,
+            url: `/computer-lab-asset-management/asset-management/view/${individualItem.computerLabItemId}`,
           },
           {
-            label:
-              individualItem.uniqueIdentifier || "Unknown unique Identifier",
+            label: individualItem.uniqueIdentifier || "Unknown identifier",
           },
         ]}
       />

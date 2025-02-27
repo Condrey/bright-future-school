@@ -8,11 +8,11 @@ import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { getAllComputerAssetItems } from "./action";
 import { useComputerLabColumns } from "./columns";
 import TableSummary from "./table-summary";
-import { usePathname } from "next/navigation";
 
 export function ListOfIndividualComputerLabItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
@@ -25,8 +25,8 @@ export function ListOfIndividualComputerLabItems() {
   let url = `/general-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
   if (pathname.startsWith("/director/management/")) {
     url = `/director/management/asset-management/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
-  } else if (pathname.startsWith("/general-store-asset-manager/")) {
-    url = `/general-store-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
+  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+    url = `/computer-lab-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
   }
 
   return (
@@ -35,7 +35,7 @@ export function ListOfIndividualComputerLabItems() {
         <h1 className="text-xl font-bold">
           Computer Lab assets{" "}
           <span className="text-muted-foreground">
-            ({formatNumber(data?.length || 0)})
+            ({!data ? "--" : formatNumber(data?.length || 0)})
           </span>
         </h1>
         <LoadingButton

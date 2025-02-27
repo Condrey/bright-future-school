@@ -22,7 +22,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { AlertTriangleIcon, ChevronDown, HistoryIcon } from "lucide-react";
 import { useState } from "react";
-import { getIndividualComputerLabItem } from "../../action";
+import { getIndividualComputerLabItem } from "../action";
 import ButtonEditIndividualItem from "./button-edit-individual-item";
 
 interface ItemBodyProps {

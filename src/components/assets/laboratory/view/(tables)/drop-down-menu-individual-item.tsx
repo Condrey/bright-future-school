@@ -22,8 +22,9 @@ import {
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
-import FormUpdateIndividualItem from "../item/[individualItemId]/form-update-individual-item";
+import FormUpdateIndividualItem from "../item/form-update-individual-item";
 import DialogDeleteIndividualItem from "./dialog-delete-individual-item";
 
 interface DropDownMenuIndividualItemProps {
@@ -38,6 +39,14 @@ export default function DropDownMenuIndividualItem({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const { user } = useSession();
+
+  const pathname = usePathname();
+  let url = `/general-asset-manager/laboratory-asset-management/view/${item.labItemId}/item/${item.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/store/${item.labItem.asset.category.toLocaleLowerCase()}/view/${item.labItemId}/item/${item.id}`;
+  } else if (pathname.startsWith("/laboratory-asset-manager/")) {
+    url = `/laboratory-asset-manager/view/${item.labItemId}/item/${item.id}`;
+  }
 
   return (
     <>
@@ -59,9 +68,7 @@ export default function DropDownMenuIndividualItem({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${item.labItem.asset.category.toLocaleLowerCase()}/view/${item.labItemId}/item/${item.id}`,
-                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >

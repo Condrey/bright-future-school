@@ -1,9 +1,9 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
-import { IndividualLaboratoryItemData } from "@/lib/types";
+import { IndividualComputerLabItem } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateIndividualItem } from "../../action";
+import { updateIndividualItem } from "../action";
 
 export function useUpdateIndividualItem() {
   const queryClient = useQueryClient();
@@ -12,29 +12,29 @@ export function useUpdateIndividualItem() {
     onSuccess: async (updateItem, variables) => {
       const queryKey: QueryKey = [
         "assets",
-        "laboratory-asset",
+        "computer-lab-asset",
         "item",
         variables.id,
       ];
       await queryClient.cancelQueries({ queryKey });
 
-      queryClient.setQueryData<IndividualLaboratoryItemData>(
+      queryClient.setQueryData<IndividualComputerLabItem>(
         queryKey,
         (oldData) => updateItem,
       );
 
       //   for list of individual items
       queryClient.invalidateQueries({
-        queryKey: ["assets", "laboratory-asset", "item"],
+        queryKey: ["assets", "computer-lab-asset", "item"],
       });
       toast({
-        description: `Successfully updated the item with unique Identifier ${variables.uniqueIdentifier}`,
+        description: `Successfully updated the item with unique identifier ${variables.uniqueIdentifier}`,
       });
     },
     onError(error, variables) {
       console.error(error);
       toast({
-        description: `failed to update item with unique Identifier ${variables.uniqueIdentifier}`,
+        description: `failed to update item with unique identifier ${variables.uniqueIdentifier}`,
       });
     },
   });

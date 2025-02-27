@@ -1,3 +1,4 @@
+import { ListOfIndividualLaboratoryItems } from "@/components/assets/laboratory/(tables)/list-of-individual-laboratory-items";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
@@ -18,7 +19,7 @@ export default function Page() {
         breadCrumbs={[{ label: `${category.label} management` }]}
       />
       <BodyContainer>
-        To display graphs and charts here, not yet implemented{" "}
+        <ListOfIndividualLaboratoryItems />
       </BodyContainer>
     </Fragment>
   );

@@ -8,6 +8,7 @@ import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
 import { myPrivileges } from "@/lib/enums";
 import { Role } from "@prisma/client";
 import { ComputerIcon, Loader2Icon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 
 interface ComputerLabItemContainerProps {
@@ -27,10 +28,13 @@ export default function ComputerLabItemContainer({
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const privileges = myPrivileges[user.role];
-  let pathname = "";
-  if (privileges.includes(Role.DIRECTOR)) {
-    pathname = "/director/management/asset-management/store/computer_lab/view/";
+  const pathname = usePathname()
+  
+  let url = "/general-asset-manager/computer-lab-asset-management/view/";
+  if (pathname.startsWith('/director/management/')) {
+    url = "/director/management/asset-management/store/computer_lab/view/";
+  }else if(pathname.startsWith('/computer-lab-asset-manager/')){
+    url = "/computer-lab-asset-manager/view/";
   }
   return (
     <Badge
@@ -39,7 +43,7 @@ export default function ComputerLabItemContainer({
       onClick={() =>
         startTransition(() =>
           navigateOnclickWithPathnameWithoutUpdate(
-            pathname + computerLabItem.id,
+            url + computerLabItem.id,
           ),
         )
       }

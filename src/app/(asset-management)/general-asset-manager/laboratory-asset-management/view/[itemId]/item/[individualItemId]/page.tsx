@@ -4,11 +4,13 @@ import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 import { getIndividualLaboratoryItem } from "@/components/assets/laboratory/view/action";
 import ItemBody from "@/components/assets/laboratory/view/item/item-body";
+import { assetCategories } from "@/lib/enums";
 
 interface PageProps {
   params: Promise<{ individualItemId: string }>;
 }
-
+const assetCategory = AssetCategory.LABORATORY;
+  const category = assetCategories[assetCategory];
 export default async function Page({ params }: PageProps) {
   const { individualItemId } = await params;
   const individualItem = await getIndividualLaboratoryItem(
@@ -19,14 +21,13 @@ export default async function Page({ params }: PageProps) {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Laboratory Assets",
-            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
+            label: `${category.label} management`,
+            url: "/laboratory-asset-management",
           },
           {
             label: `${individualItem.labItem.name} variants `,
-            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}/view/${individualItem.labItemId}`,
+            url: `/laboratory-asset-management/view/${individualItem.labItemId}`,
           },
           {
             label:

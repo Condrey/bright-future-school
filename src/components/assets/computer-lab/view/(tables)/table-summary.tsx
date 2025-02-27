@@ -6,53 +6,37 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { assetConditions, assetStatuses } from "@/lib/enums";
-import { LaboratoryItemData } from "@/lib/types";
+import { IndividualComputerLabItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
-import { NumericHolder } from "../../../(header)/numeric-holder";
-import AssetRepairSummary from "../../../asset-repair-summary";
+import { NumericHolder } from "../../../../../app/(director)/director/management/asset-management/(header)/numeric-holder";
+import AssetRepairSummary from "../../../../../app/(director)/director/management/asset-management/asset-repair-summary";
 
 interface TableSummaryProps {
-  items: LaboratoryItemData[];
+  items: IndividualComputerLabItemData[];
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
   const payments =
     items
-      .map(
-        (i) =>
-          i.individualLabItems
-            .map((g) =>
-              g.assetDamages.flatMap((a) =>
-                a.assetRepairPayments
-                  .flatMap((r) => r.paidAmount)
-                  .reduce((total, amount) => (total || 0) + (amount || 0), 0),
-              ),
-            )
-            .flat()
-            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+      .map((i) =>
+        i.assetDamages.flatMap(
+          (a) =>
+            a.assetRepairPayments
+              .flatMap((r) => r.paidAmount)
+              .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
+        ),
       )
+      .flat()
       .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-
   const cost =
     items
-      .map(
-        (i) =>
-          i.individualLabItems
-            .map((g) => g.assetDamages.flatMap((a) => a.repairPrice))
-            .flat()
-            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
-      )
+      .map((i) => i.assetDamages.flatMap((a) => a.repairPrice))
+      .flat()
       .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-
   const balance =
     items
-      .map(
-        (i) =>
-          i.individualLabItems
-            .map((g) => g.assetDamages.flatMap((a) => a.repairBalance))
-            .flat()
-            .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0,
-      )
+      .map((i) => i.assetDamages.flatMap((a) => a.repairBalance))
+      .flat()
       .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
 
   return (
@@ -60,13 +44,11 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Conditions</CardTitle>
-          <CardDescription>Summary showing asset conditions</CardDescription>
+          <CardDescription>Summary showing variant conditions</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetCondition).map((condition) => {
-            const count = items.flatMap((i) =>
-              i.individualLabItems.filter((d) => d.condition === condition),
-            ).length;
+            const count = items.filter((i) => i.condition === condition).length;
             const label = assetConditions[condition];
             return (
               <NumericHolder key={condition} count={count} label={label} />
@@ -77,13 +59,11 @@ export default function TableSummary({ items }: TableSummaryProps) {
       <Card>
         <CardHeader>
           <CardTitle>Statuses</CardTitle>
-          <CardDescription>Summary showing asset statuses</CardDescription>
+          <CardDescription>Summary showing variant statuses</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-row flex-wrap gap-2">
           {Object.values(AssetStatus).map((status) => {
-            const count = items.flatMap((i) =>
-              i.individualLabItems.filter((d) => d.status === status),
-            ).length;
+            const count = items.filter((i) => i.status === status).length;
             const label = assetStatuses[status];
             return <NumericHolder key={status} count={count} label={label} />;
           })}

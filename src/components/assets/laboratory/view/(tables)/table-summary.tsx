@@ -6,13 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { assetConditions, assetStatuses } from "@/lib/enums";
-import { IndividualComputerLabItemData } from "@/lib/types";
+import { IndividualLaboratoryItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
-import { NumericHolder } from "../../../../../(header)/numeric-holder";
-import AssetRepairSummary from "../../../../../asset-repair-summary";
+import { NumericHolder } from "../../../../../app/(director)/director/management/asset-management/(header)/numeric-holder";
+import AssetRepairSummary from "../../../../../app/(director)/director/management/asset-management/asset-repair-summary";
 
 interface TableSummaryProps {
-  items: IndividualComputerLabItemData[];
+  items: IndividualLaboratoryItemData[];
 }
 
 export default function TableSummary({ items }: TableSummaryProps) {
@@ -38,7 +38,6 @@ export default function TableSummary({ items }: TableSummaryProps) {
       .map((i) => i.assetDamages.flatMap((a) => a.repairBalance))
       .flat()
       .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
-
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-wrap gap-4 *:min-w-[24rem] *:flex-1">
       <Card>

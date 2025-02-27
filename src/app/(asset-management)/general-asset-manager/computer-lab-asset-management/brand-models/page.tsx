@@ -21,7 +21,7 @@ export default async function Page() {
         breadCrumbs={[
           {
             label: `${category.label} management`,
-            url: "computer-lab-asset-management",
+            url: "/computer-lab-asset-management",
           },
           { label: "Brand models" },
         ]}

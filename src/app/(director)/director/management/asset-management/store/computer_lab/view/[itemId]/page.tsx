@@ -1,9 +1,9 @@
+import ListOfItems from "@/components/assets/computer-lab/view/(tables)/list-of-items";
+import { getComputerLabItem } from "@/components/assets/computer-lab/view/action";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import ListOfItems from "./(tables)/list-of-items";
-import { getComputerLabItem } from "./action";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;

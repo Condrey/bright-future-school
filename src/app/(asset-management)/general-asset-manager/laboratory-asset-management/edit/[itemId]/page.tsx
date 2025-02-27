@@ -5,11 +5,14 @@ import { laboratoryItemDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 import FormLaboratory from "@/components/assets/add-assets/(lab)/form-laboratory";
+import { assetCategories } from "@/lib/enums";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
 }
-
+  const assetCategory = AssetCategory.LABORATORY;
+  const category = assetCategories[assetCategory];
+  
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
   const item = await prisma.labItem.findUnique({
@@ -22,11 +25,11 @@ export default async function Page({ params }: PageProps) {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: "Asset management", url: "/management/asset-management/" },
           {
-            label: "Laboratory Assets",
-            url: `/management/asset-management/store/${AssetCategory.LABORATORY.toLocaleLowerCase()}`,
+            label: `${category.label} management`,
+            url: "/laboratory-asset-management",
           },
+
           {
             label: `Update ${item.name}`,
           },

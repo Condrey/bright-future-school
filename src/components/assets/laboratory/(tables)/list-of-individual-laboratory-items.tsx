@@ -8,6 +8,7 @@ import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { getAllLaboratoryAssetItems } from "./action";
 import { useLaboratoryColumns } from "./columns";
@@ -20,13 +21,20 @@ export function ListOfIndividualLaboratoryItems() {
     queryKey: ["assets", "laboratory-asset", "list"],
     queryFn: getAllLaboratoryAssetItems,
   });
+  const pathname = usePathname();
+  let url = `/general-asset-manager/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`;
+  } else if (pathname.startsWith("/laboratory-asset-manager/")) {
+    url = `/laboratory-asset-manager/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`;
+  }
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-xl font-bold">
           Laboratory assets{" "}
           <span className="text-muted-foreground">
-            ({formatNumber(data?.length || 0)})
+            ({!data?'--':formatNumber(data.length || 0)})
           </span>
         </h1>
         <LoadingButton
@@ -35,8 +43,7 @@ export function ListOfIndividualLaboratoryItems() {
           onClick={() =>
             startTransition(() =>
               navigateOnclickWithPathnameWithoutUpdate(
-                `/director/management/asset-management/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`,
-              ),
+url              ),
             )
           }
         >
