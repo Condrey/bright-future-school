@@ -4,8 +4,8 @@ import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 
-export const assetCategory = AssetCategory.LABORATORY;
-export const category = assetCategories[assetCategory];
+const assetCategory = AssetCategory.LABORATORY;
+const category = assetCategories[assetCategory];
 
 export const metadata = {
   title: category.label,

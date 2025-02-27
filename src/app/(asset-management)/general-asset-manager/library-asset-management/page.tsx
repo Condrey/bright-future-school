@@ -6,7 +6,7 @@ import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
 
 const assetCategory = AssetCategory.LIBRARY;
-export const category = assetCategories[assetCategory];
+const category = assetCategories[assetCategory];
 
 export const metadata = {
   title: category.label,
