@@ -12,6 +12,7 @@ import { useTransition } from "react";
 import { getAllFoodStoreAssetItems } from "./action";
 import { useFoodStoreColumns } from "./columns";
 import TableSummary from "./table-summary";
+import { usePathname } from "next/navigation";
 
 export function ListOfIndividualFoodStoreItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
@@ -20,6 +21,13 @@ export function ListOfIndividualFoodStoreItems() {
     queryKey: ["assets", "food-store-asset", "list"],
     queryFn: getAllFoodStoreAssetItems,
   });
+const pathname = usePathname()
+  let url = `general-asset-manager/add-asset/${AssetCategory.FOOD_STORE.toLowerCase()}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`;
+  } else if (pathname.startsWith("/laboratory-asset-manager/")) {
+    url = `/laboratory-asset-manager/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`;
+  }
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
@@ -35,8 +43,7 @@ export function ListOfIndividualFoodStoreItems() {
           onClick={() =>
             startTransition(() =>
               navigateOnclickWithPathnameWithoutUpdate(
-                `/director/management/asset-management/add-asset/${AssetCategory.FOOD_STORE.toLowerCase()}`,
-              ),
+url              ),
             )
           }
         >

@@ -8,8 +8,8 @@ import { FoodStoreItemData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import ButtonAddItem from "../button-add-item";
-import ButtonConsumeItem from "../button-consume-item";
+import ButtonAddItem from "../../../../app/(director)/director/management/asset-management/store/food_store/button-add-item";
+import ButtonConsumeItem from "../../../../app/(director)/director/management/asset-management/store/food_store/button-consume-item";
 import DropDownMenuFoodStoreItem from "./drop-down-menu-food-store-item";
 
 export const useFoodStoreColumns: ColumnDef<FoodStoreItemData>[] = [

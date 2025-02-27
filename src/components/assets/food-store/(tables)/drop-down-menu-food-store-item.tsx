@@ -22,6 +22,7 @@ import {
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 import DialogDeleteFoodStore from "./dialog-delete-food-store-item";
 
@@ -36,6 +37,21 @@ export default function DropDownMenuFoodStore({
   const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
+
+  const pathname = usePathname();
+  let url = `/general-asset-manager/food-store-asset-management/view/${foodStore.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/store/${foodStore.asset.category.toLocaleLowerCase()}/view/${foodStore.id}`;
+  } else if (pathname.startsWith("/food-store-asset-manager/")) {
+    url = `/food-store-asset-manager/view/${foodStore.id}`;
+  }
+
+  let editUrl = `/general-asset-manager/food-store-asset-management/edit/${foodStore.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    editUrl = `/director/management/asset-management/store/${foodStore.asset.category.toLocaleLowerCase()}/edit/${foodStore.id}`;
+  } else if (pathname.startsWith("/food-store-asset-manager/")) {
+    editUrl = `/food-store-asset-manager/edit/${foodStore.id}`;
+  }
 
   return (
     <>
@@ -58,9 +74,7 @@ export default function DropDownMenuFoodStore({
               disabled={!foodStore.trackQuantity || !foodStore.isConsumable}
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${foodStore.asset.category.toLocaleLowerCase()}/view/${foodStore.id}`,
-                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >
@@ -90,9 +104,7 @@ export default function DropDownMenuFoodStore({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${foodStore.asset.category.toLocaleLowerCase()}/edit/${foodStore.id}`,
-                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(editUrl),
                 )
               }
               className="font-semibold text-foreground"

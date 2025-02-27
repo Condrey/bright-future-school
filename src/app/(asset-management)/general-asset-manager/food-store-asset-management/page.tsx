@@ -1,3 +1,4 @@
+import { ListOfIndividualFoodStoreItems } from "@/components/assets/food-store/(tables)/list-of-individual-food-store-items";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
@@ -18,7 +19,7 @@ export default function Page() {
         breadCrumbs={[{ label: `${category.label} management` }]}
       />
       <BodyContainer>
-        To display graphs and charts here, not yet implemented{" "}
+        <ListOfIndividualFoodStoreItems />
       </BodyContainer>
     </Fragment>
   );
