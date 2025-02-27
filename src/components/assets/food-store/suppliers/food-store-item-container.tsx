@@ -3,9 +3,8 @@
 import { useSession } from "@/app/session-provider";
 import { Badge } from "@/components/ui/badge";
 import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
-import { myPrivileges } from "@/lib/enums";
-import { Role } from "@prisma/client";
 import { ForkKnifeIcon, Loader2Icon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 
 interface FoodStoreItemContainerProps {
@@ -24,10 +23,12 @@ export default function FoodStoreItemContainer({
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const privileges = myPrivileges[user.role];
-  let pathname = "";
-  if (privileges.includes(Role.DIRECTOR)) {
-    pathname = "/director/management/asset-management/store/food_store/view/";
+  const pathname = usePathname();
+  let url = "/general-asset-manager/food-store-asset-management/view/";
+  if (pathname.startsWith("/director/management/")) {
+    url = "/director/management/asset-management/store/food_store/view/";
+  } else if (pathname.startsWith("/food-store-asset-manager/")) {
+    url = "/food-store-asset-manager/view/";
   }
   return (
     <Badge
@@ -35,7 +36,7 @@ export default function FoodStoreItemContainer({
       className="flex max-w-fit gap-1 p-2 hover:cursor-pointer hover:bg-secondary"
       onClick={() =>
         startTransition(() =>
-          navigateOnclickWithPathnameWithoutUpdate(pathname + foodStoreItem.id),
+          navigateOnclickWithPathnameWithoutUpdate(url + foodStoreItem.id),
         )
       }
     >

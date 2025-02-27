@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MinusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useConsumeFoodStoreItemMutation } from "./view/[itemId]/(tables)/mutation";
+import { useConsumeFoodStoreItemMutation } from "../../../../../../../components/assets/food-store/view/(tables)/mutation";
 export { NumberInput } from "@/components/number-input/number-input";
 
 interface ButtonConsumeItemProps {

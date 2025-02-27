@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { assetUnits } from "@/lib/enums";
 import { FoodStoreItemData } from "@/lib/types";
-import { NumericHolder } from "../../../../../(header)/numeric-holder";
+import { NumericHolder } from "../../../../../app/(director)/director/management/asset-management/(header)/numeric-holder";
 
 interface TableSummaryProps {
   item: FoodStoreItemData;

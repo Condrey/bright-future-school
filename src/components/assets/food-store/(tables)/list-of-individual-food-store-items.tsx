@@ -8,11 +8,10 @@ import { formatNumber } from "@/lib/utils";
 import { AssetCategory } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { getAllFoodStoreAssetItems } from "./action";
 import { useFoodStoreColumns } from "./columns";
-import TableSummary from "./table-summary";
-import { usePathname } from "next/navigation";
 
 export function ListOfIndividualFoodStoreItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
@@ -21,8 +20,8 @@ export function ListOfIndividualFoodStoreItems() {
     queryKey: ["assets", "food-store-asset", "list"],
     queryFn: getAllFoodStoreAssetItems,
   });
-const pathname = usePathname()
-  let url = `general-asset-manager/add-asset/${AssetCategory.FOOD_STORE.toLowerCase()}`;
+  const pathname = usePathname();
+  let url = `/general-asset-manager/add-asset/${AssetCategory.FOOD_STORE.toLowerCase()}`;
   if (pathname.startsWith("/director/management/")) {
     url = `/director/management/asset-management/add-asset/${AssetCategory.LABORATORY.toLowerCase()}`;
   } else if (pathname.startsWith("/laboratory-asset-manager/")) {
@@ -41,10 +40,7 @@ const pathname = usePathname()
           loading={isPending}
           className="w-fit"
           onClick={() =>
-            startTransition(() =>
-              navigateOnclickWithPathnameWithoutUpdate(
-url              ),
-            )
+            startTransition(() => navigateOnclickWithPathnameWithoutUpdate(url))
           }
         >
           + Entry

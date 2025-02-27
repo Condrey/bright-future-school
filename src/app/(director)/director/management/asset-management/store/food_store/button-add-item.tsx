@@ -27,7 +27,7 @@ import { useForm } from "react-hook-form";
 import {
   useAddMultipleItemMutation,
   useAddSingleItemMutation,
-} from "./view/[itemId]/(tables)/mutation";
+} from "../../../../../../../components/assets/food-store/view/(tables)/mutation";
 export { NumberInput } from "@/components/number-input/number-input";
 
 interface ButtonAddTemProps {

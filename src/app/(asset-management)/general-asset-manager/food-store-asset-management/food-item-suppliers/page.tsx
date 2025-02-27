@@ -19,7 +19,10 @@ export default async function Page() {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: `${category.label} management` },
+          {
+            label: `${category.label} management`,
+            url: "/food-store-asset-management",
+          },
           { label: "Food store suppliers" },
         ]}
       />
