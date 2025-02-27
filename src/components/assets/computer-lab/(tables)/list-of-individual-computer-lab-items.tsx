@@ -12,6 +12,7 @@ import { useTransition } from "react";
 import { getAllComputerAssetItems } from "./action";
 import { useComputerLabColumns } from "./columns";
 import TableSummary from "./table-summary";
+import { usePathname } from "next/navigation";
 
 export function ListOfIndividualComputerLabItems() {
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
@@ -20,6 +21,14 @@ export function ListOfIndividualComputerLabItems() {
     queryKey: ["assets", "computer-lab-asset", "list"],
     queryFn: getAllComputerAssetItems,
   });
+  const pathname = usePathname();
+  let url = `/general-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
+  } else if (pathname.startsWith("/general-store-asset-manager/")) {
+    url = `/general-store-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
@@ -33,11 +42,7 @@ export function ListOfIndividualComputerLabItems() {
           loading={isPending}
           className="w-fit"
           onClick={() =>
-            startTransition(() =>
-              navigateOnclickWithPathnameWithoutUpdate(
-                `/director/management/asset-management/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`,
-              ),
-            )
+            startTransition(() => navigateOnclickWithPathnameWithoutUpdate(url))
           }
         >
           + Entry

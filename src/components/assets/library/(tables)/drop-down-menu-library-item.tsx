@@ -37,21 +37,20 @@ export default function DropDownMenuLibraryItem({
   const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
-  const pathname =usePathname()
+  const pathname = usePathname();
   let url = `/general-asset-manager/library-asset-management/view/${libraryItem.id}`;
   if (pathname.startsWith("/director/management/")) {
     url = `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/view/${libraryItem.id}`;
   } else if (pathname.startsWith("/library-asset-manager/")) {
-    url = `/library-asset-manager/view/${libraryItem.id}`;  
+    url = `/library-asset-manager/view/${libraryItem.id}`;
   }
 
   let editUrl = `/general-asset-manager/library-asset-management/edit/${libraryItem.id}`;
   if (pathname.startsWith("/director/management/")) {
     editUrl = `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/edit/${libraryItem.id}`;
-  }
-  else if(pathname.startsWith("/library-asset-manager/")){
+  } else if (pathname.startsWith("/library-asset-manager/")) {
     editUrl = `/library-asset-manager/edit/${libraryItem.id}`;
-  } 
+  }
 
   return (
     <>
@@ -73,8 +72,7 @@ export default function DropDownMenuLibraryItem({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-url                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >
@@ -104,8 +102,7 @@ url                  ),
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-editUrl                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(editUrl),
                 )
               }
               className="font-semibold text-foreground"

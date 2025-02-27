@@ -8,8 +8,8 @@ import {
 import { assetConditions, assetStatuses } from "@/lib/enums";
 import { ComputerLabItemData } from "@/lib/types";
 import { AssetCondition, AssetStatus } from "@prisma/client";
-import { NumericHolder } from "../../../(header)/numeric-holder";
-import AssetRepairSummary from "../../../asset-repair-summary";
+import { NumericHolder } from "../../../../app/(director)/director/management/asset-management/(header)/numeric-holder";
+import AssetRepairSummary from "../../../../app/(director)/director/management/asset-management/asset-repair-summary";
 
 interface TableSummaryProps {
   items: ComputerLabItemData[];

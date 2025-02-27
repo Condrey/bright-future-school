@@ -1,13 +1,12 @@
+import { getAllFoodStoreSuppliers } from "@/components/assets/food-store/suppliers/action";
+import ListOfSuppliers from "@/components/assets/food-store/suppliers/list-of-suppliers";
+import SupplierFoodItems from "@/components/assets/food-store/suppliers/supplier-food-items";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Metadata } from "next";
 import { Fragment } from "react";
-import { getAllFoodStoreSuppliers } from "@/components/assets/food-store/suppliers/action";
-import ListOfSuppliers from "@/components/assets/food-store/suppliers/list-of-suppliers";
-import SupplierFoodItems from "@/components/assets/food-store/suppliers/supplier-food-items";
-import { assetCategory, category } from "../page";
 
 export const metadata: Metadata = {
   title: "Food store suppliers",

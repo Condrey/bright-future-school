@@ -47,8 +47,8 @@ export default function DropDownMenuGeneralStore({
 
   let editUrl = `/general-asset-manager/general-asset-management/edit/${generalStore.id}`;
   if (pathname.startsWith("/director/management/")) {
-    editUrl = `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/edit/${generalStore.id}`;   
-  }else if (pathname.startsWith("/general-store-asset-manager/")) {
+    editUrl = `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/edit/${generalStore.id}`;
+  } else if (pathname.startsWith("/general-store-asset-manager/")) {
     editUrl = `/general-store-asset-manager/edit/${generalStore.id}`;
   }
 
@@ -103,8 +103,7 @@ export default function DropDownMenuGeneralStore({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-editUrl                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(editUrl),
                 )
               }
               className="font-semibold text-foreground"

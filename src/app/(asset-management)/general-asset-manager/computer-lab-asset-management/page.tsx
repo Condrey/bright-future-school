@@ -1,4 +1,4 @@
-import { ListOfIndividualComputerLabItems } from "@/app/(director)/director/management/asset-management/store/computer_lab/(tables)/list-of-individual-computer-lab-items";
+import { ListOfIndividualComputerLabItems } from "@/components/assets/computer-lab/(tables)/list-of-individual-computer-lab-items";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { assetCategories } from "@/lib/enums";

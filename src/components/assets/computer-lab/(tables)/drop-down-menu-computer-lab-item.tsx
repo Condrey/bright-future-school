@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useState, useTransition } from "react";
 import DialogDeleteComputerLabItem from "./dialog-delete-computer-lab-item";
+import { usePathname } from "next/navigation";
 
 interface DropDownMenuComputerLabItemProps {
   computerLabItem: ComputerLabItemData;
@@ -36,6 +37,21 @@ export default function DropDownMenuComputerLabItem({
   const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useSession();
+
+  const pathname = usePathname();
+  let url = `/general-asset-manager/computer-lab-asset-management/view/${computerLabItem.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    url = `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`;
+  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+    url = `/computer-lab-asset-manager/view/${computerLabItem.id}`;
+  }
+
+  let editUrl = `/general-asset-manager/computer-lab-asset-management/edit/${computerLabItem.id}`;
+  if (pathname.startsWith("/director/management/")) {
+    editUrl = `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/edit/${computerLabItem.id}`;
+  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+    editUrl = `/computer-lab-asset-manager/edit/${computerLabItem.id}`;
+  }
 
   return (
     <>
@@ -58,9 +74,7 @@ export default function DropDownMenuComputerLabItem({
               disabled={!computerLabItem.trackQuantity}
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`,
-                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >
@@ -90,9 +104,7 @@ export default function DropDownMenuComputerLabItem({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-                    `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/edit/${computerLabItem.id}`,
-                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(editUrl),
                 )
               }
               className="font-semibold text-foreground"
