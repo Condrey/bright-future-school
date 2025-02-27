@@ -7,25 +7,20 @@ import { Fragment } from "react";
 import { getAllFoodStoreSuppliers } from "@/components/assets/food-store/suppliers/action";
 import ListOfSuppliers from "@/components/assets/food-store/suppliers/list-of-suppliers";
 import SupplierFoodItems from "@/components/assets/food-store/suppliers/supplier-food-items";
+import { assetCategory, category } from "../page";
 
 export const metadata: Metadata = {
   title: "Food store suppliers",
 };
 export default async function Page() {
   const assetCategory = AssetCategory.FOOD_STORE;
+   const category = assetCategories[assetCategory];
   const suppliers = await getAllFoodStoreSuppliers();
   return (
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          {
-            label: "Asset management",
-            url: `/management/asset-management/`,
-          },
-          {
-            label: assetCategories[assetCategory].label + "s",
-            url: `/management/asset-management/store/${assetCategory.toLocaleLowerCase()}`,
-          },
+         { label: `${category.label} management` },
           { label: "Food store suppliers" },
         ]}
       />

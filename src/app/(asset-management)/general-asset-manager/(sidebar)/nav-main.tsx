@@ -6,8 +6,6 @@ import {
   ForkKnifeIcon,
   LibraryIcon,
   LucideIcon,
-  Package2Icon,
-  ReceiptEuroIcon,
   StoreIcon,
   TestTubeIcon,
 } from "lucide-react";
@@ -45,7 +43,7 @@ const basePathname = roleRedirectPaths[Role.ASSET_CARETAKER];
 
 export function NavMain() {
   const pathname = usePathname();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   const items: {
     title: string;
@@ -184,7 +182,7 @@ export function NavMain() {
         },
         {
           title: "Food item suppliers",
-          url: "/food-tem-suppliers",
+          url: "/food-item-suppliers",
           showIndicator: false,
           isVisible: true,
         },
@@ -198,54 +196,65 @@ export function NavMain() {
       <SidebarMenu>
         {items.map((item) => {
           const ItemIcon = item.icon;
-         
-          const baseUrl = basePathname+'/'+item.url;
-           const isActive = item.items.some((i) =>
-             pathname.startsWith(baseUrl ),
-           );
+
+          const baseUrl = basePathname + "/" + item.url;
+          const isActive = item.items.some((i) => pathname.startsWith(baseUrl));
+          const initialSubItem = item.items[0];
           return (
-        
-              <Collapsible
-                key={item.title}
-                asChild
-                defaultOpen={item.isActive}
-                className={cn("group/collapsible", !item.isVisible && "hidden")}
-              >
-                {/* TODO: If you want the dropdown trigger  a link also, uncomment the comments below. */}
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton
-                      tooltip={item.title}
-                      isActive={isActive}
-                      asChild
-                    >
-                      <Link href={baseUrl + "?" + searchParams.toString()}>
-                        <ItemIcon />
-                        <span
-                          className={cn(
-                            isActive && "font-semibold",
-                            "line-clamp-1 text-ellipsis break-words",
-                          )}
-                        >
-                          {item.title}
-                        </span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </Link>
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
+            <Collapsible
+              key={item.title}
+              asChild
+              defaultOpen={item.isActive}
+              className={cn("group/collapsible", !item.isVisible && "hidden")}
+            >
+              {/* TODO: If you want the dropdown trigger  a link also, uncomment the comments below. */}
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    isActive={isActive}
+                    asChild
+                  >
+                    <Link href={baseUrl + "?" + searchParams.toString()}>
+                      <ItemIcon />
+                      <span
+                        className={cn(
+                          isActive && "font-semibold",
+                          "line-clamp-1 text-ellipsis break-words",
+                        )}
+                      >
+                        {item.title}
+                      </span>
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </Link>
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SubmenuItem
+                      subItem={initialSubItem}
+                      key={initialSubItem.url}
+                      baseUrl={baseUrl}
+                      isActive={pathname === baseUrl}
+                    />
+                    {item.items.slice(1).map((subItem) => {
+                      const isChildActive = pathname.startsWith(
+                        baseUrl + subItem.url,
+                      );
+
+                      return (
                         <SubmenuItem
                           subItem={subItem}
                           key={subItem.url}
                           baseUrl={baseUrl}
+                          isActive={isChildActive}
                         />
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
+                      );
+                    })}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
           );
         })}
       </SidebarMenu>
@@ -255,46 +264,44 @@ export function NavMain() {
 
 interface SubmenuItemProps {
   subItem: SubItem;
-  baseUrl:string;
+  baseUrl: string;
+  isActive: boolean;
 }
 
-function SubmenuItem({ subItem ,baseUrl}: SubmenuItemProps) {
+function SubmenuItem({ subItem, baseUrl, isActive }: SubmenuItemProps) {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const isActive = pathname.startsWith(baseUrl  + subItem.url);
 
   return (
-  
-      <SidebarMenuSubItem
-        key={subItem.title}
-        className={cn(!subItem.isVisible && "hidden")}
+    <SidebarMenuSubItem
+      key={subItem.title}
+      className={cn(!subItem.isVisible && "hidden")}
+    >
+      <SidebarMenuSubButton
+        asChild
+        isActive={isActive}
+        onClick={() => startTransition(() => {})}
+        className={cn(
+          isPending &&
+            "animate-pulse bg-sidebar-accent text-sidebar-accent-foreground",
+        )}
       >
-        
-        <SidebarMenuSubButton
-          asChild
-          isActive={isActive}
-          onClick={() => startTransition(() => {})}
-          className={cn(
-            isPending &&
-              "animate-pulse bg-sidebar-accent text-sidebar-accent-foreground",
-          )}
+        <Link
+          href={baseUrl + subItem.url + "?" + searchParams.toString()}
+          className="flex w-full"
         >
-          <Link
-            href={baseUrl + subItem.url + "?" + searchParams.toString()}
-            className="flex w-full"
-          >
-            <span className={cn(isActive && "font-semibold")}>
-              {subItem.title}
-            </span>
-            <span
-              className={cn(
-                "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
-                !subItem.showIndicator && "hidden",
-              )}
-            />
-          </Link>
-        </SidebarMenuSubButton>
-      </SidebarMenuSubItem>
+          <span className={cn(isActive && "font-semibold")}>
+            {subItem.title}
+          </span>
+          <span
+            className={cn(
+              "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
+              !subItem.showIndicator && "hidden",
+            )}
+          />
+        </Link>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
   );
 }
