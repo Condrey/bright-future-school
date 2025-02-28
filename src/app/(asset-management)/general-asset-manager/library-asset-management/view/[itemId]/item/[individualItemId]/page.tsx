@@ -28,7 +28,7 @@ export default async function Page({ params }: PageProps) {
           },
           {
             label: `${individualItem.libraryBook.author}'s ${individualItem.libraryBook.title} books `,
-            url: `/library-asset-management//view/${individualItem.libraryBookId}`,
+            url: `/library-asset-management/view/${individualItem.libraryBookId}`,
           },
           {
             label: individualItem.isbn || "Unknown ISBN",

@@ -23,9 +23,9 @@ export function ListOfIndividualComputerLabItems() {
   });
   const pathname = usePathname();
   let url = `/general-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
-  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+  } else if (pathname.startsWith("/computer-lab-asset-manager")) {
     url = `/computer-lab-asset-manager/add-asset/${AssetCategory.COMPUTER_LAB.toLowerCase()}`;
   }
 
@@ -35,7 +35,7 @@ export function ListOfIndividualComputerLabItems() {
         <h1 className="text-xl font-bold">
           Computer Lab assets{" "}
           <span className="text-muted-foreground">
-            ({!data ? "--" : formatNumber(data?.length || 0)})
+            ({!data ? "..." : formatNumber(data?.length || 0)})
           </span>
         </h1>
         <LoadingButton

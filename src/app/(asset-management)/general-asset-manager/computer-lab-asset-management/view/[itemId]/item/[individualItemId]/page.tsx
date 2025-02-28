@@ -27,7 +27,7 @@ export default async function Page({ params }: PageProps) {
           },
           {
             label: `${individualItem.computerLabItem.model} ${individualItem.computerLabItem.name} variants`,
-            url: `/computer-lab-asset-management/asset-management/view/${individualItem.computerLabItemId}`,
+            url: `/computer-lab-asset-management/view/${individualItem.computerLabItemId}`,
           },
           {
             label: individualItem.uniqueIdentifier || "Unknown identifier",

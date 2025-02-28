@@ -42,9 +42,9 @@ export default function DropDownMenuIndividualItem({
 
   const pathname = usePathname();
   let url = `/general-asset-manager/library-asset-management/view/${item.libraryBookId}/item/${item.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${item.libraryBook.asset.category.toLocaleLowerCase()}/view/${item.libraryBookId}/item/${item.id}`;
-  } else if (pathname.startsWith("/library-asset-manager/")) {
+  } else if (pathname.startsWith("/library-asset-manager")) {
     url = `/library-asset-manager/view/${item.libraryBookId}/item/${item.id}`;
   }
 

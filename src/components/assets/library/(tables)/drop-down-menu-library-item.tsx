@@ -39,16 +39,16 @@ export default function DropDownMenuLibraryItem({
   const { user } = useSession();
   const pathname = usePathname();
   let url = `/general-asset-manager/library-asset-management/view/${libraryItem.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/view/${libraryItem.id}`;
-  } else if (pathname.startsWith("/library-asset-manager/")) {
+  } else if (pathname.startsWith("/library-asset-manager")) {
     url = `/library-asset-manager/view/${libraryItem.id}`;
   }
 
   let editUrl = `/general-asset-manager/library-asset-management/edit/${libraryItem.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     editUrl = `/director/management/asset-management/store/${libraryItem.asset.category.toLocaleLowerCase()}/edit/${libraryItem.id}`;
-  } else if (pathname.startsWith("/library-asset-manager/")) {
+  } else if (pathname.startsWith("/library-asset-manager")) {
     editUrl = `/library-asset-manager/edit/${libraryItem.id}`;
   }
 

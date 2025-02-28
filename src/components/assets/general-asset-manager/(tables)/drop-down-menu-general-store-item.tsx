@@ -39,16 +39,16 @@ export default function DropDownMenuGeneralStore({
   const { user } = useSession();
   const pathname = usePathname();
   let url = `/general-asset-manager/general-asset-management/view/${generalStore.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/view/${generalStore.id}`;
-  } else if (pathname.startsWith("/general-store-asset-manager/")) {
+  } else if (pathname.startsWith("/general-store-asset-manager")) {
     url = `/general-store-asset-manager/view/${generalStore.id}`;
   }
 
   let editUrl = `/general-asset-manager/general-asset-management/edit/${generalStore.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     editUrl = `/director/management/asset-management/store/${generalStore.asset.category.toLocaleLowerCase()}/edit/${generalStore.id}`;
-  } else if (pathname.startsWith("/general-store-asset-manager/")) {
+  } else if (pathname.startsWith("/general-store-asset-manager")) {
     editUrl = `/general-store-asset-manager/edit/${generalStore.id}`;
   }
 

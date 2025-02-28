@@ -25,9 +25,9 @@ export default function FoodStoreItemContainer({
 
   const pathname = usePathname();
   let url = "/general-asset-manager/food-store-asset-management/view/";
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = "/director/management/asset-management/store/food_store/view/";
-  } else if (pathname.startsWith("/food-store-asset-manager/")) {
+  } else if (pathname.startsWith("/food-store-asset-manager")) {
     url = "/food-store-asset-manager/view/";
   }
   return (

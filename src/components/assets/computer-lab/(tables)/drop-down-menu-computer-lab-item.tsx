@@ -22,9 +22,9 @@ import {
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 import DialogDeleteComputerLabItem from "./dialog-delete-computer-lab-item";
-import { usePathname } from "next/navigation";
 
 interface DropDownMenuComputerLabItemProps {
   computerLabItem: ComputerLabItemData;
@@ -40,16 +40,16 @@ export default function DropDownMenuComputerLabItem({
 
   const pathname = usePathname();
   let url = `/general-asset-manager/computer-lab-asset-management/view/${computerLabItem.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/view/${computerLabItem.id}`;
-  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+  } else if (pathname.startsWith("/computer-lab-asset-manager")) {
     url = `/computer-lab-asset-manager/view/${computerLabItem.id}`;
   }
 
   let editUrl = `/general-asset-manager/computer-lab-asset-management/edit/${computerLabItem.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     editUrl = `/director/management/asset-management/store/${computerLabItem.asset.category.toLocaleLowerCase()}/edit/${computerLabItem.id}`;
-  } else if (pathname.startsWith("/computer-lab-asset-manager/")) {
+  } else if (pathname.startsWith("/computer-lab-asset-manager")) {
     editUrl = `/computer-lab-asset-manager/edit/${computerLabItem.id}`;
   }
 

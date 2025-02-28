@@ -31,9 +31,9 @@ export default function ComputerLabItemContainer({
   const pathname = usePathname()
   
   let url = "/general-asset-manager/computer-lab-asset-management/view/";
-  if (pathname.startsWith('/director/management/')) {
+  if (pathname.startsWith('/director/management')) {
     url = "/director/management/asset-management/store/computer_lab/view/";
-  }else if(pathname.startsWith('/computer-lab-asset-manager/')){
+  }else if(pathname.startsWith('/computer-lab-asset-manager')){
     url = "/computer-lab-asset-manager/view/";
   }
   return (

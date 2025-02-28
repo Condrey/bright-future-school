@@ -23,9 +23,9 @@ export default function BookContainer({ book }: BookContainerProps) {
 
   const pathname = usePathname();
   let url = "/general-asset-manager/library-asset-management/view/";
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = "/director/management/asset-management/store/library/view/";
-  } else if (pathname.startsWith("/library-asset-manager/")) {
+  } else if (pathname.startsWith("/library-asset-manager")) {
     url = "/library-asset-manager/view/";
   }
   return (

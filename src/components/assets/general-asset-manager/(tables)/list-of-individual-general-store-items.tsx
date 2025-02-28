@@ -22,9 +22,9 @@ export function ListOfIndividualGeneralStoreItems() {
   });
   const pathname = usePathname();
   let url = `/general-asset-manager/add-asset/${AssetCategory.GENERAL_STORE.toLowerCase()}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/add-asset/${AssetCategory.GENERAL_STORE.toLowerCase()}`;
-  } else if (pathname.startsWith("/general-store-asset-manager/")) {
+  } else if (pathname.startsWith("/general-store-asset-manager")) {
     url = `/general-store-asset-manager/add-asset/${AssetCategory.GENERAL_STORE.toLowerCase()}`;
   }
 
@@ -34,7 +34,7 @@ export function ListOfIndividualGeneralStoreItems() {
         <h1 className="text-xl font-bold">
           General store assets{" "}
           <span className="text-muted-foreground">
-            ({!data ? "--" : formatNumber(data.length || 0)})
+            ({!data ? "..." : formatNumber(data.length || 0)})
           </span>
         </h1>
         <LoadingButton

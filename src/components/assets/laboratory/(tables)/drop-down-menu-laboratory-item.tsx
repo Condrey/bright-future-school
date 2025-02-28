@@ -22,9 +22,9 @@ import {
   MoreHorizontal,
   Trash2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 import DialogDeleteLaboratory from "./dialog-delete-laboratory-item";
-import { usePathname } from "next/navigation";
 
 interface DropDownMenuLaboratoryProps {
   laboratory: LaboratoryItemData;
@@ -40,17 +40,16 @@ export default function DropDownMenuLaboratory({
 
   const pathname = usePathname();
   let url = `/general-asset-manager/laboratory-asset-management/view/${laboratory.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${laboratory.asset.category.toLocaleLowerCase()}/view/${laboratory.id}`;
-  } else if (pathname.startsWith("/laboratory-asset-manager/")) {
+  } else if (pathname.startsWith("/laboratory-asset-manager")) {
     url = `/laboratory-asset-manager/view/${laboratory.id}`;
   }
 
   let editUrl = `/general-asset-manager/laboratory-asset-management/edit/${laboratory.id}`;
-  if(pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     editUrl = `/director/management/asset-management/store/${laboratory.asset.category.toLocaleLowerCase()}/edit/${laboratory.id}`;
-  }
-  else if(pathname.startsWith("/laboratory-asset-manager/")) {
+  } else if (pathname.startsWith("/laboratory-asset-manager")) {
     editUrl = `/laboratory-asset-manager/edit/${laboratory.id}`;
   }
 
@@ -75,8 +74,7 @@ export default function DropDownMenuLaboratory({
               disabled={!laboratory.trackQuantity}
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-url                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >
@@ -106,8 +104,7 @@ url                  ),
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-editUrl                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(editUrl),
                 )
               }
               className="font-semibold text-foreground"

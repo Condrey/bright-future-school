@@ -42,9 +42,9 @@ export default function DropDownMenuIndividualItem({
 
   const pathname = usePathname();
   let url = `/general-asset-manager/laboratory-asset-management/view/${item.labItemId}/item/${item.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${item.labItem.asset.category.toLocaleLowerCase()}/view/${item.labItemId}/item/${item.id}`;
-  } else if (pathname.startsWith("/laboratory-asset-manager/")) {
+  } else if (pathname.startsWith("/laboratory-asset-manager")) {
     url = `/laboratory-asset-manager/view/${item.labItemId}/item/${item.id}`;
   }
 

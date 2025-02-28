@@ -41,9 +41,9 @@ export default function DropDownMenuIndividualItem({
   const { user } = useSession();
   const pathname = usePathname();
   let url = `/general-asset-manager/general-asset-management/view/${item.generalStoreItemId}/item/${item.id}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/store/${item.generalStoreItem.asset.category.toLocaleLowerCase()}/view/${item.generalStoreItemId}/item/${item.id}`;
-  } else if (pathname.startsWith("/general-store-asset-manager/")) {
+  } else if (pathname.startsWith("/general-store-asset-manager")) {
     url = `/general-store-asset-manager/view/${item.generalStoreItemId}/item/${item.id}`;
   }
 

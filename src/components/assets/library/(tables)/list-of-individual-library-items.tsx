@@ -23,9 +23,9 @@ export function ListOfIndividualLibraryItems() {
   });
   const pathname = usePathname();
   let url = `/general-asset-manager/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`;
-  if (pathname.startsWith("/director/management/")) {
+  if (pathname.startsWith("/director/management")) {
     url = `/director/management/asset-management/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`;
-  } else if (pathname.startsWith("/library-asset-manager/")) {
+  } else if (pathname.startsWith("/library-asset-manager")) {
     url = `/library-asset-manager/add-asset/${AssetCategory.LIBRARY.toLowerCase()}`;
   }
 
@@ -35,7 +35,7 @@ export function ListOfIndividualLibraryItems() {
         <h1 className="text-xl font-bold">
           Library assets{" "}
           <span className="text-muted-foreground">
-            ({formatNumber(data?.length || 0)})
+            ({!data ? "..." : formatNumber(data.length || 0)})
           </span>
         </h1>
         <LoadingButton
