@@ -130,8 +130,8 @@ export type ClassStreamData = Prisma.classStreamGetPayload<{
 //Pupil
 export const pupilDataInclude = (classTermId?: string) => {
   return {
-    user: { select: userDataSelect },
-    classStream: { include: classStreamDataInclude },
+    user: { select: {...userDataSelect,bio:true} },
+    classStreams: { include: classStreamDataInclude },
     fees: {
       where: { termId: !classTermId ? {} : classTermId },
       select: feesDataSelect,

@@ -44,13 +44,13 @@ model EmailVerificationToken {
 }
 
 model Pupil {
-  id              String       @id @default(uuid())
+  id              String        @id @default(uuid())
   userId          String?
   classStreamId   String?
   genericPassword String
   fees            Fees[]
-  classStream     classStream? @relation(fields: [classStreamId], references: [id])
-  user            User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classStreams    classStream[]
+  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("pupils")
 }
@@ -466,18 +466,18 @@ enum FeesStatus {
 }
 
 enum Role {
+  SUPER_ADMIN
   DIRECTOR
   BURSAR
   ASSET_CARETAKER
-  CLASS_TEACHER
-  USER
-  SUPER_ADMIN
   GENERAL_STORE_ASSET_CARETAKER
   COMPUTER_LAB_ASSET_CARETAKER
   LABORATORY_ASSET_CARETAKER
   LIBRARY_ASSET_CARETAKER
   FOOD_STORE_ASSET_CARETAKER
+  CLASS_TEACHER
   STAFF
+  USER
 }
 
 enum AssetCategory {
