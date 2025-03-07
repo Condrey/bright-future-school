@@ -43,7 +43,7 @@ export default function FormUpdateNonTeachingStaffRole({
     values: {
       user: nonTeachingStaff
         ? {
-            email: nonTeachingStaff.user?.email || "",
+            email: nonTeachingStaff.user?.email || undefined,
             id: nonTeachingStaff.user?.id ?? "",
             name: nonTeachingStaff.user?.name ?? "",
             telephone: nonTeachingStaff.user?.telephone ?? "",
@@ -51,7 +51,7 @@ export default function FormUpdateNonTeachingStaffRole({
             role: nonTeachingStaff.user?.role ?? Role.USER,
           }
         : {
-            email: "",
+            email: undefined,
             id: "",
             name: "",
             telephone: "",

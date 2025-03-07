@@ -49,7 +49,7 @@ export default function FormUpdateTeachingStaffRole({
     values: {
       user: teachingStaff
         ? {
-            email: teachingStaff.user?.email ?? "",
+            email: teachingStaff.user?.email ?? undefined,
             id: teachingStaff.user?.id ?? "",
             name: teachingStaff.user?.name ?? "",
             telephone: teachingStaff.user?.telephone ?? "",
@@ -57,7 +57,7 @@ export default function FormUpdateTeachingStaffRole({
             role: teachingStaff.user?.role ?? Role.USER,
           }
         : {
-            email: "",
+            email: undefined,
             id: "",
             name: "",
             telephone: "",
