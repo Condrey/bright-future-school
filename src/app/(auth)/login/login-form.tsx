@@ -69,7 +69,11 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <LoadingButton loading={isPending} type="submit" className="w-full">
+        <LoadingButton
+          loading={form.formState.isSubmitting}
+          type="submit"
+          className="w-full"
+        >
           Log in
         </LoadingButton>
       </form>

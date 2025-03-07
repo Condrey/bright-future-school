@@ -131,7 +131,7 @@ export type ClassStreamData = Prisma.classStreamGetPayload<{
 //Pupil
 export const pupilDataInclude = (classTermId?: string) => {
   return {
-    user: { select: userDataSelect },
+    user: { select: {...userDataSelect,bio:true} },
     classStreams: { include: classStreamDataInclude },
     fees: {
       where: { termId: !classTermId ? {} : classTermId },
@@ -399,6 +399,12 @@ export type GeneralStoreItemData = Prisma.GeneralStoreItemGetPayload<{
 }>;
 
 // Food store
+export const foodStoreConsumptionDataInclude = {
+  foodItem: { include: { supplier: true } },
+} satisfies Prisma.FoodConsumptionInclude;
+export type FoodStoreConsumptionData = Prisma.FoodConsumptionGetPayload<{
+  include: typeof foodStoreConsumptionDataInclude;
+}>;
 export const individualFoodStoreItemDataInclude = {
   foodStoreItem: { include: { asset: true } },
   assetDamages: {
@@ -415,7 +421,10 @@ export const foodStoreItemDataInclude = {
   asset: true,
   supplier: true,
   individualFoodStoreItems: { include: individualFoodStoreItemDataInclude },
-  consumptions: true,
+  consumptions: {
+    orderBy: { dateUsedAt: "desc" },
+    include: foodStoreConsumptionDataInclude,
+  },
 } satisfies Prisma.FoodStoreItemInclude;
 export type FoodStoreItemData = Prisma.FoodStoreItemGetPayload<{
   include: typeof foodStoreItemDataInclude;
@@ -429,3 +438,12 @@ export type SupplierData = Prisma.SupplierGetPayload<{
 
 // Miscellaneous
 export type SearchParam = { [key: string]: string | string[] | undefined };
+export type VandalismDamages = {
+  damages: AssetDamageData[];
+  item: {
+    id: string;
+    title: string;
+    description?: string | null;
+    uniqueIdentifier: string | null;
+  };
+}[];

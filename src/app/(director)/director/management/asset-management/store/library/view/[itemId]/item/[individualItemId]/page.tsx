@@ -2,8 +2,8 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import { getIndividualBook } from "../../action";
-import ItemBody from "./item-body";
+import { getIndividualBook } from "../../../../../../../../../../../components/assets/library/view/action";
+import ItemBody from "../../../../../../../../../../../components/assets/library/view/item/item-body";
 
 interface PageProps {
   params: Promise<{ individualItemId: string }>;

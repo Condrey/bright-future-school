@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { laboratoryItemDataInclude } from "@/lib/types";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import FormLaboratory from "../../../../add-asset/[assetCategory]/(lab)/form-laboratory";
+import FormLaboratory from "@/components/assets/add-assets/(lab)/form-laboratory";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
@@ -13,7 +13,7 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
   const item = await prisma.labItem.findUnique({
-    where: { id: itemId },
+    where: { id: decodeURIComponent(itemId) },
     include: laboratoryItemDataInclude,
   });
   if (!item) throw new Error("Item not found");

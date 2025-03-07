@@ -23,7 +23,11 @@ import { emailSchema, EmailSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { checkIsEmailVerified, resendEmailVerificationLink, sendWelcomingRemarks } from "./action";
+import {
+  checkIsEmailVerified,
+  resendEmailVerificationLink,
+  sendWelcomingRemarks,
+} from "./action";
 import { toast } from "@/hooks/use-toast";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
@@ -36,23 +40,25 @@ export default function EmailVerificationForm({ email }: { email: string }) {
     resolver: zodResolver(emailSchema),
     defaultValues: { email },
   });
-  const {data,isRefetching} = useQuery({
-    queryKey:['isEmailVerified'],
-    queryFn: async ()=>checkIsEmailVerified(email),
-    refetchInterval: 10000 
-  })
+  const { data, isRefetching } = useQuery({
+    queryKey: ["isEmailVerified"],
+    queryFn: async () => checkIsEmailVerified(email),
+    refetchInterval: 10000,
+  });
 
-  if(data){
-     sendWelcomingRemarks(email)
+  if (data) {
+    sendWelcomingRemarks(email);
   }
   async function handleEmailResend(input: EmailSchema) {
     const { error } = await resendEmailVerificationLink(input.email);
-      if (error){ setError(error)};
-      toast({description:'Verification link sent successfully.'})
+    if (error) {
+      setError(error);
+    }
+    toast({ description: "Verification link sent successfully." });
   }
 
   return (
-    <div className="flex size-full p-4 min-h-dvh flex-col justify-center">
+    <div className="flex size-full min-h-dvh flex-col justify-center p-4">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader>
           <CardTitle>A verification link has been sent.</CardTitle>
@@ -67,7 +73,11 @@ export default function EmailVerificationForm({ email }: { email: string }) {
               onSubmit={form.handleSubmit(handleEmailResend)}
               className="space-y-4"
             >
-                          {error && <Badge variant={"destructive"} className="w-full">{error}</Badge>}
+              {error && (
+                <Badge variant={"destructive"} className="w-full">
+                  {error}
+                </Badge>
+              )}
 
               <FormField
                 control={form.control}
@@ -82,15 +92,26 @@ export default function EmailVerificationForm({ email }: { email: string }) {
                   </FormItem>
                 )}
               />
-              <LoadingButton loading={form.formState.isSubmitting} className="w-full">
+              <LoadingButton
+                loading={form.formState.isSubmitting}
+                className="w-full"
+              >
                 Resend Verification Link
               </LoadingButton>
             </form>
           </Form>
         </CardContent>
-       { <CardFooter className={cn(" text-xs text-muted-foreground",isRefetching?'visible':'invisible')}>
-          <LoaderIcon className="animate-spin size-4 mr-2"/> checking for token verification
-        </CardFooter>}
+        {
+          <CardFooter
+            className={cn(
+              "text-xs text-muted-foreground",
+              isRefetching ? "visible" : "invisible",
+            )}
+          >
+            <LoaderIcon className="mr-2 size-4 animate-spin" /> checking for
+            token verification
+          </CardFooter>
+        }
       </Card>
     </div>
   );

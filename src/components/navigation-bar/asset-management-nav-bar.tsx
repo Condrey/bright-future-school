@@ -41,50 +41,49 @@ export default function AssetManagementNavBar({
   const isHomeActive = pathname.toString() === basePathname;
 
   return (
-    <NavigationMenu>
-      <NavigationMenuList className={className}>
-        {/* dashboard nav */}
-        {!isRoot && (
-          <NavigationMenuLinkItem
-            isActive={isHomeActive}
-            path={basePathname + "?" + searchParams.toString()}
-          >
-            <div className="flex items-center">
-              <BaseIcon className="mr-1.5 size-4" strokeWidth={1.0} />
-              <span>Dashboard</span>
-            </div>
-          </NavigationMenuLinkItem>
-        )}
-
-        {/* All asset nav  */}
-        <AllAssetsNavItem />
-
-        {/* vandalism nav  */}
-        {!isRoot && <VandalismNavItem assetCategory={assetCategory} />}
-
-        {/* other nav(s) */}
-        <>
-          {otherNavItems.map((item) => {
-            const path =
-              basePathname + item.url + "?" + searchParams.toString();
-            const isActive = pathname.startsWith(basePathname + item.url);
-
-            return (
-              <NavigationMenuLinkItem
-                key={item.url}
-                isActive={isActive}
-                path={path}
-              >
-                {item.label}
-              </NavigationMenuLinkItem>
-            );
-          })}
-        </>
-
-        {/* Extra children */}
-        {children}
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div className="sticky top-0 z-50 flex w-full items-center justify-start border-b bg-background px-4 py-2 lg:px-6">
+      <NavigationMenu>
+        <NavigationMenuList className={className}>
+          {/* dashboard nav */}
+          {!isRoot && (
+            <NavigationMenuLinkItem
+              isActive={isHomeActive}
+              path={basePathname + "?" + searchParams.toString()}
+            >
+              <div className="flex items-center">
+                <BaseIcon className="mr-1.5 size-4" strokeWidth={1.0} />
+                <span>Dashboard</span>
+              </div>
+            </NavigationMenuLinkItem>
+          )}
+          {/* All asset nav  */}
+          <AllAssetsNavItem />
+          {/* vandalism nav  */}
+          {!isRoot && assetCategory !== AssetCategory.FOOD_STORE && (
+            <VandalismNavItem assetCategory={assetCategory} />
+          )}
+          {/* other nav(s) */}
+          <>
+            {otherNavItems.map((item) => {
+              const path =
+                basePathname + item.url + "?" + searchParams.toString();
+              const isActive = pathname.startsWith(basePathname + item.url);
+              return (
+                <NavigationMenuLinkItem
+                  key={item.url}
+                  isActive={isActive}
+                  path={path}
+                >
+                  {item.label}
+                </NavigationMenuLinkItem>
+              );
+            })}
+          </>
+          {/* Extra children */}
+          {children}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
   );
 }
 
@@ -106,7 +105,7 @@ function NavigationMenuLinkItem({
         <NavigationMenuLink
           className={cn(
             navigationMenuTriggerStyle(),
-            isActive && "focus: bg-accent text-accent-foreground",
+            isActive && "text-accent-foreground focus:bg-accent",
           )}
           onClick={() => startTransition(() => {})}
         >

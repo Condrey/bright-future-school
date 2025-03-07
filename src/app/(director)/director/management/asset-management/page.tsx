@@ -17,10 +17,10 @@ export default async function Page() {
   const assets = await getAllAssets();
   return (
     <Fragment>
+      <NavigationBar />
+
       <Suspense fallback={<HeaderContainerFallback />}>
-        <HeaderContainer breadCrumbs={[{ label: "Asset management" }]}>
-          <NavigationBar />
-        </HeaderContainer>
+        <HeaderContainer breadCrumbs={[{ label: "Asset management" }]} />
       </Suspense>
       <BodyContainer className="gap-6">
         {/* header containers  */}

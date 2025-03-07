@@ -4,9 +4,9 @@ import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Metadata } from "next";
 import { Fragment } from "react";
-import { getAllBookCategories } from "./action";
-import CategoryDetails from "./category-details";
-import ListOfCategories from "./list-of-categories";
+import { getAllBookCategories } from "@/components/assets/library/category/action";
+import CategoryDetails from "@/components/assets/library/category/category-details";
+import ListOfCategories from "@/components/assets/library/category/list-of-categories";
 
 export const metadata: Metadata = {
   title: "Library book categories",

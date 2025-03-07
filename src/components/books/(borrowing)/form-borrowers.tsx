@@ -14,7 +14,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/app/(director)/director/management/asset-management/add-asset/barrel-file";
+} from "@/components/assets/add-assets/barrel-file";
 import LoadingButton from "@/components/loading-button";
 import UserAvatar from "@/components/user-avatar";
 import { cn } from "@/lib/utils";

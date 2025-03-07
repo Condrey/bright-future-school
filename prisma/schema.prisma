@@ -22,9 +22,12 @@ model User {
   isWelcomed              Boolean                  @default(false)
   isVerified              Boolean                  @default(false)
   emailVerified           Boolean                  @default(false)
+  isVerified              Boolean                  @default(false)
+  emailVerified           Boolean                  @default(false)
   assetDamages            AssetDamage[]
   assetRepairPayments     AssetRepairPayment[]
   borrowers               Borrower[]
+  emailVerificationTokens EmailVerificationToken[]
   emailVerificationTokens EmailVerificationToken[]
   feesPayments            FeesPayment[]
   pupils                  Pupil[]
@@ -37,13 +40,17 @@ model User {
 model EmailVerificationToken {
   id      String @id @default(uuid())
   userId  String
+  id      String @id @default(uuid())
+  userId  String
   expires BigInt
+  user    User   @relation(fields: [userId], references: [id])
   user    User   @relation(fields: [userId], references: [id])
 
   @@map("email_verifications")
 }
 
 model Pupil {
+  id              String        @id @default(uuid())
   id              String        @id @default(uuid())
   userId          String?
   genericPassword String

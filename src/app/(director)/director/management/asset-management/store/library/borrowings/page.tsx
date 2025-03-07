@@ -4,8 +4,10 @@ import { assetCategories } from "@/lib/enums";
 import { AssetCategory } from "@prisma/client";
 import { Metadata } from "next";
 import { Fragment, Suspense } from "react";
-import Borrowings from "./borrowings";
-import TableSummary, { TableSummaryFallback } from "./table-summary";
+import TableSummary, {
+  TableSummaryFallback,
+} from "@/components/assets/library/borrowings/table-summary";
+import Borrowings from "@/components/assets/library/borrowings/borrowings";
 
 export const metadata: Metadata = {
   title: "Borrowings and lendings",

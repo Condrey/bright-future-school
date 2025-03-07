@@ -2,11 +2,11 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import FormComputerLab from "./(computer-lab)/form-computer-lab";
-import FormFoodStore from "./(food-store)/form-food-store";
-import FormGeneralStore from "./(general-store)/form-general-store";
-import FormLaboratory from "./(lab)/form-laboratory";
-import FormLibrary from "./(library)/form-library";
+import FormComputerLab from "@/components/assets/add-assets/(computer-lab)/form-computer-lab";
+import FormFoodStore from "@/components/assets/add-assets/(food-store)/form-food-store";
+import FormGeneralStore from "@/components/assets/add-assets/(general-store)/form-general-store";
+import FormLaboratory from "@/components/assets/add-assets/(lab)/form-laboratory";
+import FormLibrary from "@/components/assets/add-assets/(library)/form-library";
 
 interface PageProps {
   params: Promise<{ assetCategory: string }>;

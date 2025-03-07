@@ -1,0 +1,119 @@
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/assets/add-assets/barrel-file";
+import LoadingButton from "@/components/loading-button";
+import { Badge } from "@/components/ui/badge";
+import { useCustomSearchParams } from "@/hooks/use-custom-search-param";
+import { assetUnits } from "@/lib/enums";
+import { formatNumber } from "@/lib/utils";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { HistoryIcon, Loader2 } from "lucide-react";
+import { useTransition } from "react";
+import { getAllFoodStoreAssetItems } from "./action";
+
+export default function ListOfFoodStoreItems() {
+  const queryKey: QueryKey = ["food-store-assets", "list"];
+
+  const { data, status, error, isFetching, refetch } = useQuery({
+    queryKey,
+    queryFn: getAllFoodStoreAssetItems,
+  });
+
+  const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
+  const [isPending, startTransition] = useTransition();
+
+  if (status === "pending") {
+    return (
+      <div className="flex size-full flex-col items-center justify-center gap-4">
+        <span className="max-w-sm text-center text-muted-foreground">
+          Loading....
+        </span>
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+  if (status === "error") {
+    console.error(error);
+    return (
+      <div className="flex size-full flex-col items-center justify-center gap-4">
+        <span className="max-w-sm text-center text-muted-foreground">
+          Error fetching food store items
+        </span>
+        <LoadingButton
+          loading={isFetching}
+          onClick={() => refetch()}
+          className="w-fit"
+        >
+          Refresh
+        </LoadingButton>
+      </div>
+    );
+  }
+  if (status === "success" && !data.length) {
+    return (
+      <div className="flex size-full flex-col items-center justify-center gap-4">
+        <span className="max-w-sm text-center text-muted-foreground">
+          There are no food store items in the system yet.
+        </span>
+      </div>
+    );
+  }
+  return (
+    <Card className="w-full bg-muted/30">
+      <CardHeader className="flex w-full flex-row gap-4">
+        <div>
+          <CardTitle>
+            <div className="flex items-center">
+              <HistoryIcon className="mr-2 size-4" />
+              <span>List of recently added food store items</span>
+            </div>
+          </CardTitle>
+          <CardDescription>
+            {formatNumber(data.length)} items in the database.
+          </CardDescription>
+        </div>
+        <LoadingButton
+          loading={isPending}
+          size={"sm"}
+          variant={"secondary"}
+          onClick={() =>
+            startTransition(() =>
+              navigateOnclickWithPathnameWithoutUpdate(
+                "/director/management/asset-management/store/food_store",
+              ),
+            )
+          }
+          className="ms-auto"
+        >
+          View all
+        </LoadingButton>
+      </CardHeader>
+      <CardContent>
+        <ul className="w-full list-inside list-decimal divide-y">
+          {data.slice(0, 10).map((item, index) => (
+            <li key={item.id} className="flex w-full items-center gap-2 py-2">
+              <span>{index + 1}</span>
+              <span>{item.foodName}</span>
+              <div className="ms-auto">
+                {item.trackQuantity ? (
+                  <div className="flex items-center gap-1">
+                    <span>{formatNumber(item.quantity || 0)}</span>
+                    <span>{`${assetUnits[item.unit]}${item.quantity === 1 ? "" : "s"} left`}</span>
+                  </div>
+                ) : (
+                  <Badge variant={"outline"}>{item.status}</Badge>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+}

@@ -2,8 +2,8 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import ListOfItems from "./(tables)/list-of-items";
-import { getGeneralStoreItem } from "./action";
+import ListOfItems from "@/components/assets/general-asset-manager/view/(tables)/list-of-items";
+import { getGeneralStoreItem } from "@/components/assets/general-asset-manager/view/action";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;

@@ -11,7 +11,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../add-asset/barrel-file";
+} from "@/components/assets/add-assets/barrel-file";
 import { getComputerLabSummary } from "./action";
 import { NumericHolder } from "./numeric-holder";
 

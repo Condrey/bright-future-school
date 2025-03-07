@@ -26,8 +26,8 @@ export default async function Layout({
 }) {
   const { session, user } = await validateRequest();
 
-  if (!user) redirect("/login"); 
-   if (!user.isVerified) redirect(`/user-verification/${user.id}`);
+  if (!user) redirect("/login");
+  if (!user.isVerified) redirect(`/user-verification/${user.id}`);
 
   const isAuthorized = myPrivileges[user.role].includes(role);
 

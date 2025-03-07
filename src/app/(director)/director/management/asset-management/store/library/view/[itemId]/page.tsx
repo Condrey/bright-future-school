@@ -2,8 +2,8 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import ListOfItems from "./(tables)/list-of-items";
-import { getLibraryItem } from "./action";
+import ListOfItems from "../../../../../../../../../components/assets/library/view/(tables)/list-of-items";
+import { getLibraryItem } from "../../../../../../../../../components/assets/library/view/action";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;

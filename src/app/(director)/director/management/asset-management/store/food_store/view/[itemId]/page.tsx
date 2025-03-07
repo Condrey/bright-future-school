@@ -1,9 +1,9 @@
+import ListOfItems from "@/components/assets/food-store/view/(tables)/list-of-items";
+import { getFoodStoreItem } from "@/components/assets/food-store/view/action";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import ListOfItems from "./(tables)/list-of-items";
-import { getFoodStoreItem } from "./action";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
@@ -24,7 +24,7 @@ export default async function Page({ params }: PageProps) {
             url: `/management/asset-management/store/${AssetCategory.FOOD_STORE.toLocaleLowerCase()}`,
           },
           {
-            label: `${item.foodName} variants`,
+            label: `${item.foodName} `,
           },
         ]}
       />

@@ -30,7 +30,7 @@ export const NumericHolder = ({
         {isCurrency
           ? formatCurrency(count || 0)
           : count === 0
-            ? "--"
+            ? "..."
             : formatNumber(count || 0)}
       </h1>
       <span

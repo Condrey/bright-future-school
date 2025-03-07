@@ -1,9 +1,9 @@
+import { getIndividualComputerLabItem } from "@/components/assets/computer-lab/view/action";
+import ItemBody from "@/components/assets/computer-lab/view/item/item-body";
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import { getIndividualComputerLabItem } from "../../action";
-import ItemBody from "./item-body";
 
 interface PageProps {
   params: Promise<{ individualItemId: string }>;

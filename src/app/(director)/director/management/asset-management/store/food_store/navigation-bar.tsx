@@ -7,8 +7,7 @@ export default function NavigationBar() {
   const assetCategory = AssetCategory.FOOD_STORE;
 
   const items: { label: string; url: string }[] = [
-    { label: "Consumptions", url: "/consumptions" },
-    { label: "Suppliers", url: "/suppliers" },
+    { label: "Food item suppliers", url: "/suppliers" },
   ];
 
   return (

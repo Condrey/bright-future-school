@@ -2,8 +2,8 @@ import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { AssetCategory } from "@prisma/client";
 import { Fragment } from "react";
-import ListOfItems from "./(tables)/list-of-items";
-import { getLaboratoryItem } from "./action";
+import ListOfItems from "@/components/assets/laboratory/view/(tables)/list-of-items";
+import { getLaboratoryItem } from "@/components/assets/laboratory/view/action";
 
 interface PageProps {
   params: Promise<{ itemId: string }>;
@@ -11,7 +11,7 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
-  const item = await getLaboratoryItem(itemId);
+  const item = await getLaboratoryItem(decodeURIComponent(itemId));
   if (!item) throw new Error("Item not found");
 
   return (

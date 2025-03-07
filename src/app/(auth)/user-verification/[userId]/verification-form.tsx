@@ -1,5 +1,7 @@
 "use client";
 
+import LoadingButton from "@/components/loading-button";
+import { PasswordInput } from "@/components/password-input";
 import {
   Form,
   FormControl,
@@ -8,22 +10,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { verifyUserSchema, VerifyUserSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
 import { User } from "@prisma/client";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { verifyUser } from "./action";
-import { toast } from "@/hooks/use-toast";
-import LoadingButton from "@/components/loading-button";
-import { useTransition } from "react";
-import { PasswordInput } from "@/components/password-input";
 
 interface VerificationFormProps {
   user: User;
 }
 export default function VerificationForm({ user }: VerificationFormProps) {
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string>();
   const form = useForm<VerifyUserSchema>({
     resolver: zodResolver(verifyUserSchema),
     defaultValues: {
@@ -31,28 +31,30 @@ export default function VerificationForm({ user }: VerificationFormProps) {
       name: user.name || "",
       telephone: user.telephone || "",
       username: user.username || "",
-      password: '',
+      password: "",
       id: user.id || "",
     },
   });
 
-  function onSubmit(input: VerifyUserSchema) {
-    try {
-      startTransition(() => {
-        verifyUser(input);
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        description: "Failed to verify user, please try again!",
-        variant: "destructive",
-      });
-    }
+  async function onSubmit(input: VerifyUserSchema) {
+    setError(undefined);
+    const error = await verifyUser(input);
+
+    startTransition(() => {
+      if (error) {
+        setError(error.error);
+      }
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {error && (
+          <p className="rounded-md bg-red-500/70 px-2 py-1 text-destructive-foreground">
+            {error}
+          </p>
+        )}
         <FormField
           control={form.control}
           name="name"
@@ -112,24 +114,25 @@ export default function VerificationForm({ user }: VerificationFormProps) {
               <FormMessage />
             </FormItem>
           )}
-        />  <FormField
-        control={form.control}
-        name="password"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl>
-              <PasswordInput
-                {...field}
-                placeholder="Your password goes here ..."
-                type="password"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-        <LoadingButton className="w-full" loading={isPending}>
+        />{" "}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <PasswordInput
+                  {...field}
+                  placeholder="Your password goes here ..."
+                  type="password"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <LoadingButton className="w-full" loading={form.formState.isSubmitting}>
           Continue
         </LoadingButton>
       </form>

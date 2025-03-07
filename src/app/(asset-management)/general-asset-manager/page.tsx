@@ -1,9 +1,13 @@
-import { userRoles } from "@/lib/enums";
-import { Role } from "@prisma/client";
+import BodyContainer from "@/components/sidebar/body-container";
+import HeaderContainer from "@/components/sidebar/header-container";
+import { Fragment } from "react";
 
 export default function Page() {
   // TODO: implement this pages.
   return (
-    <div>{`The ${userRoles[Role.ASSET_CARETAKER].label}, not yet implemented`}</div>
+    <Fragment>
+      <HeaderContainer />
+      <BodyContainer>To display graphs and charts here</BodyContainer>
+    </Fragment>
   );
 }
