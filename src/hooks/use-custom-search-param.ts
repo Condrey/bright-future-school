@@ -48,6 +48,16 @@ export const useCustomSearchParams = () => {
     [searchParams, router, currentPathname],
   );
 
+  const getNavigationLinkWithPathnameWithoutUpdate = useCallback(
+    (pathname: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      return (
+        pathname + "?" + params.toString()
+      )
+    },
+    [searchParams, router],
+  );
+
   const navigateOnclickWithoutUpdate = useCallback(
     (pathnameEndPoint?: string) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -78,5 +88,6 @@ export const useCustomSearchParams = () => {
     navigateOnclickWithoutUpdate,
     navigateOnclickWithPathnameWithoutUpdate,
     getNavigationLinkWithoutUpdate,
+    getNavigationLinkWithPathnameWithoutUpdate
   };
 };

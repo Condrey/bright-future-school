@@ -10,6 +10,7 @@ import { FeesStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import DropDownMenuTermClassStream from "./drop-down-menu-term-class-stream";
+import { YearContainer } from "../year-container";
 
 export const useYearTermStreamColumns = (
   hasParams?: boolean,
@@ -37,17 +38,7 @@ export const useYearTermStreamColumns = (
         return (
           <div className="space-y-0.5">
             <div className="font-bold">
-              <Badge
-                variant={
-                  Number(year || 0) === currentYear
-                    ? "go"
-                    : Number(year || 0) < currentYear
-                      ? "destructive"
-                      : "warn"
-                }
-              >
-                {year}
-              </Badge>{" "}
+              <YearContainer year={year}/>{" "}
               • {classValue}
             </div>
             <div className="">{stream} stream</div>

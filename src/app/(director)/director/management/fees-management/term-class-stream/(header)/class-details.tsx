@@ -11,6 +11,7 @@ import { formatNumber } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getClassTerm } from "../../../../../../../components/school-fees/action";
+import { YearContainer } from "@/components/year-container";
 
 interface ClassDetailsProps {
   oldTerm: TermWithYearData;
@@ -61,24 +62,13 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
     `@${classTeacher?.username}`;
   const pupilNumber = classStream._count.pupils || 0;
   const year = classStream?.class?.academicYear?.year;
-  const currentYear = new Date().getFullYear();
 
   return (
     <>
       <div className="hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md md:flex-col md:divide-x-0 lg:flex">
         <div className="flex flex-col gap-1">
           <div className="font-bold">
-            <Badge
-              variant={
-                Number(year || 0) === currentYear
-                  ? "go"
-                  : Number(year || 0) < currentYear
-                    ? "destructive"
-                    : "warn"
-              }
-            >
-              {year}
-            </Badge>{" "}
+            <YearContainer year={year}/>{" "}
             • {classStream.class?.class?.name} class
           </div>
           <span className="text-xs text-muted-foreground">

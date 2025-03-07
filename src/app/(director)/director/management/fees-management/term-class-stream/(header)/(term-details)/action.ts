@@ -56,6 +56,7 @@ export async function updateAnnualClassTerms({
   termId: string;
   academicYear: string;
 }) {
+  
   const { endAt, feesAmount, startAt } = classTermSchema.parse(input);
 
   await prisma.$transaction(

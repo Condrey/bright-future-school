@@ -7,6 +7,7 @@ import { ClassStreamData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import DropDownMenuClassStream from "./drop-down-menu-class-stream";
+import { YearContainer } from "@/components/year-container";
 
 export const useClassStreamsColumns: ColumnDef<ClassStreamData>[] = [
   {
@@ -25,9 +26,9 @@ export const useClassStreamsColumns: ColumnDef<ClassStreamData>[] = [
       return (
         <div className="space-y-0.5">
           <div>{stream}</div>
-          <Badge className="text-xs" variant={"outline"}>
+          <YearContainer year=
             {year}
-          </Badge>
+          />
         </div>
       );
     },
