@@ -42,12 +42,13 @@ export default function ButtonAddFees({
   });
 
   const previousPayments = pupil.fees.flatMap((f) => f.feesPayments);
+  const classStream = pupil.classStreams[pupil.classStreams.length-1]
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addFees,
     async onSuccess() {
       // For list of pupils belonging to a class term
-      const queryKey: QueryKey = ["pupils", "classStream", pupil.classStreamId];
+      const queryKey: QueryKey = ["pupils", "classStream",classStream.id];
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
       // for class term
@@ -85,7 +86,7 @@ export default function ButtonAddFees({
         open={open}
         setOpen={setOpen}
         title={`Add fees for ${pupil.user?.name}`}
-        description={`${pupil.classStream?.class?.academicYear?.year} ${pupil.classStream?.class?.class?.name} class, ${pupil.classStream?.stream?.name} stream`}
+        description={`${classStream?.class?.academicYear?.year} ${classStream?.class?.class?.name} class, ${classStream?.stream?.name} stream`}
       >
         <Form {...form}>
           <form
