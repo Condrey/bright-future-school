@@ -41,7 +41,7 @@ export default function FormAddEditNonTeachingStaff({
     values: {
       user: nonTeachingStaffToEdit
         ? {
-            email: nonTeachingStaffToEdit.user?.email ?? "",
+            email: nonTeachingStaffToEdit.user?.email ?? undefined,
             id: nonTeachingStaffToEdit.user?.id ?? "",
             name: nonTeachingStaffToEdit.user?.name ?? "",
             telephone: nonTeachingStaffToEdit.user?.telephone ?? "",
@@ -49,7 +49,7 @@ export default function FormAddEditNonTeachingStaff({
             role: nonTeachingStaffToEdit.user?.role ?? Role.USER,
           }
         : {
-            email: "",
+            email: undefined,
             id: "",
             name: "",
             telephone: "",

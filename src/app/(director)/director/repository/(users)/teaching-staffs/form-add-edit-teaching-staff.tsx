@@ -38,7 +38,7 @@ export default function FormAddEditTeachingStaff({
     values: {
       user: teachingStaffToEdit
         ? {
-            email: teachingStaffToEdit.user?.email ?? "",
+            email: teachingStaffToEdit.user?.email ?? undefined,
             id: teachingStaffToEdit.user?.id ?? "",
             name: teachingStaffToEdit.user?.name ?? "",
             telephone: teachingStaffToEdit.user?.telephone ?? "",
@@ -46,7 +46,7 @@ export default function FormAddEditTeachingStaff({
             role: teachingStaffToEdit.user?.role ?? Role.USER,
           }
         : {
-            email: "",
+            email: undefined,
             id: "",
             name: "",
             telephone: "",
@@ -85,6 +85,7 @@ export default function FormAddEditTeachingStaff({
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+         {/* <pre>{JSON.stringify(form.formState.errors,null,2)}</pre> */}
           <FormField
             control={form.control}
             name="user.name"
