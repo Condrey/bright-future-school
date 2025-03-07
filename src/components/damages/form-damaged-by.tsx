@@ -105,9 +105,10 @@ export default function FormDamagedBy({ form }: FormDamagedByProps) {
                     <CommandList>
                       <CommandEmpty>No pupil/ student found.</CommandEmpty>
                       <CommandGroup>
-                        {data.map(({ user: person, classStream }) => {
+                        {data.map(({ user: person, classStreams }) => {
                           if (!person) return null;
-
+                          const classStream =
+                            classStreams[classStreams.length - 1];
                           return (
                             <CommandItem
                               value={person.name!}
