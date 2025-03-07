@@ -49,12 +49,10 @@ export async function fetchStreamPupils({
 }) {
   const classStream = await prisma.classStream.findUnique({
     where: { id: classStreamId },
+    include:{pupils:{include:pupilDataInclude(classTermId)}}
   });
   if (!classStream) throw Error(" The stream with this Id does not exist. ");
-  const data: PupilData[] = await prisma.pupil.findMany({
-    where: { classStreamId: classStreamId },
-    include: pupilDataInclude(classTermId),
-  });
-  return data;
+
+  return classStream.pupils;
 }
 export const getStreamPupils = cache(fetchStreamPupils);
