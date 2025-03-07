@@ -155,8 +155,9 @@ export default function FormBorrowers({ form, isAStaff }: FormBorrowersProps) {
                         ) : (
                           <Fragment>
                             {data.pupils.map(
-                              ({ user: person, classStream }) => {
+                              ({ user: person, classStreams }) => {
                                 if (!person) return null;
+                                const classStream = classStreams[classStreams.length-1]
 
                                 return (
                                   <CommandItem

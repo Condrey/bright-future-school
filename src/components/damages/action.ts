@@ -66,7 +66,7 @@ export async function possibleAssetDamagers() {
               pupils: {
                 select: {
                   user: { select: userDataSelect },
-                  classStream: {
+                  classStreams: {
                     select: {
                       class: {
                         select: {
