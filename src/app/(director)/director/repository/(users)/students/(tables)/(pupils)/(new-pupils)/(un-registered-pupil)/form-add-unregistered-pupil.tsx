@@ -36,7 +36,7 @@ export default function FormAddUnregisteredPupil({
     resolver: zodResolver(pupilSchema),
     values: {
       id: "",
-      user: { email: "", id: "", name: "", telephone: "", username: "" },
+      user: { email: undefined, id: "", name: "", telephone: undefined, username: undefined },
     },
   });
 
@@ -64,6 +64,7 @@ export default function FormAddUnregisteredPupil({
           onSubmit={form.handleSubmit(handleFormSubmit)}
           className="space-y-4"
         >
+          {/* <pre>{JSON.stringify(form.formState.errors,null,2)}</pre> */}
           <FormField
             control={form.control}
             name="user.name"

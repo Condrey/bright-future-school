@@ -34,6 +34,7 @@ export default function FormAddEditClass({
     resolver: zodResolver(classSchema),
     values: {
       name: classToEdit?.name || "",
+      slug: classToEdit?.slug || "",
       id: classToEdit?.id || "",
       level: classToEdit?.level as LevelSchema,
     },
@@ -76,6 +77,19 @@ export default function FormAddEditClass({
                 <FormLabel>Class name</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="e.g., Primary one" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Short form</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g., P1" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

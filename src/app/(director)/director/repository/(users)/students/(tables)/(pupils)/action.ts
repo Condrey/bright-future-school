@@ -56,7 +56,7 @@ export async function addUnregisteredPupil({
       });
       const pupil = await tx.pupil.create({
         data: {
-          classStream: {
+          classStreams: {
             connect: { id: classStreamId },
           },
           genericPassword: password,

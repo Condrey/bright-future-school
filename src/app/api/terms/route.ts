@@ -119,12 +119,22 @@ export async function PUT(req: Request) {
       );
     }
     const { term, id } = termSchema.parse(body);
-    const data = await prisma.term.update({
-      where: { id },
-      data: {
-        term,
-        slug: slugify(term),
-      },
+    const timeInMills = Date.now().toString();
+
+    const data = await prisma.$transaction(async (tx) => {
+      let slug = slugify(term);
+  
+      const hasSlug = await tx.term.findFirst({ where: { slug } });
+      if (hasSlug) {
+        slug = slug + timeInMills.substring(timeInMills.length - 3);
+      }
+      const data = await tx.term.create({
+        data: {
+          term,
+          slug,
+        },
+      });
+      return data;
     });
     return Response.json(data);
   } catch (error) {

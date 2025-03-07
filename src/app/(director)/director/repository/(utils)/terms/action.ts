@@ -12,14 +12,14 @@ export async function getTermsAction() {
 }
 export async function addTermAction(input: TermSchema) {
   const { term } = termSchema.parse(input);
-  const timeMillis = Date.now().toString();
+  const timeInMills = Date.now().toString();
 
   const data = await prisma.$transaction(async (tx) => {
     let slug = slugify(term);
 
     const hasSlug = await tx.term.findFirst({ where: { slug } });
     if (hasSlug) {
-      slug = slug + timeMillis.substring(timeMillis.length - 3);
+      slug = slug + timeInMills.substring(timeInMills.length - 3);
     }
     const data = await tx.term.create({
       data: {
@@ -35,14 +35,14 @@ export async function addTermAction(input: TermSchema) {
 export async function editTermAction(input: TermSchema) {
   const { term, id } = termSchema.parse(input);
 
-  const timeMillis = Date.now().toString();
+  const timeInMills = Date.now().toString();
 
   const data = await prisma.$transaction(async (tx) => {
     let slug = slugify(term);
 
     const hasSlug = await tx.term.findFirst({ where: { slug } });
     if (hasSlug) {
-      slug = slug + timeMillis.substring(timeMillis.length - 3);
+      slug = slug + timeInMills.substring(timeInMills.length - 3);
     }
     const data = await tx.term.update({
       where: { id },

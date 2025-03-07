@@ -1,8 +1,8 @@
 import { Fragment, Suspense } from "react";
-import BodyContainer from "../../../components/sidebar/body-container";
+import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer, {
   HeaderContainerFallback,
-} from "../../../components/sidebar/header-container";
+} from "@/components/sidebar/header-container";
 import PageComponents from "./page-components";
 
 export default function Page() {

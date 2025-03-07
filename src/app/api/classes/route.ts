@@ -1,6 +1,7 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { classDataInclude } from "@/lib/types";
+import { slugify } from "@/lib/utils";
 import { classSchema } from "@/lib/validation";
 import z from "zod";
 
@@ -17,12 +18,13 @@ export async function POST(req: Request) {
         { status: 404, statusText: "Unauthorized." },
       );
     }
-    const { name, level } = classSchema.parse(body);
+    const { name, slug, level } = classSchema.parse(body);
     const data = await prisma.$transaction(
       async (tx) => {
         const data = await tx.class.create({
           data: {
             name,
+            slug: slugify(slug),
             levelId: level.id,
           },
           include: classDataInclude,
@@ -116,11 +118,12 @@ export async function PUT(req: Request) {
         { status: 404, statusText: "Unauthorized." },
       );
     }
-    const { name, id, level } = classSchema.parse(body);
+    const { name, slug, id, level } = classSchema.parse(body);
     const data = await prisma.class.update({
       where: { id },
       data: {
         name,
+        slug: slugify(slug),
         levelId: level.id,
       },
     });

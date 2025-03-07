@@ -78,7 +78,7 @@ export default function FormAddEditYear({
                 <FormLabel>Year</FormLabel>
 
                 <FormControl>
-                  <Input placeholder="e.g 2025" {...field} />
+                  <Input placeholder={`e.g ${new Date().getFullYear()}`} {...field} />
                 </FormControl>
 
                 <FormMessage />

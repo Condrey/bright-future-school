@@ -4,11 +4,13 @@ import { Metadata } from "next";
 import Image from "next/image";
 import GoogleSignInButton from "./google/google-signin-button";
 import LoginForm from "./login-form";
+import { hash } from "@node-rs/argon2";
 
 export const metadata: Metadata = {
   title: "Login",
 };
-export default function Page() {
+export default async function Page() {
+
   return (
     <main className="flex min-h-dvh items-center p-5">
       <div className="mx-auto flex h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-xl bg-card shadow-2xl">

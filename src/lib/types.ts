@@ -83,6 +83,7 @@ export type DirectorDashboardParam = {
   streams: number;
   academicYears: number;
   terms: number;
+  subjects: number;
   pupils: number;
   teachingStaffs: number;
   nonTeachingStaffs: number;
@@ -131,7 +132,7 @@ export type ClassStreamData = Prisma.classStreamGetPayload<{
 export const pupilDataInclude = (classTermId?: string) => {
   return {
     user: { select: userDataSelect },
-    classStream: { include: classStreamDataInclude },
+    classStreams: { include: classStreamDataInclude },
     fees: {
       where: { termId: !classTermId ? {} : classTermId },
       select: feesDataSelect,

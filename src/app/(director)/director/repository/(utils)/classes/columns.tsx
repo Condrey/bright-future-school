@@ -18,17 +18,27 @@ export const useClassColumns: ColumnDef<ClassData>[] = [
     ),
   },
   {
+    accessorKey:'slug',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Short form" />
+    ),
+  },{
     accessorKey: "level.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Class Level" />
     ),
     cell: ({ row }) => (
       <div className="5 space-y-0">
-        <div>{row.original.level?.name ?? "N/A"}</div>
+        <div>
+          {row.original.level?.name
+            ? `${row.original.level?.name} level`
+            : "N/A"}
+        </div>
       </div>
     ),
-  },
+  }
 
+,
   {
     id: "action",
     header: ({ column }) => (

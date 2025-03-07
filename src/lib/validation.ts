@@ -121,6 +121,7 @@ export type ClassStreamSchema = z.infer<typeof classStreamSchema>;
 // Class
 export const classSchema = z.object({
   name: requiredString.min(1, "Please provide a class name to proceed"),
+  slug: requiredString.min(1,'Please add a short form for the class'),
   id: z.string().optional(),
   level: levelSchema,
 });
@@ -367,6 +368,16 @@ export const assetRepairPaymentSchema = z.object({
   assetDamageId: requiredString.min(1, "The asset damage is missing."),
 });
 export type AssetRepairPaymentSchema = z.infer<typeof assetRepairPaymentSchema>;
+
+// Subject 
+export const subjectSchema = z.object({
+  id: z.string().optional(),
+  subjectName: requiredString.min(1, "Subject name is missing"),
+  slug:requiredString.min(1, "Please add a short name for the subject"),
+  
+});
+export type SubjectSchema = z.infer<typeof subjectSchema>;
+
 
 //miscellaneous
 export const itemSchema = z.object({
