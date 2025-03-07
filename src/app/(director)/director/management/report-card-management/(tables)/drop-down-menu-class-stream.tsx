@@ -24,6 +24,7 @@ import {
   MoveUpRightIcon,
 } from "lucide-react";
 import { useState, useTransition } from "react";
+import FormAddViewSubjects from "./form-add-view-subjects";
 
 interface DropDownMenuClassStreamProps {
   classStream: ClassStreamData;
@@ -95,6 +96,8 @@ export default function DropDownMenuClassStream({
     </DropdownMenuGroup>
   </DropdownMenuContent>
 </DropdownMenu>
+
+<FormAddViewSubjects open={openSubjectDialog} setOpen={setOpenSubjectDialog}/>
 </>
   );
 }

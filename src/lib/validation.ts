@@ -377,7 +377,10 @@ export const subjectSchema = z.object({
   
 });
 export type SubjectSchema = z.infer<typeof subjectSchema>;
-
+export const multipleSubjectSchema = z.object({
+  subjects: z.array(subjectSchema),
+});
+export type MultipleSubjectSchema = z.infer<typeof multipleSubjectSchema>;
 
 //miscellaneous
 export const itemSchema = z.object({
