@@ -44,25 +44,23 @@ model EmailVerificationToken {
 }
 
 model Pupil {
-  id              String        @id @default(uuid())
-  userId          String?
-  genericPassword String
-  fees            Fees[]
-  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ExamScores      ExamScore[]
-  classStreams    classStream[]
+  id                 String               @id @default(uuid())
+  userId             String?
+  genericPassword    String
+  PupilToclassStream PupilToclassStream[]
+  fees               Fees[]
+  user               User?                @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("pupils")
 }
 
 model Staff {
-  id                   String                @id @default(uuid())
-  staffType            StaffType             @default(TEACHING_STAFF)
-  userId               String?
-  genericPassword      String
-  classStreams         classStream[]
-  user                 User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  academicYearSubjects AcademicYearSubject[]
+  id              String        @id @default(uuid())
+  staffType       StaffType     @default(TEACHING_STAFF)
+  userId          String?
+  genericPassword String
+  classStreams    classStream[]
+  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("staffs")
 }
@@ -72,6 +70,7 @@ model Level {
   name    String
   slug    String
   classes Class[]
+
   @@map("levels")
 }
 
@@ -130,7 +129,6 @@ model Subject {
 model AcademicYearSubject {
   id                  String            @id @default(uuid())
   subject             Subject           @relation(fields: [subjectId], references: [id])
-  teacher             Staff?            @relation(fields: [staffId], references: [id])
   staffId             String?
   academicYearClass   AcademicYearClass @relation(fields: [academicYearClassId], references: [id], onDelete: Cascade)
   academicYearClassId String
@@ -143,15 +141,15 @@ model AcademicYearSubject {
 }
 
 model classStream {
-  id           String             @id @default(uuid())
-  staffId      String?
-  classId      String?
-  streamId     String?
-  class        AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
-  classTeacher Staff?             @relation(fields: [staffId], references: [id])
-  stream       Stream?            @relation(fields: [streamId], references: [id], onDelete: Cascade)
-  terms        ClassTerm[]
-  pupils       Pupil[]
+  id                 String               @id @default(uuid())
+  staffId            String?
+  classId            String?
+  streamId           String?
+  PupilToclassStream PupilToclassStream[]
+  class              AcademicYearClass?   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classTeacher       Staff?               @relation(fields: [staffId], references: [id])
+  stream             Stream?              @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  terms              ClassTerm[]
 
   @@unique([classId, streamId])
   @@map("class_streams")
@@ -176,38 +174,9 @@ model ClassTerm {
   classStream   classStream? @relation(fields: [classStreamId], references: [id], onDelete: Cascade)
   term          Term?        @relation(fields: [termId], references: [id], onDelete: Cascade)
   fees          Fees[]
-  exams         Exam[]
 
   @@unique([classStreamId, termId])
   @@map("class_terms")
-}
-
-model Exam {
-  id          String      @id @default(uuid())
-  examName    String
-  examDate    DateTime
-  examType    String
-  classTermId String
-  classTerm   ClassTerm   @relation(fields: [classTermId], references: [id], onDelete: Cascade)
-  examScores  ExamScore[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  @@unique([examName, examDate])
-  @@map("exams")
-}
-
-model ExamScore {
-  id        String   @id @default(uuid())
-  score     Float
-  pupilId   String
-  examId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  pupil     Pupil    @relation(fields: [pupilId], references: [id], onDelete: Cascade)
-  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
-
-  @@map("exam_scores")
 }
 
 model Fees {
@@ -509,6 +478,17 @@ model AssetRepairPayment {
   @@map("asset_repair_payments")
 }
 
+model PupilToclassStream {
+  A             String
+  B             String
+  pupils        Pupil       @relation(fields: [A], references: [id], onDelete: Cascade)
+  class_streams classStream @relation(fields: [B], references: [id], onDelete: Cascade)
+
+  @@id([A, B], map: "_PupilToclassStream_AB_pkey")
+  @@index([B], map: "_PupilToclassStream_B_index")
+  @@map("_PupilToclassStream")
+}
+
 enum StaffType {
   TEACHING_STAFF
   NON_TEACHING_STAFF
@@ -521,18 +501,18 @@ enum FeesStatus {
 }
 
 enum Role {
-  SUPER_ADMIN
   DIRECTOR
   BURSAR
   ASSET_CARETAKER
+  CLASS_TEACHER
+  USER
+  SUPER_ADMIN
   GENERAL_STORE_ASSET_CARETAKER
   COMPUTER_LAB_ASSET_CARETAKER
   LABORATORY_ASSET_CARETAKER
   LIBRARY_ASSET_CARETAKER
   FOOD_STORE_ASSET_CARETAKER
-  CLASS_TEACHER
   STAFF
-  USER
 }
 
 enum AssetCategory {

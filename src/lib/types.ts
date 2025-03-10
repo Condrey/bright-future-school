@@ -116,7 +116,7 @@ export const classStreamDataInclude = {
   stream: true,
   class: {
     select: {
-      academicYear: { select: { year: true,  } },
+      academicYear: { select: { year: true } },
       class: {
         select: {
           id: true,
@@ -125,7 +125,7 @@ export const classStreamDataInclude = {
           level: { select: { name: true } },
         },
       },
-     _count:{select:{academicYearSubjects:true}}
+      _count: { select: { academicYearSubjects: true } },
     },
   },
   terms: {
@@ -140,7 +140,7 @@ export type ClassStreamData = Prisma.classStreamGetPayload<{
 //Pupil
 export const pupilDataInclude = (classTermId?: string) => {
   return {
-    user: { select: { ...userDataSelect, bio: true } },
+    user: { select: { ...userDataSelect, bio: true, isVerified: true } },
     classStreams: { include: classStreamDataInclude },
     fees: {
       where: { termId: !classTermId ? {} : classTermId },
