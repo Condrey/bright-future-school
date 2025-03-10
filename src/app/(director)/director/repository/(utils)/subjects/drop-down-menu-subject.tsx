@@ -11,8 +11,8 @@ import {
 import { Role, Subject } from "@prisma/client";
 import { CopyIcon, Edit2Icon, MoreHorizontal, Trash2Icon } from "lucide-react";
 import { useState } from "react";
+import FormAddEditSubject from "../../../../../../components/subjects/subject/form-add-edit-subject";
 import DialogDeleteSubject from "./dialog-delete-subject";
-import FormAddEditSubject from "./form-add-edit-subject";
 
 interface DropDownMenuSubjectProps {
   subject: Subject;

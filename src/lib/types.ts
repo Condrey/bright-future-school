@@ -107,6 +107,15 @@ export type LevelData = Prisma.LevelGetPayload<{
   include: typeof levelDataInclude;
 }>;
 
+
+// Subject 
+export const subjectDataInclude = {
+grading:true
+} satisfies Prisma.SubjectInclude
+export type SubjectData = Prisma.SubjectGetPayload<{
+  include: typeof subjectDataInclude;
+}>;
+
 // Class streams
 export const classStreamDataInclude = {
   _count: { select: { pupils: true } },

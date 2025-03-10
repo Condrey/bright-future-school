@@ -58,7 +58,7 @@ export function useUpdateSubjectMutation() {
     //       body: JSON.stringify(input),
     //     })
     //     .json<Subject>(),
-    mutationFn: editSubjectAction, 
+    mutationFn: editSubjectAction,
     async onSuccess(updatedSubject) {
       await queryClient.cancelQueries({ queryKey });
 

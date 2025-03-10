@@ -2,7 +2,7 @@ import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
 import { Button } from "@/components/ui/button";
 import { Subject } from "@prisma/client";
-import { useDeleteSubjectMutation } from "./mutation";
+import { useDeleteSubjectMutation } from "../../../../../../components/subjects/subject/mutation";
 
 interface DeleteSubjectDialogProps {
   subject: Subject;

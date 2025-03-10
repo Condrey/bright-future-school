@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import FormAddEditSubject from "./form-add-edit-subject";
 
-export default function ButtonNewSubject() {
+export default function ButtonAddNewSubject() {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (

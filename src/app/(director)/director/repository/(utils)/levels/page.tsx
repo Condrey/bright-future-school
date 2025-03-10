@@ -3,9 +3,9 @@ import HeaderContainer, {
   HeaderContainerFallback,
 } from "@/components/sidebar/header-container";
 import { Fragment, Suspense } from "react";
-import { getLevelsAction } from "./action";
 import ButtonNewLevel from "./button-new-level";
 import ListOfLevels from "./list-of-levels";
+import { getLevelsAction } from "@/components/levels/level/action";
 
 export default async function Page() {
   const levels = await getLevelsAction();

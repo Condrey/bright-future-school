@@ -6,19 +6,15 @@ import { DataTable } from "@/components/ui/data-table";
 import { LevelData } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { Terminal } from "lucide-react";
-import { getLevelsAction } from "./action";
 import { useLevelColumns } from "./columns";
+import { useGetAllLevelsQuery, useGetAllLevelsWithInitialDataQuery } from "@/components/levels/level/hooks";
 
 interface ListOfLevelsProps {
   levels: LevelData[];
 }
 
 export default function ListOfLevels({ levels }: ListOfLevelsProps) {
-  const { data, status, error, refetch } = useQuery({
-    queryKey: ["levels"],
-    queryFn: getLevelsAction,
-    initialData: levels,
-  });
+  const { data, status, error, refetch } = useGetAllLevelsWithInitialDataQuery(levels)
   if (status === "error") {
     console.error(error);
     return (

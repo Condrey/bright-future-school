@@ -6,7 +6,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { Subject } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Terminal } from "lucide-react";
-import { getSubjectsAction } from "./action";
+import { getSubjectsAction } from "../../../../../../components/subjects/subject/action";
 import { useSubjectColumns } from "./columns";
 
 interface ListOfSubjectsProps {
@@ -45,7 +45,7 @@ export default function ListOfSubjects({ subjects }: ListOfSubjectsProps) {
     <DataTable
       columns={useSubjectColumns}
       data={data}
-      filterColumn={{ id: "subjectName",label:"subject name" }}
+      filterColumn={{ id: "subjectName", label: "subject name" }}
       ROWS_PER_TABLE={10}
     />
   );

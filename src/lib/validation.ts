@@ -369,12 +369,24 @@ export const assetRepairPaymentSchema = z.object({
 });
 export type AssetRepairPaymentSchema = z.infer<typeof assetRepairPaymentSchema>;
 
+// Grading 
+export const gradingSchema = z.object({
+  id: z.string().optional(),
+  from: z.number(),
+  to: z.number(),
+  grade: requiredString.min(1, "Please include a grade"),
+  remarks: requiredString.min(1, "Please include a remark"),
+});
+export type GradingSchema = z.infer<typeof gradingSchema>;
+
 // Subject 
 export const subjectSchema = z.object({
   id: z.string().optional(),
   subjectName: requiredString.min(1, "Subject name is missing"),
-  slug:requiredString.min(1, "Please add a short name for the subject"),
-  
+  slug: requiredString.min(1, "Please add a short name for the subject"),
+  code: requiredString.min(1, "Please add a subject code."),
+  levelId:requiredString.min(1,'Missing a level'),
+  grading: z.array(gradingSchema),
 });
 export type SubjectSchema = z.infer<typeof subjectSchema>;
 export const multipleSubjectSchema = z.object({

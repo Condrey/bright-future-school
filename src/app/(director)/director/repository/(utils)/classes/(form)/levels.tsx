@@ -19,8 +19,8 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { CheckIcon, Loader2, PlusIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { getLevelsAction } from "../../levels/action";
 import { useAddLevelMutation } from "../../levels/mutation";
+import { useGetAllLevelsQuery } from "@/components/levels/level/hooks";
 
 interface LevelsProps {
   form: UseFormReturn<ClassSchema>;
@@ -30,13 +30,9 @@ export default function Levels({ form }: LevelsProps) {
   const [showInputField, setShowInputField] = useState(false);
 
   const watchedLevel = form.watch("level");
-  const queryKey: QueryKey = ["levels"];
   const mutation = useAddLevelMutation();
 
-  const { status, data, refetch, isRefetching } = useQuery({
-    queryKey: queryKey,
-    queryFn: getLevelsAction,
-  });
+  const { status, data, refetch, isRefetching } = useGetAllLevelsQuery()
 
   const form2 = useForm<LevelSchema>({
     resolver: zodResolver(levelSchema),
@@ -91,7 +87,7 @@ export default function Levels({ form }: LevelsProps) {
       ) : status === "error" ? (
         <div className="flex flex-col items-center justify-center space-y-2">
           <p className="text-center text-destructive">
-            An error occurred while fetching categories.
+            An error occurred while fetching levels.
           </p>
           <LoadingButton
             loading={isRefetching}

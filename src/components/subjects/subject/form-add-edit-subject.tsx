@@ -9,15 +9,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { subjectSchema, SubjectSchema } from "@/lib/validation";
+import { SubjectData } from "@/lib/types";
+import { GradingSchema, subjectSchema, SubjectSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Subject } from "@prisma/client";
 import cuid from "cuid";
 import { useForm } from "react-hook-form";
+import FormAddEditSubjectGrading from "./form-add-edit-subject-grading";
 import { useAddSubjectMutation, useUpdateSubjectMutation } from "./mutation";
+import FormAddEditLevel from "./form-add-edit-level";
 
 interface FormAddEditSubjectProps {
-  subjectToEdit?: Subject;
+  subjectToEdit?: SubjectData;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
@@ -35,6 +37,9 @@ export default function FormAddEditSubject({
       subjectName: subjectToEdit?.subjectName || "",
       slug: subjectToEdit?.slug || "",
       id: subjectToEdit?.id || "",
+      code: subjectToEdit?.code || "",
+      levelId:subjectToEdit?.levelId||'',
+      grading: (subjectToEdit?.grading || []) as GradingSchema[],
     },
   });
 
@@ -62,11 +67,11 @@ export default function FormAddEditSubject({
     <ResponsiveDrawer
       open={open}
       setOpen={setOpen}
-      title={`${subjectToEdit ? "Update" : "Add"} subject`}
+      title={`${subjectToEdit ? "Update" : "Add"} subjects`}
+      className="md:max-w-3xl"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-  
           <FormField
             control={form.control}
             name="subjectName"
@@ -79,19 +84,35 @@ export default function FormAddEditSubject({
                 <FormMessage />
               </FormItem>
             )}
-          /><FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Short form</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="e.g., Sci" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          />
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Short form</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g., Sci" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Subject code</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g., 1110" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormAddEditLevel form={form}/>
+          <FormAddEditSubjectGrading form={form} />
           <div className="flex items-center justify-end">
             <LoadingButton
               loading={

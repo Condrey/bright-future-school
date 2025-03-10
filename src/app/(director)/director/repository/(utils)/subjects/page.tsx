@@ -3,8 +3,8 @@ import HeaderContainer, {
   HeaderContainerFallback,
 } from "@/components/sidebar/header-container";
 import { Fragment, Suspense } from "react";
-import { getSubjectsAction } from "./action";
-import ButtonNewSubject from "./button-new-subject";
+import { getSubjectsAction } from "../../../../../../components/subjects/subject/action";
+import ButtonAddNewSubject from "../../../../../../components/subjects/subject/button-add-new-subject";
 import ListOfSubjects from "./list-of-subjects";
 
 export default async function Page() {
@@ -18,7 +18,7 @@ export default async function Page() {
         {/* Heading showing title, subject quantity and add entry button  */}
         <header className="flex w-full items-center justify-between">
           <h1 className="text-2xl font-bold">List of subjects</h1>
-          <ButtonNewSubject />
+          <ButtonAddNewSubject />
         </header>
         {/* The table showing the  list of subjects  */}
         <ListOfSubjects subjects={subjects} />
