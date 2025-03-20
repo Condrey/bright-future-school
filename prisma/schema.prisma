@@ -516,14 +516,21 @@ model Exam {
   id          String      @id
   examName    String
   examDate    DateTime
-  examType    String
+  examType    ExamType    @default(EXAM)
   classTermId String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime
   examScores  ExamScore[]
-  classTerms  ClassTerm   @relation(fields: [classTermId], references: [id], onDelete: Cascade)
+  classTerm   ClassTerm   @relation(fields: [classTermId], references: [id], onDelete: Cascade)
 
   @@unique([examName, examDate, classTermId])
+}
+
+enum ExamType {
+  ASSESSMENT
+  TEST
+  EXERCISE
+  EXAM
 }
 
 enum StaffType {

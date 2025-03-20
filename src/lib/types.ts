@@ -118,6 +118,12 @@ export type SubjectData = Prisma.SubjectGetPayload<{
   include: typeof subjectDataInclude;
 }>;
 
+// exam
+export const examDataInclude = {} satisfies Prisma.ExamInclude;
+export type ExamData = Prisma.ExamGetPayload<{
+  include: typeof examDataInclude;
+}>;
+
 // Class streams
 export const classStreamDataInclude = {
   _count: { select: { pupils: true } },

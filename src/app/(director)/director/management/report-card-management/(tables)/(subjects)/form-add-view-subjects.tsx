@@ -80,7 +80,9 @@ export default function FormAddViewSubjects({
               <p className="max-w-sm text-center text-muted-foreground">
                 There are no subjects in the database yet. Please add.
               </p>
-              <ButtonAddNewSubject />
+              <ButtonAddNewSubject variant={"secondary"}>
+                Add new subject
+              </ButtonAddNewSubject>
             </div>
           ) : (
             <ListOfLevelsWithSubjects

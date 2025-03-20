@@ -1,14 +1,14 @@
 "use client";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { useState } from "react";
-import FormAddEditSubject from "./form-add-edit-subject";
+import FormAddEditExam from "./form-add-edit-exam";
 
-interface ButtonAddNewSubjectProps extends ButtonProps {}
+interface ButtonAddNewExamProps extends ButtonProps {}
 
-export default function ButtonAddNewSubject({
+export default function ButtonAddNewExam({
   className,
   ...props
-}: ButtonAddNewSubjectProps) {
+}: ButtonAddNewExamProps) {
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ export default function ButtonAddNewSubject({
       <Button onClick={() => setOpenDialog(!openDialog)} {...props}>
         {props.children}
       </Button>
-      <FormAddEditSubject open={openDialog} setOpen={setOpenDialog} />
+      <FormAddEditExam open={openDialog} setOpen={setOpenDialog} />
     </>
   );
 }

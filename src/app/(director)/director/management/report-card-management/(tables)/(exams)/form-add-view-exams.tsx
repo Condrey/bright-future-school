@@ -1,7 +1,7 @@
 "use client";
 
+import ButtonAddNewExam from "@/components/exams/exam/button-add-exam";
 import LoadingButton from "@/components/loading-button";
-import ButtonAddNewSubject from "@/components/subjects/subject/button-add-new-subject";
 import {
   Sheet,
   SheetContent,
@@ -75,14 +75,16 @@ export default function FormAddViewExams({
               <p className="max-w-sm text-center text-muted-foreground">
                 There are no exams in the database yet. Please add.
               </p>
-              <ButtonAddNewSubject />
+              <ButtonAddNewExam variant={"secondary"}>
+                Add new Exam
+              </ButtonAddNewExam>
             </div>
           ) : (
             "s"
-            // <ListOfLevelsWithSubjects
-            //   levels={data}
+            // <ListOfTermsWithExams
+            //   terms={data}
             //   academicYearClassId={classStream.classId!}
-            //   subjects={subjects}
+            //   exams={exams}
             // />
           )}
         </div>
