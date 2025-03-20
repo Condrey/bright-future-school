@@ -13,8 +13,6 @@ import { ArrowUpRightIcon, Loader2Icon } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import DropDownMenuClassStream from "./drop-down-menu-class-stream";
-import { BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { SelectSeparator } from "@radix-ui/react-select";
 
 export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
   {
@@ -99,7 +97,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
             <p className="space-y-1">
               <span>{formatNumber(data)}</span>{" "}
               <span className="text-xs text-muted-foreground">
-                subject{data === 1 ? "" : "s"}{" "}
+                subject{data === 1 ? "" : "s"} available
               </span>
             </p>
           )}
@@ -156,7 +154,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
               <ArrowUpRightIcon className="size-4" />
             )}
           </Link>
-          <Separator orientation="vertical" className=" shrink-0"/>
+          <Separator orientation="vertical" className="shrink-0" />
           <DropDownMenuClassStream classStream={row.original} />
         </div>
       );

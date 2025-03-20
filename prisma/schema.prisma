@@ -68,11 +68,11 @@ model Staff {
 }
 
 model Level {
-  id      String    @id @default(uuid())
-  name    String
-  slug    String
-  classes Class[]
-  subject Subject[]
+  id       String    @id @default(uuid())
+  name     String
+  slug     String
+  classes  Class[]
+  subjects Subject[]
 
   @@map("levels")
 }

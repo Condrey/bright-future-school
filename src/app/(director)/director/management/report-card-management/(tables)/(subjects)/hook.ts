@@ -1,12 +1,22 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getAllAcademicYearClassSubjects, getAllSubjects } from "./action";
+import {
+  getAllAcademicYearClassSubjects,
+  getAllLevelsWithSubjects,
+  getAllSubjects,
+} from "./action";
 
 export const useAllSubjectsQuery = () =>
   useQuery({
     queryKey: ["subjects", "list"],
     queryFn: getAllSubjects,
+  });
+
+export const useGetALlLevelsWithSubjectsQuery = () =>
+  useQuery({
+    queryKey: ["levels-with-subjects", "list"],
+    queryFn: getAllLevelsWithSubjects,
   });
 
 export const useFetchAcademicYearClassSubjectsQuery = ({

@@ -3,14 +3,14 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { Subject } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Terminal } from "lucide-react";
-import { getSubjectsAction } from "../../../../../../components/subjects/subject/action";
+import { getSubjectsAction } from "@/components/subjects/subject/action";
 import { useSubjectColumns } from "./columns";
+import { SubjectData } from "@/lib/types";
 
 interface ListOfSubjectsProps {
-  subjects: Subject[];
+  subjects: SubjectData[];
 }
 
 export default function ListOfSubjects({ subjects }: ListOfSubjectsProps) {

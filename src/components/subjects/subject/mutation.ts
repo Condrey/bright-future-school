@@ -34,7 +34,7 @@ export function useAddSubjectMutation() {
         (oldData) => oldData && { ...oldData, subjects: oldData.subjects + 1 },
       );
 
-      // queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
     },
 
     onError(error) {
@@ -69,7 +69,7 @@ export function useUpdateSubjectMutation() {
         );
       });
 
-      // queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
     },
 
     onError(error) {
@@ -106,7 +106,7 @@ export function useDeleteSubjectMutation() {
         (oldData) => oldData && { ...oldData, subjects: oldData.subjects - 1 },
       );
 
-      // queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey });
     },
 
     onError(error) {

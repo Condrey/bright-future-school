@@ -44,6 +44,7 @@ export function NavMain({ dashboardParams }: NavMainProps) {
     streams,
     terms,
     subjects,
+    grading,
     pupils,
     teachingStaffs,
     nonTeachingStaffs,
@@ -123,6 +124,12 @@ export function NavMain({ dashboardParams }: NavMainProps) {
           url: "terms",
           showIndicator: terms < 1,
           isVisible: streams > 0,
+        },
+        {
+          title: "Grading",
+          url: "grading",
+          showIndicator: grading < 1,
+          isVisible: subjects > 0,
         },
         {
           title: "Subjects",

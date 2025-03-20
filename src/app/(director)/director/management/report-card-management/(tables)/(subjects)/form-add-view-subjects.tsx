@@ -1,6 +1,7 @@
 "use client";
 
 import LoadingButton from "@/components/loading-button";
+import ButtonAddNewSubject from "@/components/subjects/subject/button-add-new-subject";
 import {
   Sheet,
   SheetContent,
@@ -10,9 +11,8 @@ import {
 } from "@/components/ui/sheet";
 import { YearContainer } from "@/components/year-container";
 import { ClassStreamData } from "@/lib/types";
-import { useAllSubjectsQuery } from "./hook";
-import ListOfSubjects from "./list-of-subjects";
-import ButtonAddNewSubject from "@/components/subjects/subject/button-add-new-subject";
+import { useGetALlLevelsWithSubjectsQuery } from "./hook";
+import ListOfLevelsWithSubjects from "./list-of-levels-with-subjects";
 
 interface FormAddViewSubjectsProps {
   open: boolean;
@@ -29,21 +29,25 @@ export default function FormAddViewSubjects({
   const classValue = (classStream.class?.class?.slug ?? "").toUpperCase();
   const streamValue = classStream.stream?.name;
   const levelValue = classStream.class?.class?.level?.name;
+  const subjects = classStream.class?.academicYearSubjects.flatMap(
+    (c) => c.subject,
+  );
 
-  const { data, status, error, refetch, isFetching } = useAllSubjectsQuery();
+  const { data, status, error, refetch, isFetching } =
+    useGetALlLevelsWithSubjectsQuery();
   if (status === "error") {
     console.error(error);
   }
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent>
-        <SheetHeader>
+      <SheetContent className="flex flex-col gap-8 overflow-y-auto">
+        <SheetHeader className="flex flex-col">
           <SheetTitle>
             <div>
-              {" "}
               <YearContainer year={academicYear} /> {classValue} {streamValue}{" "}
               subjects
-            </div>{" "}
+            </div>
           </SheetTitle>
           <SheetDescription>
             Please choose subjects that belong to this {academicYear}{" "}
@@ -51,7 +55,7 @@ export default function FormAddViewSubjects({
             {streamValue} class, {levelValue} level.
           </SheetDescription>
         </SheetHeader>
-        <div>
+        <div className="overflow-y-auto scroll-smooth">
           {status === "pending" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
               <p className="max-w-sm text-center text-muted-foreground">
@@ -72,10 +76,14 @@ export default function FormAddViewSubjects({
               <p className="max-w-sm text-center text-muted-foreground">
                 There are no subjects in the database yet. Please add.
               </p>
-              <ButtonAddNewSubject/>
+              <ButtonAddNewSubject />
             </div>
           ) : (
-            <ListOfSubjects subjects={data} />
+            <ListOfLevelsWithSubjects
+              levels={data}
+              academicYearClassId={classStream.classId!}
+              subjects={subjects}
+            />
           )}
         </div>
       </SheetContent>

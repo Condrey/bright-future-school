@@ -121,7 +121,7 @@ export type ClassStreamSchema = z.infer<typeof classStreamSchema>;
 // Class
 export const classSchema = z.object({
   name: requiredString.min(1, "Please provide a class name to proceed"),
-  slug: requiredString.min(1,'Please add a short form for the class'),
+  slug: requiredString.min(1, "Please add a short form for the class"),
   id: z.string().optional(),
   level: levelSchema,
 });
@@ -369,28 +369,47 @@ export const assetRepairPaymentSchema = z.object({
 });
 export type AssetRepairPaymentSchema = z.infer<typeof assetRepairPaymentSchema>;
 
-// Grading 
-export const gradingSchema = z.object({
-  id: z.string().optional(),
-  from: z.number(),
-  to: z.number(),
-  grade: requiredString.min(1, "Please include a grade"),
-  remarks: requiredString.min(1, "Please include a remark"),
-});
+// Grading
+export const gradingSchema = z
+  .object({
+    id: z.string().optional(),
+    from: z.number(),
+    to: z.number(),
+    grade: requiredString.min(1, "Please include a grade"),
+    remarks: requiredString.min(1, "Please include a remark"),
+  })
+  .superRefine((data, ctx) => {
+    // When isSchoolCost is false, ensure userId is provided.
+    if (data.from === data.to) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Starting mark(from) and ending(to) must be different.",
+        path: ["to"],
+      });
+    }
+  });
 export type GradingSchema = z.infer<typeof gradingSchema>;
 
-// Subject 
+// Subject
 export const subjectSchema = z.object({
   id: z.string().optional(),
   subjectName: requiredString.min(1, "Subject name is missing"),
   slug: requiredString.min(1, "Please add a short name for the subject"),
   code: requiredString.min(1, "Please add a subject code."),
-  levelId:requiredString.min(1,'Missing a level'),
-  grading: z.array(gradingSchema),
+  levelId: requiredString.min(1, "Missing a level"),
+  grading: z
+    .array(gradingSchema)
+    .refine((value) => value.some((item) => item), {
+      message: "You have to have or select at least one item.",
+    }),
 });
 export type SubjectSchema = z.infer<typeof subjectSchema>;
 export const multipleSubjectSchema = z.object({
-  subjects: z.array(subjectSchema),
+  subjects: z
+    .array(subjectSchema.omit({ grading: true }))
+    .refine((value) => value.some((item) => item), {
+      message: "You have to have or select at least one item.",
+    }),
 });
 export type MultipleSubjectSchema = z.infer<typeof multipleSubjectSchema>;
 

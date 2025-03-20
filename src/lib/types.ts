@@ -84,6 +84,7 @@ export type DirectorDashboardParam = {
   academicYears: number;
   terms: number;
   subjects: number;
+  grading: number;
   pupils: number;
   teachingStaffs: number;
   nonTeachingStaffs: number;
@@ -101,17 +102,18 @@ export type ClassData = Prisma.ClassGetPayload<{
 // Level
 export const levelDataInclude = {
   _count: { select: { classes: true } },
+  subjects: true,
 } satisfies Prisma.LevelInclude;
 
 export type LevelData = Prisma.LevelGetPayload<{
   include: typeof levelDataInclude;
 }>;
 
-
-// Subject 
+// Subject
 export const subjectDataInclude = {
-grading:true
-} satisfies Prisma.SubjectInclude
+  grading: true,
+  level: true,
+} satisfies Prisma.SubjectInclude;
 export type SubjectData = Prisma.SubjectGetPayload<{
   include: typeof subjectDataInclude;
 }>;
@@ -125,7 +127,7 @@ export const classStreamDataInclude = {
   stream: true,
   class: {
     select: {
-      academicYear: { select: { year: true } },
+      academicYear: { select: { year: true, id: true } },
       class: {
         select: {
           id: true,
@@ -134,6 +136,7 @@ export const classStreamDataInclude = {
           level: { select: { name: true } },
         },
       },
+      academicYearSubjects: { include: { subject: true } },
       _count: { select: { academicYearSubjects: true } },
     },
   },
