@@ -22,6 +22,7 @@ import {
   MoveUpRightIcon,
 } from "lucide-react";
 import { useState, useTransition } from "react";
+import FormAddViewExams from "./(exams)/form-add-view-exams";
 import FormAddViewSubjects from "./(subjects)/form-add-view-subjects";
 
 interface DropDownMenuClassStreamProps {
@@ -98,6 +99,11 @@ export default function DropDownMenuClassStream({
       <FormAddViewSubjects
         open={openSubjectDialog}
         setOpen={setOpenSubjectDialog}
+        classStream={classStream}
+      />
+      <FormAddViewExams
+        open={openExamDialog}
+        setOpen={setOpenExamDialog}
         classStream={classStream}
       />
     </>

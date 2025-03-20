@@ -36,19 +36,17 @@ export async function upsertAcademicYYearClassSubjects({
   academicYearClassId: string;
   input: MultipleSubjectSchema;
 }) {
-  for (const subject of input.subjects) {
-    await prisma.academicYearSubject.upsert({
-      where: {
-        academicYearClassId_subjectId: {
-          academicYearClassId,
-          subjectId: subject.id!,
-        },
+  const subjectIds = input.subjects.map((s) => s.id!);
+
+  await prisma.academicYearClass.update({
+    where: { id: academicYearClassId },
+    data: {
+      academicYearSubjects: {
+        deleteMany: {},
+        create: subjectIds.map((subjectId) => ({
+          subject: { connect: { id: subjectId } },
+        })),
       },
-      create: {
-        academicYearClassId,
-        subjectId: subject.id!,
-      },
-      update: {},
-    });
-  }
+    },
+  });
 }

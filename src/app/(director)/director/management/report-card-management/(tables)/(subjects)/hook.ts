@@ -13,7 +13,7 @@ export const useAllSubjectsQuery = () =>
     queryFn: getAllSubjects,
   });
 
-export const useGetALlLevelsWithSubjectsQuery = () =>
+export const useGetAllLevelsWithSubjectsQuery = () =>
   useQuery({
     queryKey: ["levels-with-subjects", "list"],
     queryFn: getAllLevelsWithSubjects,

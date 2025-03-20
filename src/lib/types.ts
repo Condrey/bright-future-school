@@ -239,6 +239,7 @@ export const classTermDataSelect = (classTermId?: string) => {
       },
     },
     term: { select: { term: true } },
+    exams: true,
     startAt: true,
     endAt: true,
     feesAmount: true,

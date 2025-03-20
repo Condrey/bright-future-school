@@ -11,30 +11,30 @@ import {
 } from "@/components/ui/sheet";
 import { YearContainer } from "@/components/year-container";
 import { ClassStreamData } from "@/lib/types";
-import { useGetAllLevelsWithSubjectsQuery } from "./hook";
-import ListOfLevelsWithSubjects from "./list-of-levels-with-subjects";
+import { useGetAllClassTermsWithExamsQuery } from "./hooks";
+// import ListOfLevelsWithSubjects from "./list-of-levels-with-subjects";
 
-interface FormAddViewSubjectsProps {
+interface FormAddViewExamsProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   classStream: ClassStreamData;
 }
 
-export default function FormAddViewSubjects({
+export default function FormAddViewExams({
   open,
   setOpen,
   classStream,
-}: FormAddViewSubjectsProps) {
+}: FormAddViewExamsProps) {
   const academicYear = classStream.class?.academicYear?.year;
   const classValue = (classStream.class?.class?.slug ?? "").toUpperCase();
   const streamValue = classStream.stream?.name;
   const levelValue = classStream.class?.class?.level?.name;
-  const subjects = classStream.class?.academicYearSubjects.flatMap(
-    (c) => c.subject,
-  );
 
   const { data, status, error, refetch, isFetching } =
-    useGetAllLevelsWithSubjectsQuery();
+    useGetAllClassTermsWithExamsQuery({
+      classStreamId: classStream.id,
+      academicYearClassId: classStream.classId!,
+    });
   if (status === "error") {
     console.error(error);
   }
@@ -46,48 +46,44 @@ export default function FormAddViewSubjects({
           <SheetTitle>
             <div>
               <YearContainer year={academicYear} /> {classValue} {streamValue}{" "}
-              subjects
+              Examinations
             </div>
           </SheetTitle>
           <SheetDescription>
-            Please choose subjects that belong to this {academicYear}{" "}
-            {classValue} {streamValue} class, {levelValue} level.{" "}
-            <strong>
-              Please navigateOnclickWithoutUpdate that this will apply to all
-              the streams.
-            </strong>
+            Please manage exams for {academicYear} {classValue} {streamValue}{" "}
+            class, {levelValue} level.{" "}
           </SheetDescription>
         </SheetHeader>
         <div className="size-full overflow-y-auto scroll-smooth">
           {status === "pending" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
               <p className="max-w-sm text-center text-muted-foreground">
-                Loading...
+                Loading exams...
               </p>
             </div>
           ) : status === "error" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
               <p className="max-w-sm text-center text-muted-foreground">
-                Ann error occurred while fetching subjects
+                Ann error occurred while fetching exams
               </p>
               <LoadingButton loading={isFetching} onClick={() => refetch()}>
                 Refetch
               </LoadingButton>
             </div>
-          ) : status === "success" &&
-            !data.flatMap((d) => d.subjects).length ? (
+          ) : status === "success" && !data.flatMap((s) => s.exams).length ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
               <p className="max-w-sm text-center text-muted-foreground">
-                There are no subjects in the database yet. Please add.
+                There are no exams in the database yet. Please add.
               </p>
               <ButtonAddNewSubject />
             </div>
           ) : (
-            <ListOfLevelsWithSubjects
-              levels={data}
-              academicYearClassId={classStream.classId!}
-              subjects={subjects}
-            />
+            "s"
+            // <ListOfLevelsWithSubjects
+            //   levels={data}
+            //   academicYearClassId={classStream.classId!}
+            //   subjects={subjects}
+            // />
           )}
         </div>
       </SheetContent>

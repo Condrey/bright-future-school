@@ -523,7 +523,7 @@ model Exam {
   examScores  ExamScore[]
   classTerms  ClassTerm   @relation(fields: [classTermId], references: [id], onDelete: Cascade)
 
-  @@unique([examName, examDate])
+  @@unique([examName, examDate, classTermId])
 }
 
 enum StaffType {
