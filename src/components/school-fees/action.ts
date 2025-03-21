@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import {
   classTermDataSelect,
   getTermWithYearDataSelect,
-  PupilData,
   pupilDataInclude,
   TermWithYearData,
 } from "@/lib/types";
@@ -29,7 +28,11 @@ export async function fetchPaymentsByClass({
 }
 export const getYearTermFeesManagementSummary = cache(fetchPaymentsByClass);
 
-export async function fetchClassTerm({ classTermId }: { classTermId: string }) {
+export async function fetchClassTerm({
+  classTermId,
+}: {
+  classTermId: string;
+}): Promise<TermWithYearData> {
   const data: TermWithYearData | null =
     await prisma.classTerm.findUniqueOrThrow({
       where: { id: classTermId },
@@ -49,7 +52,7 @@ export async function fetchStreamPupils({
 }) {
   const classStream = await prisma.classStream.findUnique({
     where: { id: classStreamId },
-    include:{pupils:{include:pupilDataInclude(classTermId)}}
+    include: { pupils: { include: pupilDataInclude(classTermId) } },
   });
   if (!classStream) throw Error(" The stream with this Id does not exist. ");
 

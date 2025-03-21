@@ -130,9 +130,10 @@ export const classStreamDataInclude = {
   classTeacher: {
     select: classTeacherDataSelect,
   },
-  stream: true,
+  stream: { select: { name: true, id: true } },
   class: {
     select: {
+      id: true,
       academicYear: { select: { year: true, id: true } },
       class: { include: classDataInclude },
       academicYearSubjects: { include: { subject: true } },
@@ -219,7 +220,27 @@ export const classTermDataSelect = (classTermId?: string) => {
     classStreamId: true,
     termId: true,
     classStream: {
-      include: classStreamDataInclude,
+      include: {
+        stream: { select: { name: true, id: true } },
+        terms: {
+          select: { _count: { select: { exams: true } } },
+        },
+        class: {
+          select: {
+            id: true,
+            class: { include: classDataInclude },
+            academicYear: { select: { year: true, id: true } },
+            _count: { select: { streams: true } },
+            academicYearSubjects: { include: { subject: true } },
+          },
+        },
+        classTeacher: { select: classTeacherDataSelect },
+        pupils: {
+          include: pupilDataInclude(classTermId),
+          orderBy: { user: { name: "asc" } },
+        },
+        _count: { select: { pupils: true } },
+      },
     },
     term: { select: { term: true } },
     exams: true,
