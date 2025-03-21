@@ -8,14 +8,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Role, Subject } from "@prisma/client";
+import { SubjectData } from "@/lib/types";
+import { Role } from "@prisma/client";
 import { CopyIcon, Edit2Icon, MoreHorizontal, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import FormAddEditSubject from "../../../../../../components/subjects/subject/form-add-edit-subject";
 import DialogDeleteSubject from "./dialog-delete-subject";
 
 interface DropDownMenuSubjectProps {
-  subject: Subject;
+  subject: SubjectData;
 }
 
 export default function DropDownMenuSubject({
