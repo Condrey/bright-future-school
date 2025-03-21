@@ -48,9 +48,25 @@ export default function FormAddEditExam({
             name="examName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Subject name</FormLabel>
+                <FormLabel>Examination name</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="e.g., Beginning of term" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="examType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Examination Type</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="e.g., assessment examinations"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
