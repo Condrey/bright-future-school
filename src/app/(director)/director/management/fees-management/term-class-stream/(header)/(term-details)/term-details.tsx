@@ -51,7 +51,7 @@ export default function TermDetails({ oldTerm }: TermDetailsProps) {
         <ButtonUpdateClassTerm
           termToEdit={term}
           academicYear={term.classStream?.class?.academicYear?.year!}
-          academicYearClassId={term.classStream?.class?.id!}
+          academicYearClassId={term.classStream?.classId!}
           levelId={term.classStream?.class?.class?.levelId!}
           termId={term.termId!}
         />
