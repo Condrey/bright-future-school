@@ -122,7 +122,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
             <p className="space-y-1">
               <span>{formatNumber(data)}</span>{" "}
               <span className="text-xs text-muted-foreground">
-                exam{data === 1 ? "" : "s"} done
+                exam{data === 1 ? "" : "s"} scheduled
               </span>
             </p>
           )}

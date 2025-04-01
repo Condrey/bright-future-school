@@ -519,17 +519,19 @@ model Exam {
   examType    ExamType    @default(EXAM)
   classTermId String
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime    @updatedAt
   examScores  ExamScore[]
   classTerm   ClassTerm   @relation(fields: [classTermId], references: [id], onDelete: Cascade)
 
   @@unique([examName, examDate, classTermId])
+  @@map("exams")
 }
 
 enum ExamType {
   ASSESSMENT
   TEST
   EXERCISE
+  MOCK
   EXAM
 }
 

@@ -13,10 +13,11 @@ import { useGetAllClassStreamsQueryWithInitialData } from "../../hooks";
 
 interface ListOfClassStreamsProps {
   classStreams: ClassStreamData[];
+  className?:string
 }
 
 export default function ListOfClassStreams({
-  classStreams,
+  classStreams,className
 }: ListOfClassStreamsProps) {
   const { data, status, isFetching, refetch, error } =
     useGetAllClassStreamsQueryWithInitialData(classStreams);
@@ -25,7 +26,8 @@ export default function ListOfClassStreams({
     console.error(error);
   }
   return (
-    <div className="sticky top-10 max-h-[75vh] w-full max-w-fit space-y-2 overflow-y-auto scroll-smooth rounded-md border bg-card p-4">
+    <div className=
+    {className}>
       <h1 className="text-xl">Classes and stream</h1>
       <div>
         {status === "error" ? (

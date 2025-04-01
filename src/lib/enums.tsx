@@ -5,6 +5,7 @@ import {
   AssetStatus,
   AssetUnit,
   BookStatus,
+  ExamType,
   Role,
   StaffType,
 } from "@prisma/client";
@@ -262,4 +263,13 @@ const myDeniedPrivileges = (myRole: Role) => {
     );
   }
   return deniedPrivileges[myRole];
+};
+
+export const allExamTypes = Object.values(ExamType);
+export const examTypes: Record<ExamType, string> = {
+  ASSESSMENT: "Assessment",
+  TEST: "Test",
+  EXERCISE: "Exercise",
+  EXAM: "Examination",
+  MOCK: "Mock examination",
 };

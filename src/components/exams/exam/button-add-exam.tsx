@@ -3,9 +3,14 @@ import { Button, ButtonProps } from "@/components/ui/button";
 import { useState } from "react";
 import FormAddEditExam from "./form-add-edit-exam";
 
-interface ButtonAddNewExamProps extends ButtonProps {}
+interface ButtonAddNewExamProps extends ButtonProps {
+  classTermId: string;
+  academicYearClassId: string;
+}
 
 export default function ButtonAddNewExam({
+  classTermId,
+  academicYearClassId,
   className,
   ...props
 }: ButtonAddNewExamProps) {
@@ -16,7 +21,12 @@ export default function ButtonAddNewExam({
       <Button onClick={() => setOpenDialog(!openDialog)} {...props}>
         {props.children}
       </Button>
-      <FormAddEditExam open={openDialog} setOpen={setOpenDialog} />
+      <FormAddEditExam
+        open={openDialog}
+        setOpen={setOpenDialog}
+        classTermId={classTermId}
+        academicYearClassId={academicYearClassId}
+      />
     </>
   );
 }

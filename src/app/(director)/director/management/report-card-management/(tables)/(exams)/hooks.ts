@@ -5,12 +5,10 @@ import { getAllTermsWithExams as getAllClassTermsWithExams } from "./action";
 
 export const useGetAllClassTermsWithExamsQuery = ({
   classStreamId,
-  academicYearClassId,
 }: {
   classStreamId: string;
-  academicYearClassId: string;
 }) =>
   useQuery({
-    queryKey: ["classTerms-with-exams", academicYearClassId, classStreamId],
+    queryKey: ["classTerms-with-exams", classStreamId],
     queryFn: async () => getAllClassTermsWithExams(classStreamId),
   });

@@ -21,8 +21,11 @@ export default async function Layout({
 
   return (
     <div className="flex w-full flex-row gap-4 px-4 py-6">
-      <ListOfClassStreams classStreams={classStreams} />
-      <div>{children}</div>
+      <div className="flex-1">{children}</div>
+      <ListOfClassStreams
+        classStreams={classStreams}
+        className="sticky xl:flex flex-col hidden top-10 max-h-[75vh] w-full max-w-fit space-y-2 overflow-y-auto scroll-smooth rounded-md border bg-card p-4"
+      />
     </div>
   );
 }

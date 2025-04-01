@@ -6,6 +6,7 @@ import {
   AssetUnit,
   BookStatus,
   BorrowStatus,
+  ExamType,
   Role,
 } from "@prisma/client";
 import z from "zod";
@@ -418,7 +419,7 @@ export const examSchema = z.object({
   id: z.string().optional(),
   examName: requiredString.min(1, "Exam name is missing"),
   examDate: z.date({ required_error: "Please select a date for the exam." }),
-  examType: requiredString.min(1, "Please add a exam type."),
+  examType: z.nativeEnum(ExamType).default(ExamType.EXAM),
   classTermId: requiredString.min(1, "Missing a class term"),
 });
 export type ExamSchema = z.infer<typeof examSchema>;

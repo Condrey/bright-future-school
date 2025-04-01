@@ -1,24 +1,8 @@
 import ButtonAddNewExam from "@/components/exams/exam/button-add-exam";
-import LoadingButton from "@/components/loading-button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { SheetFooter } from "@/components/ui/sheet";
+import ExamContainer from "@/components/exams/exam/exam-container";
 import { ExamData, TermWithYearData } from "@/lib/types";
-import {
-  ExamSchema,
-  MultipleExamSchema,
-  multipleExamSchema,
-} from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { MultipleExamSchema } from "@/lib/validation";
 import { PlusIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 
 interface ListOfTermsWithExamsProps {
   classTerms: TermWithYearData[];
@@ -31,87 +15,62 @@ export default function ListOfTermsWithExams({
   academicYearClassId,
   exams,
 }: ListOfTermsWithExamsProps) {
-  const form = useForm<MultipleExamSchema>({
-    resolver: zodResolver(multipleExamSchema),
-    values: {
-      exams: exams as ExamSchema[],
-    },
-  });
   function handleSubmit(input: MultipleExamSchema) {}
   return (
     <>
-      <div className="space-y-4">
-        {classTerms.map((classTerm) => (
-          <div className="space-y-2" key={classTerm.id}>
-            <h2 className="text-lg font-semibold">
-              {classTerm.term?.term} term
-            </h2>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)}>
-                <FormField
-                  control={form.control}
-                  name="exams"
-                  render={() => (
-                    <FormItem>
-                      {classTerm.exams.map((exam, index) => (
-                        <FormField
-                          key={exam.id}
-                          control={form.control}
-                          name={"exams"}
-                          render={({ field }) => (
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value
-                                    .flatMap((f) => f.id)
-                                    .includes(exam.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...field.value, exam])
-                                      : field.onChange(
-                                          field.value.filter(
-                                            (d) => d.id !== exam.id,
-                                          ),
-                                        );
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="text-sm font-normal">
-                                {exam.examName}
-                              </FormLabel>
-                            </FormItem>
-                          )}
-                        />
-                      ))}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
-        ))}
+      <div className="space-y-8">
+        {classTerms.map((classTerm) => {
+          const termName = classTerm.term?.term!;
+
+          return (
+            <div className="space-y-4" key={classTerm.id}>
+              <div className="flex w-full items-center justify-between gap-3">
+                <h2 className="text-lg font-semibold">
+                  {termName}{" "}
+                  {termName.toLowerCase().endsWith("term") ? "" : "term"}
+                </h2>
+                <ButtonAddNewExam
+                  academicYearClassId={academicYearClassId}
+                  classTermId={classTerm.id}
+                  variant={"secondary"}
+                  size={"sm"}
+                  //   disabled={mutation.isPending}
+                >
+                  <PlusIcon className="size-4" />
+                  <span>Exam</span>
+                </ButtonAddNewExam>
+              </div>
+
+              {/* term exams  */}
+              {!classTerm.exams.length ? (
+                <div className="text-xs">
+                  <span className="text-muted-foreground">
+                    No exams available for this term yet.
+                  </span>
+                  <ButtonAddNewExam
+                    className="mx-0 max-w-fit px-0"
+                    academicYearClassId={academicYearClassId}
+                    classTermId={classTerm.id!}
+                    variant={"link"}
+                  >
+                    <span className="text-xs">Please add.</span>
+                  </ButtonAddNewExam>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {classTerm.exams.map((exam) => (
+                    <ExamContainer
+                      key={exam.id}
+                      exam={exam}
+                      academicYearClassId={academicYearClassId}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-      <hr className="my-4" />
-      <SheetFooter className="sticky bottom-0 flex flex-row items-center gap-2">
-        <ButtonAddNewExam
-          variant={"outline"}
-          size={"default"}
-          //   disabled={mutation.isPending}
-        >
-          <PlusIcon className="size-4" />
-          <span>Exam</span>
-        </ButtonAddNewExam>
-        <LoadingButton
-          size={"default"}
-          //   loading={mutation.isPending}
-          loading
-          disabled={!form.formState.isDirty}
-          onClick={() => form.handleSubmit(handleSubmit)()}
-        >
-          Update
-        </LoadingButton>
-      </SheetFooter>
     </>
   );
 }

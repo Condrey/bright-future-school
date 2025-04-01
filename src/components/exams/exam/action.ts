@@ -1,0 +1,57 @@
+"use server";
+
+import prisma from "@/lib/prisma";
+import { ExamData, examDataInclude } from "@/lib/types";
+import { examSchema, ExamSchema } from "@/lib/validation";
+import cuid from "cuid";
+
+export async function upsertExam({
+  formData,
+}: {
+  formData: ExamSchema;
+}): Promise<ExamData> {
+  const parsedResult = examSchema.parse(formData);
+  const { id } = parsedResult;
+
+  const data = await prisma.exam.upsert({
+    where: {
+      id,
+    },
+    create: { ...parsedResult, id: cuid() },
+    update: parsedResult,
+    include: examDataInclude,
+  });
+  return data;
+}
+
+export async function upsertExamWholeClass({
+  formData,
+  academicYearClassId,
+}: {
+  formData: ExamSchema;
+  academicYearClassId: string;
+}) {
+  const parsedResult = examSchema.parse(formData);
+
+  await Promise.all(
+    (
+      await prisma.classTerm.findMany({
+        where: { classStream: { classId: academicYearClassId } },
+        select: { id: true },
+      })
+    ).map(({ id }) =>
+      prisma.classTerm.update({
+        where: { id },
+        data: {
+          exams: {
+            set: [],
+            connectOrCreate: {
+              where: { id: parsedResult.id },
+              create: { ...parsedResult, id: cuid() },
+            },
+          },
+        },
+      }),
+    ),
+  );
+}
