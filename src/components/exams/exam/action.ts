@@ -24,34 +24,12 @@ export async function upsertExam({
   return data;
 }
 
-export async function upsertExamWholeClass({
-  formData,
-  academicYearClassId,
-}: {
-  formData: ExamSchema;
-  academicYearClassId: string;
-}) {
-  const parsedResult = examSchema.parse(formData);
-
-  await Promise.all(
-    (
-      await prisma.classTerm.findMany({
-        where: { classStream: { classId: academicYearClassId } },
-        select: { id: true },
-      })
-    ).map(({ id }) =>
-      prisma.classTerm.update({
-        where: { id },
-        data: {
-          exams: {
-            set: [],
-            connectOrCreate: {
-              where: { id: parsedResult.id },
-              create: { ...parsedResult, id: cuid() },
-            },
-          },
-        },
-      }),
-    ),
-  );
+export async function deleteExam({ id }: { id: string }): Promise<ExamData> {
+  const data = await prisma.exam.delete({
+    where: {
+      id,
+    },
+    include: examDataInclude,
+  });
+  return data;
 }

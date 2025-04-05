@@ -79,7 +79,6 @@ export default function FormAddViewExams({
             <ListOfTermsWithExams
               classTerms={data}
               academicYearClassId={classStream.classId!}
-              exams={[]}
             />
           )}
         </div>

@@ -2,7 +2,7 @@
 
 import { toast } from "@/hooks/use-toast";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { upsertExam, upsertExamWholeClass } from "./action";
+import { deleteExam, upsertExam } from "./action";
 
 const queryKey: QueryKey = ["levels-with-subjects", "list"];
 
@@ -31,13 +31,13 @@ export function useUpsertExamMutation() {
   });
 }
 
-export function useUpsertExamWholeClassMutation() {
+export function useDeleteExamMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: upsertExamWholeClass,
+    mutationFn: deleteExam,
     onSuccess: async (data) => {
-      const key2 = ["classTerms-with-exams"];
+      const key2 = ["classTerms-with-exams", data.classTerm.classStreamId];
       const key3: QueryKey = ["list-of-class-streams"];
 
       await queryClient.cancelQueries({ queryKey });
@@ -46,15 +46,12 @@ export function useUpsertExamWholeClassMutation() {
       queryClient.invalidateQueries({ queryKey: key2 });
       queryClient.invalidateQueries({ queryKey: key3 });
       toast({
-        description: "Successfully updated exam for all the classes.",
+        description: "Successfully deleted exam",
       });
     },
     onError: (error) => {
       console.error(error);
-      toast({
-        description: "Failed to update exam for all the classes.",
-        variant: "destructive",
-      });
+      toast({ description: "Failed to delete exam", variant: "destructive" });
     },
   });
 }

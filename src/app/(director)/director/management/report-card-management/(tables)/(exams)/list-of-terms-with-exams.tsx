@@ -1,21 +1,17 @@
 import ButtonAddNewExam from "@/components/exams/exam/button-add-exam";
 import ExamContainer from "@/components/exams/exam/exam-container";
-import { ExamData, TermWithYearData } from "@/lib/types";
-import { MultipleExamSchema } from "@/lib/validation";
+import { TermWithYearData } from "@/lib/types";
 import { PlusIcon } from "lucide-react";
 
 interface ListOfTermsWithExamsProps {
   classTerms: TermWithYearData[];
   academicYearClassId: string;
-  exams: ExamData[];
 }
 
 export default function ListOfTermsWithExams({
   classTerms,
   academicYearClassId,
-  exams,
 }: ListOfTermsWithExamsProps) {
-  function handleSubmit(input: MultipleExamSchema) {}
   return (
     <>
       <div className="space-y-8">
