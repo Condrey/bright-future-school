@@ -23,7 +23,7 @@ export default function DialogDeleteExam({
     <ResponsiveDrawer open={open} setOpen={setOpen} title="Delete Exam">
       <div className="p-4">
         <p>
-          Are you sure you want to delete this{" "}
+          Are you sure you want to delete{" "}
           <span className="font-bold italic">"{exam.examName}"</span>
         </p>
         <div className="mt-4 flex justify-end gap-2">
