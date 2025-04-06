@@ -34,6 +34,21 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
       return <YearContainer year={data} />;
     },
   },
+  {
+    accessorKey: "class.class.name",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Class" />;
+    },
+    cell({ row }) {
+      const data = row.original.class?.class?.name;
+      return (
+        <p className="space-y-1">
+          <span>{data}</span>{" "}
+          <span className="text-xs text-muted-foreground">class</span>
+        </p>
+      );
+    },
+  },
 
   {
     accessorKey: "stream.name",
@@ -50,21 +65,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
       );
     },
   },
-  {
-    accessorKey: "class.class.name",
-    header({ column }) {
-      return <DataTableColumnHeader column={column} title="Class" />;
-    },
-    cell({ row }) {
-      const data = row.original.class?.class?.name;
-      return (
-        <p className="space-y-1">
-          <span>{data}</span>{" "}
-          <span className="text-xs text-muted-foreground">class</span>
-        </p>
-      );
-    },
-  },
+
   {
     accessorKey: "class.class.level.name",
     header({ column }) {

@@ -9,16 +9,14 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
-import { useGetAllClassStreamsQueryWithInitialData } from "../../hooks";
+import { useGetAllClassStreamsQueryWithInitialData } from "./hooks";
 
-interface ListOfClassStreamsProps {
+interface SidebarProps {
   classStreams: ClassStreamData[];
-  className?:string
+  className?: string;
 }
 
-export default function ListOfClassStreams({
-  classStreams,className
-}: ListOfClassStreamsProps) {
+export default function Sidebar({ classStreams, className }: SidebarProps) {
   const { data, status, isFetching, refetch, error } =
     useGetAllClassStreamsQueryWithInitialData(classStreams);
 
@@ -26,8 +24,7 @@ export default function ListOfClassStreams({
     console.error(error);
   }
   return (
-    <div className=
-    {className}>
+    <div className={className}>
       <h1 className="text-xl">Classes and stream</h1>
       <div>
         {status === "error" ? (

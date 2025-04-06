@@ -1,7 +1,7 @@
 import { webName } from "@/lib/utils";
 import { Metadata } from "next";
 import { getAllClassStreams } from "./action";
-import ListOfClassStreams from "./stream/[classStreamId]/list-of-class-streams";
+import Sidebar from "./side-bar";
 
 export const metadata: Metadata = {
   title: {
@@ -22,9 +22,9 @@ export default async function Layout({
   return (
     <div className="flex w-full flex-row gap-4 px-4 py-6">
       <div className="flex-1">{children}</div>
-      <ListOfClassStreams
+      <Sidebar
         classStreams={classStreams}
-        className="sticky xl:flex flex-col hidden top-10 max-h-[75vh] w-full max-w-fit space-y-2 overflow-y-auto scroll-smooth rounded-md border bg-card p-4"
+        className="sticky top-10 hidden max-h-[75vh] w-full max-w-fit flex-col space-y-2 overflow-y-auto scroll-smooth rounded-md border bg-card p-4 xl:flex"
       />
     </div>
   );

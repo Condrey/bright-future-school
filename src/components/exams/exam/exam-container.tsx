@@ -8,30 +8,51 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { examTypes } from "@/lib/enums";
 import { ExamData } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { DotIcon, MoreVerticalIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { useState } from "react";
+import {
+  ArrowUpRightIcon,
+  DotIcon,
+  Loader2Icon,
+  MoreVerticalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { useState, useTransition } from "react";
 import DialogDeleteExam from "./dialog-delete-exam";
 import FormAddEditExam from "./form-add-edit-exam";
 
 interface ExamContainerProps {
   exam: ExamData;
   academicYearClassId: string;
+  className?: string;
+  url?: string;
 }
 
 export default function ExamContainer({
   exam,
   academicYearClassId,
+  className,
+  url,
 }: ExamContainerProps) {
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
   return (
     <>
-      <div className="flex items-center justify-between gap-3 rounded-md border p-2">
+      <div
+        className={cn(
+          "flex items-center justify-between gap-3 rounded-md border p-2",
+          className,
+        )}
+      >
         <div>
           <h1 className="line-clamp-1 text-ellipsis text-lg">
             {exam.examName}
@@ -45,7 +66,11 @@ export default function ExamContainer({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"} size={"icon"}>
-              <MoreVerticalIcon className="size-4" />
+              {isPending ? (
+                <Loader2Icon className="size-4 animate-spin" />
+              ) : (
+                <MoreVerticalIcon className="size-4" />
+              )}
               <span className="sr-only">Open menu</span>
             </Button>
           </DropdownMenuTrigger>
@@ -53,10 +78,21 @@ export default function ExamContainer({
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              {url && (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href={url} onClick={() => startTransition(() => {})}>
+                      <ArrowUpRightIcon className="size-4" />
+                      View exam
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
               <DropdownMenuItem onClick={() => setOpenDialog(true)}>
                 <PencilIcon className="size-4" />
                 Edit this exam
-              </DropdownMenuItem>{" "}
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
                 <TrashIcon className="size-4" />
                 Delete this exam

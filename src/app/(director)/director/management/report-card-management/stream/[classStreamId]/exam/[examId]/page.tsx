@@ -1,21 +1,20 @@
 import BodyContainer from "@/components/sidebar/body-container";
 import HeaderContainer from "@/components/sidebar/header-container";
 import { Fragment } from "react";
-import { getAllTermsWithExams } from "../../action";
-import { getClassStreamById } from "./action";
-import ListOfExams from "./list-of-exams";
+import { getClassStreamById } from "../../action";
+import { getExamById } from "./action";
 
 interface PageProps {
-  params: Promise<{ classStreamId: string }>;
+  params: Promise<{ examId: string }>;
 }
 
 export default async function Page({ params }: PageProps) {
-  const { classStreamId } = await params;
-  const id = decodeURIComponent(classStreamId);
+  const { examId } = await params;
+  const id = decodeURIComponent(examId);
 
-  const [classStream, classTerms] = await Promise.all([
+  const [classStream, exam] = await Promise.all([
     getClassStreamById(id),
-    getAllTermsWithExams(id),
+    getExamById(id),
   ]);
 
   return (
@@ -31,13 +30,7 @@ export default async function Page({ params }: PageProps) {
           },
         ]}
       />
-      <BodyContainer>
-        <ListOfExams
-          classStreamId={id}
-          academicYearClassId={classStream?.classId!}
-          classTerms={classTerms}
-        />
-      </BodyContainer>
+      <BodyContainer>rr</BodyContainer>
     </Fragment>
   );
 }
