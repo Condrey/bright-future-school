@@ -14,7 +14,6 @@ import {
 import { examTypes } from "@/lib/enums";
 import { ExamData } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import {
   ArrowUpRightIcon,
   DotIcon,
@@ -60,7 +59,7 @@ export default function ExamContainer({
           <h2 className="flex items-center text-muted-foreground">
             <Badge variant={"outline"}> {examTypes[exam.examType]}</Badge>
             <DotIcon />
-            <span className="text-xs"> {format(exam.examDate, "PP")}</span>
+            {/* <span className="text-xs"> {format(exam.examDate, "PP")}</span> */}
           </h2>
         </div>
         <DropdownMenu>

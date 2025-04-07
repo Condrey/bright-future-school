@@ -121,6 +121,7 @@ export type SubjectData = Prisma.SubjectGetPayload<{
 // exam
 export const examDataInclude = {
   classTerm: { include: { classStream: true, term: true } },
+  examSubjects: true,
 } satisfies Prisma.ExamInclude;
 export type ExamData = Prisma.ExamGetPayload<{
   include: typeof examDataInclude;
@@ -128,14 +129,13 @@ export type ExamData = Prisma.ExamGetPayload<{
 
 // classStreamWithPupilsAndExams;
 export const pupilWithExamDataInclude = {
-  examSubjects: true,
+  examScores: true,
   user: { select: userDataSelect },
 } satisfies Prisma.PupilInclude;
 export type PupilWithExamData = Prisma.PupilGetPayload<{
   include: typeof pupilWithExamDataInclude;
 }>;
 export const classStreamWithPupilsAndExamsDataInclude = {
-  examSubjects: true,
   classTerm: {
     include: {
       classStream: {
@@ -273,7 +273,7 @@ export const classTermDataSelect = (classTermId?: string) => {
       },
     },
     term: { select: { term: true } },
-    exams: { include: examDataInclude, orderBy: { examDate: "desc" } },
+    exams: { include: examDataInclude },
     startAt: true,
     endAt: true,
     feesAmount: true,

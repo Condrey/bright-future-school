@@ -414,13 +414,25 @@ export const multipleSubjectSchema = z.object({
 });
 export type MultipleSubjectSchema = z.infer<typeof multipleSubjectSchema>;
 
+// Exam Subjects
+export const examSubjectSchema = z.object({
+  id: z.string().optional(),
+  examDate: z.date({ required_error: "Please select a date for the exam." }),
+  examId: z.string().optional(),
+  academicYearSubjectId: requiredString.min(1, "Subject is required"),
+});
+
 // Exam
 export const examSchema = z.object({
   id: z.string().optional(),
   examName: requiredString.min(1, "Exam name is missing"),
-  examDate: z.date({ required_error: "Please select a date for the exam." }),
   examType: z.nativeEnum(ExamType).default(ExamType.EXAM),
   classTermId: requiredString.min(1, "Missing a class term"),
+  examSubjects: z
+    .array(examSubjectSchema)
+    .refine((value) => value.some((item) => item), {
+      message: "You have to have or select at least one item.",
+    }),
 });
 export type ExamSchema = z.infer<typeof examSchema>;
 export const multipleExamSchema = z.object({

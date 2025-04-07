@@ -49,7 +49,7 @@ export default function FormAddEditExam({
     resolver: zodResolver(examSchema),
     defaultValues: {
       classTermId: examToEdit?.classTermId || classTermId || "",
-      examDate: examToEdit?.examDate || new Date(),
+      examSubjects: examToEdit?.examSubjects!,
       examName: examToEdit?.examName || "",
       examType: examToEdit?.examType || ExamType.EXAM,
       id: examToEdit?.id || "",
@@ -126,10 +126,10 @@ export default function FormAddEditExam({
           />
           <FormField
             control={form.control}
-            name="examDate"
+            name="examSubjects"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Exam date</FormLabel>
+                <FormLabel>Exam Subjects</FormLabel>
                 <FormControl>
                   <Calendar
                     mode="single"
