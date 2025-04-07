@@ -48,7 +48,7 @@ model Pupil {
   userId          String?
   genericPassword String
   classStreams    classStream[]
-  examSubjects    ExamSubject[]
+  examScores      ExamScore[]
   fees            Fees[]
   user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -507,6 +507,8 @@ model ExamScore {
   updatedAt     DateTime
   examSubject   ExamSubject @relation(fields: [examSubjectId], references: [id])
   examSubjectId String
+  pupil         Pupil       @relation(fields: [pupilId], references: [id], onDelete: Cascade)
+  pupilId       String
 
   @@map("exam_scores")
 }
@@ -514,7 +516,6 @@ model ExamScore {
 model Exam {
   id           String        @id
   examName     String
-  examDate     DateTime
   examType     ExamType      @default(EXAM)
   classTermId  String
   createdAt    DateTime      @default(now())
@@ -522,15 +523,15 @@ model Exam {
   examSubjects ExamSubject[]
   classTerm    ClassTerm     @relation(fields: [classTermId], references: [id], onDelete: Cascade)
 
-  @@unique([examName, examDate, classTermId])
+  @@unique([examName, classTermId])
   @@map("exams")
 }
 
 model ExamSubject {
-  id                    String              @id @default(uuid())
-  examId                String
-  pupil                 Pupil               @relation(fields: [pupilId], references: [id], onDelete: Cascade)
-  pupilId               String
+  id       String   @id @default(uuid())
+  examId   String
+  examDate DateTime
+
   exam                  Exam                @relation(fields: [examId], references: [id], onDelete: Cascade)
   academicYearSubject   AcademicYearSubject @relation(fields: [academicYearSubjectId], references: [id])
   academicYearSubjectId String

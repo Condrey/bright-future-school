@@ -98,9 +98,8 @@ export default function ListOfExams({
                       `/exam/${exam.id}`,
                     );
                     return (
-                      <Link href={url}>
+                      <Link href={url} key={exam.id}>
                         <ExamContainer
-                          key={exam.id}
                           exam={exam}
                           academicYearClassId={academicYearClassId}
                           url={url}
