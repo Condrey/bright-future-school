@@ -22,9 +22,12 @@ export async function POST(request: Request) {
     });
 
     if (!existingUser || !existingUser.passwordHash) {
-      return {
-        error: "Incorrect username or password.",
-      };
+      return Response.json(
+        {
+          error: "Incorrect username or password.",
+        },
+        { status: 401, statusText: "Unauthorized" },
+      );
     }
 
     const validPassword = verify(existingUser.passwordHash, password, {
@@ -34,9 +37,12 @@ export async function POST(request: Request) {
       parallelism: 1,
     });
     if (!validPassword) {
-      return {
-        error: "Incorrect username or password.",
-      };
+      return Response.json(
+        {
+          error: "Incorrect username or password.",
+        },
+        { status: 401, statusText: "Unauthorized" },
+      );
     }
 
     const session = await lucia.createSession(existingUser.id, {
@@ -49,7 +55,7 @@ export async function POST(request: Request) {
       sessionCookie.attributes,
     );
 
-    return redirect(
+    redirect(
       existingUser.isVerified ? "/" : `/user-verification/${existingUser.id}`,
     );
   } catch (error) {
