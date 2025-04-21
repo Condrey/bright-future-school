@@ -7,6 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { YearContainer } from "@/components/year-container";
 import { ClassStreamData } from "@/lib/types";
 import ListOfPupils from "./list-of-pupils";
 
@@ -23,7 +24,7 @@ export default function AssignPupils({
   classStream,
   year,
 }: AssignPupilsProps) {
-  const className = classStream.class?.class?.name;
+  const className = classStream.class?.class?.slug;
   const streamName = classStream.stream?.name;
   const levelName = classStream.class?.class?.level?.name;
 
@@ -33,9 +34,12 @@ export default function AssignPupils({
         <SheetHeader>
           <SheetTitle className="capitalize">
             <div className="flex flex-col gap-0.5">
-              <span className="tracking-wider">{`${year} ${className} class - ${streamName} pupils/ students`}</span>
-              <span className="uppercase tracking-tighter">
-                {levelName} level
+              <span className="tracking-wider">
+                <YearContainer year={year} />{" "}
+                {`${className} - ${streamName} pupils/ students`}
+              </span>
+              <span className="text-sm tracking-tighter">
+                ({levelName} - level)
               </span>
             </div>
           </SheetTitle>

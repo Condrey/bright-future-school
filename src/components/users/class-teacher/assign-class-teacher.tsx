@@ -8,6 +8,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import UserAvatar from "@/components/user-avatar";
+import { YearContainer } from "@/components/year-container";
 import { ClassStreamData } from "@/lib/types";
 import ButtonUnassignClassTeacher from "./button-unassign-class-teacher";
 import ListOfClassTeachers from "./list-of-class-teachers";
@@ -25,7 +26,7 @@ export default function AssignClassTeacher({
   classStream,
   year,
 }: AssignClassTeacherProps) {
-  const className = classStream.class?.class?.name;
+  const className = classStream.class?.class?.slug;
   const streamName = classStream.stream?.name;
   const classTeacher = classStream.classTeacher;
   const levelName = classStream.class?.class?.level?.name;
@@ -37,16 +38,17 @@ export default function AssignClassTeacher({
           <SheetTitle className="capitalize">
             <div className="flex flex-col gap-0.5">
               <span className="tracking-wider">
-                {`${year} ${className} class - ${streamName} class teacher`}
+                <YearContainer year={year} />{" "}
+                {`${className} - ${streamName} class teacher`}
               </span>
-              <span className="uppercase tracking-tighter">
-                {levelName} level
+              <span className="text-sm tracking-tighter">
+                ({levelName} - level)
               </span>
             </div>
           </SheetTitle>
           <SheetDescription className="max-w-sm">
             {!classTeacher ? (
-              <span>Assign a class teacher to the manage students.</span>
+              <span>Assign a class teacher to manage pupils/ students.</span>
             ) : (
               <span className="text-destructive">
                 Remove{" "}

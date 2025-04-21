@@ -15,7 +15,7 @@ export const useClassTeacherPupilsColumns: ColumnDef<PupilDataSelect>[] = [
   {
     accessorKey: "user.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Pupil/ student name" />
     ),
     cell: ({ row }) => {
       const user = row.original.user;
@@ -24,7 +24,26 @@ export const useClassTeacherPupilsColumns: ColumnDef<PupilDataSelect>[] = [
           <UserAvatar avatarUrl={user?.avatarUrl} />
           <div>
             <div>{user?.name}</div>
-            <div>{user?.telephone || user?.email || `@${user?.username}`}</div>
+            <div className="text-xs text-muted-foreground">
+              {user?.telephone || user?.email || `@${user?.username}`}
+            </div>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "user.email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Contact" />
+    ),
+    cell: ({ row }) => {
+      const user = row.original.user;
+      return (
+        <div>
+          <div>{user?.email || "No email"}</div>
+          <div className="text-xs text-muted-foreground">
+            {user?.telephone || "No telephone"}
           </div>
         </div>
       );

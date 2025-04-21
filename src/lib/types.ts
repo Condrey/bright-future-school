@@ -155,13 +155,23 @@ export type ClassStreamWithPupilsAndExamsData = Prisma.ExamGetPayload<{
   include: typeof classStreamWithPupilsAndExamsDataInclude;
 }>;
 
-// Class streams ( And pupils -- PupilDataSelect)
+// Class streams ( And pupils -- PupilDataSelect, term -- TermDataSelect)
 export const pupilDataSelect = {
   user: { select: { ...userDataSelect, bio: true, isVerified: true } },
   id: true,
 } satisfies Prisma.PupilSelect;
 export type PupilDataSelect = Prisma.PupilGetPayload<{
   select: typeof pupilDataSelect;
+}>;
+
+export const classTermIIDataSelect = {
+  _count: { select: { exams: true } },
+  exams: { include: examDataInclude },
+  id: true,
+  term: true,
+} satisfies Prisma.ClassTermSelect;
+export type ClassTermIIDataSelect = Prisma.ClassTermGetPayload<{
+  select: typeof classTermIIDataSelect;
 }>;
 
 export const classStreamDataInclude = {
@@ -186,7 +196,7 @@ export const classStreamDataInclude = {
     },
   },
   terms: {
-    select: { _count: { select: { exams: true } } },
+    select: classTermIIDataSelect,
   },
 } satisfies Prisma.classStreamInclude;
 export type ClassStreamData = Prisma.classStreamGetPayload<{
