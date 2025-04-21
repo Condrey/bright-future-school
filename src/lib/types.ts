@@ -277,7 +277,7 @@ export const classTermDataSelect = (classTermId?: string) => {
       include: {
         stream: { select: { name: true, id: true } },
         terms: {
-          select: { _count: { select: { exams: true } } },
+          include: classTermIIDataSelect,
         },
         class: {
           select: {
@@ -308,15 +308,15 @@ export const classTermDataSelect = (classTermId?: string) => {
 };
 
 // Academic year
-export const getTermWithYearDataSelect = (termId?: string) => {
+export const getTermWithYearDataSelect = (classTermId?: string) => {
   return {
     academicYearClasses: {
       select: {
         streams: {
-          select: {
+          include: {
             terms: {
-              where: !termId ? {} : { termId },
-              select: classTermDataSelect(termId),
+              where: !classTermId ? {} : { termId: classTermId },
+              select: classTermDataSelect(classTermId),
             },
           },
         },

@@ -2,16 +2,16 @@
 
 import AssignPupils from "@/app/(director)/director/repository/(users)/students/(tables)/(pupils)/assign-pupils";
 import LoadingButton from "@/components/loading-button";
+import { getClassTerm } from "@/components/school-fees/action";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/user-avatar";
 import AssignClassTeacher from "@/components/users/class-teacher/assign-class-teacher";
 import { YearContainer } from "@/components/year-container";
-import { TermWithYearData } from "@/lib/types";
+import { ClassStreamData, TermWithYearData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { getClassTerm } from "../../../../../../../components/school-fees/action";
 
 interface ClassDetailsProps {
   oldTerm: TermWithYearData;
@@ -51,7 +51,7 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
       </div>
     );
   }
-  const classStream = term.classStream;
+  const classStream: ClassStreamData = term.classStream as ClassStreamData;
   if (!classStream) return null;
   const classTeacher = classStream?.classTeacher?.user;
   const name = classTeacher?.name;
