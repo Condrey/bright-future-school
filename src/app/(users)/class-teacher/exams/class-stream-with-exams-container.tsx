@@ -1,22 +1,18 @@
 "use client";
 
-import AssignPupils from "@/app/(director)/director/repository/(users)/students/(tables)/(pupils)/assign-pupils";
 import { useSession } from "@/app/session-provider";
 import EmptyContainer from "@/components/query-containers/empty-container";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import AssignClassTeacher from "@/components/users/class-teacher/assign-class-teacher";
 import { YearContainer } from "@/components/year-container";
 import { examTypes, myPrivileges } from "@/lib/enums";
 import { ClassStreamData, ClassTermIIDataSelect } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import { Role } from "@prisma/client";
 import { useState } from "react";
 
@@ -34,6 +30,9 @@ export function ClassStreamWithExamsContainer({
     terms,
   } = classStream;
   const year = classValue?.academicYear?.year;
+  const totalNumberOfExams = terms
+    .flatMap((t) => t._count.exams)
+    .reduce((curr, acc) => curr + acc, 0);
 
   const { user } = useSession();
   const isAuthorized = myPrivileges[user.role].includes(Role.DIRECTOR);
@@ -49,10 +48,10 @@ export function ClassStreamWithExamsContainer({
           ({classValue?.class?.level?.name} level)
         </CardTitle>
         <CardDescription className="text-sm">
-          {_count.pupils === 0
-            ? "No pupils/ students"
-            : `${formatNumber(_count.pupils)} ${
-                _count.pupils === 1 ? "Pupil/ student" : "Pupils/ students"
+          {totalNumberOfExams === 0
+            ? "No tests/ exams added yet"
+            : `${formatNumber(totalNumberOfExams)} ${
+                totalNumberOfExams === 1 ? "test/ exam" : "tests and or exams"
               }`}
         </CardDescription>
         <CardDescription>
@@ -66,10 +65,10 @@ export function ClassStreamWithExamsContainer({
             : "Not assigned"}
         </CardDescription>
       </CardHeader>
-      {/* List of Pupils  */}
+      {/* List of terms and exams  */}
       <CardContent className="space-y-1">
         {terms.length > 0 ? (
-          <div className="flex w-full justify-center *:w-full">
+          <div className="grid w-full gap-6 *:w-full sm:grid-cols-2 sm:gap-2 md:gap-6 lg:grid-cols-3">
             {terms.map((term) => (
               <TermWithExamContainer key={term.id} term={term} />
             ))}
@@ -80,39 +79,6 @@ export function ClassStreamWithExamsContainer({
           />
         )}
       </CardContent>
-      {/* Additional Controls  */}
-      <CardFooter className="flex w-full justify-end gap-4">
-        {isAuthorized && (
-          <Button
-            size={"sm"}
-            variant={classTeacher ? "destructive" : "secondary"}
-            onClick={() => setOpen(true)}
-          >
-            {classTeacher ? "Unassign" : "Assign"} Class teacher
-          </Button>
-        )}
-        <Button
-          size={"sm"}
-          variant={_count.pupils! > 0 ? "secondary" : "default"}
-          onClick={() => setOpenPupilDialog(true)}
-        >
-          Assign pupils/ students
-        </Button>
-
-        <AssignPupils
-          classStream={classStream}
-          open={openPupilDialog}
-          setOpen={setOpenPupilDialog}
-          year={year!}
-        />
-
-        <AssignClassTeacher
-          classStream={classStream}
-          open={open}
-          setOpen={setOpen}
-          year={year!}
-        />
-      </CardFooter>
     </Card>
   );
 }
@@ -124,19 +90,42 @@ interface TermWithExamContainerProps {
 function TermWithExamContainer({
   term: { term, exams },
 }: TermWithExamContainerProps) {
+  const examNumber = exams.length;
   return (
-    <div>
-      <span className="text-lg uppercase tracking-tight">{term?.term}</span>
-      <div>
-        {exams.map((exam) => {
-          return (
-            <div key={exam.id}>
-              <span>{exam.examName}</span>
-              <span>{examTypes[exam.examType]}</span>
-            </div>
-          );
-        })}
-      </div>
+    <div className="space-y-2">
+      <h1 className="text-sm uppercase tracking-tight">
+        {term?.term} ({formatNumber(examNumber)})
+      </h1>
+      {examNumber > 0 ? (
+        <div>
+          {exams.map((exam) => {
+            const numberOfSubjects = exam._count.examSubjects;
+            return (
+              <div
+                key={exam.id}
+                className="flex flex-col gap-0.5 rounded-md border p-2"
+              >
+                <span className="text-sm">{exam.examName}</span>
+                <p className="text-xs text-muted-foreground">
+                  {examTypes[exam.examType]} -{" "}
+                  <span
+                    className={cn(numberOfSubjects === 0 && "text-destructive")}
+                  >
+                    {numberOfSubjects === 0
+                      ? "No subject added"
+                      : `${numberOfSubjects} subject${numberOfSubjects === 1 ? "" : "s"} added`}
+                  </span>{" "}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <EmptyContainer
+          message={"There are no exams for this term set yet."}
+          className="min-h-[5rem]"
+        />
+      )}
     </div>
   );
 }

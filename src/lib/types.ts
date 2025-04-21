@@ -166,7 +166,10 @@ export type PupilDataSelect = Prisma.PupilGetPayload<{
 
 export const classTermIIDataSelect = {
   _count: { select: { exams: true } },
-  exams: { include: examDataInclude },
+  exams: {
+    include: { ...examDataInclude, _count: { select: { examSubjects: true } } },
+    orderBy: { examType: "desc" },
+  },
   id: true,
   term: true,
 } satisfies Prisma.ClassTermSelect;
@@ -196,7 +199,7 @@ export const classStreamDataInclude = {
     },
   },
   terms: {
-    select: classTermIIDataSelect,
+    select: { ...classTermIIDataSelect, _count: { select: { exams: true } } },
   },
 } satisfies Prisma.classStreamInclude;
 export type ClassStreamData = Prisma.classStreamGetPayload<{
