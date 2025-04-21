@@ -12,7 +12,7 @@ import { ClassTeacherData } from "@/lib/types";
 import { Role } from "@prisma/client";
 import { CopyIcon, Edit2Icon, MoreHorizontal, Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import FormAddEditTeachingStaff from "../../../teaching-staffs/form-add-edit-teaching-staff";
+import FormAddEditTeachingStaff from "../staff/form-add-edit-teaching-staff";
 import DialogDeleteClassTeacher from "./dialog-delete-class-teacher";
 
 interface DropDownMenuClassTeacherProps {

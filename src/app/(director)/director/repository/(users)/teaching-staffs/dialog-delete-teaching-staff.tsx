@@ -2,7 +2,7 @@ import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
 import { Button } from "@/components/ui/button";
 import { StaffData as TeachingStaff } from "@/lib/types";
-import { useDeleteTeachingStaffMutation } from "./mutation";
+import { useDeleteTeachingStaffMutation } from "../../../../../../components/users/staff/mutation";
 
 interface DeleteTeachingStaffDialogProps {
   teachingStaff: TeachingStaff;

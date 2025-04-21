@@ -22,8 +22,8 @@ import {
   MoveUpRightIcon,
 } from "lucide-react";
 import { useState, useTransition } from "react";
+import FormAddViewSubjects from "../../../../../../components/subjects/form-add-view-subject/form-add-view-subjects";
 import FormAddViewExams from "./(exams)/form-add-view-exams";
-import FormAddViewSubjects from "./(subjects)/form-add-view-subjects";
 
 interface DropDownMenuClassStreamProps {
   classStream: ClassStreamData;

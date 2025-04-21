@@ -4,7 +4,7 @@ import LoadingButton from "@/components/loading-button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTable } from "@/components/ui/data-table";
 import { AlertTriangle, Loader2 } from "lucide-react";
-import { useFetchPupils } from "../../../hooks";
+import { useFetchPupils } from "../../../../../../../../components/users/hooks";
 import DropDownMenuNewPupil from "./(new-pupils)/drop-down-menu-new-pupil";
 import { usePupilsColumn } from "./columns";
 

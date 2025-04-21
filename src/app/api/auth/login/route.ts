@@ -1,20 +1,17 @@
-"use server";
-
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
-import { loginSchema, LoginValues } from "@/lib/validation";
+import { loginSchema } from "@/lib/validation";
 import { verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function loginAction(
-  credentials: LoginValues,
-): Promise<{ error: string }> {
-  // try {
+export async function POST(request: Request) {
+  try {
     const cookieStore = await cookies();
+    const body = await request.json();
+    const credentials = loginSchema.parse(body);
     console.log(credentials);
-    const { username, password } = loginSchema.parse(credentials);
-
+    const { username, password } = credentials;
     const existingUser = await prisma.user.findFirst({
       where: {
         username: {
@@ -51,13 +48,15 @@ export async function loginAction(
       sessionCookie.value,
       sessionCookie.attributes,
     );
+
     return redirect(
       existingUser.isVerified ? "/" : `/user-verification/${existingUser.id}`,
     );
-  // } catch (error) {
-  //   console.error(`Login error: ${error}`);
-  //   return {
-  //     error: "Something went wrong, Please try again.!",
-  //   };
-  // }
+  } catch (error) {
+    console.error(`Login error: ${error}`);
+    return Response.json(
+      { error: "Something went wrong, Please try again.!" },
+      { status: 500 },
+    );
+  }
 }

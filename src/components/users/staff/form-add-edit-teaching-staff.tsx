@@ -12,13 +12,13 @@ import { Input } from "@/components/ui/input";
 import { StaffData } from "@/lib/types";
 import { teachingStaffSchema, TeachingStaffSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Role } from "@prisma/client";
 import cuid from "cuid";
 import { useForm } from "react-hook-form";
 import {
   useAddTeachingStaffMutation,
   useUpdateTeachingStaffMutation,
 } from "./mutation";
-import { Role } from "@prisma/client";
 
 interface FormAddEditTeachingStaffProps {
   teachingStaffToEdit?: StaffData;
@@ -85,7 +85,7 @@ export default function FormAddEditTeachingStaff({
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-         {/* <pre>{JSON.stringify(form.formState.errors,null,2)}</pre> */}
+          {/* <pre>{JSON.stringify(form.formState.errors,null,2)}</pre> */}
           <FormField
             control={form.control}
             name="user.name"

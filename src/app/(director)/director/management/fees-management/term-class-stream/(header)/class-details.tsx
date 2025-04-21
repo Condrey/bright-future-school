@@ -1,17 +1,17 @@
 "use client";
 
-import AssignClassTeacher from "@/app/(director)/director/repository/(users)/students/(tables)/(class-teacher)/assign-class-teacher";
 import AssignPupils from "@/app/(director)/director/repository/(users)/students/(tables)/(pupils)/assign-pupils";
 import LoadingButton from "@/components/loading-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/user-avatar";
+import AssignClassTeacher from "@/components/users/class-teacher/assign-class-teacher";
+import { YearContainer } from "@/components/year-container";
 import { TermWithYearData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getClassTerm } from "../../../../../../../components/school-fees/action";
-import { YearContainer } from "@/components/year-container";
 
 interface ClassDetailsProps {
   oldTerm: TermWithYearData;
@@ -68,8 +68,8 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
       <div className="hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md md:flex-col md:divide-x-0 lg:flex">
         <div className="flex flex-col gap-1">
           <div className="font-bold">
-            <YearContainer year={year}/>{" "}
-            • {classStream.class?.class?.name} class
+            <YearContainer year={year} /> • {classStream.class?.class?.name}{" "}
+            class
           </div>
           <span className="text-xs text-muted-foreground">
             {classStream.class?.class?.level?.name} level

@@ -18,7 +18,7 @@ import {
   Users,
 } from "lucide-react";
 import { useState } from "react";
-import AssignClassTeacher from "./(class-teacher)/assign-class-teacher";
+import AssignClassTeacher from "../../../../../../../components/users/class-teacher/assign-class-teacher";
 import AssignPupils from "./(pupils)/assign-pupils";
 import DialogDeleteClassStream from "./dialog-delete-class-stream";
 

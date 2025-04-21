@@ -19,8 +19,8 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
+import FormAddEditTeachingStaff from "../../../../../../components/users/staff/form-add-edit-teaching-staff";
 import DialogDeleteTeachingStaff from "./dialog-delete-teaching-staff";
-import FormAddEditTeachingStaff from "./form-add-edit-teaching-staff";
 import FormUpdateTeachingStaffRole from "./form-update-teaching-staff-role";
 
 interface DropDownMenuTeachingStaffProps {

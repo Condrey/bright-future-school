@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Subject } from "@prisma/client";
 import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useUpsertAcademicYearClassMutation } from "./mutation";
+import { useUpsertAcademicYearClassMutation } from "../../../app/(director)/director/management/report-card-management/(tables)/(subjects)/mutation";
 
 interface ListOfSubjectsProps {
   levels: LevelData[];

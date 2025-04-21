@@ -5,11 +5,8 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { StaffData as TeachingStaff } from "@/lib/types";
 import { AlertTriangle } from "lucide-react";
-import { useFetchTeachingStaffs } from "../hooks";
+import { useFetchTeachingStaffs } from "../../../../../../components/users/hooks";
 import { useTeachingStaffColumns } from "./columns";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Role } from "@prisma/client";
-import { teachingStaffCategories, userRoles } from "@/lib/enums";
 
 interface ListOfTeachingStaffsProps {
   teachingStaffs: TeachingStaff[];

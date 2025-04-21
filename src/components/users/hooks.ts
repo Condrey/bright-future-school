@@ -2,8 +2,11 @@
 
 import { StaffData } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
-import { getClassPupils, getClassTeachers } from "./action";
-import { getTeachingStaffsAction } from "./teaching-staffs/action";
+import {
+  getClassPupils,
+  getClassTeachers,
+} from "../../app/(director)/director/repository/(users)/action";
+import { getTeachingStaffsAction } from "../../app/(director)/director/repository/(users)/teaching-staffs/action";
 
 export function useFetchTeachingStaffs({
   initialData,

@@ -3,8 +3,8 @@ import HeaderContainer from "@/components/sidebar/header-container";
 import { staffTypes } from "@/lib/enums";
 import { StaffType } from "@prisma/client";
 import { Fragment } from "react";
+import ButtonNewTeachingStaff from "../../../../../../components/users/staff/button-new-teaching-staff";
 import { getTeachingStaffsAction } from "./action";
-import ButtonNewTeachingStaff from "./button-new-teaching-staff";
 import ListOfTeachingStaffs from "./list-of-teaching-staff";
 
 const staffType = staffTypes[StaffType.TEACHING_STAFF].label + "s";

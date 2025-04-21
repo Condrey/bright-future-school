@@ -53,8 +53,7 @@ export default function FormAddViewSubjects({
             Please choose subjects that belong to this {academicYear}{" "}
             {classValue} {streamValue} class, {levelValue} level.{" "}
             <strong>
-              Please navigateOnclickWithoutUpdate that this will apply to all
-              the streams.
+              Please note that this will apply to all the streams.
             </strong>
           </SheetDescription>
         </SheetHeader>
@@ -68,7 +67,7 @@ export default function FormAddViewSubjects({
           ) : status === "error" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
               <p className="max-w-sm text-center text-muted-foreground">
-                Ann error occurred while fetching subjects
+                An error occurred while fetching subjects
               </p>
               <LoadingButton loading={isFetching} onClick={() => refetch()}>
                 Refetch

@@ -167,7 +167,10 @@ export const classStreamDataInclude = {
       id: true,
       academicYear: { select: { year: true, id: true } },
       class: { include: classDataInclude },
-      academicYearSubjects: { include: { subject: true } },
+      academicYearSubjects: {
+        include: { subject: { include: subjectDataInclude } },
+        orderBy: { subject: { subjectName: "asc" } },
+      },
       _count: { select: { academicYearSubjects: true } },
     },
   },

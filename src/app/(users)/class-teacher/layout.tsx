@@ -1,12 +1,13 @@
 import UnauthorizedUser from "@/app/(director)/unauthorized-user";
 import SessionProvider from "@/app/session-provider";
 import { validateRequest } from "@/auth";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { myPrivileges, userRoles } from "@/lib/enums";
 import { webName } from "@/lib/utils";
 import { Role } from "@prisma/client";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { AppSidebar } from "./(sidebar)/app-side-bar";
 
 const role = Role.CLASS_TEACHER;
 const { label: roleLabel, description: roleDescription } = userRoles[role];
@@ -33,10 +34,11 @@ export default async function Layout({
 
   if (!isAuthorized) return <UnauthorizedUser />;
   return (
-    <SessionProvider value={{ session, user }}>
-      <SidebarProvider>
-        <div className="size-full">{children}</div>
-      </SidebarProvider>
-    </SessionProvider>
+     <SessionProvider value={{ session, user }}>
+         <SidebarProvider>
+           <AppSidebar />
+           <SidebarInset>{children}</SidebarInset>
+         </SidebarProvider>
+       </SessionProvider>
   );
 }

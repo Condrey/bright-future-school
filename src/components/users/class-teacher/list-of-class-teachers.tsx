@@ -5,8 +5,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { AlertTriangle, Loader2 } from "lucide-react";
-import { useFetchClassTeachers } from "../../../hooks";
-import ButtonNewTeachingStaff from "../../../teaching-staffs/button-new-teaching-staff";
+import { useFetchClassTeachers } from "../hooks";
+import ButtonNewTeachingStaff from "../staff/button-new-teaching-staff";
 import { useClassTeachersColumn } from "./columns";
 
 interface ListOfClassTeachersProps {

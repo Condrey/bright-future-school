@@ -12,7 +12,7 @@ import {
   addTeachingStaffAction,
   deleteTeachingStaffAction,
   editTeachingStaffAction,
-} from "./action";
+} from "../../../app/(director)/director/repository/(users)/teaching-staffs/action";
 
 const queryKey: QueryKey = ["teachingStaffs"];
 
