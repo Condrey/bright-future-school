@@ -2,7 +2,6 @@
 
 import LoadingButton from "@/components/loading-button";
 import ResponsiveDrawer from "@/components/responsive-drawer";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -26,7 +25,6 @@ import { ExamData } from "@/lib/types";
 import { examSchema, ExamSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExamType } from "@prisma/client";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { useUpsertExamMutation } from "./mutation";
 
@@ -124,7 +122,7 @@ export default function FormAddEditExam({
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="examSubjects"
             render={({ field }) => (
@@ -162,7 +160,7 @@ export default function FormAddEditExam({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <div className="flex items-center justify-end">
             {examToEdit ? (
               <LoadingButton loading={mutation.isPending}>
