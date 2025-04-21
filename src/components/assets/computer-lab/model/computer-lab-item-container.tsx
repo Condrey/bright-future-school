@@ -28,12 +28,12 @@ export default function ComputerLabItemContainer({
   const { navigateOnclickWithPathnameWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const pathname = usePathname()
-  
+  const pathname = usePathname();
+
   let url = "/general-asset-manager/computer-lab-asset-management/view/";
-  if (pathname.startsWith('/director/management')) {
+  if (pathname.startsWith("/director/management")) {
     url = "/director/management/asset-management/store/computer_lab/view/";
-  }else if(pathname.startsWith('/computer-lab-asset-manager')){
+  } else if (pathname.startsWith("/computer-lab-asset-manager")) {
     url = "/computer-lab-asset-manager/view/";
   }
   return (
@@ -42,9 +42,7 @@ export default function ComputerLabItemContainer({
       className="flex max-w-fit gap-1 p-2 hover:cursor-pointer hover:bg-secondary"
       onClick={() =>
         startTransition(() =>
-          navigateOnclickWithPathnameWithoutUpdate(
-            url + computerLabItem.id,
-          ),
+          navigateOnclickWithPathnameWithoutUpdate(url + computerLabItem.id),
         )
       }
     >

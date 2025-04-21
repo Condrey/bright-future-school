@@ -38,7 +38,7 @@ export default function FormAddEditSubject({
       slug: subjectToEdit?.slug || "",
       id: subjectToEdit?.id || "",
       code: subjectToEdit?.code || "",
-      levelId:subjectToEdit?.levelId||'',
+      levelId: subjectToEdit?.levelId || "",
       grading: (subjectToEdit?.grading || []) as GradingSchema[],
     },
   });
@@ -111,7 +111,7 @@ export default function FormAddEditSubject({
               </FormItem>
             )}
           />
-          <FormAddEditLevel form={form}/>
+          <FormAddEditLevel form={form} />
           <FormAddEditSubjectGrading form={form} />
           <div className="flex items-center justify-end">
             <LoadingButton

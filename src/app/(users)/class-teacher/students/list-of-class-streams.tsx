@@ -5,7 +5,7 @@ import ErrorContainer from "@/components/query-containers/error-container";
 import { ClassStreamData } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { getClassTeacherClassStreams } from "../action";
-import { ClassStreamWithSubjectContainer } from "./class-stream-with-subject-container";
+import { ClassStreamWithPupilsContainer } from "./class-stream-with-pupils-container";
 
 interface ListOfClassStreamsProps {
   classStreams: ClassStreamData[];
@@ -36,7 +36,7 @@ export default function ListOfClassStreams({
       ) : (
         <div className="space-y-6">
           {data.map((classStream) => (
-            <ClassStreamWithSubjectContainer
+            <ClassStreamWithPupilsContainer
               key={classStream.id}
               classStream={classStream}
             />

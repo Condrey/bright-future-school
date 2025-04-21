@@ -5,9 +5,8 @@ import { assetCategories, userRoles } from "@/lib/enums";
 import { AssetCategory, Role } from "@prisma/client";
 import { Fragment } from "react";
 
-
 const assetCategory = AssetCategory.COMPUTER_LAB;
-   const category = assetCategories[assetCategory];
+const category = assetCategories[assetCategory];
 
 export const metadata = {
   title: category.label,
@@ -15,12 +14,13 @@ export const metadata = {
 
 export default function Page() {
   return (
-<Fragment>
-  <HeaderContainer
-  breadCrumbs={[{ label: `${category.label} management` }]}
-/>
-<BodyContainer>
-  <ListOfIndividualComputerLabItems />
-</BodyContainer>
-</Fragment>  );
+    <Fragment>
+      <HeaderContainer
+        breadCrumbs={[{ label: `${category.label} management` }]}
+      />
+      <BodyContainer>
+        <ListOfIndividualComputerLabItems />
+      </BodyContainer>
+    </Fragment>
+  );
 }

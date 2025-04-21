@@ -5,10 +5,9 @@ import { getUser } from "./action";
 import UserDetails from "./user-details/user-details";
 
 const getLoggedUser = cache(getUser);
-// TODO: rethink 
-export async function generateMetadata(
-  // parent: ResolvingMetadata,
-): Promise<Metadata> {
+// TODO: rethink
+export async function generateMetadata(): Promise<Metadata> {
+// parent: ResolvingMetadata,
   const { user: pupil } = await getLoggedUser();
   if (!pupil) return notFound();
   const { name, email, telephone, username, avatarUrl } = pupil;

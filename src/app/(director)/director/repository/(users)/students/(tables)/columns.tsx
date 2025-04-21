@@ -26,9 +26,7 @@ export const useClassStreamsColumns: ColumnDef<ClassStreamData>[] = [
       return (
         <div className="space-y-0.5">
           <div>{stream}</div>
-          <YearContainer year=
-            {year}
-          />
+          <YearContainer year={year} />
         </div>
       );
     },

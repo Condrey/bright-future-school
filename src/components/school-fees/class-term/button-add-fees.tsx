@@ -42,13 +42,13 @@ export default function ButtonAddFees({
   });
 
   const previousPayments = pupil.fees.flatMap((f) => f.feesPayments);
-  const classStream = pupil.classStreams[pupil.classStreams.length-1]
+  const classStream = pupil.classStreams[pupil.classStreams.length - 1];
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addFees,
     async onSuccess() {
       // For list of pupils belonging to a class term
-      const queryKey: QueryKey = ["pupils", "classStream",classStream.id];
+      const queryKey: QueryKey = ["pupils", "classStream", classStream.id];
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
       // for class term

@@ -19,7 +19,7 @@ export default async function Page() {
         breadCrumbs={[
           {
             label: "General asset management",
-            url: "" ,
+            url: "",
           },
           {
             label: "Sub assets",

@@ -11,8 +11,8 @@ interface PageProps {
 }
 
 const assetCategory = AssetCategory.LABORATORY;
-  const category = assetCategories[assetCategory];
-  
+const category = assetCategories[assetCategory];
+
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
   const item = await getLaboratoryItem(decodeURIComponent(itemId));

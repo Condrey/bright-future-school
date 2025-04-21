@@ -11,49 +11,49 @@ export async function loginAction(
   credentials: LoginValues,
 ): Promise<{ error: string }> {
   // try {
-    const cookieStore = await cookies();
-    console.log(credentials);
-    const { username, password } = loginSchema.parse(credentials);
+  const cookieStore = await cookies();
+  console.log(credentials);
+  const { username, password } = loginSchema.parse(credentials);
 
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        username: {
-          equals: username,
-          mode: "insensitive",
-        },
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      username: {
+        equals: username,
+        mode: "insensitive",
       },
-    });
+    },
+  });
 
-    if (!existingUser || !existingUser.passwordHash) {
-      return {
-        error: "Incorrect username or password.",
-      };
-    }
+  if (!existingUser || !existingUser.passwordHash) {
+    return {
+      error: "Incorrect username or password.",
+    };
+  }
 
-    const validPassword = verify(existingUser.passwordHash, password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1,
-    });
-    if (!validPassword) {
-      return {
-        error: "Incorrect username or password.",
-      };
-    }
+  const validPassword = verify(existingUser.passwordHash, password, {
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1,
+  });
+  if (!validPassword) {
+    return {
+      error: "Incorrect username or password.",
+    };
+  }
 
-    const session = await lucia.createSession(existingUser.id, {
-      role: existingUser.role || "USER",
-    });
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookieStore.set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
-    return redirect(
-      existingUser.isVerified ? "/" : `/user-verification/${existingUser.id}`,
-    );
+  const session = await lucia.createSession(existingUser.id, {
+    role: existingUser.role || "USER",
+  });
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  cookieStore.set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
+  return redirect(
+    existingUser.isVerified ? "/" : `/user-verification/${existingUser.id}`,
+  );
   // } catch (error) {
   //   console.error(`Login error: ${error}`);
   //   return {

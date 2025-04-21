@@ -123,7 +123,7 @@ export async function PUT(req: Request) {
 
     const data = await prisma.$transaction(async (tx) => {
       let slug = slugify(term);
-  
+
       const hasSlug = await tx.term.findFirst({ where: { slug } });
       if (hasSlug) {
         slug = slug + timeInMills.substring(timeInMills.length - 3);

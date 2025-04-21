@@ -39,7 +39,7 @@ export default function DropDownMenuIndividualItem({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const { user } = useSession();
-  const pathname = usePathname()
+  const pathname = usePathname();
   let url = `/general-asset-manager/computer-lab-asset-management/view/${item.id}/item/${item.id}`;
   if (pathname.startsWith("/director/management/")) {
     url = `/director/management/asset-management/store/${item.computerLabItem.asset.category.toLocaleLowerCase()}/view/${item.computerLabItemId}/item/${item.id}`;
@@ -67,8 +67,7 @@ export default function DropDownMenuIndividualItem({
             <DropdownMenuItem
               onClick={() =>
                 startTransition(() =>
-                  navigateOnclickWithPathnameWithoutUpdate(
-url                  ),
+                  navigateOnclickWithPathnameWithoutUpdate(url),
                 )
               }
             >

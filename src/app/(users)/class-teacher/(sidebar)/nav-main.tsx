@@ -57,14 +57,14 @@ export function NavMain() {
       isVisible: true,
       items: [
         {
-          title: "Pupils/ Students",
-          url: "students",
+          title: `Subjects`,
+          url: "subjects",
           showIndicator: false,
           isVisible: true,
         },
         {
-          title: `Subjects`,
-          url: "subjects",
+          title: "Pupils/ Students",
+          url: "students",
           showIndicator: false,
           isVisible: true,
         },

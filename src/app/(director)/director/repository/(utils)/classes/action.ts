@@ -19,20 +19,20 @@ export async function addClassAction(input: ClassSchema) {
     data: {
       name,
       levelId: level.id,
-      slug:slugify(slug)
+      slug: slugify(slug),
     },
   });
   return data;
 }
 
 export async function editClassAction(input: ClassSchema) {
-  const { name, id, level,slug } = classSchema.parse(input);
+  const { name, id, level, slug } = classSchema.parse(input);
   const data = await prisma.class.update({
     where: { id },
     data: {
       name,
       levelId: level.id,
-      slug:slugify(slug)
+      slug: slugify(slug),
     },
   });
   return data;

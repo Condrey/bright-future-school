@@ -36,7 +36,13 @@ export default function FormAddUnregisteredPupil({
     resolver: zodResolver(pupilSchema),
     values: {
       id: "",
-      user: { email: undefined, id: "", name: "", telephone: undefined, username: undefined },
+      user: {
+        email: undefined,
+        id: "",
+        name: "",
+        telephone: undefined,
+        username: undefined,
+      },
     },
   });
 

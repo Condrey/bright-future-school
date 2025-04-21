@@ -36,8 +36,8 @@ export default async function Layout({
   return (
     <SessionProvider value={{ session, user }}>
       <SidebarProvider>
-       <AppSidebar/>
-       <SidebarInset> {children}</SidebarInset>
+        <AppSidebar />
+        <SidebarInset> {children}</SidebarInset>
       </SidebarProvider>
     </SessionProvider>
   );

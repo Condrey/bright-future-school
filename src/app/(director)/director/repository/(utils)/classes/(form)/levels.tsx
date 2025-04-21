@@ -32,7 +32,7 @@ export default function Levels({ form }: LevelsProps) {
   const watchedLevel = form.watch("level");
   const mutation = useAddLevelMutation();
 
-  const { status, data, refetch, isRefetching } = useGetAllLevelsQuery()
+  const { status, data, refetch, isRefetching } = useGetAllLevelsQuery();
 
   const form2 = useForm<LevelSchema>({
     resolver: zodResolver(levelSchema),

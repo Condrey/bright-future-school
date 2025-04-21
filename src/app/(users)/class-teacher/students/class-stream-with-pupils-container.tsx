@@ -1,7 +1,8 @@
 "use client";
 
+import AssignPupils from "@/app/(director)/director/repository/(users)/students/(tables)/(pupils)/assign-pupils";
 import { useSession } from "@/app/session-provider";
-import FormAddViewSubjects from "@/components/subjects/form-add-view-subject/form-add-view-subjects";
+import EmptyContainer from "@/components/query-containers/empty-container";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,27 +12,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
 import AssignClassTeacher from "@/components/users/class-teacher/assign-class-teacher";
 import { YearContainer } from "@/components/year-container";
 import { myPrivileges } from "@/lib/enums";
-import { ClassStreamData, SubjectData } from "@/lib/types";
+import { ClassStreamData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { Role } from "@prisma/client";
 import { useState } from "react";
+import { useClassTeacherPupilsColumns } from "./columns";
 
-interface ClassStreamWithSubjectContainerProps {
+interface ClassStreamWithPupilsContainerProps {
   classStream: ClassStreamData;
 }
-export function ClassStreamWithSubjectContainer({
+export function ClassStreamWithPupilsContainer({
   classStream,
-}: ClassStreamWithSubjectContainerProps) {
+}: ClassStreamWithPupilsContainerProps) {
   const { stream, class: classValue, classTeacher, _count } = classStream;
   const year = classValue?.academicYear?.year;
+  const pupils = classStream.pupils;
 
   const { user } = useSession();
   const isAuthorized = myPrivileges[user.role].includes(Role.DIRECTOR);
   const [open, setOpen] = useState(false);
-  const [openSubjectDialog, setOpenSubjectDialog] = useState(false);
+  const [openPupilDialog, setOpenPupilDialog] = useState(false);
 
   return (
     <Card className="max-w-4xl">
@@ -59,11 +63,21 @@ export function ClassStreamWithSubjectContainer({
             : "Not assigned"}
         </CardDescription>
       </CardHeader>
-      {/* List of Subjects  */}
+      {/* List of Pupils  */}
       <CardContent className="space-y-1">
-        {classValue?.academicYearSubjects.map(({ subject }) => {
-          return <SubjectContainer key={subject.id} subject={subject} />;
-        })}
+        {_count.pupils > 0 ? (
+          <div className="flex w-full justify-center *:w-full">
+            <DataTable
+              data={pupils}
+              columns={useClassTeacherPupilsColumns}
+              filterColumn={{ id: "user_name", label: "name" }}
+            />
+          </div>
+        ) : (
+          <EmptyContainer
+            message={"There are no pupils/ students for this class"}
+          />
+        )}
       </CardContent>
       {/* Additional Controls  */}
       <CardFooter className="flex w-full justify-end gap-4">
@@ -78,21 +92,17 @@ export function ClassStreamWithSubjectContainer({
         )}
         <Button
           size={"sm"}
-          variant={
-            classValue?._count.academicYearSubjects! > 0
-              ? "secondary"
-              : "default"
-          }
-          onClick={() => setOpenSubjectDialog(true)}
+          variant={_count.pupils! > 0 ? "secondary" : "default"}
+          onClick={() => setOpenPupilDialog(true)}
         >
-          {classValue?._count.academicYearSubjects! > 0 ? "Update" : "Add"}{" "}
-          subjects
+          Assign pupils/ students
         </Button>
 
-        <FormAddViewSubjects
+        <AssignPupils
           classStream={classStream}
-          open={openSubjectDialog}
-          setOpen={setOpenSubjectDialog}
+          open={openPupilDialog}
+          setOpen={setOpenPupilDialog}
+          year={year!}
         />
 
         <AssignClassTeacher
@@ -103,23 +113,5 @@ export function ClassStreamWithSubjectContainer({
         />
       </CardFooter>
     </Card>
-  );
-}
-
-interface SubjectContainerProps {
-  subject: SubjectData;
-}
-
-function SubjectContainer({ subject }: SubjectContainerProps) {
-  const { code, subjectName, slug } = subject;
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="space-y-1">
-      <h3 className="text-sm capitalize">
-        <span className="text-accent-foreground">{code}</span> {subjectName} (
-        {slug})
-      </h3>
-    </div>
   );
 }

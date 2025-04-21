@@ -26,7 +26,7 @@ export default function TooltipContainer({
         type="button"
         className="flex h-fit items-center justify-start gap-2"
       >
-        <Label className="line-clamp-1 block h-fit text-ellipsis py-1 break-words">
+        <Label className="line-clamp-1 block h-fit text-ellipsis break-words py-1">
           {label}
         </Label>
         <InfoIcon

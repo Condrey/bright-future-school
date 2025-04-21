@@ -34,11 +34,11 @@ export default async function Layout({
 
   if (!isAuthorized) return <UnauthorizedUser />;
   return (
-     <SessionProvider value={{ session, user }}>
-         <SidebarProvider>
-           <AppSidebar />
-           <SidebarInset>{children}</SidebarInset>
-         </SidebarProvider>
-       </SessionProvider>
+    <SessionProvider value={{ session, user }}>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>{children}</SidebarInset>
+      </SidebarProvider>
+    </SessionProvider>
   );
 }

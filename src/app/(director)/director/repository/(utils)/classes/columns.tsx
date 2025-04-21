@@ -18,11 +18,12 @@ export const useClassColumns: ColumnDef<ClassData>[] = [
     ),
   },
   {
-    accessorKey:'slug',
+    accessorKey: "slug",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Short form" />
     ),
-  },{
+  },
+  {
     accessorKey: "level.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Class Level" />
@@ -36,9 +37,7 @@ export const useClassColumns: ColumnDef<ClassData>[] = [
         </div>
       </div>
     ),
-  }
-
-,
+  },
   {
     id: "action",
     header: ({ column }) => (

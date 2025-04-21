@@ -53,7 +53,6 @@ export function NavMain() {
     isVisible: boolean;
     items: SubItem[];
   }[] = [
-   
     {
       title: "Computer Laboratory asset Managements",
       url: "",
@@ -81,7 +80,6 @@ export function NavMain() {
         },
       ],
     },
-    
   ];
 
   return (

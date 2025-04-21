@@ -47,7 +47,7 @@ export default function FormAddEditSubjectGrading({
           {status === "error" ? null : status === "pending" ? (
             <div className="flex items-center gap-2">
               <Loader2Icon className="size-4 animate-spin" />
-              <span className=" text-muted-foreground">
+              <span className="text-muted-foreground">
                 Fetching default grading ...
               </span>
             </div>

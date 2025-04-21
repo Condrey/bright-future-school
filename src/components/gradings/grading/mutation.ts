@@ -5,7 +5,7 @@ import { Grading } from "@prisma/client";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteGrading, upsertGrading } from "./action";
 
-  const queryKey: QueryKey = ["grading-list"];
+const queryKey: QueryKey = ["grading-list"];
 
 export const useUpsertGradingMutation = () => {
   const queryClient = useQueryClient();
@@ -38,8 +38,9 @@ export const useDeleteGradingMutation = () => {
     mutationFn: deleteGrading,
     async onSuccess(data, variables) {
       await queryClient.cancelQueries({ queryKey });
-      queryClient.setQueryData<Grading[]>(queryKey, (old) =>
-                old&& old.filter((d) => d.id !== data.id)
+      queryClient.setQueryData<Grading[]>(
+        queryKey,
+        (old) => old && old.filter((d) => d.id !== data.id),
       );
       toast({ description: "Successfully deleted grading." });
     },

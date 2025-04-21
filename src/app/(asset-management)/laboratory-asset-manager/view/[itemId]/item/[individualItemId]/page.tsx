@@ -10,7 +10,7 @@ interface PageProps {
   params: Promise<{ individualItemId: string }>;
 }
 const assetCategory = AssetCategory.LABORATORY;
-  const category = assetCategories[assetCategory];
+const category = assetCategories[assetCategory];
 export default async function Page({ params }: PageProps) {
   const { individualItemId } = await params;
   const individualItem = await getIndividualLaboratoryItem(

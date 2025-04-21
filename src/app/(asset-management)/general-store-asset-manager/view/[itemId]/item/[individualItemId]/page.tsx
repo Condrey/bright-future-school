@@ -25,9 +25,7 @@ export default async function Page({ params }: PageProps) {
           },
           {
             label: `${individualItem.generalStoreItem.name} variants`,
-            url:
-              "/view/" +
-              individualItem.generalStoreItemId,
+            url: "/view/" + individualItem.generalStoreItemId,
           },
           {
             label:

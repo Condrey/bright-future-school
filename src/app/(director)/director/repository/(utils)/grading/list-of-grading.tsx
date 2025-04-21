@@ -22,7 +22,8 @@ interface ListOfGradingProps {
 }
 
 export default function ListOfGrading({ grading }: ListOfGradingProps) {
-  const { data, status, error, refetch, isFetching } = useGetAllGradingWithInitialData(grading);
+  const { data, status, error, refetch, isFetching } =
+    useGetAllGradingWithInitialData(grading);
 
   if (status === "error") {
     console.log(error);

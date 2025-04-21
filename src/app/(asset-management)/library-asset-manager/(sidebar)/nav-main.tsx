@@ -53,7 +53,6 @@ export function NavMain() {
     isVisible: boolean;
     items: SubItem[];
   }[] = [
-  
     {
       title: "Library asset management",
       url: "",

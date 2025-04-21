@@ -35,11 +35,11 @@ export default function LoginForm() {
     startTransition(() => {
       if (error) setError(error);
     });
-  //   const response = await ky.post("/api/auth/login", {
-  //     body: JSON.stringify(values),
-  // }).json();
-  // console.log(response);
-}
+    //   const response = await ky.post("/api/auth/login", {
+    //     body: JSON.stringify(values),
+    // }).json();
+    // console.log(response);
+  }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
@@ -74,7 +74,11 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <LoadingButton loading={form.formState.isSubmitting} type="submit" className="w-full">
+        <LoadingButton
+          loading={form.formState.isSubmitting}
+          type="submit"
+          className="w-full"
+        >
           Log in
         </LoadingButton>
       </form>

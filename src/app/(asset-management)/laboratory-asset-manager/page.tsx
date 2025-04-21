@@ -7,19 +7,20 @@ import { Fragment } from "react";
 import { ListOfIndividualLaboratoryItems } from "@/components/assets/laboratory/(tables)/list-of-individual-laboratory-items";
 
 const assetCategory = AssetCategory.LABORATORY;
- const category = assetCategories[assetCategory];
+const category = assetCategories[assetCategory];
 
- export const metadata = {
+export const metadata = {
   title: category.label,
 };
 export default function Page() {
- return (
-<Fragment>
-  <HeaderContainer
-  breadCrumbs={[{ label: `${category.label} management` }]}
-/>
-<BodyContainer>
-  <ListOfIndividualLaboratoryItems />
-</BodyContainer>
-</Fragment>   );
+  return (
+    <Fragment>
+      <HeaderContainer
+        breadCrumbs={[{ label: `${category.label} management` }]}
+      />
+      <BodyContainer>
+        <ListOfIndividualLaboratoryItems />
+      </BodyContainer>
+    </Fragment>
+  );
 }

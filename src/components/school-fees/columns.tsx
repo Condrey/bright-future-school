@@ -38,8 +38,7 @@ export const useYearTermStreamColumns = (
         return (
           <div className="space-y-0.5">
             <div className="font-bold">
-              <YearContainer year={year}/>{" "}
-              • {classValue}
+              <YearContainer year={year} /> • {classValue}
             </div>
             <div className="">{stream} stream</div>
             <div className="text-xs text-muted-foreground">

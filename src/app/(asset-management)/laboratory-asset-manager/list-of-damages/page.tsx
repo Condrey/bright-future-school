@@ -17,7 +17,7 @@ export default function Page() {
     <Fragment>
       <HeaderContainer
         breadCrumbs={[
-          { label: `${category.label} management` ,url: "" },
+          { label: `${category.label} management`, url: "" },
           { label: "List of damages" },
         ]}
       />

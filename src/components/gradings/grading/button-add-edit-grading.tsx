@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import LoadingButton from "@/components/loading-button";
 import { NumberInput } from "@/components/number-input/number-input";
@@ -54,7 +54,7 @@ export default function ButtonAddEditGrading({
         variant={
           disPlayAsIcon ? "outline" : gradingToEdit ? "secondary" : "default"
         }
-        className={cn(disPlayAsIcon&&'rounded-full')}
+        className={cn(disPlayAsIcon && "rounded-full")}
         onClick={() => setOpen(true)}
       >
         {disPlayAsIcon ? "" : gradingToEdit ? "Edit grading" : "Add Grading"}

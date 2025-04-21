@@ -10,8 +10,8 @@ import { Fragment } from "react";
 interface PageProps {
   params: Promise<{ itemId: string }>;
 }
-  const assetCategory = AssetCategory.COMPUTER_LAB;
-  const category = assetCategories[assetCategory];
+const assetCategory = AssetCategory.COMPUTER_LAB;
+const category = assetCategories[assetCategory];
 export default async function Page({ params }: PageProps) {
   const { itemId } = await params;
   const item = await prisma.computerLabItem.findUnique({

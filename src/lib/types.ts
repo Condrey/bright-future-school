@@ -155,9 +155,20 @@ export type ClassStreamWithPupilsAndExamsData = Prisma.ExamGetPayload<{
   include: typeof classStreamWithPupilsAndExamsDataInclude;
 }>;
 
-// Class streams
+// Class streams ( And pupils -- PupilDataSelect)
+export const pupilDataSelect = {
+  user: { select: { ...userDataSelect, bio: true, isVerified: true } },
+  id: true,
+} satisfies Prisma.PupilSelect;
+export type PupilDataSelect = Prisma.PupilGetPayload<{
+  select: typeof pupilDataSelect;
+}>;
+
 export const classStreamDataInclude = {
   _count: { select: { pupils: true } },
+  pupils: {
+    select: pupilDataSelect,
+  },
   classTeacher: {
     select: classTeacherDataSelect,
   },
