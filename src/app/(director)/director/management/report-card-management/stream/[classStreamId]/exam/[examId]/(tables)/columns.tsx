@@ -34,21 +34,4 @@ export const useExamScoresColumns = (
       );
     },
   },
-  {
-    accessorKey: "examSubjects",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Exam scores" />
-    ),
-    cell: ({ row }) => {
-      const examSubjects = row.original.examSubjects.find(
-        (examSubject) => examSubject.examId === exam.id,
-      );
-
-      return (
-        <div className="flex items-center justify-center">
-          {JSON.stringify(examSubjects, null, 2)}
-        </div>
-      );
-    },
-  },
 ];
