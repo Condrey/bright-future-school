@@ -504,7 +504,7 @@ model ExamScore {
   id            String      @id @default(uuid())
   score         Float
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime
+  updatedAt     DateTime    @updatedAt
   examSubject   ExamSubject @relation(fields: [examSubjectId], references: [id])
   examSubjectId String
   pupil         Pupil       @relation(fields: [pupilId], references: [id], onDelete: Cascade)
@@ -528,10 +528,9 @@ model Exam {
 }
 
 model ExamSubject {
-  id       String   @id @default(uuid())
-  examId   String
-  examDate DateTime
-
+  id                    String              @id @default(uuid())
+  examId                String
+  examDate              DateTime
   exam                  Exam                @relation(fields: [examId], references: [id], onDelete: Cascade)
   academicYearSubject   AcademicYearSubject @relation(fields: [academicYearSubjectId], references: [id])
   academicYearSubjectId String

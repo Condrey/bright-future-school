@@ -401,7 +401,7 @@ export const subjectSchema = z.object({
   grading: z
     .array(gradingSchema)
     .refine((value) => value.some((item) => item), {
-      message: "You have to have or select at least one item.",
+      message: "You have to have or select at least one grading.",
     }),
 });
 export type SubjectSchema = z.infer<typeof subjectSchema>;
@@ -409,10 +409,29 @@ export const multipleSubjectSchema = z.object({
   subjects: z
     .array(subjectSchema.omit({ grading: true }))
     .refine((value) => value.some((item) => item), {
-      message: "You have to have or select at least one item.",
+      message: "You have to have or select at least one subject.",
     }),
 });
 export type MultipleSubjectSchema = z.infer<typeof multipleSubjectSchema>;
+
+// Exam score 
+export const examScoreSchema = z.object({
+  id: z.string().optional(),
+  score:z.number(),
+  examSubjectId:requiredString.min(1,'Exam subject is missing'),
+  pupilId:requiredString.min(1,'Pupil is missing')
+})
+export type ExamScoreSchema = z.infer<typeof examScoreSchema>;
+export const multipleExamScoreSchema = z.object({
+  examScores: z
+    .array(examScoreSchema)
+    .refine((value) => value.some((item) => item), {
+      message: "You have to have or select at least one exam score.",
+    }),
+});
+export type MultipleExamScoreSchema = z.infer<
+  typeof multipleExamScoreSchema
+>;
 
 // Exam Subjects
 export const examSubjectSchema = z.object({
@@ -421,6 +440,17 @@ export const examSubjectSchema = z.object({
   examId: z.string().optional(),
   academicYearSubjectId: requiredString.min(1, "Subject is required"),
 });
+export type ExamSubjectSchema = z.infer<typeof examSubjectSchema>;
+export const multipleExamSubjectSchema = z.object({
+  examSubjects: z
+    .array(examSubjectSchema)
+    .refine((value) => value.some((item) => item), {
+      message: "You have to have or select at least one exam subject.",
+    }),
+});
+export type MultipleExamSubjectSchema = z.infer<
+  typeof multipleExamSubjectSchema
+>;
 
 // Exam
 export const examSchema = z.object({
@@ -431,13 +461,13 @@ export const examSchema = z.object({
   examSubjects: z
     .array(examSubjectSchema)
     .refine((value) => value.some((item) => item), {
-      message: "You have to have or select at least one item.",
+      message: "You have to have or select at least one exam subject.",
     }),
 });
 export type ExamSchema = z.infer<typeof examSchema>;
 export const multipleExamSchema = z.object({
   exams: z.array(examSchema).refine((value) => value.some((item) => item), {
-    message: "You have to have or select at least one item.",
+    message: "You have to have or select at least one exam.",
   }),
 });
 export type MultipleExamSchema = z.infer<typeof multipleExamSchema>;

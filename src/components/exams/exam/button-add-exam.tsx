@@ -11,7 +11,6 @@ interface ButtonAddNewExamProps extends ButtonProps {
 export default function ButtonAddNewExam({
   classTermId,
   academicYearClassId,
-  className,
   ...props
 }: ButtonAddNewExamProps) {
   const [openDialog, setOpenDialog] = useState(false);

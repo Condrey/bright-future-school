@@ -118,10 +118,38 @@ export type SubjectData = Prisma.SubjectGetPayload<{
   include: typeof subjectDataInclude;
 }>;
 
+// Exam subject
+export const examSubjectDataInclude = {
+  academicYearSubject: { include: { subject: true } },
+  examScores: true,
+} satisfies Prisma.ExamSubjectInclude;
+export type ExamSubjectData = Prisma.ExamSubjectGetPayload<{
+  include: typeof examSubjectDataInclude;
+}>;
+
 // exam
 export const examDataInclude = {
-  classTerm: { include: { classStream: true, term: true } },
-  examSubjects: true,
+  classTerm: {
+    include: {
+      classStream: {
+        include: {
+          class: {
+            include: {
+              academicYear: true,
+              class: true,
+              academicYearSubjects: { include: { subject: true } },
+            },
+          },
+          stream: true,
+        },
+      },
+      term: true,
+    },
+  },
+  examSubjects: {
+    include: examSubjectDataInclude,
+  },
+  _count: { select: { examSubjects: true } },
 } satisfies Prisma.ExamInclude;
 export type ExamData = Prisma.ExamGetPayload<{
   include: typeof examDataInclude;
@@ -530,3 +558,12 @@ export type VandalismDamages = {
     uniqueIdentifier: string | null;
   };
 }[];
+
+export interface PupilRow  {
+  id: string;
+  pupil: PupilDataSelect;
+  examSubjects:ExamSubjectData[];
+  [subjectName: string]: string | number | undefined|PupilDataSelect|ExamSubjectData[];
+  agg: number;
+  position: number;
+};

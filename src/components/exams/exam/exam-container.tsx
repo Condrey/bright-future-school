@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,7 +15,6 @@ import { ExamData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import {
   ArrowUpRightIcon,
-  DotIcon,
   Loader2Icon,
   MoreVerticalIcon,
   PencilIcon,
@@ -40,6 +38,8 @@ export default function ExamContainer({
   className,
   url,
 }: ExamContainerProps) {
+  const numberOfSubjects = exam._count.examSubjects;
+
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -47,58 +47,60 @@ export default function ExamContainer({
   return (
     <>
       <div
-        className={cn(
-          "flex items-center justify-between gap-3 rounded-md border p-2",
-          className,
-        )}
+        className={cn("flex flex-col gap-0.5 rounded-md border p-2", className)}
       >
-        <div>
-          <h1 className="line-clamp-1 text-ellipsis text-lg">
-            {exam.examName}
-          </h1>
-          <h2 className="flex items-center text-muted-foreground">
-            <Badge variant={"outline"}> {examTypes[exam.examType]}</Badge>
-            <DotIcon />
-            {/* <span className="text-xs"> {format(exam.examDate, "PP")}</span> */}
-          </h2>
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"ghost"} size={"icon"}>
-              {isPending ? (
-                <Loader2Icon className="size-4 animate-spin" />
-              ) : (
-                <MoreVerticalIcon className="size-4" />
-              )}
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-sm">{exam.examName}</h2>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"ghost"} size={"icon"}>
+                {isPending ? (
+                  <Loader2Icon className="size-4 animate-spin" />
+                ) : (
+                  <MoreVerticalIcon className="size-4" />
+                )}
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent>
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {url && (
-                <>
-                  <DropdownMenuItem asChild>
-                    <Link href={url} onClick={() => startTransition(() => {})}>
-                      <ArrowUpRightIcon className="size-4" />
-                      View exam
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                </>
-              )}
-              <DropdownMenuItem onClick={() => setOpenDialog(true)}>
-                <PencilIcon className="size-4" />
-                Edit this exam
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
-                <TrashIcon className="size-4" />
-                Delete this exam
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                {url && (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href={url}
+                        onClick={() => startTransition(() => {})}
+                      >
+                        <ArrowUpRightIcon className="size-4" />
+                        View exam
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuItem onClick={() => setOpenDialog(true)}>
+                  <PencilIcon className="size-4" />
+                  Edit this exam
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
+                  <TrashIcon className="size-4" />
+                  Delete this exam
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <p className="text-xs text-muted-foreground">
+          {examTypes[exam.examType]} -{" "}
+          <span className={cn(numberOfSubjects === 0 && "text-destructive")}>
+            {numberOfSubjects === 0
+              ? "No subject added"
+              : `${numberOfSubjects} subject${numberOfSubjects === 1 ? "" : "s"} added`}
+          </span>{" "}
+        </p>
       </div>
 
       <FormAddEditExam
