@@ -460,9 +460,9 @@ export const examSchema = z.object({
   classTermId: requiredString.min(1, "Missing a class term"),
   examSubjects: z
     .array(examSubjectSchema)
-    .refine((value) => value.some((item) => item), {
-      message: "You have to have or select at least one exam subject.",
-    }),
+    // .refine((value) => value.some((item) => item), {
+    //   message: "You have to have or select at least one exam subject.",
+    // }),
 });
 export type ExamSchema = z.infer<typeof examSchema>;
 export const multipleExamSchema = z.object({

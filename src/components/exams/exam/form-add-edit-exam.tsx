@@ -47,7 +47,7 @@ export default function FormAddEditExam({
     resolver: zodResolver(examSchema),
     defaultValues: {
       classTermId: examToEdit?.classTermId || classTermId || "",
-      examSubjects: examToEdit?.examSubjects!,
+      examSubjects: examToEdit?.examSubjects||[],
       examName: examToEdit?.examName || "",
       examType: examToEdit?.examType || ExamType.EXAM,
       id: examToEdit?.id || "",
@@ -122,45 +122,7 @@ export default function FormAddEditExam({
               </FormItem>
             )}
           />
-          {/* <FormField
-            control={form.control}
-            name="examSubjects"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Exam Subjects</FormLabel>
-                <FormControl>
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
-                    // initialFocus={field.value||new Date()}
-                    captionLayout="buttons"
-                    fixedWeeks
-                    fromYear={1900}
-                    toYear={Number(new Date().getFullYear) + 1}
-                    footer={
-                      <div className="w-full *:mx-auto">
-                        {field.value ? (
-                          <span>
-                            Chosen{" "}
-                            <strong className="font-bold">
-                              {format(field.value, "PPP")}
-                            </strong>
-                          </span>
-                        ) : (
-                          <span className="italic text-muted-foreground">
-                            Choose the exam date from the calendar
-                          </span>
-                        )}
-                      </div>
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
+        
           <div className="flex items-center justify-end">
             {examToEdit ? (
               <LoadingButton loading={mutation.isPending}>
