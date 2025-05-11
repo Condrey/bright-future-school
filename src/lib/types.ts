@@ -109,6 +109,7 @@ export type LevelData = Prisma.LevelGetPayload<{
   include: typeof levelDataInclude;
 }>;
 
+
 // Subject
 export const subjectDataInclude = {
   grading: true,
@@ -117,6 +118,14 @@ export const subjectDataInclude = {
 export type SubjectData = Prisma.SubjectGetPayload<{
   include: typeof subjectDataInclude;
 }>;
+
+// Academic year subject 
+export const academicYearSubjectDataInclude={
+subject:{include:subjectDataInclude}
+} satisfies Prisma.AcademicYearSubjectInclude;
+export type AcademicYearSubjectData =Prisma.AcademicYearSubjectGetPayload<{
+  include : typeof academicYearSubjectDataInclude
+}>
 
 // Exam subject
 export const examSubjectDataInclude = {

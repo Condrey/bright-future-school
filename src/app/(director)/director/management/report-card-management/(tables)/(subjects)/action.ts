@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { levelDataInclude } from "@/lib/types";
-import { MultipleSubjectSchema } from "@/lib/validation";
+import { MultipleAcademicYearSubjectSchema, MultipleSubjectSchema } from "@/lib/validation";
 
 export async function getAllSubjects() {
   const data = await prisma.subject.findMany();
@@ -34,17 +34,17 @@ export async function upsertAcademicYYearClassSubjects({
   input,
 }: {
   academicYearClassId: string;
-  input: MultipleSubjectSchema;
+  input: MultipleAcademicYearSubjectSchema;
 }) {
-  const subjectIds = input.subjects.map((s) => s.id!);
-console.log('subjectIds',subjectIds)
+  const academicYearSubjectIds = input.academicYearSubjects.map((s) => s.id!);
+console.log('subjectIds',academicYearSubjectIds)
   await prisma.academicYearClass.update({
     where: { id: academicYearClassId },
     data: {
       academicYearSubjects: {
         deleteMany: {},
-        create: subjectIds.map((subjectId) => ({
-          subject: { connect: { id: subjectId } },
+        create: academicYearSubjectIds.map((academicYearSubjectId) => ({
+          subject: { connect: { id: academicYearSubjectId } },
         })),
       },
     },

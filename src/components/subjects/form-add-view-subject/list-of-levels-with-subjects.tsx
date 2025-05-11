@@ -7,8 +7,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  multipleSubjectSchema,
-  MultipleSubjectSchema,
+  multipleAcademicYearSubjectSchema,
+  MultipleAcademicYearSubjectSchema,
   SubjectSchema,
 } from "@/lib/validation";
 
@@ -17,7 +17,7 @@ import ButtonAddNewSubject from "@/components/subjects/subject/button-add-new-su
 import { Checkbox } from "@/components/ui/checkbox";
 import { SheetFooter } from "@/components/ui/sheet";
 import { toast } from "@/hooks/use-toast";
-import { LevelData } from "@/lib/types";
+import { AcademicYearSubjectData, LevelData } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AcademicYearSubject, Subject } from "@prisma/client";
 import { PlusIcon } from "lucide-react";
@@ -27,21 +27,21 @@ import { useUpsertAcademicYearClassMutation } from "../../../app/(director)/dire
 interface ListOfSubjectsProps {
   levels: LevelData[];
   academicYearClassId: string;
-  academicYearSubjects: AcademicYearSubject[] | undefined;
+  academicYearSubjects: AcademicYearSubjectData[] | undefined;
 }
 export default function ListOfLevelsWithSubjects({
   levels,
   academicYearClassId,
   academicYearSubjects,
 }: ListOfSubjectsProps) {
-  const form = useForm<MultipleSubjectSchema>({
-    resolver: zodResolver(multipleSubjectSchema),
+  const form = useForm<MultipleAcademicYearSubjectSchema>({
+    resolver: zodResolver(multipleAcademicYearSubjectSchema),
     values: {
-      subjects: subjects as SubjectSchema[],
-    },
+      academicYearSubjects:academicYearSubjects!,
+    }
   });
   const mutation = useUpsertAcademicYearClassMutation();
-  function handleSubmit(input: MultipleSubjectSchema) {
+  function handleSubmit(input: MultipleAcademicYearSubjectSchema) {
     mutation.mutate(
       { input, academicYearClassId },
       {
@@ -61,14 +61,14 @@ export default function ListOfLevelsWithSubjects({
               <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <FormField
                   control={form.control}
-                  name="subjects"
+                  name="academicYearSubjects"
                   render={() => (
                     <FormItem>
                       {level.subjects.map((subject, index) => (
                         <FormField
                           key={subject.id}
                           control={form.control}
-                          name={"subjects"}
+                          name={"academicYearSubjects"}
                           render={({ field }) => (
                             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                               <FormControl>

@@ -414,6 +414,23 @@ export const multipleSubjectSchema = z.object({
 });
 export type MultipleSubjectSchema = z.infer<typeof multipleSubjectSchema>;
 
+
+
+// Academic year Subject
+export const academicYearSubjectSchema = z.object({
+  id: z.string().optional(),
+  subject:subjectSchema.omit({grading:true})
+});
+export type AcademicYearSubjectSchema = z.infer<typeof academicYearSubjectSchema>;
+export const multipleAcademicYearSubjectSchema = z.object({
+  academicYearSubjects: z
+    .array(academicYearSubjectSchema)
+    .refine((value) => value.some((item) => item), {
+      message: "You have to have or select at least one academic year subject.",
+    }),
+});
+export type MultipleAcademicYearSubjectSchema = z.infer<typeof multipleAcademicYearSubjectSchema>;
+
 // Exam score
 export const examScoreSchema = z.object({
   id: z.string().optional(),
