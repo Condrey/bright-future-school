@@ -91,6 +91,7 @@ export default function FormAddViewSubjects({
               levels={data}
               academicYearClassId={classStream.classId!}
               academicYearSubjects={academicYearSubjects}
+              setOpen={setOpen}
             />
           )}
         </div>

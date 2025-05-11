@@ -46,7 +46,7 @@ export function ClassStreamWithSubjectContainer({
             ? "No pupils/ students"
             : `${formatNumber(_count.pupils)} ${
                 _count.pupils === 1 ? "Pupil/ student" : "Pupils/ students"
-              }`}
+              }`}, {classValue?._count.academicYearSubjects} subject(s)
         </CardDescription>
         <CardDescription>
           Class teacher:{" "}

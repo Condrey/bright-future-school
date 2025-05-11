@@ -154,7 +154,7 @@ model AcademicYearSubject {
   customGrading       Grading[]
   academicYearClass   AcademicYearClass @relation(fields: [academicYearClassId], references: [id], onDelete: Cascade)
   teachers            Staff[]
-  subject             Subject           @relation(fields: [subjectId], references: [id])
+  subject             Subject           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   examSubjects        ExamSubject[]
 
   @@unique([academicYearClassId, subjectId])
@@ -505,7 +505,7 @@ model ExamScore {
   score         Float
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  examSubject   ExamSubject @relation(fields: [examSubjectId], references: [id])
+  examSubject   ExamSubject @relation(fields: [examSubjectId], references: [id], onDelete: Cascade)
   examSubjectId String
   pupil         Pupil       @relation(fields: [pupilId], references: [id], onDelete: Cascade)
   pupilId       String
@@ -532,7 +532,7 @@ model ExamSubject {
   examId                String
   examDate              DateTime
   exam                  Exam                @relation(fields: [examId], references: [id], onDelete: Cascade)
-  academicYearSubject   AcademicYearSubject @relation(fields: [academicYearSubjectId], references: [id])
+  academicYearSubject   AcademicYearSubject @relation(fields: [academicYearSubjectId], references: [id], onDelete: Cascade)
   academicYearSubjectId String
   examScores            ExamScore[]
 

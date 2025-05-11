@@ -5,6 +5,7 @@ import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteExam, upsertExam } from "./action";
 
 const queryKey: QueryKey = ["levels-with-subjects", "list"];
+const key1: QueryKey =["class-teacher-class-streams"]
 
 export function useUpsertExamMutation() {
   const queryClient = useQueryClient();
@@ -26,6 +27,7 @@ export function useUpsertExamMutation() {
       await queryClient.cancelQueries({ queryKey });
 
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: key1 });
       queryClient.invalidateQueries({ queryKey: key2 });
       queryClient.invalidateQueries({ queryKey: key3 });
       queryClient.invalidateQueries({ queryKey: key4 });
@@ -63,6 +65,7 @@ export function useDeleteExamMutation() {
       await queryClient.cancelQueries({ queryKey });
 
       queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: key1 });
       queryClient.invalidateQueries({ queryKey: key2 });
       queryClient.invalidateQueries({ queryKey: key3 });
       queryClient.invalidateQueries({ queryKey: key4 });

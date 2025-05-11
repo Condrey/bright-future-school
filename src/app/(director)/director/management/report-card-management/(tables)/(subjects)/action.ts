@@ -2,7 +2,10 @@
 
 import prisma from "@/lib/prisma";
 import { levelDataInclude } from "@/lib/types";
-import { MultipleAcademicYearSubjectSchema, MultipleSubjectSchema } from "@/lib/validation";
+import {
+  multipleAcademicYearSubjectSchema,
+  MultipleAcademicYearSubjectSchema,
+} from "@/lib/validation";
 
 export async function getAllSubjects() {
   const data = await prisma.subject.findMany();
@@ -36,16 +39,26 @@ export async function upsertAcademicYYearClassSubjects({
   academicYearClassId: string;
   input: MultipleAcademicYearSubjectSchema;
 }) {
-  const academicYearSubjectIds = input.academicYearSubjects.map((s) => s.id!);
-console.log('subjectIds',academicYearSubjectIds)
+  const { academicYearSubjects } =
+    multipleAcademicYearSubjectSchema.parse(input);
   await prisma.academicYearClass.update({
     where: { id: academicYearClassId },
     data: {
       academicYearSubjects: {
         deleteMany: {},
-        create: academicYearSubjectIds.map((academicYearSubjectId) => ({
-          subject: { connect: { id: academicYearSubjectId } },
-        })),
+        createMany: {
+          data: academicYearSubjects.map((ays) => ({
+            id: ays.id,
+            subjectId: ays.subject.id!,
+          })),
+          skipDuplicates: true,
+        },
+        // create: academicYearSubjects.map((academicYearSubject) => ({
+        //   subject: { connectOrCreate: {
+        //     where:{id:academicYearSubject.id},
+        //     create:{...academicYearSubject.subject}
+        //    } },
+        // })),
       },
     },
   });
