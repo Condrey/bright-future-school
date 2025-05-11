@@ -84,8 +84,8 @@ export default function FormAddEditExamSubject({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex max-h-[65vh] flex-1 flex-col space-y-4 overflow-y-auto scroll-smooth">
-              {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
-              <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
+              <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
+              {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
               {!isDateMode ? (
                 <FormField
                   control={form.control}
@@ -148,9 +148,9 @@ export default function FormAddEditExamSubject({
             </div>
             <SheetFooter>
               <div className="flex w-full items-center justify-end gap-4">
-           <ButtonAddViewSubjects type="button" classStream={exam.classTerm.classStream as ClassStreamData}   >
+           {!isDateMode&&<ButtonAddViewSubjects type="button" classStream={exam.classTerm.classStream as ClassStreamData}   >
             More subjects
-           </ButtonAddViewSubjects>
+           </ButtonAddViewSubjects>}
                 <Button
                   variant={isDateMode ? "destructive" : "default"}
                   type="button"
