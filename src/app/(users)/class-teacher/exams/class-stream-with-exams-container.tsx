@@ -129,6 +129,8 @@ function TermWithExamContainer({
 }: TermWithExamContainerProps) {
   const { term, exams } = classTerm;
   const examNumber = exams.length;
+  const numberOfExams = exams.length;
+
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-2">
@@ -147,8 +149,8 @@ function TermWithExamContainer({
         </ButtonAddNewExam>
       </div>
       {examNumber > 0 ? (
-        <div>
-          {exams.map((exam) => {
+        <div className="space-y-4">
+          {exams.slice(0, 3).map((exam) => {
             return (
               <ExamContainer
                 academicYearClassId={academicYearClassId}
@@ -157,6 +159,11 @@ function TermWithExamContainer({
               />
             );
           })}
+          {numberOfExams > 3 && (
+            <span className="w-full text-end text-xs italic text-muted-foreground">
+              + {numberOfExams - 3} more {term?.term} tests/ exams
+            </span>
+          )}
         </div>
       ) : (
         <EmptyContainer

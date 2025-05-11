@@ -14,12 +14,10 @@ import { getClassStreamById } from "./action";
 interface ListOfTermsProps {
   classStream: ClassStreamData;
 }
-export default function ListOfTerms({
-  classStream,
-}: ListOfTermsProps) {
+export default function ListOfTerms({ classStream }: ListOfTermsProps) {
   const { getNavigationLinkWithoutUpdate } = useCustomSearchParams();
   const query = useQuery({
-    queryKey: ["list-of-terms",'classStream', classStream.id],
+    queryKey: ["list-of-terms", "classStream", classStream.id],
     queryFn: async () => getClassStreamById(classStream.id),
     initialData: classStream,
   });
@@ -60,7 +58,7 @@ export default function ListOfTerms({
               test/ exam
             </ButtonAddNewExam>
           </div>
-          <div >
+          <div>
             {!term.exams.length ? (
               <EmptyContainer
                 message={

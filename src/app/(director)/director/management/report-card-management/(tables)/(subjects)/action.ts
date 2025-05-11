@@ -37,7 +37,7 @@ export async function upsertAcademicYYearClassSubjects({
   input: MultipleSubjectSchema;
 }) {
   const subjectIds = input.subjects.map((s) => s.id!);
-
+console.log('subjectIds',subjectIds)
   await prisma.academicYearClass.update({
     where: { id: academicYearClassId },
     data: {

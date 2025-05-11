@@ -112,7 +112,7 @@ export type LevelData = Prisma.LevelGetPayload<{
 // Subject
 export const subjectDataInclude = {
   grading: true,
-  level: true,
+  level: true, 
 } satisfies Prisma.SubjectInclude;
 export type SubjectData = Prisma.SubjectGetPayload<{
   include: typeof subjectDataInclude;
@@ -136,8 +136,9 @@ export const examDataInclude = {
           class: {
             include: {
               academicYear: true,
-              class: true,
-              academicYearSubjects: { include: { subject: true } },
+              class: {include:classDataInclude},
+              academicYearSubjects: { include: { subject: {include: subjectDataInclude} },
+            orderBy:{subject:{subjectName:'asc'}} }, 
             },
           },
           stream: true,
@@ -559,11 +560,16 @@ export type VandalismDamages = {
   };
 }[];
 
-export interface PupilRow  {
+export interface PupilRow {
   id: string;
   pupil: PupilDataSelect;
-  examSubjects:ExamSubjectData[];
-  [subjectName: string]: string | number | undefined|PupilDataSelect|ExamSubjectData[];
+  examSubjects: ExamSubjectData[];
+  [subjectName: string]:
+    | string
+    | number
+    | undefined
+    | PupilDataSelect
+    | ExamSubjectData[];
   agg: number;
   position: number;
-};
+}

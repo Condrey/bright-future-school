@@ -11,10 +11,17 @@ export function useUpsertExamMutation() {
 
   return useMutation({
     mutationFn: upsertExam,
-    onSuccess: async (data,variables) => {
-      const key2 :QueryKey= ["classTerms-with-exams", data.classTerm.classStreamId];
+    onSuccess: async (data, variables) => {
+      const key2: QueryKey = [
+        "classTerms-with-exams",
+        data.classTerm.classStreamId,
+      ];
       const key3: QueryKey = ["list-of-class-streams"];
-      const key4:QueryKey = ["list-of-terms",'classStream', data.classTerm.classStreamId]
+      const key4: QueryKey = [
+        "list-of-terms",
+        "classStream",
+        data.classTerm.classStreamId,
+      ];
 
       await queryClient.cancelQueries({ queryKey });
 
@@ -23,12 +30,15 @@ export function useUpsertExamMutation() {
       queryClient.invalidateQueries({ queryKey: key3 });
       queryClient.invalidateQueries({ queryKey: key4 });
       toast({
-        description: "Successfully updated exam",
+        description: `Successfully ${variables.formData.id ? "updated" : "added"} exam`,
       });
     },
-    onError: (error) => {
+    onError: (error, variables) => {
       console.error(error);
-      toast({ description: "Failed to update exam", variant: "destructive" });
+      toast({
+        description: `Failed to ${variables.formData.id ? "update" : "add"} exam`,
+        variant: "destructive",
+      });
     },
   });
 }
@@ -39,9 +49,16 @@ export function useDeleteExamMutation() {
   return useMutation({
     mutationFn: deleteExam,
     onSuccess: async (data) => {
-      const key2:QueryKey = ["classTerms-with-exams", data.classTerm.classStreamId];
+      const key2: QueryKey = [
+        "classTerms-with-exams",
+        data.classTerm.classStreamId,
+      ];
       const key3: QueryKey = ["list-of-class-streams"];
-      const key4:QueryKey = ["list-of-terms",'classStream', data.classTerm.classStreamId]
+      const key4: QueryKey = [
+        "list-of-terms",
+        "classStream",
+        data.classTerm.classStreamId,
+      ];
 
       await queryClient.cancelQueries({ queryKey });
 

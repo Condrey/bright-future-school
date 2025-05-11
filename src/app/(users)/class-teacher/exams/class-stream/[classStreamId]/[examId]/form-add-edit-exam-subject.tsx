@@ -1,7 +1,7 @@
 import LoadingButton from "@/components/loading-button";
 import { ReactCalendar } from "@/components/react-calendar/react-calendar";
+import ButtonAddNewSubject from "@/components/subjects/subject/button-add-new-subject";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -13,11 +13,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -25,26 +20,25 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { toast } from "@/hooks/use-toast";
-import { ExamData } from "@/lib/types";
+import { ClassStreamData, ExamData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import {
   multipleExamSubjectSchema,
   MultipleExamSubjectSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import {
   CalendarIcon,
   CheckIcon,
   LucideMoveRight,
   MoveLeftIcon,
-  MoveRightIcon,
-  PenIcon,
+  PlusIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { useUpdateExamSubjectsMutation } from "./mutation";
+import ButtonUpdateExamSubjects from "./button-update-exam-subjects";
+import ButtonAddViewSubjects from "@/components/subjects/form-add-view-subject/button-add-view-subjects";
 
 interface FormAddEditExamSubjectProps {
   exam: ExamData;
@@ -59,7 +53,8 @@ export default function FormAddEditExamSubject({
 }: FormAddEditExamSubjectProps) {
   const academicYearSubjects =
     exam.classTerm.classStream?.class?.academicYearSubjects!;
-  const [isDateMode, setIsDateMode] = useState(false);
+
+    const [isDateMode, setIsDateMode] = useState(false);
   const form = useForm<MultipleExamSubjectSchema>({
     resolver: zodResolver(multipleExamSubjectSchema),
     defaultValues: { examSubjects: exam.examSubjects },
@@ -153,16 +148,18 @@ export default function FormAddEditExamSubject({
             </div>
             <SheetFooter>
               <div className="flex w-full items-center justify-end gap-4">
+           <ButtonAddViewSubjects type="button" classStream={exam.classTerm.classStream as ClassStreamData}   >
+            More subjects
+           </ButtonAddViewSubjects>
                 <Button
                   variant={isDateMode ? "destructive" : "default"}
                   type="button"
-                  disabled={!form.watch('examSubjects').length}
+                  disabled={!form.watch("examSubjects").length}
                   onClick={() => setIsDateMode(!isDateMode)}
                 >
-                  {isDateMode && <MoveLeftIcon /> }
+                  {isDateMode && <MoveLeftIcon />}
                   {isDateMode ? "Re-select" : "Next"}
-                  {!isDateMode && <LucideMoveRight /> }
-
+                  {!isDateMode && <LucideMoveRight />}
                 </Button>
                 {isDateMode && (
                   <LoadingButton type="submit" loading={isPending}>
@@ -198,14 +195,22 @@ function SubjectsWithDates({ form, exam, isDateView }: SubjectsWithDatesProps) {
         )?.subject;
         const subject = `${academicYearSubject?.code} ${academicYearSubject?.subjectName} (${academicYearSubject?.slug})`;
         return (
-          <div key={examSubject.id} className="flex flex-col sm:flex-row items-start sm:gap-3 gap-4">
-           
-           <span className="sm:flex hidden text-muted-foreground bg-muted h-6 w-6 flex-none text-xs   justify-center items-center rounded-full">#{number+1}</span> <FormField
+          <div
+            key={examSubject.id}
+            className="flex flex-col items-start gap-4 sm:flex-row sm:gap-3"
+          >
+            <span className="hidden h-6 w-6 flex-none items-center justify-center rounded-full bg-muted text-xs text-muted-foreground sm:flex">
+              #{number + 1}
+            </span>{" "}
+            <FormField
               control={form.control}
               name={`examSubjects.${number}.academicYearSubjectId`}
               render={() => (
                 <FormItem className="flex flex-col">
-                  <FormLabel className="text-muted-foreground" ><span className="inline sm:hidden">{number+1}.</span> Subject selected</FormLabel>
+                  <FormLabel className="text-muted-foreground">
+                    <span className="inline sm:hidden">{number + 1}.</span>{" "}
+                    Subject selected
+                  </FormLabel>
                   <Input value={subject} disabled />
                   <FormMessage />
                 </FormItem>
@@ -227,10 +232,9 @@ function SubjectsWithDates({ form, exam, isDateView }: SubjectsWithDatesProps) {
                     timeCaption="time"
                     dateFormat="dd/MM/yyyy h:mm aa"
                     placeholderText="dd/MM/yyyy h:mm aa"
-                    clearButtonTitle="Clear"              
-                    icon={<CalendarIcon/>}
+                    clearButtonTitle="Clear"
+                    icon={<CalendarIcon />}
                   />
-                
                   <FormMessage />
                 </FormItem>
               )}

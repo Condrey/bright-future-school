@@ -29,7 +29,7 @@ export default async function Page({ params }: PageProps) {
           <YearContainer year={classStream.class?.academicYear?.year} />{" "}
           {className} exams & tests
         </h1>
-        <ListOfTerms classStream={classStream}  />
+        <ListOfTerms classStream={classStream} />
       </BodyContainer>
     </Fragment>
   );

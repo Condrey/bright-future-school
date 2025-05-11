@@ -19,7 +19,7 @@ import { SheetFooter } from "@/components/ui/sheet";
 import { toast } from "@/hooks/use-toast";
 import { LevelData } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Subject } from "@prisma/client";
+import { AcademicYearSubject, Subject } from "@prisma/client";
 import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useUpsertAcademicYearClassMutation } from "../../../app/(director)/director/management/report-card-management/(tables)/(subjects)/mutation";
@@ -27,12 +27,12 @@ import { useUpsertAcademicYearClassMutation } from "../../../app/(director)/dire
 interface ListOfSubjectsProps {
   levels: LevelData[];
   academicYearClassId: string;
-  subjects: Subject[] | undefined;
+  academicYearSubjects: AcademicYearSubject[] | undefined;
 }
 export default function ListOfLevelsWithSubjects({
   levels,
   academicYearClassId,
-  subjects,
+  academicYearSubjects,
 }: ListOfSubjectsProps) {
   const form = useForm<MultipleSubjectSchema>({
     resolver: zodResolver(multipleSubjectSchema),

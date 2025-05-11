@@ -37,20 +37,22 @@ export default function FormEditExamScores({
 
   const examScores = pupilRow.examSubjects.flatMap((examSubject) => {
     const hasExistingScore = examSubject.examScores.some(
-      (score) => score.pupilId === pupilId
+      (score) => score.pupilId === pupilId,
     );
-  
+
     if (hasExistingScore) {
       // Return only existing scores for this pupil & examSubject
       return examSubject.examScores.filter((s) => s.pupilId === pupilId);
     } else {
       // Create a new score only if none exists
-      return [{
-        id: "",
-        score: 0,
-        examSubjectId: examSubject.id,
-        pupilId,
-      }];
+      return [
+        {
+          id: "",
+          score: 0,
+          examSubjectId: examSubject.id,
+          pupilId,
+        },
+      ];
     }
   });
 

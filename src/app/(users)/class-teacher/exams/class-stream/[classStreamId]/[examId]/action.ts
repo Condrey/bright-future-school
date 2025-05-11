@@ -56,17 +56,21 @@ export async function upsertExamSubjects({
   });
 }
 
-export async function upsertExamScores(input:MultipleExamScoreSchema){
+export async function upsertExamScores(input: MultipleExamScoreSchema) {
   const { user } = await validateRequest();
   if (!user) return unauthorized();
   const isAuthorized = myPrivileges[user.role].includes(Role.CLASS_TEACHER);
   if (!isAuthorized) return unauthorized;
-  const {examScores} = multipleExamScoreSchema.parse(input)
-  for (const examScore of examScores){
+  const { examScores } = multipleExamScoreSchema.parse(input);
+  for (const examScore of examScores) {
     await prisma.examScore.upsert({
-      where:{id:examScore.id},
-      create:{score:examScore.score, examSubjectId:examScore.examSubjectId, pupilId:examScore.pupilId,  },
-      update:examScore
-    })
+      where: { id: examScore.id },
+      create: {
+        score: examScore.score,
+        examSubjectId: examScore.examSubjectId,
+        pupilId: examScore.pupilId,
+      },
+      update: examScore,
+    });
   }
 }

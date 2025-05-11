@@ -47,7 +47,7 @@ export default function FormAddEditExam({
     resolver: zodResolver(examSchema),
     defaultValues: {
       classTermId: examToEdit?.classTermId || classTermId || "",
-      examSubjects: examToEdit?.examSubjects||[],
+      examSubjects: examToEdit?.examSubjects || [],
       examName: examToEdit?.examName || "",
       examType: examToEdit?.examType || ExamType.EXAM,
       id: examToEdit?.id || "",
@@ -70,7 +70,7 @@ export default function FormAddEditExam({
     <ResponsiveDrawer
       open={open}
       setOpen={setOpen}
-      title={`${examToEdit ? "Update" : "Add"} exams`}
+      title={`${examToEdit ? "Update" : "Add"} test/ exams`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -81,7 +81,7 @@ export default function FormAddEditExam({
             name="examName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Examination name</FormLabel>
+                <FormLabel>Test/ examination name</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -97,7 +97,7 @@ export default function FormAddEditExam({
             name="examType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Examination Type</FormLabel>
+                <FormLabel>Type of test/ examination</FormLabel>
                 <Select
                   defaultValue={field.value}
                   onValueChange={field.onChange}
@@ -122,19 +122,11 @@ export default function FormAddEditExam({
               </FormItem>
             )}
           />
-        
+
           <div className="flex items-center justify-end">
-            {examToEdit ? (
-              <LoadingButton loading={mutation.isPending}>
-                Update exam
-              </LoadingButton>
-            ) : (
-              <div className="flex items-center">
-                <LoadingButton loading={mutation.isPending}>
-                  Add exam
-                </LoadingButton>
-              </div>
-            )}
+            <LoadingButton loading={mutation.isPending}>
+              {examToEdit ? "Update" : "Add"} test/ exam
+            </LoadingButton>
           </div>
         </form>
       </Form>

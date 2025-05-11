@@ -12,13 +12,13 @@ export async function upsertExam({
 }): Promise<ExamData> {
   const parsedResult = examSchema.parse(formData);
   const { id, classTermId, examName, examType, examSubjects } = parsedResult;
-  console.log(parsedResult)
+  console.log(parsedResult);
   //TODO: exam subjects
   const data = await prisma.exam.upsert({
     where: {
       id,
     },
-    create: { classTermId, examName, examType, id: cuid(),  },
+    create: { classTermId, examName, examType, id: cuid() },
     update: { classTermId, examName, examType },
     include: examDataInclude,
   });

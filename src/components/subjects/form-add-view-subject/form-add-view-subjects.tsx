@@ -29,9 +29,10 @@ export default function FormAddViewSubjects({
   const classValue = (classStream.class?.class?.slug ?? "").toUpperCase();
   const streamValue = classStream.stream?.name;
   const levelValue = classStream.class?.class?.level?.name;
-  const subjects = classStream.class?.academicYearSubjects.flatMap(
-    (c) => c.subject,
-  );
+  const academicYearSubjects = classStream.class?.academicYearSubjects
+  // .flatMap(
+  //   (c) => c.subject,
+  // );
 
   const { data, status, error, refetch, isFetching } =
     useGetAllLevelsWithSubjectsQuery();
@@ -41,6 +42,8 @@ export default function FormAddViewSubjects({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
+
+
       <SheetContent className="flex h-full flex-col gap-8 overflow-y-auto">
         <SheetHeader className="flex flex-col">
           <SheetTitle>
@@ -87,7 +90,7 @@ export default function FormAddViewSubjects({
             <ListOfLevelsWithSubjects
               levels={data}
               academicYearClassId={classStream.classId!}
-              subjects={subjects}
+              academicYearSubjects={academicYearSubjects}
             />
           )}
         </div>

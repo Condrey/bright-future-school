@@ -24,6 +24,7 @@ import {
 import { useState, useTransition } from "react";
 import FormAddViewSubjects from "../../../../../../components/subjects/form-add-view-subject/form-add-view-subjects";
 import FormAddViewExams from "./(exams)/form-add-view-exams";
+import ButtonAddViewSubjects from "@/components/subjects/form-add-view-subject/button-add-view-subjects";
 
 interface DropDownMenuClassStreamProps {
   classStream: ClassStreamData;
@@ -34,7 +35,6 @@ export default function DropDownMenuClassStream({
 }: DropDownMenuClassStreamProps) {
   const { navigateOnclickWithoutUpdate } = useCustomSearchParams();
   const [isPending, startTransition] = useTransition();
-  const [openSubjectDialog, setOpenSubjectDialog] = useState(false);
   const [openExamDialog, setOpenExamDialog] = useState(false);
   const { user } = useSession();
 
@@ -85,22 +85,22 @@ export default function DropDownMenuClassStream({
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setOpenSubjectDialog(true)}>
-              <BookCopyIcon className="mr-2 size-4" />
-              <span>Update subjects</span>
+            <DropdownMenuItem asChild>
+              <ButtonAddViewSubjects type="button" classStream={classStream}>
+                <BookCopyIcon className="mr-2 size-4" />
+                <span>Update subjects</span>
+              </ButtonAddViewSubjects>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setOpenExamDialog(true)}>
-              <BookAIcon className="mr-2 size-4" />
-              <span>Update exams</span>
+
+            <DropdownMenuItem asChild>
+              <Button type="button" onClick={() => setOpenExamDialog(true)}>
+                <BookAIcon className="mr-2 size-4" />
+                <span>Update exams</span>
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <FormAddViewSubjects
-        open={openSubjectDialog}
-        setOpen={setOpenSubjectDialog}
-        classStream={classStream}
-      />
       <FormAddViewExams
         open={openExamDialog}
         setOpen={setOpenExamDialog}

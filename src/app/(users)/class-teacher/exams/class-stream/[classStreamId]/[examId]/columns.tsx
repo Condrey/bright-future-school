@@ -80,19 +80,26 @@ export const usePupilsColumn = (
           </span>
         );
       },
-    },{
-      id:'Action',
+    },
+    {
+      id: "Action",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Action" />
       ),
-      cell:({row})=>{
-        return <div>
-          <ButtonEditExamScores pupilRow={row.original} size='sm' variant='ghost'>
-            <PencilIcon/>
-          </ButtonEditExamScores>
-        </div>
-      }
-    }
+      cell: ({ row }) => {
+        return (
+          <div>
+            <ButtonEditExamScores
+              pupilRow={row.original}
+              size="sm"
+              variant="ghost"
+            >
+              <PencilIcon />
+            </ButtonEditExamScores>
+          </div>
+        );
+      },
+    },
   ];
 };
 
