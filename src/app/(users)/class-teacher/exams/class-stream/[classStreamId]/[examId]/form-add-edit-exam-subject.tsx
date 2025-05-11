@@ -84,7 +84,7 @@ export default function FormAddEditExamSubject({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex max-h-[65vh] flex-1 flex-col space-y-4 overflow-y-auto scroll-smooth">
-              <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
+              {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
               {/* <pre>{JSON.stringify(form.watch(), null, 2)}</pre> */}
               {!isDateMode ? (
                 <FormField
@@ -106,7 +106,7 @@ export default function FormAddEditExamSubject({
                                 <FormControl>
                                   <Checkbox
                                     checked={field.value
-                                      ?.flatMap((v) => v.id)
+                                      ?.flatMap((v) => v.academicYearSubjectId)
                                       .includes(item.id)}
                                     onCheckedChange={(checked) => {
                                       return checked
@@ -126,7 +126,7 @@ export default function FormAddEditExamSubject({
                                   />
                                 </FormControl>
                                 <FormLabel className="text-sm font-normal capitalize">
-                                  {item.subject.code} {item.subject.subjectName}{" "}
+                                      {item.subject.code} {item.subject.subjectName}{" "}
                                   ({item.subject.slug})
                                 </FormLabel>
                               </FormItem>

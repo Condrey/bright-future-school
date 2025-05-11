@@ -39,17 +39,27 @@ export const usePupilsColumn = (
         );
       },
     },
-    ...subjectNames.map((subject) => ({
-      accessorKey: subject,
+    ...subjectNames.map((subjectName) => ({
+      accessorKey: subjectName,
       header: ({ column }: { column: Column<PupilRow, unknown> }) => (
-        <DataTableColumnHeader column={column} title={subject} />
+        <DataTableColumnHeader column={column} title={subjectName} />
       ),
       cell: ({ row }: { row: Row<PupilRow> }) => {
-        const marks = row.original[subject] as string;
+        const marks = row.original[subjectName] as number;
+        const subject = row.original.examSubjects.find(examSubject=>examSubject.academicYearSubject.subject.subjectName===subjectName)
+        const grading_s = subject?.academicYearSubject.subject.grading.map(({to,from,grade,remarks})=>{
+          if(marks>=from&&marks<=to){
+            return {grade,remarks}
+          }          
+        }).filter(Boolean) as {grade:string,remarks:string|null}[]
+        const grading = !grading_s.length?{grade:"Not assigned",remarks:'_'}:grading_s[0]
         return (
-          <span className="block w-full text-center slashed-zero tabular-nums">
+         <div>
+           <div className="block w-full text-center slashed-zero tabular-nums">
             {marks}%
-          </span>
+          </div>
+          <div className="w-full text-center text-xs">{grading.grade}, <span className="italic text-muted-foreground">{grading.remarks}</span></div>
+         </div>
         );
       },
     })),

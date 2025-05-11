@@ -129,7 +129,7 @@ export type AcademicYearSubjectData =Prisma.AcademicYearSubjectGetPayload<{
 
 // Exam subject
 export const examSubjectDataInclude = {
-  academicYearSubject: { include: { subject: true } },
+  academicYearSubject: { include: { subject: {include:{grading:true}} } },
   examScores: true,
 } satisfies Prisma.ExamSubjectInclude;
 export type ExamSubjectData = Prisma.ExamSubjectGetPayload<{
