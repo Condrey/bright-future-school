@@ -31,7 +31,7 @@ export const usePupilsColumn = (
             <UserAvatar avatarUrl={pupil?.avatarUrl} />
             <div>
               <div>{pupil?.name}</div>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-muted-foreground text-xs">
                 {pupil?.telephone || pupil?.email || `@${pupil?.username}`}
               </div>
             </div>
@@ -46,20 +46,32 @@ export const usePupilsColumn = (
       ),
       cell: ({ row }: { row: Row<PupilRow> }) => {
         const marks = row.original[subjectName] as number;
-        const subject = row.original.examSubjects.find(examSubject=>examSubject.academicYearSubject.subject.subjectName===subjectName)
-        const grading_s = subject?.academicYearSubject.subject.grading.map(({to,from,grade,remarks})=>{
-          if(marks>=from&&marks<=to){
-            return {grade,remarks}
-          }          
-        }).filter(Boolean) as {grade:string,remarks:string|null}[]
-        const grading = !grading_s.length?{grade:"Not assigned",remarks:'_'}:grading_s[0]
+        const subject = row.original.examSubjects.find(
+          (examSubject) =>
+            examSubject.academicYearSubject.subject.subjectName === subjectName,
+        );
+        const grading_s = subject?.academicYearSubject.subject.grading
+          .map(({ to, from, grade, remarks }) => {
+            if (marks >= from && marks <= to) {
+              return { grade, remarks };
+            }
+          })
+          .filter(Boolean) as { grade: string; remarks: string | null }[];
+        const grading = !grading_s.length
+          ? { grade: "Not assigned", remarks: "_" }
+          : grading_s[0];
         return (
-         <div>
-           <div className="block w-full text-center slashed-zero tabular-nums">
-            {marks}%
+          <div>
+            <div className="block w-full text-center slashed-zero tabular-nums">
+              {marks}%
+            </div>
+            <div className="w-full text-center text-xs">
+              {grading.grade},
+              <span className="text-muted-foreground italic">
+                {grading.remarks}
+              </span>
+            </div>
           </div>
-          <div className="w-full text-center text-xs">{grading.grade},<span className="italic text-muted-foreground">{grading.remarks}</span></div>
-         </div>
         );
       },
     })),

@@ -104,7 +104,7 @@ export default function EmailVerificationForm({ email }: { email: string }) {
         {
           <CardFooter
             className={cn(
-              "text-xs text-muted-foreground",
+              "text-muted-foreground text-xs",
               isRefetching ? "visible" : "invisible",
             )}
           >

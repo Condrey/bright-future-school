@@ -52,7 +52,7 @@ export default function FormAddEditSubjectGrading({
               </span>
             </div>
           ) : status === "success" && !data.length ? (
-            <span className="w-full max-w-sm text-center text-muted-foreground">
+            <span className="text-muted-foreground w-full max-w-sm text-center">
               There are no custom grading added in the system yet. Please add.
             </span>
           ) : (

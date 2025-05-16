@@ -20,12 +20,12 @@ export default function ListOfSuppliers({ oldData }: ListOfSuppliersProps) {
   }
 
   return (
-    <div className="h-fit w-[24rem] space-y-3 rounded-md bg-card p-3">
+    <div className="bg-card h-fit w-[24rem] space-y-3 rounded-md p-3">
       <h1 className="text-xl">Food Store suppliers</h1>
       <div>
         {status === "error" ? (
           <div className="flex min-h-[28rem] flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               Failed to fetch food Store suppliers. Please try again!
             </p>
             <LoadingButton
@@ -38,7 +38,7 @@ export default function ListOfSuppliers({ oldData }: ListOfSuppliersProps) {
           </div>
         ) : status === "success" && !data.length ? (
           <div className="flex min-h-[28rem] flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               There are no food Store suppliers added in the database yet.
               Please add
             </p>
@@ -84,7 +84,7 @@ function SupplierItem({ supplier }: SupplierItemProps) {
       className={cn("flex h-fit w-full flex-col items-start gap-0")}
     >
       <div>{supplier.name}</div>
-      <div className="text-xs text-muted-foreground">
+      <div className="text-muted-foreground text-xs">
         {supplier.contactInfo}
       </div>
     </LoadingButton>

@@ -44,7 +44,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
       </div>
       {status === "error" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <p className="text-center text-muted-foreground">
+          <p className="text-muted-foreground text-center">
             Error occurred while fetching details for {oldItem.foodName}
           </p>
           <LoadingButton
@@ -67,7 +67,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
 
           {!item.consumptions.length ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-4">
-              <span className="max-w-sm text-center text-muted-foreground">
+              <span className="text-muted-foreground max-w-sm text-center">
                 The {item.foodName} food item, has not yet been consumed yet.
               </span>
               <ButtonConsumeItem isSecondary foodStoreItem={oldItem} />

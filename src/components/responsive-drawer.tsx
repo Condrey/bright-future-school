@@ -74,7 +74,7 @@ export default function ResponsiveDrawer({
                 </Button>
               </DrawerClose>
             </div>
-            <div className="flex w-full flex-col gap-4 overflow-y-auto scroll-smooth bg-background/10 px-4 pt-6">
+            <div className="bg-background/10 flex w-full flex-col gap-4 overflow-y-auto scroll-smooth px-4 pt-6">
               {children}
             </div>
             <DrawerFooter className="pt-2"></DrawerFooter>

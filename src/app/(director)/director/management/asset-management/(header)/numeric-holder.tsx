@@ -35,8 +35,8 @@ export const NumericHolder = ({
       </h1>
       <span
         className={cn(
-          "line-clamp-2 w-full text-ellipsis break-words text-center text-sm font-normal uppercase tracking-tighter",
-          isCurrency && "capitalize text-muted-foreground",
+          "line-clamp-2 w-full text-center text-sm font-normal tracking-tighter break-words text-ellipsis uppercase",
+          isCurrency && "text-muted-foreground capitalize",
         )}
       >
         {label}

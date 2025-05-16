@@ -46,7 +46,7 @@ export default function AssetPayments({ assetDamages }: AssetPaymentsProps) {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="mx-auto max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground mx-auto max-w-sm text-center">
           An error occurred while fetching asset payments
         </span>
         <LoadingButton
@@ -135,7 +135,7 @@ export default function AssetPayments({ assetDamages }: AssetPaymentsProps) {
           <CardContent className="flex-1 pb-0">
             <ChartContainer
               config={chartConfig}
-              className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+              className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[250px] pb-0"
             >
               <PieChart>
                 <ChartTooltip
@@ -197,7 +197,7 @@ export default function AssetPayments({ assetDamages }: AssetPaymentsProps) {
               <CardContent className="flex-1 pb-0">
                 <ChartContainer
                   config={chartConfig}
-                  className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+                  className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[250px] pb-0"
                 >
                   <PieChart>
                     <ChartTooltip content={<ChartTooltipContent hideLabel />} />
@@ -210,7 +210,7 @@ export default function AssetPayments({ assetDamages }: AssetPaymentsProps) {
         </div>
       )}
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
+        <div className="text-muted-foreground leading-none">
           Showing covered payments and pending ones
         </div>
       </CardFooter>

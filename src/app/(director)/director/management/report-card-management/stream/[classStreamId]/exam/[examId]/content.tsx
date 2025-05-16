@@ -24,7 +24,7 @@ export default function Content({ exam }: ContentProps) {
     console.error(error);
     return (
       <div className="fex min-h-[20rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Error occurred while fetching exam. Please try again!
         </p>
         <LoadingButton loading={isFetching} onClick={() => refetch()}>
@@ -40,7 +40,7 @@ export default function Content({ exam }: ContentProps) {
   if (!pupils?.length) {
     return (
       <div className="fex min-h-[20rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no pupils belonging to this class, year and stream. Please
           add
         </p>

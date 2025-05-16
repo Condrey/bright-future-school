@@ -22,12 +22,12 @@ export default function ListOfCategories({ oldData }: ListOfCategoriesProps) {
   }
 
   return (
-    <div className="h-fit w-[24rem] space-y-3 rounded-md bg-card p-3">
+    <div className="bg-card h-fit w-[24rem] space-y-3 rounded-md p-3">
       <h1 className="text-xl">Book categories</h1>
       <div>
         {status === "error" ? (
           <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               Failed to fetch book categories. Please try again!
             </p>
             <LoadingButton
@@ -40,7 +40,7 @@ export default function ListOfCategories({ oldData }: ListOfCategoriesProps) {
           </div>
         ) : status === "success" && !data.length ? (
           <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               There are no library book categories added in the database yet.
               Please add
             </p>

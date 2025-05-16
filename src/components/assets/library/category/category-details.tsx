@@ -30,7 +30,7 @@ export default function CategoryDetails({ oldData }: CategoryDetailsProps) {
     console.error(error);
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Failed to fetch book categories. Please try again!
         </p>
         <LoadingButton
@@ -49,7 +49,7 @@ export default function CategoryDetails({ oldData }: CategoryDetailsProps) {
     <div className="flex min-h-[28rem] w-full flex-col items-center">
       {!oldData.length ? (
         <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             There are no library book categories added in the database yet.
             Please add
           </p>
@@ -57,7 +57,7 @@ export default function CategoryDetails({ oldData }: CategoryDetailsProps) {
         </div>
       ) : !category ? (
         <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             Please choose a category from the side bar to display its details
             here.
           </p>

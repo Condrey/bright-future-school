@@ -28,7 +28,7 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
     console.error(error);
     return (
       <div className="flex flex-col items-center justify-center gap-2">
-        <span className="max-w-sm text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm">
           Error occurred while fetching term details
         </span>
         <LoadingButton
@@ -92,7 +92,7 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
     : ratioOfExtraPayment * 100;
 
   return (
-    <div className="flex flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md md:flex-col md:divide-x-0">
+    <div className="bg-card flex flex-row justify-evenly gap-3 divide-x-2 rounded-md p-4 shadow-md md:flex-col md:divide-x-0">
       <div className="w-full max-w-fit space-y-4 font-bold md:max-w-none">
         <h1 className="text-xl">Fees Details</h1>
         <div className="flex w-full flex-col justify-between gap-2 md:flex-row">
@@ -105,7 +105,7 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
             </span>
           </div>
           {extraPayment > 0 && (
-            <div className="flex flex-col gap-0 text-destructive">
+            <div className="text-destructive flex flex-col gap-0">
               <h1 className="font-mono text-xl tracking-tighter lg:text-2xl">
                 {formatCurrency(extraPayment)}
               </h1>
@@ -133,7 +133,7 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
             <div className="flex-1">
               <Progress
                 value={percentageOfExtraPayment}
-                className="h-4 bg-destructive/20"
+                className="bg-destructive/20 h-4"
                 indicatorClassName="bg-destructive  "
               />
             </div>

@@ -19,7 +19,7 @@ export default function UserDetails({ oldPupil }: UserDetailsProps) {
     console.error(error);
     return (
       <div className="flex min-h-[20rem] flex-col items-center justify-center">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           Error occurred while fetching this pupil
         </span>
       </div>
@@ -28,7 +28,7 @@ export default function UserDetails({ oldPupil }: UserDetailsProps) {
   if (status === "success" && !data) {
     return (
       <div className="flex min-h-[20rem] flex-col items-center justify-center">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           Pupil not found
         </span>
       </div>
@@ -39,7 +39,7 @@ export default function UserDetails({ oldPupil }: UserDetailsProps) {
       <div className="flex-1">
         <MainContent pupil={data} />
       </div>
-      <div className="flex h-full min-w-[20rem] rounded-md border bg-card p-4">
+      <div className="bg-card flex h-full min-w-[20rem] rounded-md border p-4">
         <SideBarDetails pupil={data} />
       </div>
     </div>

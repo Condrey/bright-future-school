@@ -199,7 +199,7 @@ export const roleRedirectPaths: Record<Role, string> = {
   STAFF: "/staff",
 };
 
-const allRoles = Object.values(Role).filter(role=>role!=Role.USER);
+const allRoles = Object.values(Role).filter((role) => role != Role.USER);
 export const myPrivileges: Record<Role, Role[]> = {
   SUPER_ADMIN: allRoles,
 

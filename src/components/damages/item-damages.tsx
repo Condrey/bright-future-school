@@ -43,7 +43,7 @@ export default function ItemDamages({
       <CardContent>
         {!individualItem.assetDamages.length ? (
           <div className="flex size-full flex-col items-center justify-center gap-4">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               There are no recorded damages yet.
             </p>
             <ButtonRecordDamage

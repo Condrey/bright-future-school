@@ -30,7 +30,7 @@ export const useFeesColumns: ColumnDef<FeesDataSelect>[] = [
             <YearContainer year={academicYearClass?.academicYear?.year} />{" "}
             {classValue?.name} {stream?.name}
           </div>
-          <div className="text-xs text-muted-foreground">{term?.term}</div>
+          <div className="text-muted-foreground text-xs">{term?.term}</div>
         </div>
       );
     },
@@ -66,7 +66,7 @@ export const useFeesColumns: ColumnDef<FeesDataSelect>[] = [
       return (
         <div>
           {!row.original.term.feesAmount ? (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               -- Not Applicable --
             </span>
           ) : (
@@ -74,8 +74,8 @@ export const useFeesColumns: ColumnDef<FeesDataSelect>[] = [
               <div>{formatCurrency(paid)}</div>
               <div>
                 {balance >= 0 ? (
-                  <div className="font-bold text-destructive">
-                    <span className="text-xs font-normal italic text-muted-foreground">
+                  <div className="text-destructive font-bold">
+                    <span className="text-muted-foreground text-xs font-normal italic">
                       Bal of
                     </span>{" "}
                     {formatCurrency(balance)}

@@ -39,7 +39,7 @@ export const useVandalismColumn = ({
             <div className="space-y-0.5">
               <div className="text-sm">{title}</div>
               {!!description && (
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {description}
                 </div>
               )}{" "}

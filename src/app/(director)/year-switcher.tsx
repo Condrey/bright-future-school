@@ -88,7 +88,7 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
             variant={"outline"}
             className="flex h-fit w-full max-w-sm justify-between px-4 py-2"
           >
-            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
               <CalendarDaysIcon className="size-4" />
             </div>
             <div className="grid flex-1 text-left text-sm leading-tight">
@@ -113,7 +113,7 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
           side={isMobile ? "bottom" : "right"}
           sideOffset={4}
         >
-          <DropdownMenuLabel className="text-xs text-muted-foreground">
+          <DropdownMenuLabel className="text-muted-foreground text-xs">
             Academic years
           </DropdownMenuLabel>
           <DropdownMenuItem
@@ -160,7 +160,7 @@ export default function YearSwitcher({ pathname }: YearSwitcherProps) {
               <div className="flex size-6 items-center justify-center">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">Add year</div>
+              <div className="text-muted-foreground font-medium">Add year</div>
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>
@@ -180,7 +180,7 @@ export function YearSwitcherFallback() {
       variant={"outline"}
       className="flex h-fit w-full max-w-sm justify-between px-4 py-2"
     >
-      <Skeleton className="flex aspect-square size-8 rounded-lg bg-sidebar-primary">
+      <Skeleton className="bg-sidebar-primary flex aspect-square size-8 rounded-lg">
         <Skeleton className="size-4" />
       </Skeleton>
       <div className="grid flex-1 space-y-1">

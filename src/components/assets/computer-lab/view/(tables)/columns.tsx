@@ -25,7 +25,7 @@ export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
       return (
         <div>
           <div>{computerLabItem.name}</div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-muted-foreground text-xs">
             {computerLabItem.model}
           </div>
         </div>
@@ -180,12 +180,12 @@ export const useItemColumn: ColumnDef<IndividualComputerLabItemData>[] = [
                 <div>Paid {formatCurrency(paid)}</div>
               )}
               <div>
-                <span className="italic text-muted-foreground">bal of</span>{" "}
+                <span className="text-muted-foreground italic">bal of</span>{" "}
                 {formatCurrency(balance)}
               </div>
             </div>
           ) : (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               --Not applicable--
             </span>
           )}

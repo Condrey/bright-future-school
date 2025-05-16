@@ -40,7 +40,7 @@ export default function DialogDeleteClassTeacher({
       className="max-w-md"
     >
       <p>
-        You are <strong className="font-bold text-destructive">removing</strong>{" "}
+        You are <strong className="text-destructive font-bold">removing</strong>{" "}
         the staff,
         <cite>{classTeacher.user?.name}</cite> and all their information away
         from the database, are you sure that you want to continue?

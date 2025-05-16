@@ -42,10 +42,10 @@ export default function ComputerLabItemsDetails({}: ComputerLabItemsDetailsProps
         <div className="flex items-center gap-1">
           <ComputerIcon
             strokeWidth={0.8}
-            className="size-16 text-muted-foreground"
+            className="text-muted-foreground size-16"
           />
           <div>
-            <CardTitle className="uppercase tracking-wider">
+            <CardTitle className="tracking-wider uppercase">
               ComputerLab
             </CardTitle>
             <CardTitle>{`${formatNumber(data.summary.length)} asset${data.summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>

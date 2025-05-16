@@ -37,7 +37,7 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
     console.error(error);
     return (
       <div className="flex flex-col items-center justify-center gap-2">
-        <span className="max-w-sm text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm">
           Error occurred while fetching term details
         </span>
         <LoadingButton
@@ -65,13 +65,13 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
 
   return (
     <>
-      <div className="hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md md:flex-col md:divide-x-0 lg:flex">
+      <div className="bg-card hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md p-4 shadow-md md:flex-col md:divide-x-0 lg:flex">
         <div className="flex flex-col gap-1">
           <div className="font-bold">
             <YearContainer year={year} /> • {classStream.class?.class?.name}{" "}
             class
           </div>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-muted-foreground text-xs">
             {classStream.class?.class?.level?.name} level
           </span>
           <span>{classStream.stream?.name} stream</span>
@@ -107,7 +107,7 @@ export default function ClassDetails({ oldTerm }: ClassDetailsProps) {
                 <UserAvatar avatarUrl={avatarUrl} />
                 <div className="5 flex flex-col gap-0">
                   <div>{name}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-muted-foreground text-xs">
                     {description}
                   </div>
                 </div>

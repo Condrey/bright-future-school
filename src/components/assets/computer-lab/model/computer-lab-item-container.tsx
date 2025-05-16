@@ -39,7 +39,7 @@ export default function ComputerLabItemContainer({
   return (
     <Badge
       variant={"outline"}
-      className="flex max-w-fit gap-1 p-2 hover:cursor-pointer hover:bg-secondary"
+      className="hover:bg-secondary flex max-w-fit gap-1 p-2 hover:cursor-pointer"
       onClick={() =>
         startTransition(() =>
           navigateOnclickWithPathnameWithoutUpdate(url + computerLabItem.id),
@@ -49,11 +49,11 @@ export default function ComputerLabItemContainer({
       {isPending ? (
         <Loader2Icon className="size-12 animate-spin" strokeWidth={0.5} />
       ) : (
-        <ComputerIcon className="size-12 fill-secondary" strokeWidth={0.5} />
+        <ComputerIcon className="fill-secondary size-12" strokeWidth={0.5} />
       )}
       <div>
         <div>{computerLabItem.name}</div>{" "}
-        <div className="text-xs font-normal text-muted-foreground">
+        <div className="text-muted-foreground text-xs font-normal">
           <span className="italic">model </span>
           {computerLabItem.model}
         </div>

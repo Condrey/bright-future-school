@@ -23,7 +23,7 @@ export default function ListOfClassStreams({
     <div>
       {status === "error" ? (
         <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             Error occurred while fetching classes and streams.
           </p>
           <LoadingButton
@@ -36,7 +36,7 @@ export default function ListOfClassStreams({
         </div>
       ) : status === "success" && !data.length ? (
         <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             There are no classes in the database yet, please contact the
             director.
           </p>

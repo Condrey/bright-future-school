@@ -51,10 +51,10 @@ export default function GeneralStoreItemsDetails({}: GeneralStoreItemsDetailsPro
         <div className="flex items-center gap-1">
           <StoreIcon
             strokeWidth={0.8}
-            className="size-16 text-muted-foreground"
+            className="text-muted-foreground size-16"
           />
           <div>
-            <CardTitle className="uppercase tracking-wider">
+            <CardTitle className="tracking-wider uppercase">
               GeneralStore
             </CardTitle>
             <CardTitle>{`${formatNumber(summary.length)} sub asset${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} total item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>

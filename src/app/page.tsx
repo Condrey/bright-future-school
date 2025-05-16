@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <div className="flex size-full min-h-svh flex-col items-center justify-center gap-12">
       <div className="mx-auto flex max-w-md flex-col gap-0.5">
-        <h1 className="text-center text-2xl font-bold uppercase tracking-tight lg:text-3xl">
+        <h1 className="text-center text-2xl font-bold tracking-tight uppercase lg:text-3xl">
           {webName}
         </h1>
         <h4 className="text-center italic">school management system</h4>

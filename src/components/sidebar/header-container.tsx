@@ -108,7 +108,7 @@ function BreadcrumbLinkItem({ basePathName, item }: BreadcrumbLinkItemProps) {
         className={cn(
           "flex max-w-40 items-center justify-start text-start lg:max-w-48",
           isPending &&
-            "animate-pulse rounded-md bg-accent text-accent-foreground",
+            "bg-accent text-accent-foreground animate-pulse rounded-md",
         )}
       >
         <Link

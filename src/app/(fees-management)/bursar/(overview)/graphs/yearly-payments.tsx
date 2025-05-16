@@ -42,7 +42,7 @@ export default function YearlyPayments({ payments }: YearlyPaymentsProps) {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="mx-auto max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground mx-auto max-w-sm text-center">
           An error occurred while fetching payments
         </span>
         <LoadingButton
@@ -112,7 +112,7 @@ export default function YearlyPayments({ payments }: YearlyPaymentsProps) {
       <CardContent className="flex flex-col overflow-y-auto">
         {!chartData.length ? (
           <div className="flex min-h-96 flex-1 flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               No data available yet, it seems that the pupils/ students have not
               made school fees payments yet.
             </p>
@@ -146,7 +146,7 @@ export default function YearlyPayments({ payments }: YearlyPaymentsProps) {
                           {chartConfig[name as keyof typeof chartConfig]
                             ?.label || name}
                         </span>
-                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums text-foreground">
+                        <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums">
                           {item.dataKey === "totalAmountPaid"
                             ? formatCurrency(value as number)
                             : formatNumber(value as number)}
@@ -201,7 +201,7 @@ export default function YearlyPayments({ payments }: YearlyPaymentsProps) {
         )}
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
+        <div className="text-muted-foreground leading-none">
           This is a representation of the total amount paid and the number of
           transactions made over the years.
         </div>

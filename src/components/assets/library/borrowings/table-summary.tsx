@@ -12,7 +12,7 @@ export default async function TableSummary() {
 
   return (
     <div className="space-y-3">
-      <h1 className="text-xl text-muted-foreground">
+      <h1 className="text-muted-foreground text-xl">
         Table summary of borrowings
       </h1>
       <div className="flex gap-2">

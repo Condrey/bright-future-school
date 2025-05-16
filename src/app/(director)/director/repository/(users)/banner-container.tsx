@@ -18,7 +18,7 @@ export default function BannerContainer() {
   return (
     <>
       {!!missingUsers.length && (
-        <div className="bg-destructive/80 px-4 py-2 text-destructive-foreground">
+        <div className="bg-destructive/80 text-destructive-foreground px-4 py-2">
           <div className="flex items-center gap-2">
             <AlertTriangle className="size-4 flex-none shrink-0" />
             <p>

@@ -54,7 +54,7 @@ export default function FormAddEditExamSubject({
   const academicYearSubjects =
     exam.classTerm.classStream?.class?.academicYearSubjects!;
 
-    const [isDateMode, setIsDateMode] = useState(false);
+  const [isDateMode, setIsDateMode] = useState(false);
   const form = useForm<MultipleExamSubjectSchema>({
     resolver: zodResolver(multipleExamSubjectSchema),
     defaultValues: { examSubjects: exam.examSubjects },
@@ -101,7 +101,7 @@ export default function FormAddEditExamSubject({
                             return (
                               <FormItem
                                 key={item.id}
-                                className="flex flex-row items-start space-x-3 space-y-0"
+                                className="flex flex-row items-start space-y-0 space-x-3"
                               >
                                 <FormControl>
                                   <Checkbox
@@ -126,7 +126,7 @@ export default function FormAddEditExamSubject({
                                   />
                                 </FormControl>
                                 <FormLabel className="text-sm font-normal capitalize">
-                                      {item.subject.code} {item.subject.subjectName}{" "}
+                                  {item.subject.code} {item.subject.subjectName}{" "}
                                   ({item.subject.slug})
                                 </FormLabel>
                               </FormItem>
@@ -148,9 +148,14 @@ export default function FormAddEditExamSubject({
             </div>
             <SheetFooter>
               <div className="flex w-full items-center justify-end gap-4">
-           {!isDateMode&&<ButtonAddViewSubjects type="button" classStream={exam.classTerm.classStream as ClassStreamData}   >
-            More subjects
-           </ButtonAddViewSubjects>}
+                {!isDateMode && (
+                  <ButtonAddViewSubjects
+                    type="button"
+                    classStream={exam.classTerm.classStream as ClassStreamData}
+                  >
+                    More subjects
+                  </ButtonAddViewSubjects>
+                )}
                 <Button
                   variant={isDateMode ? "destructive" : "default"}
                   type="button"
@@ -188,7 +193,7 @@ function SubjectsWithDates({ form, exam, isDateView }: SubjectsWithDatesProps) {
   const academicYearSubjects =
     exam.classTerm.classStream?.class?.academicYearSubjects!;
   return (
-    <div className={cn("space-y-6", isDateView && "duration-300 animate-in")}>
+    <div className={cn("space-y-6", isDateView && "animate-in duration-300")}>
       {fields.map((examSubject, number) => {
         const academicYearSubject = academicYearSubjects.find(
           (a) => a.id === examSubject.academicYearSubjectId,
@@ -199,7 +204,7 @@ function SubjectsWithDates({ form, exam, isDateView }: SubjectsWithDatesProps) {
             key={examSubject.id}
             className="flex flex-col items-start gap-4 sm:flex-row sm:gap-3"
           >
-            <span className="hidden h-6 w-6 flex-none items-center justify-center rounded-full bg-muted text-xs text-muted-foreground sm:flex">
+            <span className="bg-muted text-muted-foreground hidden h-6 w-6 flex-none items-center justify-center rounded-full text-xs sm:flex">
               #{number + 1}
             </span>{" "}
             <FormField

@@ -29,7 +29,7 @@ export default function FormAddViewSubjects({
   const classValue = (classStream.class?.class?.slug ?? "").toUpperCase();
   const streamValue = classStream.stream?.name;
   const levelValue = classStream.class?.class?.level?.name;
-  const academicYearSubjects = classStream.class?.academicYearSubjects
+  const academicYearSubjects = classStream.class?.academicYearSubjects;
   // .flatMap(
   //   (c) => c.subject,
   // );
@@ -42,8 +42,6 @@ export default function FormAddViewSubjects({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-
-
       <SheetContent className="flex h-full flex-col gap-8 overflow-y-auto">
         <SheetHeader className="flex flex-col">
           <SheetTitle>
@@ -63,13 +61,13 @@ export default function FormAddViewSubjects({
         <div className="size-full overflow-y-auto scroll-smooth">
           {status === "pending" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-              <p className="max-w-sm text-center text-muted-foreground">
+              <p className="text-muted-foreground max-w-sm text-center">
                 Loading...
               </p>
             </div>
           ) : status === "error" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-              <p className="max-w-sm text-center text-muted-foreground">
+              <p className="text-muted-foreground max-w-sm text-center">
                 An error occurred while fetching subjects
               </p>
               <LoadingButton loading={isFetching} onClick={() => refetch()}>
@@ -79,7 +77,7 @@ export default function FormAddViewSubjects({
           ) : status === "success" &&
             !data.flatMap((d) => d.subjects).length ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-              <p className="max-w-sm text-center text-muted-foreground">
+              <p className="text-muted-foreground max-w-sm text-center">
                 There are no subjects in the database yet. Please add.
               </p>
               <ButtonAddNewSubject variant={"secondary"}>

@@ -39,7 +39,7 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="mx-auto max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground mx-auto max-w-sm text-center">
           An error occurred while fetching students in all levels
         </span>
         <LoadingButton
@@ -97,7 +97,7 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+          className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[250px] pb-0"
         >
           <PieChart>
             <ChartTooltip
@@ -124,7 +124,7 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
                       name}{" "}
                     level
                   </span>
-                  <div className="ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums text-foreground">
+                  <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums">
                     {formatNumber(value as number)}
                   </div>
                 </>
@@ -140,7 +140,7 @@ export default function StudentsPerLevel({ data }: StudentsPerLevelProps) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
+        <div className="text-muted-foreground leading-none">
           Showing number of pupils and students per level
         </div>
       </CardFooter>

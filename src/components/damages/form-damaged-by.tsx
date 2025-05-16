@@ -44,14 +44,14 @@ export default function FormDamagedBy({ form }: FormDamagedByProps) {
     <>
       {status === "pending" ? (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             fetching learners....
           </span>
           <Loader2 className="animate-spin" />
         </div>
       ) : status === "error" ? (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             Error fetching possible asset damagers.
           </span>
           <LoadingButton
@@ -64,7 +64,7 @@ export default function FormDamagedBy({ form }: FormDamagedByProps) {
         </div>
       ) : status === "success" && !data.length ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             There are no possible asset damagers(pupils/ students) in the system
             yet.
           </span>
@@ -127,7 +127,7 @@ export default function FormDamagedBy({ form }: FormDamagedByProps) {
                                       person.email ||
                                       `@${person.username}`}
                                   </p>
-                                  <span className="text-xs text-muted-foreground">
+                                  <span className="text-muted-foreground text-xs">
                                     {classStream?.class?.class?.name} class,
                                     {classStream?.class?.academicYear?.year},
                                     {classStream?.class?.class?.level?.name}

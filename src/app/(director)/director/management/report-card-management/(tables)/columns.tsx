@@ -44,7 +44,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
       return (
         <p className="space-y-1">
           <span>{data}</span>{" "}
-          <span className="text-xs text-muted-foreground">class</span>
+          <span className="text-muted-foreground text-xs">class</span>
         </p>
       );
     },
@@ -60,7 +60,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
       return (
         <p className="space-y-1">
           <span>{data}</span>{" "}
-          <span className="text-xs text-muted-foreground">stream</span>
+          <span className="text-muted-foreground text-xs">stream</span>
         </p>
       );
     },
@@ -76,7 +76,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
       return (
         <p className="space-y-1">
           <span>{data}</span>{" "}
-          <span className="text-xs text-muted-foreground">level</span>
+          <span className="text-muted-foreground text-xs">level</span>
         </p>
       );
     },
@@ -97,7 +97,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
           ) : (
             <p className="space-y-1">
               <span>{formatNumber(data)}</span>{" "}
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 subject{data === 1 ? "" : "s"} available
               </span>
             </p>
@@ -122,7 +122,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
           ) : (
             <p className="space-y-1">
               <span>{formatNumber(data)}</span>{" "}
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 exam{data === 1 ? "" : "s"} scheduled
               </span>
             </p>

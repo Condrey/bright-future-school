@@ -34,7 +34,7 @@ export default function AssetSection<T extends { asset: AssetSchema }>({
     <div>
       <Card className="bg-muted/30">
         <CardHeader className="flex-row items-center justify-center">
-          <div className="flex size-44 items-center justify-center rounded-full border bg-border p-2">
+          <div className="bg-border flex size-44 items-center justify-center rounded-full border p-2">
             <Icon className="size-36" strokeWidth={0.5} />
           </div>
         </CardHeader>

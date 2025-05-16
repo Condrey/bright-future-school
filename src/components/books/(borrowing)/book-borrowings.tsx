@@ -17,7 +17,7 @@ export default function BookBorrowings({
     <Fragment>
       {!borrowers.length ? (
         <div className="flex size-full min-h-[28rem] flex-col items-center justify-center gap-4">
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             There are no records of borrowing recorded yet.
           </p>
           <LendBorrowBook

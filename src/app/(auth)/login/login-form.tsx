@@ -43,7 +43,7 @@ export default function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        {error && <p className="text-center text-destructive">{error}</p>}
+        {error && <p className="text-destructive text-center">{error}</p>}
         <FormField
           control={form.control}
           name="username"

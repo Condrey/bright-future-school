@@ -128,7 +128,7 @@ export function NavMain() {
                     <span
                       className={cn(
                         isActive && "font-semibold",
-                        "line-clamp-1 text-ellipsis break-words",
+                        "line-clamp-1 break-words text-ellipsis",
                       )}
                     >
                       {item.title}
@@ -174,7 +174,7 @@ function SubmenuItem({ subItem }: SubmenuItemProps) {
         onClick={() => startTransition(() => {})}
         className={cn(
           isPending &&
-            "animate-pulse bg-sidebar-accent text-sidebar-accent-foreground",
+            "bg-sidebar-accent text-sidebar-accent-foreground animate-pulse",
         )}
       >
         <Link
@@ -188,7 +188,7 @@ function SubmenuItem({ subItem }: SubmenuItemProps) {
           </span>
           <span
             className={cn(
-              "top-0 size-2 flex-none -translate-x-1/2 rounded-full bg-destructive",
+              "bg-destructive top-0 size-2 flex-none -translate-x-1/2 rounded-full",
               !subItem.showIndicator && "hidden",
             )}
           />

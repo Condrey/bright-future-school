@@ -31,7 +31,7 @@ export default function ListOfFoodStoreItems() {
   if (status === "pending") {
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           Loading....
         </span>
         <Loader2 className="animate-spin" />
@@ -42,7 +42,7 @@ export default function ListOfFoodStoreItems() {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           Error fetching food store items
         </span>
         <LoadingButton
@@ -58,14 +58,14 @@ export default function ListOfFoodStoreItems() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           There are no food store items in the system yet.
         </span>
       </div>
     );
   }
   return (
-    <Card className="w-full bg-muted/30">
+    <Card className="bg-muted/30 w-full">
       <CardHeader className="flex w-full flex-row gap-4">
         <div>
           <CardTitle>

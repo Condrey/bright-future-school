@@ -33,7 +33,7 @@ export default function ListOfAssets({ assets }: ListOfAssetsProps) {
       </div>
       {status === "error" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm">
             An error occurred while fetching assets.
           </span>
           <LoadingButton
@@ -47,7 +47,7 @@ export default function ListOfAssets({ assets }: ListOfAssetsProps) {
         </div>
       ) : status === "success" && !data.length ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             You do not have any assets in the database yet. Use this button to
             add one.
           </span>

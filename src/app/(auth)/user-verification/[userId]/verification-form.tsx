@@ -51,7 +51,7 @@ export default function VerificationForm({ user }: VerificationFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {error && (
-          <p className="rounded-md bg-red-500/70 px-2 py-1 text-destructive-foreground">
+          <p className="text-destructive-foreground rounded-md bg-red-500/70 px-2 py-1">
             {error}
           </p>
         )}

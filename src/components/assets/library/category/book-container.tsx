@@ -31,7 +31,7 @@ export default function BookContainer({ book }: BookContainerProps) {
   return (
     <Badge
       variant={"outline"}
-      className="flex max-w-fit gap-1 p-2 hover:cursor-pointer hover:bg-secondary"
+      className="hover:bg-secondary flex max-w-fit gap-1 p-2 hover:cursor-pointer"
       onClick={() =>
         startTransition(() =>
           navigateOnclickWithPathnameWithoutUpdate(url + book.id),
@@ -41,11 +41,11 @@ export default function BookContainer({ book }: BookContainerProps) {
       {isPending ? (
         <Loader2Icon className="size-12 animate-spin" strokeWidth={0.5} />
       ) : (
-        <BookIcon className="size-12 fill-secondary" strokeWidth={0.5} />
+        <BookIcon className="fill-secondary size-12" strokeWidth={0.5} />
       )}
       <div>
         <div>{book.title}</div>{" "}
-        <div className="text-xs text-muted-foreground">
+        <div className="text-muted-foreground text-xs">
           <span className="italic">by </span>
           {book.author}
         </div>

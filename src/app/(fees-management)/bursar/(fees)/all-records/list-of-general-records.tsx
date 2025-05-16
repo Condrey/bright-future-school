@@ -53,7 +53,7 @@ export default function ListOfGeneralRecords({
         </h1>
         <p
           className={cn(
-            !!data ? "visible text-sm text-muted-foreground" : "invisible",
+            !!data ? "text-muted-foreground visible text-sm" : "invisible",
           )}
         >
           Showing results from{" "}
@@ -65,7 +65,7 @@ export default function ListOfGeneralRecords({
       {status === "pending" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
           <Loader2Icon className="size-4 animate-spin" />
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             Fetching list, please wait
           </p>
         </div>
@@ -84,7 +84,7 @@ export default function ListOfGeneralRecords({
         </div>
       ) : status === "success" && !data.length ? (
         <div className="flex min-h-96 flex-col items-center justify-center gap-4">
-          <p className="max-w-sm text-center text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-center">
             There are no registered defaulters in the system yet
           </p>
         </div>

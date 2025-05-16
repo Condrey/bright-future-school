@@ -28,7 +28,7 @@ export default function ComputerLabBrandModelItems() {
   if (!searchParamsBrandModel) {
     return (
       <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Please choose a brand model from the side bar to display their items
           here.
         </p>
@@ -39,7 +39,7 @@ export default function ComputerLabBrandModelItems() {
     console.error(error);
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Failed to fetch brand model items. Please try again!
         </p>
         <LoadingButton
@@ -55,7 +55,7 @@ export default function ComputerLabBrandModelItems() {
   if (status === "pending") {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Fetching brand model items
         </p>
         <Loader2Icon className="animate-spin" />
@@ -65,7 +65,7 @@ export default function ComputerLabBrandModelItems() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no items belonging to this brand model added in the database
           yet. Please add
         </p>

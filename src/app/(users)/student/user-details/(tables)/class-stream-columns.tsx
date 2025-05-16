@@ -39,7 +39,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
           <div>
             {classValue} {stream}
           </div>
-          <div className="text-xs text-muted-foreground">{level}</div>
+          <div className="text-muted-foreground text-xs">{level}</div>
         </div>
       );
     },
@@ -60,7 +60,7 @@ export const useClassStreamColumns: ColumnDef<ClassStreamData>[] = [
               <UserAvatar avatarUrl={classTeacher.avatarUrl} />
               <div>
                 <div>{classTeacher.name}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {classTeacher.telephone ||
                     classTeacher.email ||
                     `@${classTeacher.username}`}

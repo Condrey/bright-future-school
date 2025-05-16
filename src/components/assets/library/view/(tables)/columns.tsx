@@ -25,7 +25,7 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
       return (
         <div>
           <div>{libraryBook.title}</div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-muted-foreground text-xs">
             {libraryBook.author}
           </div>
         </div>
@@ -113,7 +113,7 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
               variant={"secondary"}
             >{`${formatNumber(damages)} damage${damages === 1 ? "" : "s"}`}</Badge>
           )}
-          <div className="text-xs text-muted-foreground">
+          <div className="text-muted-foreground text-xs">
             {repairs === 0 ? (
               <div>{"No repairs"}</div>
             ) : (
@@ -169,12 +169,12 @@ export const useItemColumn: ColumnDef<IndividualLibraryBookData>[] = [
                 <span>Paid {formatCurrency(paid)}</span>
               )}
               <div>
-                <span className="italic text-muted-foreground">bal of</span>{" "}
+                <span className="text-muted-foreground italic">bal of</span>{" "}
                 {formatCurrency(balance)}
               </div>
             </div>
           ) : (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               --Not applicable--
             </span>
           )}

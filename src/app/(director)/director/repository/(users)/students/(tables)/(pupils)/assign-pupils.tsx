@@ -30,7 +30,7 @@ export default function AssignPupils({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent className="flex w-full min-w-fit max-w-md flex-col">
+      <SheetContent className="flex w-full max-w-md min-w-fit flex-col">
         <SheetHeader>
           <SheetTitle className="capitalize">
             <div className="flex flex-col gap-0.5">

@@ -17,7 +17,7 @@ export default function EmptyContainer({
         className,
       )}
     >
-      <p className="max-w-sm text-center text-muted-foreground">{message}</p>
+      <p className="text-muted-foreground max-w-sm text-center">{message}</p>
       {children}
     </div>
   );

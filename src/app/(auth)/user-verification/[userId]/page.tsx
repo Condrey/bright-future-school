@@ -31,7 +31,7 @@ export default async function Page({ params }: PageProps) {
         <CardContent>
           <VerificationForm user={user} />
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
+        <CardFooter className="text-muted-foreground text-xs">
           <Checkbox checked disabled className="mr-2" />{" "}
           <p>
             By continuing, you agree to the terms and conditions of{" "}

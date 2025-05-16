@@ -26,7 +26,7 @@ export const useExamScoresColumns = (
           <UserAvatar avatarUrl={pupil?.avatarUrl} />
           <div>
             <p className="text-sm font-medium">{pupil?.name}</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {pupil?.email || pupil?.telephone || `@${pupil?.username}`}
             </p>
           </div>

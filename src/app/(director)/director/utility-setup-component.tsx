@@ -46,13 +46,13 @@ export default function UtilitySetupComponent({
             className={cn(
               "cols group relative flex max-w-sm auto-cols-max flex-col items-center gap-3 rounded-md p-4",
               item.isVisible
-                ? "cursor-pointer bg-primary/95 text-primary-foreground transition-colors hover:bg-primary"
-                : "pointer-events-none cursor-not-allowed bg-secondary text-secondary-foreground",
+                ? "bg-primary/95 text-primary-foreground hover:bg-primary cursor-pointer transition-colors"
+                : "bg-secondary text-secondary-foreground pointer-events-none cursor-not-allowed",
             )}
           >
             <CheckCheckIcon
               className={cn(
-                "absolute right-4 top-4",
+                "absolute top-4 right-4",
                 item.showIndicator && "hidden",
               )}
             />

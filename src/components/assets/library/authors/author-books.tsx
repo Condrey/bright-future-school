@@ -24,7 +24,7 @@ export default function AuthorBooks() {
   if (!searchParamsAuthor) {
     return (
       <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Please choose an author from the side bar to display their books here.
         </p>
       </div>
@@ -34,7 +34,7 @@ export default function AuthorBooks() {
     console.error(error);
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Failed to fetch book categories. Please try again!
         </p>
         <LoadingButton
@@ -50,7 +50,7 @@ export default function AuthorBooks() {
   if (status === "pending") {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Fetching books
         </p>
         <Loader2Icon className="animate-spin" />
@@ -60,7 +60,7 @@ export default function AuthorBooks() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no library book categories added in the database yet. Please
           add
         </p>

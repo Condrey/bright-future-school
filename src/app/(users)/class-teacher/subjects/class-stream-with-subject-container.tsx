@@ -37,7 +37,7 @@ export function ClassStreamWithSubjectContainer({
     <Card className="max-w-4xl">
       {/* Class information  */}
       <CardHeader className="space-y-0.5">
-        <CardTitle className="font-bold capitalize tracking-tight">
+        <CardTitle className="font-bold tracking-tight capitalize">
           <YearContainer year={year} /> {classValue?.class?.slug} {stream?.name}{" "}
           ({classValue?.class?.level?.name} level)
         </CardTitle>
@@ -46,7 +46,8 @@ export function ClassStreamWithSubjectContainer({
             ? "No pupils/ students"
             : `${formatNumber(_count.pupils)} ${
                 _count.pupils === 1 ? "Pupil/ student" : "Pupils/ students"
-              }`}, {classValue?._count.academicYearSubjects} subject(s)
+              }`}
+          , {classValue?._count.academicYearSubjects} subject(s)
         </CardDescription>
         <CardDescription>
           Class teacher:{" "}

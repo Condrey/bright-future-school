@@ -43,10 +43,10 @@ export default function LibraryItemsDetails({}: LibraryItemsDetailsProps) {
         <div className="flex items-center gap-1">
           <LibraryIcon
             strokeWidth={0.8}
-            className="size-16 text-muted-foreground"
+            className="text-muted-foreground size-16"
           />
           <div>
-            <CardTitle className="uppercase tracking-wider">Library</CardTitle>
+            <CardTitle className="tracking-wider uppercase">Library</CardTitle>
             <CardTitle>{`${formatNumber(data.summary.length)} book${data.summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>
           </div>
         </div>

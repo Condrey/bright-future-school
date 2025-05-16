@@ -96,7 +96,7 @@ export const useLaboratoryColumns: ColumnDef<LaboratoryItemData>[] = [
         <div>
           <div>{format(row.original.createdAt, "PP")}</div>
           {row.original.updatedAt > row.original.createdAt && (
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               (Updated {format(row.original.updatedAt, "PP")})
             </div>
           )}
@@ -166,12 +166,12 @@ export const useLaboratoryColumns: ColumnDef<LaboratoryItemData>[] = [
                 <div>Paid {formatCurrency(paid)}</div>
               )}
               <div>
-                <span className="italic text-muted-foreground">bal of</span>{" "}
+                <span className="text-muted-foreground italic">bal of</span>{" "}
                 {formatCurrency(balance)}
               </div>
             </div>
           ) : (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               --Not applicable--
             </span>
           )}

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Button, ButtonProps } from "@/components/ui/button";
 import { ClassStreamData } from "@/lib/types";

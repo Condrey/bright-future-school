@@ -30,7 +30,7 @@ export default function TermDetails({ oldTerm }: TermDetailsProps) {
     console.error(error);
     return (
       <div className="flex flex-col items-center justify-center gap-2">
-        <span className="max-w-sm text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm">
           Error occurred while fetching term details
         </span>
         <LoadingButton
@@ -45,7 +45,7 @@ export default function TermDetails({ oldTerm }: TermDetailsProps) {
     );
   }
   return (
-    <div className="hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md bg-card p-4 shadow-md sm:flex md:flex-col md:divide-x-0">
+    <div className="bg-card hidden flex-row justify-evenly gap-3 divide-x-2 rounded-md p-4 shadow-md sm:flex md:flex-col md:divide-x-0">
       <div className="flex items-center justify-between gap-2">
         <h1 className="text-xl font-bold">Term Details</h1>
         <ButtonUpdateClassTerm
@@ -58,18 +58,18 @@ export default function TermDetails({ oldTerm }: TermDetailsProps) {
       </div>
       <div className="flex flex-col gap-1 ps-2">
         <span>{term.term?.term}</span>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-2 text-sm">
           <CalendarIcon className="size-4" />
           <span>Starting Date:</span>
           <span className="text-foreground">{format(term.startAt, "PPP")}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-2 text-sm">
           <CalendarIcon className="size-4" />
           <span>Ending Date:</span>
           <span className="text-foreground">{format(term.endAt, "PPP")}</span>
         </div>
         {term.endAt.toString() === term.startAt.toString() && (
-          <div className="flex max-w-sm items-center gap-1 text-destructive">
+          <div className="text-destructive flex max-w-sm items-center gap-1">
             <AlertTriangle className="size-4 flex-none" />
             <span className="text-xs italic">
               Your term duration might be incorrect, edit this term
@@ -83,7 +83,7 @@ export default function TermDetails({ oldTerm }: TermDetailsProps) {
           </span>
         </div>
         {(!term.feesAmount || term.feesAmount < 1) && (
-          <div className="flex max-w-sm items-center gap-1 text-destructive">
+          <div className="text-destructive flex max-w-sm items-center gap-1">
             <AlertTriangle className="size-4 flex-none" />
             <span className="text-xs italic">
               Please set the right fees amount. Edit the term.

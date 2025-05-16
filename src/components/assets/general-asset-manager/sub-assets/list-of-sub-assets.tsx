@@ -20,12 +20,12 @@ export default function ListOfSubAssets({ oldData }: ListOfSubAssetsProps) {
   }
 
   return (
-    <div className="h-fit w-[24rem] space-y-3 rounded-md bg-card p-3">
+    <div className="bg-card h-fit w-[24rem] space-y-3 rounded-md p-3">
       <h1 className="text-xl">Sub assets</h1>
       <div>
         {status === "error" ? (
           <div className="flex min-h-[28rem] flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               Failed to fetch sub assets. Please try again!
             </p>
             <LoadingButton
@@ -38,7 +38,7 @@ export default function ListOfSubAssets({ oldData }: ListOfSubAssetsProps) {
           </div>
         ) : status === "success" && !data.length ? (
           <div className="flex min-h-[28rem] flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               There are no sub assets added in the database yet. Please add
             </p>
           </div>

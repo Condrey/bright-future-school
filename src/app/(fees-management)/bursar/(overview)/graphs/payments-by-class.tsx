@@ -94,7 +94,7 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="mx-auto max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground mx-auto max-w-sm text-center">
           An error occurred while fetching payments
         </span>
         <LoadingButton
@@ -222,7 +222,7 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
         </div>
         {!chartData.length ? (
           <div className="flex min-h-96 flex-1 flex-col items-center justify-center">
-            <p className="max-w-sm text-center text-muted-foreground">
+            <p className="text-muted-foreground max-w-sm text-center">
               No data available for the selected parameters. Change the
               parameters and try again.
             </p>
@@ -269,16 +269,16 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
                               {chartConfig[name as keyof typeof chartConfig]
                                 ?.label || name}
                             </span>
-                            <div className="ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums text-foreground">
+                            <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-bold tabular-nums">
                               {formatCurrency(value as number)}
                             </div>
                           </div>
                         )}
                         {/* Add this after the last item */}
                         {index === 2 && (
-                          <div className="mt-1.5 flex basis-full items-center gap-2 border-t pt-1.5 text-xs font-medium text-foreground">
+                          <div className="text-foreground mt-1.5 flex basis-full items-center gap-2 border-t pt-1.5 text-xs font-medium">
                             <span>Total fees expected</span>
-                            <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                            <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
                               {formatCurrency(item.payload.totalFeesAmount)}
                             </div>
                           </div>
@@ -311,7 +311,7 @@ export default function PaymentsByClass({ data }: PaymentsByClassProps) {
         )}
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
+        <div className="text-muted-foreground leading-none">
           Showing fees payment by class for{" "}
           {`${searchParamsYear || "All years"}, ${!updatedTerm ? "All terms" : updatedTerm.term}`}{" "}
           including pending balances too

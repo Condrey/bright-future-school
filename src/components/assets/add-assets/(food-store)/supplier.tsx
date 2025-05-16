@@ -103,14 +103,14 @@ export default function Supplier({ form }: SupplierProps) {
     <>
       {status === "pending" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             Loading....
           </span>
           <Loader2 className="animate-spin" />
         </div>
       ) : status === "error" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             Error fetching suppliers
           </span>
           <LoadingButton
@@ -123,7 +123,7 @@ export default function Supplier({ form }: SupplierProps) {
         </div>
       ) : status === "success" && !data.length ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             There are no suppliers in the system yet.
           </span>
         </div>
@@ -175,7 +175,7 @@ export default function Supplier({ form }: SupplierProps) {
                           >
                             <div className="flex flex-col">
                               <span>{supplier.name}</span>
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-muted-foreground text-xs">
                                 {supplier.address}, {supplier.contactInfo}
                               </p>
                             </div>

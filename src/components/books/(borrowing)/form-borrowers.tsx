@@ -46,14 +46,14 @@ export default function FormBorrowers({ form, isAStaff }: FormBorrowersProps) {
     <>
       {status === "pending" ? (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             fetching potential borrower list....
           </span>
           <Loader2 className="animate-spin" />
         </div>
       ) : status === "error" ? (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             Error fetching potential borrowers.
           </span>
           <LoadingButton
@@ -66,7 +66,7 @@ export default function FormBorrowers({ form, isAStaff }: FormBorrowersProps) {
         </div>
       ) : status === "success" && !data ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <span className="max-w-sm text-center text-muted-foreground">
+          <span className="text-muted-foreground max-w-sm text-center">
             There are no potential borrowers in the system yet.
           </span>
         </div>
@@ -180,7 +180,7 @@ export default function FormBorrowers({ form, isAStaff }: FormBorrowersProps) {
                                             person.email ||
                                             `@${person.username}`}
                                         </p>
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                           {classStream?.class?.class?.name}{" "}
                                           class,
                                           {

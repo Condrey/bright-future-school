@@ -22,7 +22,7 @@ export const useSubjectColumns: ColumnDef<SubjectData>[] = [
     cell: ({ row }) => (
       <div>
         <div>{row.original.subjectName}</div>
-        <div className="text-xs uppercase text-muted-foreground">
+        <div className="text-muted-foreground text-xs uppercase">
           {row.original.slug}
         </div>
       </div>
@@ -55,7 +55,7 @@ export const useSubjectColumns: ColumnDef<SubjectData>[] = [
               </div>
             </TooltipContainer>
           ) : (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               --No grading added--
             </span>
           )}

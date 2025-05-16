@@ -86,7 +86,7 @@ export function TableHeaderSection({
     <>
       {/* <pre>{JSON.stringify(extraPayments, null, 2)}</pre> */}
       <div className="flex flex-wrap justify-center gap-4">
-        <Card className="bg-blue-500 text-white dark:text-background">
+        <Card className="dark:text-background bg-blue-500 text-white">
           <CardHeader>
             <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
               {formatCurrency(feesTotalPayment || 0)}
@@ -96,7 +96,7 @@ export function TableHeaderSection({
             <CardTitle className="w-full text-center">
               Total amount expected
             </CardTitle>
-            <CardDescription className="w-full text-center text-white dark:text-background">
+            <CardDescription className="dark:text-background w-full text-center text-white">
               <span className="italic">from</span>{" "}
               <span>{`${academicYear || "All years"}, ${termName}`}</span>
             </CardDescription>
@@ -113,14 +113,14 @@ export function TableHeaderSection({
               <CardTitle className="w-full text-center">
                 Extra payments
               </CardTitle>
-              <CardDescription className="w-full text-center text-destructive-foreground">
+              <CardDescription className="text-destructive-foreground w-full text-center">
                 <span className="italic">from</span>{" "}
                 <span>{`${academicYear || "All years"}, ${termName}`}</span>
               </CardDescription>
             </CardContent>
           </Card>
         )}
-        <Card className="bg-green-500 text-white dark:text-background">
+        <Card className="dark:text-background bg-green-500 text-white">
           <CardHeader>
             <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
               {formatCurrency(totalFeesPaid)}
@@ -130,13 +130,13 @@ export function TableHeaderSection({
             <CardTitle className="w-full text-center">
               Collected payments
             </CardTitle>
-            <CardDescription className="w-full text-center text-white dark:text-background">
+            <CardDescription className="dark:text-background w-full text-center text-white">
               <span className="italic">from</span>{" "}
               <span>{`${academicYear || "All years"}, ${termName}`}</span>
             </CardDescription>
           </CardContent>
         </Card>
-        <Card className="bg-amber-500 text-white dark:text-background">
+        <Card className="dark:text-background bg-amber-500 text-white">
           <CardHeader>
             <CardTitle className="font-mono text-xl font-bold lg:text-2xl">
               {formatCurrency(totalFessBalance + extraPayment)}
@@ -146,7 +146,7 @@ export function TableHeaderSection({
             <CardTitle className="w-full text-center">
               Outstanding balance
             </CardTitle>
-            <CardDescription className="w-full text-center text-white dark:text-background">
+            <CardDescription className="dark:text-background w-full text-center text-white">
               <span className="italic">from</span>{" "}
               <span>{`${academicYear || "All years"}, ${termName}`}</span>
             </CardDescription>

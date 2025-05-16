@@ -29,7 +29,7 @@ export default function ListOfGrading({ grading }: ListOfGradingProps) {
     console.log(error);
     return (
       <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           An error occurred while fetching the default grading. Please try
           again.
         </span>
@@ -47,7 +47,7 @@ export default function ListOfGrading({ grading }: ListOfGradingProps) {
   if (status === "success" && !data.length) {
     return (
       <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           There are no custom grading added in the system yet. Please add.
         </span>
         <ButtonAddEditGrading />

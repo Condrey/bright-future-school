@@ -33,7 +33,7 @@ export const useClassTeachersColumn = ({
               <UserAvatar avatarUrl={classTeacher.avatarUrl} />
               <div className="space-y-0.5">
                 <div>{classTeacher.name}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {classTeacher.telephone ||
                     classTeacher.email ||
                     `@${classTeacher.username}`}

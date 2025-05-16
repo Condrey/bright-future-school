@@ -54,7 +54,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
       <TableSummary items={items} />
       {status === "error" ? (
         <div className="flex size-full flex-col items-center justify-center gap-4">
-          <p className="text-center text-muted-foreground">
+          <p className="text-muted-foreground text-center">
             Error occurred while fetching items for {oldItem.name}
           </p>
           <LoadingButton
@@ -79,7 +79,7 @@ export default function ListOfItems({ oldItem }: ListOfItemsProps) {
           filterColumn={{ id: "uniqueIdentifier", label: "unique identifier" }}
           tableHeaderSection={
             !missingIdItems.length ? null : (
-              <div className="flex w-fit items-center gap-2 rounded-md bg-destructive/80 px-2 py-1 text-destructive-foreground">
+              <div className="bg-destructive/80 text-destructive-foreground flex w-fit items-center gap-2 rounded-md px-2 py-1">
                 <AlertTriangle className="size-4 flex-none" />
                 <p>{` ${formatNumber(missingIdItems.length)} item${missingIdItems.length === 1 ? " is" : "s are"} missing a unique identifier. Please update.`}</p>
               </div>

@@ -5,7 +5,7 @@ import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteExam, upsertExam } from "./action";
 
 const queryKey: QueryKey = ["levels-with-subjects", "list"];
-const key1: QueryKey =["class-teacher-class-streams"]
+const key1: QueryKey = ["class-teacher-class-streams"];
 
 export function useUpsertExamMutation() {
   const queryClient = useQueryClient();

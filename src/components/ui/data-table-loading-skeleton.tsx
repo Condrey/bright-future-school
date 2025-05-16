@@ -2,7 +2,7 @@ import { Skeleton } from "./skeleton";
 
 export default function DataTableLoadingSkeleton() {
   return (
-    <div className="flex h-fit w-full animate-pulse flex-col gap-4 overflow-y-auto rounded-2xl bg-card p-4">
+    <div className="bg-card flex h-fit w-full animate-pulse flex-col gap-4 overflow-y-auto rounded-2xl p-4">
       <div className="flex gap-3">
         <Skeleton className="h-12 w-1/3" />
         <Skeleton className="h-12 w-1/3" />

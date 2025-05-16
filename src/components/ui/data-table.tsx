@@ -69,13 +69,13 @@ export function DataTable<TData, TValue>({
     state: { sorting, columnFilters, columnVisibility },
   });
   return (
-    <div className="w-fit max-w-full rounded-2xl bg-card p-4 shadow-md">
+    <div className="bg-card w-fit max-w-full rounded-2xl p-4 shadow-md">
       <div className="w-full">{tableHeaderSection}</div>
       {/* filtering , column visibility and children */}
       <div className="flex items-center justify-between py-4">
         {!!filterColumn && (
           <div className="relative">
-            <SearchIcon className="absolute start-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground transition-colors peer-focus:text-foreground peer-focus-visible:text-foreground" />
+            <SearchIcon className="text-muted-foreground peer-focus:text-foreground peer-focus-visible:text-foreground absolute start-2 top-1/2 size-4 -translate-y-1/2 transition-colors" />
             <Input
               placeholder={`Search by ${filterColumn.label ?? filterColumn.id}...`}
               value={

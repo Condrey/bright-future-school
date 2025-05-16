@@ -29,7 +29,7 @@ export default function Sidebar({ classStreams, className }: SidebarProps) {
       <div>
         {status === "error" ? (
           <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-            <span className="max-w-sm text-center text-muted-foreground">
+            <span className="text-muted-foreground max-w-sm text-center">
               Error occurred while fetching classes and streams.
             </span>
             <LoadingButton
@@ -42,7 +42,7 @@ export default function Sidebar({ classStreams, className }: SidebarProps) {
           </div>
         ) : status === "success" && !data.length ? (
           <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-            <span className="max-w-sm text-center text-muted-foreground">
+            <span className="text-muted-foreground max-w-sm text-center">
               There are no classes and streams added in the database yet
             </span>
           </div>
@@ -84,16 +84,16 @@ function LinkComponent({ item }: LinkComponentProps) {
           variant: item.id === params.classStreamId ? "secondary" : "ghost",
           className: "flex flex-row justify-start",
         }),
-        isPending && "animate-pulse rounded-md bg-secondary",
+        isPending && "bg-secondary animate-pulse rounded-md",
       )}
       onClick={() => startTransition(() => {})}
     >
       <YearContainer year={year} />
       <div className="flex flex-col">
-        <span className="line-clamp-1 text-ellipsis text-xs capitalize">
+        <span className="line-clamp-1 text-xs text-ellipsis capitalize">
           {classValue} {stream} class
         </span>
-        <span className="text-xs text-muted-foreground">{level} level</span>
+        <span className="text-muted-foreground text-xs">{level} level</span>
       </div>
     </Link>
   );

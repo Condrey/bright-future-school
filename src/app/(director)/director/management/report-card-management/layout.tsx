@@ -24,7 +24,7 @@ export default async function Layout({
       <div className="flex-1">{children}</div>
       <Sidebar
         classStreams={classStreams}
-        className="sticky top-10 hidden max-h-[75vh] w-full max-w-fit flex-col space-y-2 overflow-y-auto scroll-smooth rounded-md border bg-card p-4 xl:flex"
+        className="bg-card sticky top-10 hidden max-h-[75vh] w-full max-w-fit flex-col space-y-2 overflow-y-auto scroll-smooth rounded-md border p-4 xl:flex"
       />
     </div>
   );

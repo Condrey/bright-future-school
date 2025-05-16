@@ -125,7 +125,7 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
           .reduce((total, amount) => (total || 0) + (amount || 0), 0) || 0;
 
       return price === 0 ? (
-        <span className="italic text-muted-foreground">--Not applicable--</span>
+        <span className="text-muted-foreground italic">--Not applicable--</span>
       ) : (
         formatCurrency(price)
       );
@@ -173,12 +173,12 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
                 <div>Paid {formatCurrency(paid)}</div>
               )}
               <div>
-                <span className="italic text-muted-foreground">bal of</span>{" "}
+                <span className="text-muted-foreground italic">bal of</span>{" "}
                 {formatCurrency(balance)}
               </div>
             </div>
           ) : (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               --Not applicable--
             </span>
           )}
@@ -197,7 +197,7 @@ export const useLibraryColumns: ColumnDef<LibraryBookData>[] = [
         <div>
           <div>{format(row.original.createdAt, "PP")}</div>
           {row.original.updatedAt > row.original.createdAt && (
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               (Updated {format(row.original.updatedAt, "PP")})
             </div>
           )}

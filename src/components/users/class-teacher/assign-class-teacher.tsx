@@ -33,7 +33,7 @@ export default function AssignClassTeacher({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent className="flex w-full min-w-fit max-w-md flex-col">
+      <SheetContent className="flex w-full max-w-md min-w-fit flex-col">
         <SheetHeader>
           <SheetTitle className="capitalize">
             <div className="flex flex-col gap-0.5">
@@ -73,7 +73,7 @@ export default function AssignClassTeacher({
               <UserAvatar avatarUrl={classTeacher.user?.avatarUrl} />
               <div className="space-y-0.5">
                 <div>{classTeacher.user?.name || "Missing info"}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {classTeacher.user?.telephone ||
                     classTeacher.user?.email ||
                     `@${classTeacher.user?.username}`}

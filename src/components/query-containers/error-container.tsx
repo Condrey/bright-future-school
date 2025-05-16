@@ -15,7 +15,7 @@ export default function ErrorContainer({
   console.error(query.error);
   return (
     <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-      <p className="max-w-sm text-center text-muted-foreground">
+      <p className="text-muted-foreground max-w-sm text-center">
         {errorMessage}
       </p>
       <LoadingButton

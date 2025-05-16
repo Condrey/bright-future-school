@@ -159,7 +159,7 @@ export default function ButtonAddFees({
             ) : (
               <span
                 className={cn(
-                  "block w-full text-center text-muted-foreground",
+                  "text-muted-foreground block w-full text-center",
                   !form.formState.isDirty ? "visible" : "invisible",
                 )}
               >

@@ -1,0 +1,628 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      String                   @id @default(uuid())
+  name                    String?
+  username                String?                  @unique
+  email                   String?                  @unique
+  avatarUrl               String?
+  role                    Role?                    @default(USER)
+  createdAt               DateTime                 @default(now())
+  telephone               String?
+  passwordHash            String?
+  googleId                String?                  @unique
+  bio                     String?
+  isWelcomed              Boolean                  @default(false)
+  isVerified              Boolean                  @default(false)
+  emailVerified           Boolean                  @default(false)
+  assetDamages            AssetDamage[]
+  assetRepairPayments     AssetRepairPayment[]
+  borrowers               Borrower[]
+  emailVerificationTokens EmailVerificationToken[]
+  feesPayments            FeesPayment[]
+  pupils                  Pupil[]
+  sessions                Session[]
+  staffs                  Staff[]
+
+  @@map("users")
+}
+
+model EmailVerificationToken {
+  id      String @id @default(uuid())
+  userId  String
+  expires BigInt
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@map("email_verifications")
+}
+
+model Pupil {
+  id              String        @id @default(uuid())
+  userId          String?
+  genericPassword String
+  classStreams    classStream[]
+  examScores      ExamScore[]
+  fees            Fees[]
+  user            User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pupils")
+}
+
+model Staff {
+  id                   String                @id @default(uuid())
+  staffType            StaffType             @default(TEACHING_STAFF)
+  userId               String?
+  genericPassword      String
+  academicYearSubjects AcademicYearSubject[]
+  classStreams         classStream[]
+  user                 User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("staffs")
+}
+
+model Level {
+  id       String    @id @default(uuid())
+  name     String
+  slug     String
+  classes  Class[]
+  subjects Subject[]
+
+  @@map("levels")
+}
+
+model Stream {
+  id           String        @id @default(uuid())
+  name         String
+  classStreams classStream[]
+
+  @@map("streams")
+}
+
+model Class {
+  id                  String              @id @default(uuid())
+  name                String
+  levelId             String?
+  createdAt           DateTime            @default(now())
+  slug                String
+  academicYearClasses AcademicYearClass[]
+  level               Level?              @relation(fields: [levelId], references: [id], onDelete: Cascade)
+
+  @@map("classes")
+}
+
+model AcademicYear {
+  id                  String              @id @default(uuid())
+  year                String
+  startAt             DateTime            @default(now())
+  endAt               DateTime
+  academicYearClasses AcademicYearClass[]
+
+  @@map("academic_years")
+}
+
+model AcademicYearClass {
+  id                   String                @id @default(uuid())
+  academicYearId       String?
+  classId              String?
+  academicYear         AcademicYear?         @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
+  class                Class?                @relation(fields: [classId], references: [id], onDelete: Cascade)
+  academicYearSubjects AcademicYearSubject[]
+  streams              classStream[]
+
+  @@unique([classId, academicYearId])
+  @@map("academic_year_classes")
+}
+
+model Subject {
+  id                   String                @id @default(uuid())
+  subjectName          String
+  slug                 String
+  code                 String
+  grading              Grading[]
+  academicYearSubjects AcademicYearSubject[]
+  level                Level                 @relation(fields: [levelId], references: [id])
+  levelId              String
+
+  @@unique([code, subjectName])
+  @@map("subjects")
+}
+
+model Grading {
+  id                   String                @id @default(uuid())
+  from                 Float
+  to                   Float
+  grade                String
+  remarks              String?
+  subjects             Subject[]
+  academicYearSubjects AcademicYearSubject[]
+
+  @@unique([from, to, grade])
+  @@map("grading_s")
+}
+
+model AcademicYearSubject {
+  id                  String            @id @default(uuid())
+  academicYearClassId String
+  subjectId           String
+  customGrading       Grading[]
+  academicYearClass   AcademicYearClass @relation(fields: [academicYearClassId], references: [id], onDelete: Cascade)
+  teachers            Staff[]
+  subject             Subject           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  examSubjects        ExamSubject[]
+
+  @@unique([academicYearClassId, subjectId])
+  @@map("academic_year_subjects")
+}
+
+model classStream {
+  id           String             @id @default(uuid())
+  staffId      String?
+  classId      String?
+  streamId     String?
+  pupils       Pupil[]
+  class        AcademicYearClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classTeacher Staff?             @relation(fields: [staffId], references: [id])
+  stream       Stream?            @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  terms        ClassTerm[]
+
+  @@unique([classId, streamId])
+  @@map("class_streams")
+}
+
+model Term {
+  id         String      @id @default(uuid())
+  term       String      @unique
+  slug       String      @unique
+  classTerms ClassTerm[]
+
+  @@map("terms")
+}
+
+model ClassTerm {
+  id            String       @id @default(uuid())
+  startAt       DateTime     @default(now())
+  endAt         DateTime
+  termId        String?
+  classStreamId String?
+  feesAmount    Int?
+  classStream   classStream? @relation(fields: [classStreamId], references: [id], onDelete: Cascade)
+  term          Term?        @relation(fields: [termId], references: [id], onDelete: Cascade)
+  exams         Exam[]
+  fees          Fees[]
+
+  @@unique([classStreamId, termId])
+  @@map("class_terms")
+}
+
+model Fees {
+  id           String        @id @default(uuid())
+  pupilId      String
+  balance      Int           @default(0)
+  termId       String
+  status       FeesStatus    @default(NILL)
+  pupil        Pupil         @relation(fields: [pupilId], references: [id], onDelete: Cascade)
+  term         ClassTerm     @relation(fields: [termId], references: [id], onDelete: Cascade)
+  feesPayments FeesPayment[]
+
+  @@map("fees")
+}
+
+model FeesPayment {
+  id         String   @id @default(uuid())
+  amountPaid Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  feesId     String?
+  userId     String
+  fees       Fees?    @relation(fields: [feesId], references: [id], onDelete: Cascade)
+  paidBy     User     @relation(fields: [userId], references: [id])
+
+  @@map("fees_payments")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  role      Role     @default(USER)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Asset {
+  id                String             @id @default(uuid())
+  name              String
+  description       String?
+  category          AssetCategory
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  computerLabItems  ComputerLabItem[]
+  foodStoreItems    FoodStoreItem[]
+  generalStoreItems GeneralStoreItem[]
+  labItems          LabItem[]
+  libraryBooks      LibraryBook[]
+
+  @@map("assets")
+}
+
+model FoodStoreItem {
+  id                       String                    @id @default(uuid())
+  assetId                  String
+  foodName                 String
+  unit                     AssetUnit
+  quantity                 Float?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  supplierId               String?
+  trackQuantity            Boolean                   @default(false)
+  status                   AssetItemStatus           @default(AVAILABLE)
+  isConsumable             Boolean                   @default(true)
+  consumptions             FoodConsumption[]
+  asset                    Asset                     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  supplier                 Supplier?                 @relation(fields: [supplierId], references: [id])
+  individualFoodStoreItems IndividualFoodStoreItem[]
+
+  @@map("food_store_items")
+}
+
+model IndividualFoodStoreItem {
+  id               String         @id @default(uuid())
+  foodStoreItemId  String
+  uniqueIdentifier String?        @unique
+  status           AssetStatus    @default(AVAILABLE)
+  condition        AssetCondition @default(NEW)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  assetDamages     AssetDamage[]
+  foodStoreItem    FoodStoreItem  @relation(fields: [foodStoreItemId], references: [id], onDelete: Cascade)
+
+  @@map("individual_food_store_items")
+}
+
+model FoodConsumption {
+  id              String        @id @default(uuid())
+  quantityUsed    Float?
+  dateUsedAt      DateTime      @default(now())
+  usageDetails    String?
+  foodStoreItemId String
+  foodItem        FoodStoreItem @relation(fields: [foodStoreItemId], references: [id], onDelete: Cascade)
+
+  @@map("food_consumptions")
+}
+
+model Supplier {
+  id             String          @id @default(uuid())
+  name           String
+  contactInfo    String?
+  address        String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  foodStoreItems FoodStoreItem[]
+
+  @@map("suppliers")
+}
+
+model LibraryBook {
+  id                    String              @id @default(uuid())
+  title                 String
+  author                String
+  assetId               String
+  libraryBookCategoryId String
+  quantity              Float?
+  trackQuantity         Boolean             @default(false)
+  unit                  AssetUnit
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  individualBooks       IndividualBook[]
+  asset                 Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  category              LibraryBookCategory @relation(fields: [libraryBookCategoryId], references: [id], onDelete: Cascade)
+
+  @@unique([title, author])
+  @@map("library_books")
+}
+
+model IndividualBook {
+  id            String         @id @default(uuid())
+  isbn          String?
+  status        BookStatus     @default(AVAILABLE)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  libraryBookId String
+  condition     AssetCondition @default(NEW)
+  borrowCount   Int            @default(0)
+  bookDamages   AssetDamage[]
+  borrowers     Borrower[]
+  libraryBook   LibraryBook    @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
+
+  @@map("individual_books")
+}
+
+model LibraryBookCategory {
+  id           String        @id @default(uuid())
+  category     String        @unique
+  description  String?
+  libraryBooks LibraryBook[]
+
+  @@map("library_book_category")
+}
+
+model Borrower {
+  id               String          @id @default(uuid())
+  borrowedAt       DateTime        @default(now())
+  returnAt         DateTime?
+  status           BorrowStatus    @default(ONGOING)
+  userId           String
+  individualBookId String?
+  libraryBook      IndividualBook? @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("borrowers")
+}
+
+model LabItem {
+  id                 String              @id @default(uuid())
+  name               String
+  quantity           Float?
+  unit               AssetUnit
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  assetId            String
+  trackQuantity      Boolean             @default(false)
+  status             AssetStatus         @default(AVAILABLE)
+  individualLabItems IndividualLabItem[]
+  asset              Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@map("lab_items")
+}
+
+model IndividualLabItem {
+  id               String         @id @default(uuid())
+  labItemId        String
+  uniqueIdentifier String?        @unique
+  status           AssetStatus    @default(AVAILABLE)
+  condition        AssetCondition @default(NEW)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  assetDamages     AssetDamage[]
+  labItem          LabItem        @relation(fields: [labItemId], references: [id], onDelete: Cascade)
+
+  @@map("individual_lab_items")
+}
+
+model ComputerLabItem {
+  id                         String                      @id @default(uuid())
+  name                       String
+  model                      String?
+  specification              String?
+  quantity                   Float?
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  assetId                    String
+  trackQuantity              Boolean                     @default(false)
+  unit                       AssetUnit
+  asset                      Asset                       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  individualComputerLabItems IndividualComputerLabItem[]
+
+  @@map("computer_lab_items")
+}
+
+model IndividualComputerLabItem {
+  id                String          @id @default(uuid())
+  computerLabItemId String
+  uniqueIdentifier  String?         @unique
+  status            AssetStatus     @default(AVAILABLE)
+  condition         AssetCondition  @default(NEW)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  assetDamages      AssetDamage[]
+  computerLabItem   ComputerLabItem @relation(fields: [computerLabItemId], references: [id], onDelete: Cascade)
+
+  @@map("individual_computer_lab_items")
+}
+
+model GeneralStoreItem {
+  id                          String                       @id @default(uuid())
+  name                        String
+  quantity                    Float?
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  assetId                     String
+  status                      AssetItemStatus              @default(AVAILABLE)
+  trackQuantity               Boolean                      @default(false)
+  unit                        AssetUnit
+  asset                       Asset                        @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  individualGeneralStoreItems IndividualGeneralStoreItem[]
+
+  @@map("general_store_items")
+}
+
+model IndividualGeneralStoreItem {
+  id                 String           @id @default(uuid())
+  generalStoreItemId String
+  uniqueIdentifier   String?          @unique
+  status             AssetStatus      @default(AVAILABLE)
+  condition          AssetCondition   @default(NEW)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  assetDamages       AssetDamage[]
+  generalStoreItem   GeneralStoreItem @relation(fields: [generalStoreItemId], references: [id], onDelete: Cascade)
+
+  @@map("individual_general_store_items")
+}
+
+model AssetDamage {
+  id                           String                      @id @default(uuid())
+  damageDetails                String
+  condition                    AssetCondition
+  quantity                     Int
+  userId                       String?
+  individualComputerLabItemId  String?
+  isRepaired                   Boolean                     @default(false)
+  repairedAt                   DateTime?
+  createdAt                    DateTime                    @default(now())
+  individualBookId             String?
+  individualLabItemId          String?
+  individualFoodStoreItemId    String?
+  individualGeneralStoreItemId String?
+  isSchoolCost                 Boolean                     @default(false)
+  repairBalance                Float                       @default(0)
+  repairPrice                  Float?
+  individualBook               IndividualBook?             @relation(fields: [individualBookId], references: [id], onDelete: Cascade)
+  individualComputerLabItem    IndividualComputerLabItem?  @relation(fields: [individualComputerLabItemId], references: [id], onDelete: Cascade)
+  individualFoodStoreItem      IndividualFoodStoreItem?    @relation(fields: [individualFoodStoreItemId], references: [id], onDelete: Cascade)
+  individualGeneralStoreItem   IndividualGeneralStoreItem? @relation(fields: [individualGeneralStoreItemId], references: [id], onDelete: Cascade)
+  individualLabItem            IndividualLabItem?          @relation(fields: [individualLabItemId], references: [id], onDelete: Cascade)
+  damagedBy                    User?                       @relation(fields: [userId], references: [id])
+  assetRepairPayments          AssetRepairPayment[]
+
+  @@map("asset_damages")
+}
+
+model AssetRepairPayment {
+  id            String       @id @default(uuid())
+  paidAmount    Float
+  paidAt        DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  assetDamageId String?
+  userId        String?
+  isSchoolCost  Boolean      @default(false)
+  assetDamage   AssetDamage? @relation(fields: [assetDamageId], references: [id])
+  receivedBy    User?        @relation(fields: [userId], references: [id])
+
+  @@map("asset_repair_payments")
+}
+
+model ExamScore {
+  id            String      @id @default(uuid())
+  score         Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  examSubject   ExamSubject @relation(fields: [examSubjectId], references: [id], onDelete: Cascade)
+  examSubjectId String
+  pupil         Pupil       @relation(fields: [pupilId], references: [id], onDelete: Cascade)
+  pupilId       String
+
+  @@map("exam_scores")
+}
+
+model Exam {
+  id           String        @id
+  examName     String
+  examType     ExamType      @default(EXAM)
+  classTermId  String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  examSubjects ExamSubject[]
+  classTerm    ClassTerm     @relation(fields: [classTermId], references: [id], onDelete: Cascade)
+
+  @@unique([examName, classTermId])
+  @@map("exams")
+}
+
+model ExamSubject {
+  id                    String              @id @default(uuid())
+  examId                String
+  examDate              DateTime
+  exam                  Exam                @relation(fields: [examId], references: [id], onDelete: Cascade)
+  academicYearSubject   AcademicYearSubject @relation(fields: [academicYearSubjectId], references: [id], onDelete: Cascade)
+  academicYearSubjectId String
+  examScores            ExamScore[]
+
+  @@map("exam_subjects")
+}
+
+enum ExamType {
+  ASSESSMENT
+  TEST
+  EXERCISE
+  MOCK
+  EXAM
+}
+
+enum StaffType {
+  TEACHING_STAFF
+  NON_TEACHING_STAFF
+}
+
+enum FeesStatus {
+  COMPLETED
+  PENDING
+  NILL
+}
+
+enum Role {
+  SUPER_ADMIN
+  DIRECTOR
+  BURSAR
+  ASSET_CARETAKER
+  GENERAL_STORE_ASSET_CARETAKER
+  COMPUTER_LAB_ASSET_CARETAKER
+  LABORATORY_ASSET_CARETAKER
+  LIBRARY_ASSET_CARETAKER
+  FOOD_STORE_ASSET_CARETAKER
+  STAFF
+  CLASS_TEACHER
+  USER
+}
+
+enum AssetCategory {
+  LIBRARY
+  COMPUTER_LAB
+  LABORATORY
+  GENERAL_STORE
+  FOOD_STORE
+}
+
+enum AssetCondition {
+  NEW
+  GOOD
+  FAIR
+  POOR
+  DAMAGED
+}
+
+enum AssetStatus {
+  AVAILABLE
+  ASSIGNED
+  UNDER_MAINTENANCE
+  DISPOSED
+}
+
+enum AssetUnit {
+  KILOGRAM
+  GRAMS
+  PACKETS
+  SAC
+  LITER
+  PIECE
+  PAIR
+  JERRICAN
+  CONTAINER
+  OTHERS
+}
+
+enum BorrowStatus {
+  ONGOING
+  RETURNED
+}
+
+enum BookStatus {
+  AVAILABLE
+  BORROWED
+  DAMAGED
+}
+
+enum AssetItemStatus {
+  AVAILABLE
+  IN_USE
+  EXPIRED
+}

@@ -56,7 +56,7 @@ export default async function Page({ searchParams }: PageProps) {
         </div>
         <div>
           <h1 className="text-xl">School fees defaulters</h1>
-          <p className="text-sm italic text-muted-foreground">
+          <p className="text-muted-foreground text-sm italic">
             from {year || "All years"}, {term?.term || "All terms"}
           </p>
         </div>

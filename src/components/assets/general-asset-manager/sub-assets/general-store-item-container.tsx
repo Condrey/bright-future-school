@@ -36,7 +36,7 @@ export default function GeneralStoreItemContainer({
   return (
     <Badge
       variant={"outline"}
-      className="flex max-w-fit gap-1 p-2 hover:cursor-pointer hover:bg-secondary"
+      className="hover:bg-secondary flex max-w-fit gap-1 p-2 hover:cursor-pointer"
       onClick={() =>
         startTransition(() =>
           navigateOnclickWithPathnameWithoutUpdate(
@@ -48,11 +48,11 @@ export default function GeneralStoreItemContainer({
       {isPending ? (
         <Loader2Icon className="size-12 animate-spin" strokeWidth={0.5} />
       ) : (
-        <StoreIcon className="size-12 fill-secondary" strokeWidth={0.5} />
+        <StoreIcon className="fill-secondary size-12" strokeWidth={0.5} />
       )}
       <div>
         <div>{individualStoreItem.name}</div>{" "}
-        <div className="text-xs font-normal text-muted-foreground">
+        <div className="text-muted-foreground text-xs font-normal">
           <span className="italic">under </span>
           {individualStoreItem.asset}
         </div>

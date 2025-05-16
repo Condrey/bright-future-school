@@ -31,7 +31,7 @@ export default function ListOfExams({
     console.error(error);
     return (
       <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm">
           Error fetching exams. Please try again
         </p>
         <LoadingButton
@@ -47,7 +47,7 @@ export default function ListOfExams({
   if (status === "success" && !data.length) {
     return (
       <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm">
           There are no terms in the database yet. Please add.
         </p>
       </div>
@@ -103,7 +103,7 @@ export default function ListOfExams({
                           exam={exam}
                           academicYearClassId={academicYearClassId}
                           url={url}
-                          className="flex items-center justify-between gap-3 rounded-md border border-muted-foreground/20 p-2 transition-all duration-200 ease-in-out hover:bg-secondary/10 hover:shadow-sm"
+                          className="border-muted-foreground/20 hover:bg-secondary/10 flex items-center justify-between gap-3 rounded-md border p-2 transition-all duration-200 ease-in-out hover:shadow-sm"
                         />
                       </Link>
                     );

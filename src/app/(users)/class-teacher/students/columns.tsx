@@ -24,7 +24,7 @@ export const useClassTeacherPupilsColumns: ColumnDef<PupilDataSelect>[] = [
           <UserAvatar avatarUrl={user?.avatarUrl} />
           <div>
             <div>{user?.name}</div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               {user?.telephone || user?.email || `@${user?.username}`}
             </div>
           </div>
@@ -42,7 +42,7 @@ export const useClassTeacherPupilsColumns: ColumnDef<PupilDataSelect>[] = [
       return (
         <div>
           <div>{user?.email || "No email"}</div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-muted-foreground text-xs">
             {user?.telephone || "No telephone"}
           </div>
         </div>

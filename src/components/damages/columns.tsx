@@ -33,7 +33,7 @@ export const useDamagesColumns = (
               <UserAvatar avatarUrl={person.avatarUrl} />
               <div>
                 <div>{person.name}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {person.telephone || person.email || `@${person.username}`}
                 </div>
               </div>
@@ -134,7 +134,7 @@ export const useDamagesColumns = (
             <Badge variant={"go"}>Cleared payments</Badge>
           ) : (
             <div>
-              <span className="italic text-muted-foreground">bal of</span>{" "}
+              <span className="text-muted-foreground italic">bal of</span>{" "}
               {formatCurrency(price)}
             </div>
           )}

@@ -65,7 +65,7 @@ export function LevelSwitcher() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 <ActiveLogo className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -83,7 +83,7 @@ export function LevelSwitcher() {
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
+            <DropdownMenuLabel className="text-muted-foreground text-xs">
               Levels
             </DropdownMenuLabel>
             {levels.map((level) => {
@@ -106,7 +106,7 @@ export function LevelSwitcher() {
               <div className="flex size-6 items-center justify-center">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">Add level</div>
+              <div className="text-muted-foreground font-medium">Add level</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

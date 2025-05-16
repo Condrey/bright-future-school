@@ -25,7 +25,7 @@ export default function ListOfDefaUlters() {
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
         <Loader2Icon className="size-4 animate-spin" />
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Fetching list, please wait
         </p>
       </div>
@@ -51,7 +51,7 @@ export default function ListOfDefaUlters() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex min-h-96 flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no registered defaulters in the system yet
         </p>
       </div>

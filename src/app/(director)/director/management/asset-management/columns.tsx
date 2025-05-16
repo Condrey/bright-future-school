@@ -127,7 +127,7 @@ export const useAssetColumns: ColumnDef<AssetData>[] = [
         <div>
           <div>{format(row.original.createdAt, "PP")}</div>
           {row.original.updatedAt > row.original.createdAt && (
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               (Updated {format(row.original.updatedAt, "PP")})
             </div>
           )}

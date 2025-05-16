@@ -49,7 +49,7 @@ export function ClassStreamWithExamsContainer({
     <Card className="max-w-5xl">
       {/* Class information  */}
       <CardHeader className="space-y-0.5">
-        <CardTitle className="font-bold capitalize tracking-tight">
+        <CardTitle className="font-bold tracking-tight capitalize">
           <YearContainer year={year} /> {classValue?.class?.slug} {stream?.name}{" "}
           ({classValue?.class?.level?.name} level)
         </CardTitle>
@@ -134,7 +134,7 @@ function TermWithExamContainer({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-sm uppercase tracking-tight">
+        <h1 className="text-sm tracking-tight uppercase">
           {term?.term} ({formatNumber(examNumber)})
         </h1>
         <ButtonAddNewExam
@@ -160,7 +160,7 @@ function TermWithExamContainer({
             );
           })}
           {numberOfExams > 3 && (
-            <span className="w-full text-end text-xs italic text-muted-foreground">
+            <span className="text-muted-foreground w-full text-end text-xs italic">
               + {numberOfExams - 3} more {term?.term} tests/ exams
             </span>
           )}

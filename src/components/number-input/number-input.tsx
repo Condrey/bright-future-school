@@ -27,7 +27,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps<any>>(
     return (
       <div className="relative">
         {prefix && (
-          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <span className="text-muted-foreground absolute top-1/2 left-2 -translate-y-1/2">
             {prefix}
           </span>
         )}
@@ -37,7 +37,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps<any>>(
             `ps-${prefix ? 12 : 4}`,
             `pe-${suffix ? 12 : 4}`,
             "no-caret",
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            "border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
 
             className,
           )}
@@ -56,7 +56,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps<any>>(
         />
 
         {suffix && (
-          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <span className="text-muted-foreground absolute top-1/2 right-2 -translate-y-1/2">
             {suffix}
           </span>
         )}

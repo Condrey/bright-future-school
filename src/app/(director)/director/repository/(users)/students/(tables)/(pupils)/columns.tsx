@@ -27,7 +27,7 @@ export const usePupilsColumn: ColumnDef<PupilData>[] = [
               <UserAvatar avatarUrl={pupil.avatarUrl} />
               <div className="space-y-0.5">
                 <div>{pupil.name}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {pupil.telephone || pupil.email || `@${pupil.username}`}
                 </div>
               </div>

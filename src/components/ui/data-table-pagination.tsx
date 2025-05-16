@@ -33,7 +33,7 @@ export function DataTablePagination<TData>({
   const totalRows = table.getFilteredRowModel().rows.length;
   return (
     <div className="flex flex-col items-center justify-between gap-4 px-2 sm:flex-row sm:gap-2">
-      <div className="flex-1 text-sm text-muted-foreground">
+      <div className="text-muted-foreground flex-1 text-sm">
         {selectedRows === 0
           ? `${totalRows.toLocaleString()} item${totalRows === 1 ? "" : "s"}.`
           : `${selectedRows.toLocaleString()} of ${totalRows.toLocaleString()} item${totalRows === 1 ? "" : "s"} selected.`}

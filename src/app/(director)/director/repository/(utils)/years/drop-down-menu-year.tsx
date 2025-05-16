@@ -54,17 +54,17 @@ export default function DropDownMenuYear({ year }: DropDownMenuYearProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setShowDialog(true)}
-            className="font-semibold text-foreground"
+            className="text-foreground font-semibold"
           >
-            <Edit2Icon className="mr-2 size-4 fill-foreground text-foreground" />
+            <Edit2Icon className="fill-foreground text-foreground mr-2 size-4" />
             <span>Edit year</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
             onClick={() => setShowDeleteDialog(true)}
-            className="font-semibold text-destructive"
+            className="text-destructive font-semibold"
           >
-            <Trash2Icon className="mr-2 size-4 fill-destructive" />
+            <Trash2Icon className="fill-destructive mr-2 size-4" />
             <span>Delete year</span>
           </DropdownMenuItem>
         </DropdownMenuContent>

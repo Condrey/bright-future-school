@@ -54,10 +54,10 @@ export default function FoodStoreItemsDetails({}: FoodStoreItemsDetailsProps) {
         <div className="flex items-center gap-1">
           <ForkKnifeIcon
             strokeWidth={0.8}
-            className="size-16 text-muted-foreground"
+            className="text-muted-foreground size-16"
           />
           <div>
-            <CardTitle className="uppercase tracking-wider">
+            <CardTitle className="tracking-wider uppercase">
               FoodStore
             </CardTitle>
             <CardTitle>{`${formatNumber(summary.length)} food item${summary.length === 1 ? "" : "s"}, ${formatNumber(numberOfItems)} total item${numberOfItems === 1 ? "" : "s"}`}</CardTitle>

@@ -39,11 +39,11 @@ export default function AllAssetsNavItem() {
             >
               <Link
                 href={basePathname + "?" + searchParams.toString()}
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-gradient-to-b p-6 no-underline outline-none select-none focus:shadow-md"
               >
                 <PackageIcon className="size-12" strokeWidth={0.8} />
-                <div className="mb-2 mt-4 text-lg font-medium">All assets</div>
-                <p className="text-sm leading-tight text-muted-foreground">
+                <div className="mt-4 mb-2 text-lg font-medium">All assets</div>
+                <p className="text-muted-foreground text-sm leading-tight">
                   A one-stop-point for efficiently managing and analyzing all
                   school assets.
                 </p>

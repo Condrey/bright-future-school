@@ -27,7 +27,7 @@ export default function ListOfGeneralStoreItems() {
   if (!searchParamsIndividualItem) {
     return (
       <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Please choose a sub asset from the side bar to display their items
           here.
         </p>
@@ -38,7 +38,7 @@ export default function ListOfGeneralStoreItems() {
     console.error(error);
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Failed to fetch sub asset items. Please try again!
         </p>
         <LoadingButton
@@ -54,7 +54,7 @@ export default function ListOfGeneralStoreItems() {
   if (status === "pending") {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Fetching sub asset items
         </p>
         <Loader2Icon className="animate-spin" />
@@ -64,7 +64,7 @@ export default function ListOfGeneralStoreItems() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no items belonging to this sub asset added in the database
           yet. Please add
         </p>

@@ -21,12 +21,12 @@ export default function SideBarDetails({ pupil }: SideBarDetailsProps) {
         <div className="flex items-center gap-1">
           <h1 className="text-2xl font-semibold">{name}</h1>
           {isVerified && (
-            <LucideVerified className="size-6 fill-green-500 text-background" />
+            <LucideVerified className="text-background size-6 fill-green-500" />
           )}{" "}
         </div>
         <p className="text-lg">{`@${username}`}</p>
-        <p className="text-sm text-muted-foreground">{email || "No email"}</p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">{email || "No email"}</p>
+        <p className="text-muted-foreground text-sm">
           {telephone || "No telephone"}
         </p>
         <div className=""></div>

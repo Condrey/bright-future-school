@@ -56,13 +56,13 @@ export default function FormAddViewExams({
         <div className="size-full overflow-y-auto scroll-smooth">
           {status === "pending" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-              <p className="max-w-sm text-center text-muted-foreground">
+              <p className="text-muted-foreground max-w-sm text-center">
                 Loading exams...
               </p>
             </div>
           ) : status === "error" ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-              <p className="max-w-sm text-center text-muted-foreground">
+              <p className="text-muted-foreground max-w-sm text-center">
                 An error occurred while fetching exams
               </p>
               <LoadingButton loading={isFetching} onClick={() => refetch()}>
@@ -71,7 +71,7 @@ export default function FormAddViewExams({
             </div>
           ) : status === "success" && !data.length ? (
             <div className="flex min-h-[20rem] flex-col items-center justify-center gap-4">
-              <p className="max-w-sm text-center text-muted-foreground">
+              <p className="text-muted-foreground max-w-sm text-center">
                 There are no terms in the database yet. Please add.
               </p>
             </div>

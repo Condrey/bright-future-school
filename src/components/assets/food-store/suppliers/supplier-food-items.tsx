@@ -26,7 +26,7 @@ export default function SupplierFoodItems() {
   if (!searchParamsSupplier) {
     return (
       <div className="flex min-h-[28rem] w-full flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Please choose a supplier from the side bar to display their food store
           items here.
         </p>
@@ -37,7 +37,7 @@ export default function SupplierFoodItems() {
     console.error(error);
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Failed to fetch food Store items. Please try again!
         </p>
         <LoadingButton
@@ -53,7 +53,7 @@ export default function SupplierFoodItems() {
   if (status === "pending") {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Fetching food store items
         </p>
         <Loader2Icon className="animate-spin" />
@@ -63,7 +63,7 @@ export default function SupplierFoodItems() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex size-full min-h-[28rem] flex-col items-center justify-center">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no food Store items added in the database yet. Please add
         </p>
       </div>

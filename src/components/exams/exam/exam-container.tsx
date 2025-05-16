@@ -93,7 +93,7 @@ export default function ExamContainer({
           </DropdownMenu>
         </div>
 
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           {examTypes[exam.examType]} -{" "}
           <span className={cn(numberOfSubjects === 0 && "text-destructive")}>
             {numberOfSubjects === 0

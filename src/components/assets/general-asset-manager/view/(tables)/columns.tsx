@@ -177,12 +177,12 @@ export const useItemColumn: ColumnDef<IndividualGeneralStoreItemData>[] = [
                 <div>Paid {formatCurrency(paid)}</div>
               )}
               <div>
-                <span className="italic text-muted-foreground">bal of</span>{" "}
+                <span className="text-muted-foreground italic">bal of</span>{" "}
                 {formatCurrency(balance)}
               </div>
             </div>
           ) : (
-            <span className="italic text-muted-foreground">
+            <span className="text-muted-foreground italic">
               --Not applicable--
             </span>
           )}

@@ -30,7 +30,7 @@ export default function ListOfLibraryItems() {
   if (status === "pending") {
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           Loading....
         </span>
         <Loader2 className="animate-spin" />
@@ -41,7 +41,7 @@ export default function ListOfLibraryItems() {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           Error fetching library items
         </span>
         <LoadingButton
@@ -57,14 +57,14 @@ export default function ListOfLibraryItems() {
   if (status === "success" && !data.length) {
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <span className="max-w-sm text-center text-muted-foreground">
+        <span className="text-muted-foreground max-w-sm text-center">
           There are no library items in the system yet.
         </span>
       </div>
     );
   }
   return (
-    <Card className="w-full bg-muted/30">
+    <Card className="bg-muted/30 w-full">
       <CardHeader className="flex w-full flex-row gap-4">
         <div>
           <CardTitle>
@@ -100,7 +100,7 @@ export default function ListOfLibraryItems() {
               <span>{index + 1}</span>
               <div className="flex flex-col">
                 <span>{item.title}</span>
-                <span className="text-xs italic text-muted-foreground">
+                <span className="text-muted-foreground text-xs italic">
                   by {item.author}
                 </span>
               </div>

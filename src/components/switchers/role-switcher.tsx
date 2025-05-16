@@ -46,9 +46,9 @@ export default function RoleSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="max-w-sm data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground max-w-sm"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 {isPending ? (
                   <Loader2Icon className="size-4 animate-spin" />
                 ) : (
@@ -70,7 +70,7 @@ export default function RoleSwitcher() {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="text-xs text-muted-foreground">
+              <DropdownMenuLabel className="text-muted-foreground text-xs">
                 Choose privileges from among
               </DropdownMenuLabel>
               {items.map((item) => {
@@ -91,7 +91,7 @@ export default function RoleSwitcher() {
                     <div className="flex size-6 items-center justify-center">
                       <Logo className="size-4 shrink-0" />
                     </div>
-                    <h6 className="line-clamp-1 text-ellipsis break-words">
+                    <h6 className="line-clamp-1 break-words text-ellipsis">
                       {label}
                     </h6>
                   </DropdownMenuItem>

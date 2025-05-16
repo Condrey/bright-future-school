@@ -25,7 +25,7 @@ export default function ListOfDamages({ assetCategory }: ListOfDamagesProps) {
     console.error(error);
     return (
       <div className="flex min-h-[24rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           An error occurred while fetching damages.
         </p>
         <LoadingButton
@@ -42,7 +42,7 @@ export default function ListOfDamages({ assetCategory }: ListOfDamagesProps) {
   if (status === "success" && !data.length) {
     return (
       <div className="flex min-h-[24rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no asset damages registered under{" "}
           {assetCategories[assetCategory].label} yet
         </p>
@@ -53,7 +53,7 @@ export default function ListOfDamages({ assetCategory }: ListOfDamagesProps) {
   if (status === "success" && !damages.length) {
     return (
       <div className="flex min-h-[24rem] flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           There are no asset damages registered under{" "}
           {assetCategories[assetCategory].label} yet
         </p>

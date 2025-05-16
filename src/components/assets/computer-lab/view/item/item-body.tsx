@@ -53,7 +53,7 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
     console.error(error);
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Error upon fetching this item.
         </p>
         <LoadingButton
@@ -69,7 +69,7 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
   if (!item) {
     return (
       <div className="flex size-full flex-col items-center justify-center gap-4">
-        <p className="max-w-sm text-center text-muted-foreground">
+        <p className="text-muted-foreground max-w-sm text-center">
           Sorry, this item does not exist.!
         </p>
       </div>
@@ -180,7 +180,7 @@ export default function ItemBody({ oldItem }: ItemBodyProps) {
           {viewMore && (
             <div className="w-full space-y-4">
               {/* date of creation  */}
-              <div className="space-x-1 text-xs font-thin tracking-tight text-muted-foreground">
+              <div className="text-muted-foreground space-x-1 text-xs font-thin tracking-tight">
                 <HistoryIcon className="float-start size-4" />
                 {item.updatedAt > item.createdAt && (
                   <span>

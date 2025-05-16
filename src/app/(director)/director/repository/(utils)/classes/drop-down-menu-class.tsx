@@ -57,17 +57,17 @@ export default function DropDownMenuClass({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setShowDialog(true)}
-            className="font-semibold text-foreground"
+            className="text-foreground font-semibold"
           >
-            <Edit2Icon className="mr-2 size-4 fill-foreground" />
+            <Edit2Icon className="fill-foreground mr-2 size-4" />
             <span>Edit class</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
             onClick={() => setShowDeleteDialog(true)}
-            className="font-semibold text-destructive"
+            className="text-destructive font-semibold"
           >
-            <Trash2Icon className="mr-2 size-4 fill-destructive" />
+            <Trash2Icon className="fill-destructive mr-2 size-4" />
             <span>Delete class</span>
           </DropdownMenuItem>
         </DropdownMenuContent>

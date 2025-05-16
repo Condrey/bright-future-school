@@ -40,7 +40,7 @@ export default function FormAddEditLevel({ form }: FormAddEditLevelProps) {
     <Form {...form2}>
       <div>
         {status === "pending" ? (
-          <div className="flex items-center gap-1 text-muted-foreground">
+          <div className="text-muted-foreground flex items-center gap-1">
             <Loader2 className="size-4 animate-spin" />
             <span>Loading levels ...</span>
           </div>
@@ -50,7 +50,7 @@ export default function FormAddEditLevel({ form }: FormAddEditLevelProps) {
           </p>
         ) : status === "error" ? (
           <div className="flex flex-col items-center justify-center space-y-2">
-            <p className="text-center text-destructive">
+            <p className="text-destructive text-center">
               An error occurred while fetching levels.
             </p>
             <LoadingButton

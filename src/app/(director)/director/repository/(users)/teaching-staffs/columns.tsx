@@ -32,7 +32,7 @@ export const useTeachingStaffColumns: ColumnDef<TeachingStaff>[] = [
               <UserAvatar avatarUrl={staff.avatarUrl} />
               <div className="space-y-0.5">
                 <div>{staff.name}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {staff.telephone || staff.email || `@${staff.username}`}
                 </div>
               </div>

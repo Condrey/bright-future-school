@@ -59,7 +59,7 @@ export const usePupilColumns = ({
             <UserAvatar avatarUrl={avatarUrl} />
             <div className="5 flex flex-col gap-0">
               <div>{name}</div>
-              <div className="text-xs text-muted-foreground">{description}</div>
+              <div className="text-muted-foreground text-xs">{description}</div>
             </div>
           </div>
         );
@@ -93,7 +93,7 @@ export const usePupilColumns = ({
           <div>
             <div>{formatCurrency(paid)}</div>
             {!!payments.length && (
-              <div className="text-xs text-muted-foreground">
+              <div className="text-muted-foreground text-xs">
                 {payments.length === 1
                   ? "single-payment"
                   : `${formatNumber(payments.length)} payments`}
@@ -146,7 +146,7 @@ export const usePupilColumns = ({
         return (
           <>
             {!lastPayment ? (
-              <span className="italic text-muted-foreground">
+              <span className="text-muted-foreground italic">
                 --No transactions--
               </span>
             ) : (
@@ -157,7 +157,7 @@ export const usePupilColumns = ({
                     : format(lastPayment.createdAt, "PPPP")}
                 </div>
                 <div>
-                  <span className="italic text-muted-foreground">paid</span>{" "}
+                  <span className="text-muted-foreground italic">paid</span>{" "}
                   <span>{formatCurrency(lastPayment.amountPaid)}</span>
                 </div>
               </div>

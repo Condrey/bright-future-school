@@ -41,7 +41,7 @@ export const useYearTermStreamColumns = (
               <YearContainer year={year} /> • {classValue}
             </div>
             <div className="">{stream} stream</div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               {levelName} level
             </div>
           </div>
@@ -71,7 +71,7 @@ export const useYearTermStreamColumns = (
                 <UserAvatar avatarUrl={avatarUrl} />
                 <div className="5 flex flex-col gap-0">
                   <div>{name}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-muted-foreground text-xs">
                     {description}
                   </div>
                 </div>
@@ -195,13 +195,13 @@ export const useYearTermStreamColumns = (
             <span>{formatCurrency(feesCollected)}</span>
             {extraPayment > 0 && (
               <div>
-                <span className="flex-none px-1 py-0.5 text-xs font-extrabold text-destructive animate-in">
+                <span className="text-destructive animate-in flex-none px-1 py-0.5 text-xs font-extrabold">
                   + Extra {formatCurrency(extraPayment)}
                 </span>
               </div>
             )}
             <div>
-              <span className="italic text-muted-foreground">of</span>{" "}
+              <span className="text-muted-foreground italic">of</span>{" "}
               {formatCurrency(totalFeesAmount)}
             </div>
           </div>
@@ -272,7 +272,7 @@ export const useYearTermStreamColumns = (
               {feesStatus}
             </Badge>
             <div>
-              <span className="italic text-muted-foreground">Bal</span>{" "}
+              <span className="text-muted-foreground italic">Bal</span>{" "}
               {formatCurrency(totalFeesAmount - feesCollected + extraPayment)}
             </div>
           </div>
