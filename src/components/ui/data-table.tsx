@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
     state: { sorting, columnFilters, columnVisibility },
   });
   return (
-    <div className="bg-card w-fit max-w-full rounded-2xl p-4 shadow-md">
+    <div className="bg-card w-fit max-w-full rounded-md p-4 shadow-md">
       <div className="w-full">{tableHeaderSection}</div>
       {/* filtering , column visibility and children */}
       <div className="flex items-center justify-between py-4">
