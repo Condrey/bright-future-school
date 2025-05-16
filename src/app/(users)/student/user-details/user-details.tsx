@@ -2,8 +2,8 @@
 import { PupilData } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../action";
-import SideBarDetails from "./side-bar-details";
 import MainContent from "./main-content";
+import SideBarDetails from "./side-bar-details";
 
 interface UserDetailsProps {
   oldPupil: PupilData;

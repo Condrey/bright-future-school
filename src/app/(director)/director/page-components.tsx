@@ -2,6 +2,8 @@
 
 import { useSession } from "@/app/session-provider";
 import LoadingButton from "@/components/loading-button";
+import { userRoles } from "@/lib/enums";
+import { unauthorized } from "next/navigation";
 import { Suspense } from "react";
 import { useDirectorDashboardParamsQuery } from "../hook";
 import DashboardComponents from "./dashboard-components";
@@ -12,8 +14,9 @@ import UtilitySetupComponent, {
 export default function PageComponents() {
   const { user } = useSession();
   if (!user) {
-    throw new Error("Unauthorized.!");
+    return unauthorized();
   }
+  const userType = userRoles[user.role].label;
   const { status, error, data, refetch, isFetching } =
     useDirectorDashboardParamsQuery();
   if (error) {
@@ -22,7 +25,7 @@ export default function PageComponents() {
   return (
     <div className="size-full space-y-12">
       <p className="text-center">
-        Welcome back Director{" "}
+        Welcome back {userType}{" "}
         <strong className="text-2xl font-semibold">
           {user.name ?? `@${user.username}`}!
         </strong>

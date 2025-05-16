@@ -21,7 +21,7 @@ export default function SideBarDetails({ pupil }: SideBarDetailsProps) {
         <div className="flex items-center gap-1">
           <h1 className="text-2xl font-semibold">{name}</h1>
           {isVerified && (
-            <LucideVerified className="size-6 text-green-500" />
+            <LucideVerified className="size-6 fill-green-500 text-background" />
           )}{" "}
         </div>
         <p className="text-lg">{`@${username}`}</p>

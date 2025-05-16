@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   // const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `${name} - ${telephone || email || `$${username}`}`,
-    description: `Details of ${name} - ${telephone || email || `$${username}`}, including fees payments and class streams attended over the years`,
+    title: `${name} - ${telephone || email || `@${username}`}`,
+    description: `Details of ${name} - ${telephone || email || `@${username}`}, including fees payments and class streams attended over the years`,
     // openGraph: {
     //   images: !avatarUrl ? previousImages : [avatarUrl, ...previousImages],
     // },

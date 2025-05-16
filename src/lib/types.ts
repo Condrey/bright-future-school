@@ -297,7 +297,7 @@ export type FeesPaymentDataInclude = Prisma.FeesPaymentGetPayload<{
 
 //Fees
 export const feesDataSelect = {
-  term: true,
+  term: {include:{term:true, classStream:{include:{class:{include:{class:true,academicYear:true}, }, stream:true}}}},
   feesPayments: {
     include: feesPaymentDataInclude,
     orderBy: { updatedAt: "desc" },

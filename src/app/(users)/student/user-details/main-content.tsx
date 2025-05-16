@@ -1,7 +1,8 @@
 import { DataTable } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PupilData } from "@/lib/types";
-import { useFeesColumns } from "./(tables)/columns";
+import { useClassStreamColumns } from "./(tables)/class-stream-columns";
+import { useFeesColumns } from "./(tables)/fees-columns";
 
 interface MainContentProps {
   pupil: PupilData;
@@ -16,13 +17,14 @@ export default function MainContent({ pupil }: MainContentProps) {
           <TabsTrigger value="classes">Classes</TabsTrigger>
         </TabsList>
         <TabsContent value="fees">
+          <DataTable columns={useFeesColumns} data={pupil.fees} />
+        </TabsContent>
+        <TabsContent value="classes">
           <DataTable
-            columns={useFeesColumns}
-            data={pupil.fees}
-            ROWS_PER_TABLE={10}
+            columns={useClassStreamColumns}
+            data={pupil.classStreams}
           />
         </TabsContent>
-        <TabsContent value="classes">d</TabsContent>
       </Tabs>
     </div>
   );

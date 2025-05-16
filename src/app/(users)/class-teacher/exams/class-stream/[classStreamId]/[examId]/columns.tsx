@@ -58,7 +58,7 @@ export const usePupilsColumn = (
            <div className="block w-full text-center slashed-zero tabular-nums">
             {marks}%
           </div>
-          <div className="w-full text-center text-xs">{grading.grade}, <span className="italic text-muted-foreground">{grading.remarks}</span></div>
+          <div className="w-full text-center text-xs">{grading.grade},<span className="italic text-muted-foreground">{grading.remarks}</span></div>
          </div>
         );
       },
