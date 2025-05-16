@@ -109,27 +109,26 @@ export type LevelData = Prisma.LevelGetPayload<{
   include: typeof levelDataInclude;
 }>;
 
-
 // Subject
 export const subjectDataInclude = {
   grading: true,
-  level: true, 
+  level: true,
 } satisfies Prisma.SubjectInclude;
 export type SubjectData = Prisma.SubjectGetPayload<{
   include: typeof subjectDataInclude;
 }>;
 
-// Academic year subject 
-export const academicYearSubjectDataInclude={
-subject:{include:subjectDataInclude}
+// Academic year subject
+export const academicYearSubjectDataInclude = {
+  subject: { include: subjectDataInclude },
 } satisfies Prisma.AcademicYearSubjectInclude;
-export type AcademicYearSubjectData =Prisma.AcademicYearSubjectGetPayload<{
-  include : typeof academicYearSubjectDataInclude
-}>
+export type AcademicYearSubjectData = Prisma.AcademicYearSubjectGetPayload<{
+  include: typeof academicYearSubjectDataInclude;
+}>;
 
 // Exam subject
 export const examSubjectDataInclude = {
-  academicYearSubject: { include: { subject: {include:{grading:true}} } },
+  academicYearSubject: { include: { subject: { include: { grading: true } } } },
   examScores: true,
 } satisfies Prisma.ExamSubjectInclude;
 export type ExamSubjectData = Prisma.ExamSubjectGetPayload<{
@@ -145,9 +144,11 @@ export const examDataInclude = {
           class: {
             include: {
               academicYear: true,
-              class: {include:classDataInclude},
-              academicYearSubjects: { include: { subject: {include: subjectDataInclude} },
-            orderBy:{subject:{subjectName:'asc'}} }, 
+              class: { include: classDataInclude },
+              academicYearSubjects: {
+                include: { subject: { include: subjectDataInclude } },
+                orderBy: { subject: { subjectName: "asc" } },
+              },
             },
           },
           stream: true,
@@ -297,7 +298,17 @@ export type FeesPaymentDataInclude = Prisma.FeesPaymentGetPayload<{
 
 //Fees
 export const feesDataSelect = {
-  term: {include:{term:true, classStream:{include:{class:{include:{class:true,academicYear:true}, }, stream:true}}}},
+  term: {
+    include: {
+      term: true,
+      classStream: {
+        include: {
+          class: { include: { class: true, academicYear: true } },
+          stream: true,
+        },
+      },
+    },
+  },
   feesPayments: {
     include: feesPaymentDataInclude,
     orderBy: { updatedAt: "desc" },
@@ -318,7 +329,7 @@ export const classTermDataSelect = (classTermId?: string) => {
       include: {
         stream: { select: { name: true, id: true } },
         terms: {
-          include: classTermIIDataSelect,
+          select: classTermIIDataSelect,
         },
         class: {
           select: {
