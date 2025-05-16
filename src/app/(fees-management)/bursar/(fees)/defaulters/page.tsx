@@ -14,7 +14,9 @@ export default function Page() {
     <Fragment>
       <HeaderContainer breadCrumbs={[{ label: `${currentYear} defaulters` }]} />
       <BodyContainer>
-        <h1 className="text-xl">{new Date().getFullYear()} fees defaulters</h1>
+        <h1 className=" text-xl">
+          {new Date().getFullYear()} fees defaulters
+        </h1>
         <ListOfDefaUlters />
       </BodyContainer>
     </Fragment>
