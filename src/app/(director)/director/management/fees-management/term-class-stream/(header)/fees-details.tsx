@@ -134,7 +134,7 @@ export default function FeesDetails({ oldTerm }: FeesDetailsProps) {
               <Progress
                 value={percentageOfExtraPayment}
                 className="bg-destructive/20 h-4"
-                indicatorClassName="bg-destructive  "
+                indicatorClassname="bg-destructive  "
               />
             </div>
             <span>{percentageOfExtraPayment.toFixed(1)}%</span>
