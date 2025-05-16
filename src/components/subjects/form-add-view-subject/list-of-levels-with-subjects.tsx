@@ -111,7 +111,7 @@ export default function ListOfLevelsWithSubjects({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> 
               </form>
             </Form>
           </div>
